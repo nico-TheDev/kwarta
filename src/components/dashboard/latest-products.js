@@ -18,33 +18,33 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 const products = [
   {
     id: uuid(),
-    name: 'Dropbox',
+    name: 'Shoppee',
     imageUrl: '/static/images/products/product_1.png',
-    updatedAt: subHours(Date.now(), 2)
+    updatedAt: 1010
   },
   {
     id: uuid(),
-    name: 'Medium Corporation',
+    name: 'Lazada',
     imageUrl: '/static/images/products/product_2.png',
-    updatedAt: subHours(Date.now(), 2)
+    updatedAt: 1200
   },
   {
     id: uuid(),
-    name: 'Slack',
+    name: 'Tissue Papers',
     imageUrl: '/static/images/products/product_3.png',
-    updatedAt: subHours(Date.now(), 3)
+    updatedAt: 200
   },
   {
     id: uuid(),
-    name: 'Lyft',
+    name: 'Candy Chocolate',
     imageUrl: '/static/images/products/product_4.png',
-    updatedAt: subHours(Date.now(), 5)
+    updatedAt: 200
   },
   {
     id: uuid(),
-    name: 'GitHub',
+    name: 'Development Tools',
     imageUrl: '/static/images/products/product_5.png',
-    updatedAt: subHours(Date.now(), 9)
+    updatedAt: 1000
   }
 ];
 
@@ -52,7 +52,7 @@ export const LatestProducts = (props) => (
   <Card {...props}>
     <CardHeader
       subtitle={`${products.length} in total`}
-      title="Latest Products"
+      title="Latest Transactions"
     />
     <Divider />
     <List>
@@ -73,7 +73,7 @@ export const LatestProducts = (props) => (
           </ListItemAvatar>
           <ListItemText
             primary={product.name}
-            secondary={`Updated ${formatDistanceToNow(product.updatedAt)}`}
+            secondary={`₱ ${product.updatedAt}`}
           />
           <IconButton
             edge="end"

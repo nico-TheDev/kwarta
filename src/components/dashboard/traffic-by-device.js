@@ -1,8 +1,9 @@
 import { Doughnut } from 'react-chartjs-2';
 import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
-import LaptopMacIcon from '@mui/icons-material/LaptopMac';
-import PhoneIcon from '@mui/icons-material/Phone';
-import TabletIcon from '@mui/icons-material/Tablet';
+import FoodIcon from '@mui/icons-material/FoodBank';
+import HealthIcon from '@mui/icons-material/HealthAndSafety';
+import GymIcon from '@mui/icons-material/SportsBar';
+import BillsIcon from '@mui/icons-material/ElectricBolt';
 
 export const TrafficByDevice = (props) => {
   const theme = useTheme();
@@ -10,14 +11,14 @@ export const TrafficByDevice = (props) => {
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
-        backgroundColor: ['#3F51B5', '#e53935', '#FB8C00'],
+        data: [30, 15, 15, 40],
+        backgroundColor: ['#3F51B5', '#e53935', '#FB8C00', "#2ecc71"],
         borderWidth: 8,
         borderColor: '#FFFFFF',
         hoverBorderColor: '#FFFFFF'
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Food', 'Health', 'Gym', 'Bills']
   };
 
   const options = {
@@ -44,28 +45,34 @@ export const TrafficByDevice = (props) => {
 
   const devices = [
     {
-      title: 'Desktop',
-      value: 63,
-      icon: LaptopMacIcon,
+      title: 'Food',
+      value: 30,
+      icon: FoodIcon,
       color: '#3F51B5'
     },
     {
-      title: 'Tablet',
+      title: 'Health',
       value: 15,
-      icon: TabletIcon,
+      icon: HealthIcon,
       color: '#E53935'
     },
     {
-      title: 'Mobile',
-      value: 23,
-      icon: PhoneIcon,
+      title: 'Gym',
+      value: 15,
+      icon: GymIcon,
       color: '#FB8C00'
+    },
+    {
+      title: 'Bills',
+      value: 40,
+      icon: BillsIcon,
+      color: '#2ecc71'
     }
   ];
 
   return (
     <Card {...props}>
-      <CardHeader title="Traffic by Device" />
+      <CardHeader title="Expenses" />
       <Divider />
       <CardContent>
         <Box
@@ -108,7 +115,7 @@ export const TrafficByDevice = (props) => {
               </Typography>
               <Typography
                 style={{ color }}
-                variant="h4"
+                variant="h5"
               >
                 {value}
                 %

@@ -130,7 +130,7 @@ export const DashboardSidebar = (props) => {
                   color="neutral.400"
                   variant="body2"
                 >
-                  Money Tracker
+                  Monitoring System
                 </Typography>
               </div>
               <SelectorIcon

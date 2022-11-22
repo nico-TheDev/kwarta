@@ -82,7 +82,7 @@ const orders = [
 
 export const LatestOrders = (props) => (
   <Card {...props}>
-    <CardHeader title="Latest Orders" />
+    <CardHeader title="Saving Goals" />
     <PerfectScrollbar>
       <Box sx={{ minWidth: 800 }}>
         <Table>
@@ -130,8 +130,8 @@ export const LatestOrders = (props) => (
                 <TableCell>
                   <SeverityPill
                     color={(order.status === 'delivered' && 'success')
-                    || (order.status === 'refunded' && 'error')
-                    || 'warning'}
+                      || (order.status === 'refunded' && 'error')
+                      || 'warning'}
                   >
                     {order.status}
                   </SeverityPill>
