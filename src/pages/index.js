@@ -14,7 +14,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        Dashboard | Material Kit
+        CASH: Financial Monitoring Application
       </title>
     </Head>
     <Box

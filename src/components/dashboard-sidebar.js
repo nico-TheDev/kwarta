@@ -30,7 +30,7 @@ const items = [
   {
     href: '/products',
     icon: (<ShoppingBagIcon fontSize="small" />),
-    title: 'Expenses'
+    title: 'Transactions'
   },
   {
     href: '/account',
@@ -124,13 +124,13 @@ export const DashboardSidebar = (props) => {
                   color="inherit"
                   variant="subtitle1"
                 >
-                  Kwarta
+                  CASH
                 </Typography>
                 <Typography
                   color="neutral.400"
                   variant="body2"
                 >
-                  Monitoring System
+                  Monitoring Dashboard
                 </Typography>
               </div>
               <SelectorIcon
