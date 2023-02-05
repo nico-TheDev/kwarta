@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { Box, Container, Grid } from '@mui/material';
-import { Budget } from '../components/dashboard/budget';
+import { Balance } from '../components/dashboard/balance';
 import { LatestOrders } from '../components/dashboard/latest-orders';
 import { LatestProducts } from '../components/dashboard/latest-products';
 import { Sales } from '../components/dashboard/sales';
@@ -36,7 +36,7 @@ const Page = () => (
             xl={3}
             xs={12}
           >
-            <Budget />
+            <Balance />
           </Grid>
           <Grid
             item

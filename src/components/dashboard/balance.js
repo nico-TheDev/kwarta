@@ -1,8 +1,8 @@
 import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import MoneyIcon from '@mui/icons-material/Money';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import MoneyIcon from '@mui/icons-material/AttachMoney';
 
-export const Budget = (props) => (
+export const Balance = (props) => (
   <Card
     sx={{ height: '100%' }}
     {...props}
@@ -10,10 +10,10 @@ export const Budget = (props) => (
     <CardContent>
       <Grid
         container
-        spacing={3}
+        spacing={2}
         sx={{ justifyContent: 'space-between' }}
       >
-        <Grid item>
+        <Grid item >
           <Typography
             color="textSecondary"
             gutterBottom
@@ -24,8 +24,9 @@ export const Budget = (props) => (
           <Typography
             color="textPrimary"
             variant="h4"
+            sx={{ whiteSpace: "nowrap" }}
           >
-            $24k
+            ₱25k
           </Typography>
         </Grid>
         <Grid item>
@@ -47,9 +48,9 @@ export const Budget = (props) => (
           alignItems: 'center'
         }}
       >
-        <ArrowDownwardIcon color="error" />
+        <ArrowUpwardIcon color="success" />
         <Typography
-          color="error"
+          color="success"
           sx={{
             mr: 1
           }}
