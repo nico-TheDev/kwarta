@@ -1,8 +1,11 @@
-import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from '@mui/material';
+import InsertChartIcon from '@mui/icons-material/InsertChartOutlined';
 
-export const TotalProfit = (props) => (
-  <Card {...props}>
+export const Savings = (props) => (
+  <Card
+    sx={{ height: '100%' }}
+    {...props}
+  >
     <CardContent>
       <Grid
         container
@@ -15,27 +18,33 @@ export const TotalProfit = (props) => (
             gutterBottom
             variant="overline"
           >
-            EXPENSES
+            SAVINGS
           </Typography>
           <Typography
             color="textPrimary"
             variant="h4"
           >
-            $23k
+            75.5%
           </Typography>
         </Grid>
         <Grid item>
           <Avatar
             sx={{
-              backgroundColor: 'primary.main',
+              backgroundColor: 'warning.main',
               height: 56,
               width: 56
             }}
           >
-            <AttachMoneyIcon />
+            <InsertChartIcon />
           </Avatar>
         </Grid>
       </Grid>
+      <Box sx={{ pt: 3 }}>
+        <LinearProgress
+          value={75.5}
+          variant="determinate"
+        />
+      </Box>
     </CardContent>
   </Card>
 );
