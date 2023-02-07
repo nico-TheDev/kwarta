@@ -1,31 +1,62 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
+import { signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo } from 'firebase/auth'
+import { auth } from '../../firebase.config'
 
-const AuthStore = (get, set) => ({
+const AuthStore = (set, get) => ({
     authState: {
         user: null,
-        isAuthenticated: true,
-        isLoading: false,
+        isAuthenticated: false,
+        isLoading: false
     },
-    login: () => {
-        console.log("LOGIN");
-        set({
-            authState: {
-                user: null,
-                isAuthenticated: true,
-                isLoading: true,
-            }
-        });
+    loginWithGoogle: async () => {
+        try {
+            const provider = new GoogleAuthProvider()
+            const result = await signInWithPopup(auth, provider)
+            const credential = GoogleAuthProvider.credentialFromResult(result)
+            const token = credential.accessToken
+            const user = result.user
+            // console.log(user)
+            const { uid } = user
+            const { name, email, picture } = getAdditionalUserInfo(result).profile
+            // console.table(getAdditionalUserInfo(result))
+            set({
+                authState: {
+                    user: {
+                        name,
+                        email,
+                        photo: picture,
+                        uid,
+                        token
+                    },
+                    isAuthenticated: true,
+                    isLoading: false
+                }
+            })
+        } catch (error) {
+            const errorCode = error.code
+            const errorMessage = error.message
+            // The email of the user's account used.
+            const email = error.customData.email
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error)
+            console.log(error.message)
+        }
     },
     logout: () => {
         set({
             authState: {
                 user: null,
                 isAuthenticated: false,
-                isLoading: false,
+                isLoading: false
             }
-        });
-    },
-});
+        })
+    }
+})
 
-export const useAuthStore = create(AuthStore);
+export const useAuthStore = create(
+    persist(AuthStore, {
+        name: 'auth'
+    })
+)

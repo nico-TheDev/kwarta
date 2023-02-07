@@ -1,13 +1,13 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import * as React from 'react'
+import PropTypes from 'prop-types'
+import CircularProgress from '@mui/material/CircularProgress'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 
 export function CircularProgressWithLabel(props) {
     return (
-        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-            <CircularProgress variant="determinate" {...props} color="success" size={100} />
+        <Box mb={2} sx={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress variant='determinate' {...props} color='success' size={100} />
             <Box
                 sx={{
                     top: 0,
@@ -17,15 +17,15 @@ export function CircularProgressWithLabel(props) {
                     position: 'absolute',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'center'
                 }}
             >
-                <Typography variant="caption" component="div" color="white" sx={{ fontSize: 30 }}>
+                <Typography variant='caption' component='div' color='white' sx={{ fontSize: 30 }}>
                     {`${Math.round(props.value)}`}
                 </Typography>
             </Box>
         </Box>
-    );
+    )
 }
 
 CircularProgressWithLabel.propTypes = {
@@ -34,6 +34,5 @@ CircularProgressWithLabel.propTypes = {
      * Value between 0 and 100.
      * @default 0
      */
-    value: PropTypes.number.isRequired,
-};
-
+    value: PropTypes.number.isRequired
+}

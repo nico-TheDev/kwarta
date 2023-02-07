@@ -1,16 +1,23 @@
 import Head from 'next/head'
 import NextLink from 'next/link'
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material'
+import { Box, Button, Container, Grid, Link, TextField, Typography, useTheme } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo } from 'firebase/auth'
+import { auth } from '../../firebase.config'
+
 import { Facebook as FacebookIcon } from '../icons/facebook'
 import { Google as GoogleIcon } from '../icons/google'
 import Image from 'next/image'
 import LoginBG from 'public/static/images/login-bg.jpg'
+import { useAuthStore } from 'stores/useAuthStore'
 
 const Login = () => {
+    const theme = useTheme()
+    const router = useRouter()
+    const loginWithGoogle = useAuthStore((state) => state.loginWithGoogle)
     const formik = useFormik({
         initialValues: {
             email: 'test@gmail.com',
@@ -25,6 +32,11 @@ const Login = () => {
             Router.push('/').catch(console.error)
         }
     })
+
+    const handleLoginWithGoogle = () => {
+        loginWithGoogle()
+        router.push('/')
+    }
 
     return (
         <>
@@ -42,38 +54,21 @@ const Login = () => {
                 }}
             >
                 <Container maxWidth='sm'>
-                    <NextLink href='/' passHref>
-                        <Button component='a' startIcon={<ArrowBackIcon fontSize='small' />}>
-                            Dashboard
-                        </Button>
-                    </NextLink>
                     <form onSubmit={formik.handleSubmit}>
                         <Box sx={{ my: 3 }}>
                             <Typography color='textPrimary' variant='h4'>
-                                Sign in
+                                Log in
                             </Typography>
                             <Typography color='textSecondary' gutterBottom variant='body2'>
-                                Sign in on the internal platform
+                                Start monitoring your finances.
                             </Typography>
                         </Box>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} md={6}>
-                                <Button
-                                    color='info'
-                                    fullWidth
-                                    startIcon={<FacebookIcon />}
-                                    onClick={() => formik.handleSubmit()}
-                                    size='large'
-                                    variant='contained'
-                                >
-                                    Login with Facebook
-                                </Button>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={6} lg={12}>
                                 <Button
                                     color='error'
                                     fullWidth
-                                    onClick={() => formik.handleSubmit()}
+                                    onClick={handleLoginWithGoogle}
                                     size='large'
                                     startIcon={<GoogleIcon />}
                                     variant='contained'
@@ -148,12 +143,30 @@ const Login = () => {
                     </form>
                 </Container>
 
-                <Box sx={{ width: '50%', height: '100vh', overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+                <Box
+                    sx={{
+                        width: '50%',
+                        height: '100vh',
+                        overflow: 'hidden',
+                        display: {
+                            sm: 'none',
+                            md: 'flex'
+                        },
+                        alignItems: 'center'
+                    }}
+                >
+                    <Typography
+                        variant='h2'
+                        position='absolute'
+                        sx={{ zIndex: 10, color: 'white', textAlign: 'center' }}
+                    >
+                        <span style={{ color: theme.palette.primary.main }}>Learn</span> about Financial Literacy
+                    </Typography>
                     <Image
                         src={LoginBG}
                         fill
                         style={{
-                            filter: 'brightness(0.5)',
+                            filter: 'brightness(0.4) blur(2px)',
                             objectFit: 'cover'
                         }}
                     />

@@ -1,10 +1,12 @@
 {
-  "compilerOptions": {
-    "module": "CommonJS",
-    "baseUrl": "src",
-    "paths": {
-      "@/public/*": ["public/*"],
-      "@/src/*": ["src/*"]
-    }
-  }
+    "compilerOptions": {
+        "module": "CommonJS",
+        "baseUrl": "src",
+        "paths": {
+            "@/public/*": ["public/*"],
+            "@/src/*": ["src/*"]
+        }
+    },
+    "exclude": ["node_modules"],
+    "include": ["src/**/*"]
 }
