@@ -3,7 +3,7 @@ import { Box, Button, Card, CardContent, CardHeader, Divider, useTheme } from '@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
-export const Sales = (props) => {
+export const Cashflow = (props) => {
   const theme = useTheme();
 
   const data = {

@@ -5,7 +5,7 @@ import HealthIcon from '@mui/icons-material/HealthAndSafety';
 import GymIcon from '@mui/icons-material/SportsBar';
 import BillsIcon from '@mui/icons-material/ElectricBolt';
 
-export const TrafficByDevice = (props) => {
+export const ExpensesChart = (props) => {
   const theme = useTheme();
 
   const data = {

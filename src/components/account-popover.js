@@ -11,7 +11,9 @@ export const AccountPopover = (props) => {
 
   const handleSignOut = async () => {
     onClose?.();
+    console.log("LOGOUT");
 
+    Router.push("login");
     // Check if authentication with Zalter is enabled
     // If not enabled, then redirect is not required
     if (!ENABLE_AUTH) {
