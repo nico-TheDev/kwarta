@@ -6,49 +6,30 @@ import * as Yup from 'yup';
 import { Box, Button, FormHelperText, Grid, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { auth, ENABLE_AUTH } from '../../lib/auth';
 import { Logo } from '../../components/logo';
-import { useAuthContext } from '../../contexts/auth-context';
 import Router from 'next/router';
+import { useAuthStore } from 'src/stores/useAuthStore';
+import Image from 'next/image';
+
+import signinBg from '../../../public/static/images/signin-bg.jpg';
+import { useTheme } from '@mui/material/styles';
 
 const Page = () => {
   const [tab, setTab] = useState('email');
   const [emailSent, setEmailSent] = useState(false);
-  const authContext = useAuthContext();
+  const login = useAuthStore((state) => state.login);
+  const theme = useTheme();
   const formik = useFormik({
     initialValues: {
       email: '',
       submit: null
     },
     validationSchema: Yup.object({
-      email: Yup
-        .string()
-        .email('Must be a valid email')
-        .max(255)
-        .required('Email is required')
+      email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
     }),
     onSubmit: async (values, helpers) => {
-      if (!ENABLE_AUTH) {
-        helpers.setFieldError('submit', 'Zalter authentication not enabled');
-        helpers.setSubmitting(false);
-        return;
-      }
+      login();
+      Router.push('/').catch(console.error);
 
-      try {
-        // When in development, this will be 'http://localhost:3000/sign-in/confirm'
-        // Remember to configure it in your project settings
-        const redirectUri = window.location.href + '/confirm';
-
-        // This can be call inside AuthProvider component, but we do it here for simplicity
-        await auth.signInWithLink('start', {
-          email: values.email,
-          redirectUri
-        });
-        helpers.setSubmitting(false);
-        setEmailSent(true);
-      } catch (err) {
-        console.error(err);
-        helpers.setFieldError('submit', err.message || 'Something went wrong');
-        helpers.setSubmitting(false);
-      }
     }
   });
 
@@ -61,19 +42,15 @@ const Page = () => {
   };
 
   const handleSkip = () => {
-    // Since skip is requested, we set a fake user as authenticated
-    const user = {};
 
     // Update Auth Context state
-    authContext.signIn(user);
+    login();
 
-    // Persist the skip for AuthProvider initialize call
-    globalThis.sessionStorage.setItem('skip-auth', 'true');
+    // // Persist the skip for AuthProvider initialize call
+    // globalThis.sessionStorage.setItem("skip-auth", "true");
 
     // Redirect to home page
-    Router
-      .push('/')
-      .catch(console.error);
+    Router.push('/').catch(console.error);
   };
 
   return (
@@ -82,16 +59,13 @@ const Page = () => {
         <title>Sign in | Material Kit</title>
       </Head>
       <Box
-        component="main"
+        component='main'
         sx={{
           display: 'flex',
           flex: '1 1 auto'
         }}
       >
-        <Grid
-          container
-          sx={{ flex: '1 1 auto' }}
-        >
+        <Grid container sx={{ flex: '1 1 auto' }}>
           <Grid
             item
             xs={12}
@@ -112,10 +86,7 @@ const Page = () => {
                 p: 3
               }}
             >
-              <NextLink
-                href="/"
-                passHref
-              >
+              <NextLink href='/' passHref>
                 <a>
                   <Logo
                     sx={{
@@ -144,16 +115,13 @@ const Page = () => {
               >
                 {emailSent ? (
                   <div>
-                    <Typography
-                      sx={{ mb: 1 }}
-                      variant="h4"
-                    >
+                    <Typography sx={{ mb: 1 }} variant='h4'>
                       Confirm your email
                     </Typography>
                     <Typography>
                       We emailed a magic link to&nbsp;
                       <Box
-                        component="span"
+                        component='span'
                         sx={{
                           color: 'primary.main'
                         }}
@@ -171,48 +139,25 @@ const Page = () => {
                         mt: 3
                       }}
                     >
-                      <Typography
-                        color="text.secondary"
-                        variant="body2"
-                      >
+                      <Typography color='text.secondary' variant='body2'>
                         Wrong email?
                       </Typography>
-                      <Button
-                        color="inherit"
-                        onClick={handleRetry}
-                      >
+                      <Button color='inherit' onClick={handleRetry}>
                         Use a different email
                       </Button>
                     </Box>
                   </div>
                 ) : (
                   <div>
-                    <Typography
-                      sx={{ mb: 1 }}
-                      variant="h4"
-                    >
+                    <Typography sx={{ mb: 1 }} variant='h4'>
                       Welcome
                     </Typography>
-                    <Typography
-                      color="text.secondary"
-                      sx={{ mb: 3 }}
-                      variant="body2"
-                    >
-                      Sign up on the internal platform
+                    <Typography color='text.secondary' sx={{ mb: 3 }} variant='body2'>
+                      Sign up on the newest financial monitoring application
                     </Typography>
-                    <Tabs
-                      onChange={handleTabChange}
-                      sx={{ mb: 3 }}
-                      value={tab}
-                    >
-                      <Tab
-                        label="Email"
-                        value="email"
-                      />
-                      <Tab
-                        label="Phone Number"
-                        value="phoneNumber"
-                      />
+                    <Tabs onChange={handleTabChange} sx={{ mb: 3 }} value={tab}>
+                      <Tab label='Email' value='email' />
+                      <Tab label='Phone Number' value='phoneNumber' />
                     </Tabs>
                     {tab === 'email' && (
                       <div>
@@ -220,55 +165,45 @@ const Page = () => {
                           error={Boolean(formik.touched.email && formik.errors.email)}
                           fullWidth
                           helperText={formik.touched.email && formik.errors.email}
-                          label="Email Address"
-                          name="email"
+                          label='Email Address'
+                          name='email'
                           onBlur={formik.handleBlur}
                           onChange={formik.handleChange}
-                          type="email"
+                          type='email'
                           value={formik.values.email}
-                          variant="outlined"
+                          variant='outlined'
                         />
                         <FormHelperText sx={{ mt: 1 }}>
-                          Enter a valid email since this is a fully integrated authentication system. Optionally you can skip.
+                          Enter a valid email since this is a fully integrated authentication system. Optionally you can
+                          skip.
                         </FormHelperText>
                         {formik.errors.submit && (
-                          <Typography
-                            color="error"
-                            sx={{ mt: 2 }}
-                            variant="body2"
-                          >
+                          <Typography color='error' sx={{ mt: 2 }} variant='body2'>
                             {formik.errors.submit}
                           </Typography>
                         )}
                         <Button
                           fullWidth
-                          size="large"
+                          size='large'
                           sx={{ mt: 3 }}
                           onClick={() => formik.handleSubmit()}
-                          variant="contained"
+                          variant='contained'
                         >
                           Continue
                         </Button>
-                        <Button
-                          fullWidth
-                          size="large"
-                          sx={{ mt: 3 }}
-                          onClick={handleSkip}
-                        >
+                        <Button fullWidth size='large' sx={{ mt: 3 }} onClick={handleSkip}>
                           Skip authentication
                         </Button>
                       </div>
                     )}
                     {tab === 'phoneNumber' && (
                       <div>
-                        <Typography
-                          sx={{ mb: 1 }}
-                          variant="h6"
-                        >
+                        <Typography sx={{ mb: 1 }} variant='h6'>
                           Not available in the demo
                         </Typography>
-                        <Typography color="text.secondary">
-                          Zalter Identity does support SMS passcodes, but to prevent unnecessary costs we disabled this feature in the demo.
+                        <Typography color='text.secondary'>
+                          Zalter Identity does support SMS passcodes, but to prevent unnecessary costs we disabled this
+                          feature in the demo.
                         </Typography>
                       </div>
                     )}
@@ -289,41 +224,25 @@ const Page = () => {
               justifyContent: 'center',
               '& img': {
                 maxWidth: '100%'
-              }
+              },
+              position: 'relative'
             }}
           >
-            <Box sx={{ p: 3 }}>
-              <Typography
-                align="center"
-                color="inherit"
-                sx={{
-                  fontSize: '24px',
-                  lineHeight: '32px',
-                  mb: 1
-                }}
-                variant="h1"
-              >
-                Authentication sponsored by&nbsp;
-                <Box
-                  component="a"
-                  href="https://zalter.com?ref=devias-mk-react"
-                  sx={{ color: '#15B79E' }}
-                  target="_blank"
-                >
-                  zalter.com
-                </Box>
+            <Box
+              sx={{
+                p: 0,
+                position: 'relative',
+                height: '100vh',
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Typography align='center' sx={{ m: 3, position: 'absolute', zIndex: 10 }} variant='h3'>
+                Start your <Box sx={{ display: "inline", color: theme.palette.primary.main }}>financial awareness</Box> journey here.
               </Typography>
-              <Typography
-                align="center"
-                sx={{ mb: 3 }}
-                variant="subtitle1"
-              >
-                Create secure, seamless user experiences with Zalter Passwordless Authentication.
-              </Typography>
-              <img
-                alt=""
-                src="/static/images/sign-in-illustration.svg"
-              />
+              <Image alt='' fill src={signinBg} style={{ filter: 'brightness(0.5)', objectFit: 'cover' }} />
             </Box>
           </Grid>
         </Grid>

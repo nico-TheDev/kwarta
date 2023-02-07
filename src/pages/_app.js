@@ -5,10 +5,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { AuthConsumer, AuthProvider } from '../contexts/auth-context';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import { registerChartJs } from '../utils/register-chart-js';
 import { theme } from '../theme';
+import { useAuthStore } from 'src/stores/useAuthStore';
 
 registerChartJs();
 
@@ -16,7 +16,7 @@ const clientSideEmotionCache = createEmotionCache();
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
+  const { isLoading } = useAuthStore(state => state.authState);
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -33,15 +33,11 @@ const App = (props) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <AuthProvider>
-            <AuthConsumer>
-              {
-                (auth) => auth.isLoading
-                  ? <Fragment />
-                  : getLayout(<Component {...pageProps} />)
-              }
-            </AuthConsumer>
-          </AuthProvider>
+          {
+            isLoading
+              ? <Fragment />
+              : getLayout(<Component {...pageProps} />)
+          }
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>

@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
 export const Logo = styled((props) => {
   const { variant, ...other } = props;
+  const theme = useTheme();
 
-  const color = variant === 'light' ? '#C1C4D6' : '#10B981';
+  const color = variant === 'light' ? '#C1C4D6' : theme.palette.primary.main;
 
   return (
     <svg width="42"
