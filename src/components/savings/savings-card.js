@@ -7,6 +7,7 @@ import BankIcon from '@mui/icons-material/AccountBalance'
 import PaidIcon from '@mui/icons-material/Paid'
 import { theme } from 'theme'
 import { formatPrice } from 'utils/format-price'
+import { getLanguage } from 'utils/getLanguage'
 
 export const SavingsCard = ({ saving, ...rest }) => (
     <Card
@@ -51,7 +52,7 @@ export const SavingsCard = ({ saving, ...rest }) => (
                 >
                     <ClockIcon color='action' />
                     <Typography color='textSecondary' display='inline' sx={{ pl: 1 }} variant='body2'>
-                        Last Used: 2 hrs ago
+                        {getLanguage().lastUsed2Hours}
                     </Typography>
                 </Grid>
                 <Grid

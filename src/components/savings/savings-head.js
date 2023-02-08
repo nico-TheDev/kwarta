@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material'
 import { Download as DownloadIcon } from '../../icons/download'
 import AddCardIcon from '@mui/icons-material/AddCard'
 import TransferIcon from '@mui/icons-material/Autorenew'
+import { getLanguage } from 'utils/getLanguage'
 
 export const SavingsHead = (props) => {
     const theme = useTheme()
@@ -19,7 +20,7 @@ export const SavingsHead = (props) => {
                 }}
             >
                 <Typography sx={{ m: 1 }} variant='h4'>
-                    Savings
+                    {getLanguage().savings}
                 </Typography>
                 <Box sx={{ m: 1 }}>
                     <Button
@@ -28,7 +29,7 @@ export const SavingsHead = (props) => {
                         startIcon={<AddCardIcon fontSize='small' />}
                         sx={{ mr: 1 }}
                     >
-                        Add Savings Goal
+                        {getLanguage().addSavingsGoal}
                     </Button>
                 </Box>
             </Box>
@@ -37,7 +38,7 @@ export const SavingsHead = (props) => {
                     <CardContent>
                         <Box sx={{ textAlign: 'center' }}>
                             <Typography variant='h3' mb={2}>
-                                Total Savings
+                                {getLanguage().totalSavings}
                             </Typography>
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Typography variant='h3' color='primary'>

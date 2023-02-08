@@ -17,6 +17,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import BoltIcon from '@mui/icons-material/Bolt'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import { getLanguage } from 'utils/getLanguage'
 
 const products = [
     {
@@ -58,7 +59,7 @@ const products = [
 
 export const TransactionHistory = (props) => (
     <Card {...props}>
-        <CardHeader subtitle={`${products.length} in total`} title='Transaction History' />
+        <CardHeader subtitle={`${products.length} in total`} title={getLanguage().historyTransactions} />
         <Divider />
         <List>
             {products.map((product, i) => (
@@ -86,7 +87,7 @@ export const TransactionHistory = (props) => (
             }}
         >
             <Button color='primary' endIcon={<ArrowRightIcon />} size='small' variant='text'>
-                View all
+                {getLanguage().overview}
             </Button>
         </Box>
     </Card>

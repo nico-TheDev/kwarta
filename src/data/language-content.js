@@ -12,7 +12,7 @@ export const languages = {
         overview: 'Pangkalahatan',
         viewAll: 'Tingnan lahat',
         sinceLastMonth: 'Noong nakaraang buwan',
-        latestTransactions: 'Huling Transaksiyon',
+        historyTransactions: 'Mga Nakaraang Transaksiyon',
         savingGoals: 'Mga Layunin ng Pag-iipon',
 
         //sidebar
@@ -44,6 +44,11 @@ export const languages = {
         createTransfer: 'Maglipat ng Pera',
         totalBalance: 'Kabuuang Halaga',
 
+        //savings
+        addSavingsGoal: 'Magdagdag ng Layunin ng Pag-iipon',
+        totalSavings: 'Kabuuang Ipon',
+        lastUsed2Hours: 'Huling gamit: Nakaraang 2 oras'
+
     },
     en: {
         //main screen
@@ -58,7 +63,7 @@ export const languages = {
         overview: 'Overview',
         viewAll: 'View All',
         sinceLastMonth: 'Since last month',
-        latestTransactions: 'Latest Transactions',
+        historyTransactions: 'Transaction History',
         savingGoals: 'Saving Goals',
 
         //sidebar
@@ -89,5 +94,10 @@ export const languages = {
         addAccount: 'Add Account',
         createTransfer: 'Create Transfer',
         totalBalance: 'Total Balance',
+
+        //savings
+        addSavingsGoal: 'Add Savings Goal',
+        totalSavings: 'Total Savings',
+        lastUsed2Hours: 'Last used: 2 Hours Ago'
     }
 }
