@@ -4,14 +4,10 @@ import Router, { useRouter } from 'next/router'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { Box, Button, Container, Grid, Link, TextField, Typography, useTheme } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo } from 'firebase/auth'
-import { auth } from '../../firebase.config'
 
-import { Facebook as FacebookIcon } from '../icons/facebook'
 import { Google as GoogleIcon } from '../icons/google'
 import Image from 'next/image'
-import LoginBG from 'public/static/images/login-bg.jpg'
+import LoginBG from '../../public/static/images/login-bg.jpg'
 import { useAuthStore } from 'stores/useAuthStore'
 
 const Login = () => {
