@@ -2,6 +2,7 @@ import { Bar } from 'react-chartjs-2';
 import { Box, Button, Card, CardContent, CardHeader, Divider, useTheme } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { getLanguage } from 'utils/getLanguage'
 
 export const Cashflow = (props) => {
   const theme = useTheme();
@@ -89,10 +90,10 @@ export const Cashflow = (props) => {
             endIcon={<ArrowDropDownIcon fontSize="small" />}
             size="small"
           >
-            Last 7 days
+            {getLanguage().last7Days}
           </Button>
         )}
-        title="Cashflow"
+        title={getLanguage().cashflow} 
       />
       <Divider />
       <CardContent>
@@ -121,7 +122,7 @@ export const Cashflow = (props) => {
           endIcon={<ArrowRightIcon fontSize="small" />}
           size="small"
         >
-          Overview
+          {getLanguage().overview}
         </Button>
       </Box>
     </Card>

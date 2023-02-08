@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { useLanguageStore } from 'stores/useLanguageStore'
+import { getLanguage } from 'utils/getLanguage'
 
 export const SettingsNotifications = (props) => {
     const setCurrentLanguage = useLanguageStore((state) => state.setLanguage)
@@ -32,7 +33,7 @@ export const SettingsNotifications = (props) => {
     return (
         <form {...props}>
             <Card>
-                <CardHeader subheader='Change the language' title='Lenggwahe' />
+                <CardHeader subheader={getLanguage().changeLanguage} title={getLanguage().language} />
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Typography variant='body2'>Filipino</Typography>
                     <Switch checked={isEnglish} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />

@@ -45,7 +45,7 @@ export const Income = (props) => {
                         16%
                     </Typography>
                     <Typography color='textSecondary' variant='caption'>
-                        Since last month
+                        {getLanguage().sinceLastMonth}
                     </Typography>
                 </Box>
             </CardContent>

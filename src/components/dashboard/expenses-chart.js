@@ -4,6 +4,7 @@ import FoodIcon from '@mui/icons-material/FoodBank';
 import HealthIcon from '@mui/icons-material/HealthAndSafety';
 import GymIcon from '@mui/icons-material/SportsBar';
 import BillsIcon from '@mui/icons-material/ElectricBolt';
+import { getLanguage } from 'utils/getLanguage'
 
 export const ExpensesChart = (props) => {
   const theme = useTheme();
@@ -72,7 +73,7 @@ export const ExpensesChart = (props) => {
 
   return (
     <Card {...props}>
-      <CardHeader title="Expenses" />
+      <CardHeader title={getLanguage().expenses} />
       <Divider />
       <CardContent>
         <Box

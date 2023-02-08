@@ -1,5 +1,7 @@
 import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, Typography } from '@mui/material'
 import { useAuthStore } from './../../stores/useAuthStore'
+import { getLanguage } from 'utils/getLanguage'
+
 
 export const AccountProfile = (props) => {
     const user = useAuthStore((state) => state.authState.user)
@@ -32,7 +34,7 @@ export const AccountProfile = (props) => {
             <Divider />
             <CardActions>
                 <Button color='primary' fullWidth variant='text'>
-                    Upload picture
+                    {getLanguage().uploadPicture}
                 </Button>
             </CardActions>
         </Card>

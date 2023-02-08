@@ -29,32 +29,32 @@ export const DashboardSidebar = (props) => {
         {
             href: '/',
             icon: <BarChartIcon fontSize='small' />,
-            title: 'Dashboard'
+            title: getLanguage().dashboard
         },
         {
             href: '/accounts',
             icon: <WalletIcon fontSize='small' />,
-            title: 'Accounts'
+            title: getLanguage().accounts
         },
         {
             href: '/transactions',
             icon: <TransactionIcon fontSize='small' />,
-            title: 'Transactions'
+            title: getLanguage().transactions
         },
         {
             href: '/cashflow',
             icon: <TimelineIcon fontSize='small' />,
-            title: 'Cashflow'
+            title: getLanguage().cashflow
         },
         {
             href: '/savings',
             icon: <SavingsIcon fontSize='small' />,
-            title: 'Savings'
+            title: getLanguage().savings
         },
         {
             href: '/articles',
             icon: <LibraryIcon fontSize='small' />,
-            title: 'Articles'
+            title: getLanguage().articles
         },
         {
             href: '/achievements',
@@ -64,7 +64,7 @@ export const DashboardSidebar = (props) => {
         {
             href: '/profile',
             icon: <UserIcon fontSize='small' />,
-            title: 'Profile'
+            title: getLanguage().profile
         },
         {
             href: '/settings',
@@ -112,7 +112,7 @@ export const DashboardSidebar = (props) => {
                         <Box>
                             <CircularProgressWithLabel value={97} />
                             <Typography variant='body1' textAlign='center'>
-                                You're doing great!
+                                {getLanguage().doingGreat}
                             </Typography>
                         </Box>
                         <Box

@@ -9,6 +9,7 @@ import { UserCircle as UserCircleIcon } from '../icons/user-circle'
 import { Users as UsersIcon } from '../icons/users'
 import { AccountPopover } from './account-popover'
 import { useAuthStore } from 'stores/useAuthStore'
+import { getLanguage } from 'utils/getLanguage'
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -60,7 +61,7 @@ export const DashboardNavbar = (props) => {
                     </Tooltip>
                     <Box sx={{ flexGrow: 1 }} />
                     <Button variant='contained' color='primary'>
-                        Add Transaction
+                        {getLanguage().addTransaction}
                     </Button>
                     <Tooltip title='Notifications'>
                         <IconButton sx={{ ml: 1 }}>

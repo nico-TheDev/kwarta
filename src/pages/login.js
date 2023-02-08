@@ -7,7 +7,7 @@ import { Box, Button, Container, Grid, Link, TextField, Typography, useTheme } f
 
 import { Google as GoogleIcon } from '../icons/google'
 import Image from 'next/image'
-import LoginBG from 'public/static/images/login-bg.jpg'
+import LoginBG from '../../public/static/images/login-bg.jpg'
 import { useAuthStore } from 'stores/useAuthStore'
 
 const Login = () => {

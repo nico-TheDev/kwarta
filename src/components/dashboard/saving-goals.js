@@ -16,6 +16,8 @@ import {
 } from '@mui/material'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import { SeverityPill } from '../severity-pill'
+import { getLanguage } from 'utils/getLanguage'
+
 
 const orders = [
     {
@@ -82,7 +84,7 @@ const orders = [
 
 export const SavingGoals = (props) => (
     <Card {...props}>
-        <CardHeader title='Saving Goals' />
+        <CardHeader title={getLanguage().savingGoals} />
         <PerfectScrollbar>
             <Box sx={{ minWidth: 800 }}></Box>
         </PerfectScrollbar>
@@ -94,7 +96,7 @@ export const SavingGoals = (props) => (
             }}
         >
             <Button color='primary' endIcon={<ArrowRightIcon fontSize='small' />} size='small' variant='text'>
-                View all
+                {getLanguage().overview}
             </Button>
         </Box>
     </Card>

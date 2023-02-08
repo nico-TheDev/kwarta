@@ -5,7 +5,7 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import TransferIcon from '@mui/icons-material/Autorenew'
 import { getLanguage } from 'utils/getLanguage'
 
-export const AccountHead = (props) => {
+export const Achievements = (props) => {
     const theme = useTheme()
     return (
         <Box {...props}>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Box, Button, Card, CardContent, CardHeader, Divider, Grid, TextField } from '@mui/material'
 import { useAuthStore } from 'stores/useAuthStore'
+import { getLanguage } from 'utils/getLanguage'
 
 const states = [
     {
@@ -39,15 +40,15 @@ export const AccountProfileDetails = (props) => {
     return (
         <form autoComplete='off' noValidate {...props}>
             <Card>
-                <CardHeader subheader='The information can be edited' title='Profile' />
+                <CardHeader subheader={getLanguage().editInformation} title={getLanguage().profile} />
                 <Divider />
                 <CardContent>
                     <Grid container spacing={3}>
                         <Grid item md={6} xs={12}>
                             <TextField
                                 fullWidth
-                                helperText='Please specify the first name'
-                                label='First name'
+                                helperText={getLanguage().specifyFirstName}
+                                label={getLanguage().firstName}
                                 name='firstName'
                                 onChange={handleChange}
                                 required
@@ -58,7 +59,7 @@ export const AccountProfileDetails = (props) => {
                         <Grid item md={6} xs={12}>
                             <TextField
                                 fullWidth
-                                label='Last name'
+                                label={getLanguage().lastName}
                                 name='lastName'
                                 onChange={handleChange}
                                 required
@@ -88,7 +89,7 @@ export const AccountProfileDetails = (props) => {
                     }}
                 >
                     <Button color='primary' variant='contained'>
-                        Save details
+                        {getLanguage().saveDetails}
                     </Button>
                 </Box>
             </Card>
