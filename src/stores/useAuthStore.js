@@ -19,12 +19,14 @@ const AuthStore = (set, get) => ({
             const user = result.user
             // console.log(user)
             const { uid } = user
-            const { name, email, picture } = getAdditionalUserInfo(result).profile
-            // console.table(getAdditionalUserInfo(result))
+            const { name, email, picture, family_name, given_name } = getAdditionalUserInfo(result).profile
+            // console.log(getAdditionalUserInfo(result))
             set({
                 authState: {
                     user: {
                         name,
+                        firstName: given_name,
+                        lastName: family_name,
                         email,
                         photo: picture,
                         uid,

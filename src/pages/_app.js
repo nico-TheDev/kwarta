@@ -24,8 +24,13 @@ const App = (props) => {
     const { user, isAuthenticated } = useAuthStore((state) => state.authState)
 
     useEffect(() => {
-        if (user && isAuthenticated) {
-            router.push('/')
+        console.log(router.pathname)
+        if (user) {
+            if (router.pathname !== '/' && ['/login', '/sign-in', '/register'].includes(router.pathname)) {
+                router.push('/')
+            } else {
+                router.push(router.pathname)
+            }
         }
     }, [user, isAuthenticated])
 

@@ -26,12 +26,12 @@ export const AuthGuard = (props) => {
         }
 
         ignore.current = true
-        if (!isAuthenticated && !user) {
+        if (!user) {
             console.log('Not authenticated, redirecting', { isAuthenticated })
             router
                 .replace({
-                    pathname: '/login',
-                    query: router.asPath !== '/' ? { continueUrl: router.asPath } : undefined
+                    pathname: '/login'
+                    // query: router.asPath !== '/' ? { continueUrl: router.asPath } : undefined
                 })
                 .catch(console.error)
         } else {

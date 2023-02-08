@@ -36,6 +36,7 @@ const Login = () => {
     const handleLoginWithGoogle = () => {
         loginWithGoogle()
         router.push('/')
+        console.log('GO TO DASHBOARD')
     }
 
     return (

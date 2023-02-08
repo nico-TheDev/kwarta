@@ -53,7 +53,7 @@ const Page = () => {
     return (
         <>
             <Head>
-                <title>Sign in | Material Kit</title>
+                <title>Sign in | Cash Montioring</title>
             </Head>
             <Box
                 component='main'
