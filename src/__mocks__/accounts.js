@@ -23,3 +23,20 @@ export const accounts = [
         balance: 10000
     }
 ]
+
+export const savings = [
+    {
+        id: uuid(),
+        createdAt: '27/03/2019',
+        description: 'For emergency',
+        title: 'Emergency Fund',
+        balance: 10000
+    },
+    {
+        id: uuid(),
+        createdAt: '27/03/2019',
+        description: 'For Vacation',
+        title: 'Vacation',
+        balance: 10000
+    }
+]
