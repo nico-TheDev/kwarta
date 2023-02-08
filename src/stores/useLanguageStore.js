@@ -1,13 +1,13 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
-
-const LanguageStore = (get, set) => ({
-    currentLanguage: "ph",
+const LanguageStore = (set, get) => ({
+    currentLanguage: 'ph',
     setLanguage: (language) => {
         set({
             currentLanguage: language
-        });
+        })
     }
-});
+})
 
-export const useLanguageStore = create(LanguageStore);
+export const useLanguageStore = create(persist(LanguageStore, { name: 'language' }))

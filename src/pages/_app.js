@@ -23,6 +23,7 @@ const App = (props) => {
 
     const { user, isAuthenticated } = useAuthStore((state) => state.authState)
 
+    // HANDLE USER AUTH IF THERE IS AN EXISTING USER , REDIRECT TO DASHBOARD
     useEffect(() => {
         console.log(router.pathname)
         if (user) {

@@ -15,54 +15,7 @@ import TimelineIcon from '@mui/icons-material/Timeline'
 import { Logo } from './logo'
 import { NavItem } from './nav-item'
 import { CircularProgressWithLabel } from './circular-progress-with-label'
-
-const items = [
-    {
-        href: '/',
-        icon: <BarChartIcon fontSize='small' />,
-        title: 'Dashboard'
-    },
-    {
-        href: '/accounts',
-        icon: <WalletIcon fontSize='small' />,
-        title: 'Accounts'
-    },
-    {
-        href: '/transactions',
-        icon: <TransactionIcon fontSize='small' />,
-        title: 'Transactions'
-    },
-    {
-        href: '/cashflow',
-        icon: <TimelineIcon fontSize='small' />,
-        title: 'Cashflow'
-    },
-    {
-        href: '/savings',
-        icon: <SavingsIcon fontSize='small' />,
-        title: 'Savings'
-    },
-    {
-        href: '/articles',
-        icon: <LibraryIcon fontSize='small' />,
-        title: 'Articles'
-    },
-    {
-        href: '/achievements',
-        icon: <TrophyIcon fontSize='small' />,
-        title: 'Achievements'
-    },
-    {
-        href: '/profile',
-        icon: <UserIcon fontSize='small' />,
-        title: 'Profile'
-    },
-    {
-        href: '/settings',
-        icon: <SettingsIcon fontSize='small' />,
-        title: 'Settings'
-    }
-]
+import { getLanguage } from 'utils/getLanguage'
 
 export const DashboardSidebar = (props) => {
     const { open, onClose } = props
@@ -71,6 +24,54 @@ export const DashboardSidebar = (props) => {
         defaultMatches: true,
         noSsr: false
     })
+
+    const items = [
+        {
+            href: '/',
+            icon: <BarChartIcon fontSize='small' />,
+            title: 'Dashboard'
+        },
+        {
+            href: '/accounts',
+            icon: <WalletIcon fontSize='small' />,
+            title: 'Accounts'
+        },
+        {
+            href: '/transactions',
+            icon: <TransactionIcon fontSize='small' />,
+            title: 'Transactions'
+        },
+        {
+            href: '/cashflow',
+            icon: <TimelineIcon fontSize='small' />,
+            title: 'Cashflow'
+        },
+        {
+            href: '/savings',
+            icon: <SavingsIcon fontSize='small' />,
+            title: 'Savings'
+        },
+        {
+            href: '/articles',
+            icon: <LibraryIcon fontSize='small' />,
+            title: 'Articles'
+        },
+        {
+            href: '/achievements',
+            icon: <TrophyIcon fontSize='small' />,
+            title: getLanguage().achievements
+        },
+        {
+            href: '/profile',
+            icon: <UserIcon fontSize='small' />,
+            title: 'Profile'
+        },
+        {
+            href: '/settings',
+            icon: <SettingsIcon fontSize='small' />,
+            title: 'Settings'
+        }
+    ]
 
     useEffect(
         () => {
