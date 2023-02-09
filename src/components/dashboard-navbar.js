@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip, Button } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
+import AddIcon from '@mui/icons-material/Add'
 import { Bell as BellIcon } from '../icons/bell'
 import { UserCircle as UserCircleIcon } from '../icons/user-circle'
 import { Users as UsersIcon } from '../icons/users'
@@ -60,9 +61,33 @@ export const DashboardNavbar = (props) => {
                         </IconButton>
                     </Tooltip>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Button variant='contained' color='primary'>
+                    <Button
+                        variant='contained'
+                        color='primary'
+                        sx={{
+                            display: {
+                                xs: 'none',
+                                sm: 'block'
+                            }
+                        }}
+                    >
                         {getLanguage().addTransaction}
                     </Button>
+                    <Tooltip title={getLanguage().addTransaction}>
+                        <IconButton
+                            sx={{
+                                ml: 1,
+                                display: {
+                                    xs: 'initial',
+                                    sm: 'none'
+                                }
+                            }}
+                        >
+                            <Badge badgeContent={4} color='primary' variant='dot'>
+                                <AddIcon fontSize='small' />
+                            </Badge>
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title='Notifications'>
                         <IconButton sx={{ ml: 1 }}>
                             <Badge badgeContent={4} color='primary' variant='dot'>
