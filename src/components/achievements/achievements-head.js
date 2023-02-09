@@ -5,7 +5,7 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import TransferIcon from '@mui/icons-material/Autorenew'
 import { getLanguage } from 'utils/getLanguage'
 
-export const Achievements = (props) => {
+export const AchievementsHead = (props) => {
     const theme = useTheme()
     return (
         <Box {...props}>
@@ -19,9 +19,9 @@ export const Achievements = (props) => {
                 }}
             >
                 <Typography sx={{ m: 1 }} variant='h4'>
-                    {getLanguage().accounts}
+                    {getLanguage().achievements}
                 </Typography>
-                <Box sx={{ m: 1 }}>
+                {/* <Box sx={{ m: 1 }}>
                     <Button
                         variant='contained'
                         color='primary'
@@ -33,9 +33,9 @@ export const Achievements = (props) => {
                     <Button variant='outlined' startIcon={<TransferIcon fontSize='small' />} sx={{ mr: 1 }}>
                         {getLanguage().createTransfer}
                     </Button>
-                </Box>
+                </Box> */}
             </Box>
-            <Box sx={{ mt: 3 }}>
+            {/* <Box sx={{ mt: 3 }}>
                 <Card elevation={5}>
                     <CardContent>
                         <Box sx={{ textAlign: 'center' }}>
@@ -46,7 +46,7 @@ export const Achievements = (props) => {
                         </Box>
                     </CardContent>
                 </Card>
-            </Box>
+            </Box> */}
         </Box>
     )
 }

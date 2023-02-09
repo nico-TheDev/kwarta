@@ -40,3 +40,24 @@ export const savings = [
         balance: 10000
     }
 ]
+
+export const achievements = [
+    {
+        id: uuid(),
+        description: 'Have 100 expenses which do not exceed budget',
+        title: 'Wise Spender',
+        percentage: 50,
+    },
+    {
+        id: uuid(),
+        description: 'Have added 10 times in the savings',
+        title: 'Save for the Future',
+        percentage: 25,
+    },
+    {
+        id: uuid(),
+        description: 'Have implemented 50-30-20 rule for 5 times.',
+        title: 'Smart Planner',
+        percentage: 75,
+    },
+]
