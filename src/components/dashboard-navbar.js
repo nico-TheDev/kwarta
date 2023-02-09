@@ -11,6 +11,7 @@ import { Users as UsersIcon } from '../icons/users'
 import { AccountPopover } from './account-popover'
 import { useAuthStore } from 'stores/useAuthStore'
 import { getLanguage } from 'utils/getLanguage'
+import TransactionFormModal from './form/transaction-form-modal'
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -22,9 +23,12 @@ export const DashboardNavbar = (props) => {
     const settingsRef = useRef(null)
     const [openAccountPopover, setOpenAccountPopover] = useState(false)
     const user = useAuthStore((state) => state.authState.user)
+    const [openTransactionModal, setOpenTransactionModal] = useState(false)
 
+    const handleOpenModal = () => setOpenTransactionModal(true)
     return (
         <>
+            <TransactionFormModal open={openTransactionModal} setOpen={setOpenTransactionModal} />
             <DashboardNavbarRoot
                 sx={{
                     left: {
@@ -62,6 +66,7 @@ export const DashboardNavbar = (props) => {
                     </Tooltip>
                     <Box sx={{ flexGrow: 1 }} />
                     <Button
+                        onClick={handleOpenModal}
                         variant='contained'
                         color='primary'
                         sx={{

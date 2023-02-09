@@ -6,6 +6,7 @@ export const languages = {
         income: 'Sweldo',
         savings: 'Ipon',
         cashflow: 'Daloy ng Pera',
+        categories: 'Mga Kategorya',
         thisYear: 'Itong taon',
         lastYear: 'Nakaraang taon',
         last7Days: 'Nakaraang 7 araw',
@@ -48,7 +49,6 @@ export const languages = {
         addSavingsGoal: 'Magdagdag ng Layunin ng Pag-iipon',
         totalSavings: 'Kabuuang Ipon',
         lastUsed2Hours: 'Huling gamit: Nakaraang 2 oras'
-
     },
     en: {
         //main screen
@@ -58,6 +58,7 @@ export const languages = {
         savings: 'Savings',
         cashflow: 'Cashflow',
         thisYear: 'This year',
+        categories: 'Categories',
         lastYear: 'Last year',
         last7Days: 'Last 7 days',
         overview: 'Overview',

@@ -12,6 +12,7 @@ import TrophyIcon from '@mui/icons-material/EmojiEvents'
 import UserIcon from '@mui/icons-material/Person'
 import SettingsIcon from '@mui/icons-material/Settings'
 import TimelineIcon from '@mui/icons-material/Timeline'
+import CategoryIcon from '@mui/icons-material/Category'
 import { Logo } from './logo'
 import { NavItem } from './nav-item'
 import { CircularProgressWithLabel } from './circular-progress-with-label'
@@ -50,6 +51,11 @@ export const DashboardSidebar = (props) => {
             href: '/savings',
             icon: <SavingsIcon fontSize='small' />,
             title: getLanguage().savings
+        },
+        {
+            href: '/categories',
+            icon: <CategoryIcon fontSize='small' />,
+            title: getLanguage().categories
         },
         {
             href: '/articles',
