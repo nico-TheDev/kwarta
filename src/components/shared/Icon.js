@@ -85,9 +85,9 @@ export function Icon(props) {
     else if (name === ICON_NAMES.SYSTEM_ICONS.TIME) return <AccessTimeFilledRoundedIcon {...props} />;
 
     //ACCOUNT ICONS
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.BANK) return <WalletRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.BANK) return <AccountBalanceRoundedIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD) return <CreditCardRoundedIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.WALLET) return <AccountBalanceRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.WALLET) return <WalletRoundedIcon {...props} />;
 
     //CATEGORY ICONS
     else if (name === ICON_NAMES.CATEGORY_ICONS.AIRLINE_FARE) return <AirplaneTicketRoundedIcon {...props} />;
