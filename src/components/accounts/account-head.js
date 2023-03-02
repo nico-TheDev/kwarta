@@ -6,6 +6,8 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import TransferIcon from '@mui/icons-material/Autorenew'
 import { getLanguage } from 'utils/getLanguage'
 import AccountFormModal from '../form/account-form-modal'
+import { Icon } from 'components/shared/Icon';
+import { ICON_NAMES } from 'constants/constant'
 
 export const AccountHead = (props) => {
     const theme = useTheme()
@@ -33,12 +35,12 @@ export const AccountHead = (props) => {
                             onClick={handleOpenModal}
                             variant='contained'
                             color='primary'
-                            startIcon={<AddCardIcon fontSize='small' />}
+                            startIcon={<Icon name={ICON_NAMES.SYSTEM_ICONS.ADD_ACCOUNT} color='#FFFFFF' fontSize='small' />}
                             sx={{ mr: 1 }}
                         >
                             {getLanguage().addAccount}
                         </Button>
-                        <Button variant='outlined' startIcon={<TransferIcon fontSize='small' />} sx={{ mr: 1 }}>
+                        <Button variant='outlined' startIcon={<Icon name={ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER} color='#FFFFFF' fontSize='small' />} sx={{ mr: 1 }}>
                             {getLanguage().createTransfer}
                         </Button>
                     </Box>
