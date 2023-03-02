@@ -60,4 +60,58 @@ export function Icon(props) {
     // SYSTEM ICONS
     if (name === ICON_NAMES.SYSTEM_ICONS.ACCOUNTS) return <AccountIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.CASHFLOW) return <CashflowIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.CATEGORIES) return <CategoryRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.DASHBOARD) return <GridViewRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.EDUCATION) return <AutoStoriesRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.PROFILE) return <AccountCircleRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.SETTINGS) return <SettingsRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.TRANSACTIONS) return <PaidRoundedIcon {...props} />;
+
+    else if (name === ICON_NAMES.SYSTEM_ICONS.ADD) return <AddRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.BACK) return <ArrowBackRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.DROPDOWN) return <ArrowDropDownRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.DOWNLOAD) return <DownloadRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.EDIT) return <EditRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.HISTORY) return <HistoryRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.NOTIFICATIONS) return <NotificationsRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.REFRESH) return <RefreshRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.RECEIVE_MONEY) return <EmailRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.SEARCH) return <SearchRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.SEND_MONEY) return <OutboxRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.TIME) return <AccessTimeFilledRoundedIcon {...props} />;
+
+    //ACCOUNT ICONS
+    else if (name === ICON_NAMES.SYSTEM_ICONS.BANK) return <WalletRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.CREDIT_CARD) return <CreditCardRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.WALLET) return <AccountBalanceRoundedIcon {...props} />;
+
+    //CATEGORY ICONS
+    else if (name === ICON_NAMES.SYSTEM_ICONS.AIRLINE_FARE) return <AirplaneTicketRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.BICYCLE) return <PedalBikeRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.BUSFARE) return <DirectionsBusRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.BUSINESS) return <BusinessCenterRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.CAR) return <DirectionsCarRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.CLOTHES) return <CheckroomRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.FOOD) return <FastfoodRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.FREELANCE_JOB) return <GroupWorkRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.EDUCATION) return <SchoolRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.ELECTRICITY_BILLS) return <OfflineBoltRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.ELECTRONICS) return <SpeakerGroupRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.FITNESS) return <FitnessCenterRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.FULLTIME_JOB) return <WorkRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.GAMING) return <SportsEsportsRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.GIFT) return <CardGiftcardRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.GROCERY) return <LocalGroceryStoreRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.HEALTH) return <LocalHospitalRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.INTERNET_BILLS) return <RouterRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.JEWELRY) return <DiamondRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.MAINTENANCE) return <BuildCircleRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.MOTORCYCLE) return <TwoWheelerRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.PERSONAL_CARE) return <SpaRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.PETS) return <PetsRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.PHONE) return <SmartphoneRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.SUBSCRIPTIONS) return <SmartDisplayRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.TOYS) return <SmartToyRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.TRAINFARE) return <DirectionsRailwayRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.WATER_BILLS) return <WaterDamageRoundedIcon {...props} />;
 }
