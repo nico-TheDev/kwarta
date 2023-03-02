@@ -19,6 +19,8 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import AddCardRoundedIcon from '@mui/icons-material/AddCardRounded';
+import MoveDownRoundedIcon from '@mui/icons-material/MoveDownRounded';
 
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
@@ -68,6 +70,8 @@ export function Icon(props) {
     else if (name === ICON_NAMES.SYSTEM_ICONS.TRANSACTIONS) return <PaidRoundedIcon {...props} />;
 
     else if (name === ICON_NAMES.SYSTEM_ICONS.ADD) return <AddRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.ADD_ACCOUNT) return <AddCardRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER) return <MoveDownRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.BACK) return <ArrowBackRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.DROPDOWN) return <ArrowDropDownRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.DOWNLOAD) return <DownloadRoundedIcon {...props} />;

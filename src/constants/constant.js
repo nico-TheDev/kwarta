@@ -9,6 +9,8 @@ export const ICON_NAMES = {
         SETTINGS: 'SETTINGS',
         TRANSACTIONS: 'TRANSACTIONS',
         ADD: 'ADD',
+        ADD_ACCOUNT: 'ADD_ACCOUNT',
+        ADD_TRANSFER: 'ADD_TRANSFER',
         BACK: 'BACK',
         DROPDOWN: 'DROPDOWN',
         DOWNLOAD: 'DOWNLOAD',
