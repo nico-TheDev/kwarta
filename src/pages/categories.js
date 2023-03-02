@@ -26,6 +26,10 @@ const Page = () => (
                         {accounts.map((account) => (
                             <Grid item key={account.id} lg={4} md={6} xs={12}>
                                 <CategoriesCard account={account} />
+<<<<<<< HEAD
+=======
+                                <Icon name={ICON_NAMES.SYSTEM_ICONS.ACCOUNTS} color='primary' fontSize='large' />
+>>>>>>> 05a55481dfece81d4d6b6c9208c304b53abf4d53
                             </Grid>
                         ))}
                     </Grid>
