@@ -5,16 +5,16 @@ import { Download as DownloadIcon } from '../../icons/download'
 import AddCardIcon from '@mui/icons-material/AddCard'
 import TransferIcon from '@mui/icons-material/Autorenew'
 import { getLanguage } from 'utils/getLanguage'
-import AccountFormModal from '../form/account-form-modal'
+import CategoryFormModal from '../form/category-form-modal'
 
-export const AccountHead = (props) => {
+export const CategoriesHead = (props) => {
     const theme = useTheme()
-    const [openAccountModal, setOpenAccountModal] = useState(false)
+    const [openCategoryModal, setOpenCategoryModal] = useState(false)
 
-    const handleOpenModal = () => setOpenAccountModal(true)
+    const handleOpenModal = () => setOpenCategoryModal(true)
     return (
         <>
-            <AccountFormModal open={openAccountModal} setOpen={setOpenAccountModal} />
+            <CategoryFormModal open={openCategoryModal} setOpen={setOpenCategoryModal} />
             <Box {...props}>
                 <Box
                     sx={{
@@ -26,7 +26,7 @@ export const AccountHead = (props) => {
                     }}
                 >
                     <Typography sx={{ m: 1 }} variant='h4'>
-                        {getLanguage().accounts}
+                        {getLanguage().categories}
                     </Typography>
                     <Box sx={{ m: 1 }}>
                         <Button
@@ -36,24 +36,12 @@ export const AccountHead = (props) => {
                             startIcon={<AddCardIcon fontSize='small' />}
                             sx={{ mr: 1 }}
                         >
-                            {getLanguage().addAccount}
+                            {getLanguage().addCategory}
                         </Button>
                         <Button variant='outlined' startIcon={<TransferIcon fontSize='small' />} sx={{ mr: 1 }}>
                             {getLanguage().createTransfer}
                         </Button>
                     </Box>
-                </Box>
-                <Box sx={{ mt: 3 }}>
-                    <Card elevation={5}>
-                        <CardContent>
-                            <Box sx={{ textAlign: 'center' }}>
-                                <Typography variant='h3'>{getLanguage().totalBalance}</Typography>
-                                <Typography variant='h3' color='primary.dark'>
-                                    ₱ 50,000.00
-                                </Typography>
-                            </Box>
-                        </CardContent>
-                    </Card>
                 </Box>
             </Box>
         </>

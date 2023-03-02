@@ -45,6 +45,9 @@ export const languages = {
         createTransfer: 'Maglipat ng Pera',
         totalBalance: 'Kabuuang Halaga',
 
+        //categories card
+        addCategory: 'Magdagdag ng Kategorya',
+
         //savings
         addSavingsGoal: 'Magdagdag ng Layunin ng Pag-iipon',
         totalSavings: 'Kabuuang Ipon',
@@ -95,6 +98,9 @@ export const languages = {
         addAccount: 'Add Account',
         createTransfer: 'Create Transfer',
         totalBalance: 'Total Balance',
+
+        //categories card
+        addCategory: 'Add Category',
 
         //savings
         addSavingsGoal: 'Add Savings Goal',
