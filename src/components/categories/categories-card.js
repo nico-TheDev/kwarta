@@ -10,7 +10,7 @@ import { formatPrice } from 'utils/format-price'
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant'
 
-export const CategoriesCard = ({ account, ...rest }) => (
+export const CategoriesCard = ({ categories, ...rest }) => (
     <Card
         sx={{
             display: 'flex',
@@ -27,19 +27,13 @@ export const CategoriesCard = ({ account, ...rest }) => (
                     mb: 2
                 }}
             >
-                <Icon name={ICON_NAMES.CATEGORY_ICONS.FOOD} color='primary' sx={{ fontSize: '50px' }} />
+                <Icon name={categories.icon} color='primary' sx={{ fontSize: '100px' }} />
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 4 }}>
+            <Box sx={{width: '100%', mb: 1 }}>
                 <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                    {account.title}
-                </Typography>
-                <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                    {formatPrice(account.balance)}
+                    {categories.title}
                 </Typography>
             </Box>
-            <Typography align='center' color='textPrimary' variant='body1'>
-                {account.description}
-            </Typography>
         </CardContent>
         <Divider />
         <Box sx={{ p: 2 }}>
@@ -63,7 +57,7 @@ export const CategoriesCard = ({ account, ...rest }) => (
                         display: 'flex'
                     }}
                 >
-                    <DownloadIcon color='action' />
+                    <Icon name={ICON_NAMES.SYSTEM_ICONS.EDIT} color='action' sx={{ fontSize: '25px' }} />
                 </Grid>
             </Grid>
         </Box>
