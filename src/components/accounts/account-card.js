@@ -27,7 +27,7 @@ export const AccountCard = ({ account, ...rest }) => (
                     mb: 2
                 }}
             >
-                <Icon name={ICON_NAMES.ACCOUNT_ICONS.BANK} color='primary' sx={{ fontSize: '50px' }} />
+                <Icon name={account.icon} color='primary' sx={{ fontSize: '100px' }} />
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 4 }}>
                 <Typography align='center' color='textPrimary' gutterBottom variant='h6'>

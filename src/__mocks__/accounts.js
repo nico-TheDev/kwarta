@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid'
+import { ICON_NAMES } from 'constants/constant'
 
 export const accounts = [
     {
@@ -6,21 +7,24 @@ export const accounts = [
         createdAt: '27/03/2019',
         description: 'For daily use and spending',
         title: 'Wallet',
-        balance: 20000
+        balance: 20000,
+        icon: ICON_NAMES.ACCOUNT_ICONS.WALLET
     },
     {
         id: uuid(),
         createdAt: '27/03/2019',
         description: 'For online transactions',
         title: 'BPI',
-        balance: 20000
+        balance: 20000,
+        icon: ICON_NAMES.ACCOUNT_ICONS.BANK
     },
     {
         id: uuid(),
         createdAt: '27/03/2019',
         description: 'For Groceries',
         title: 'GCASH',
-        balance: 10000
+        balance: 10000,
+        icon: ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD
     }
 ]
 
