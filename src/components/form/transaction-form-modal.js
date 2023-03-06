@@ -1,29 +1,34 @@
-import { useState, forwardRef } from 'react'
-import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material'
-import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
-import Modal from '@mui/material/Modal'
-import TextField from '@mui/material/TextField'
-
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
-
-import * as React from 'react'
-import dayjs from 'dayjs'
-import Stack from '@mui/material/Stack'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
-import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate'
+import { useState, forwardRef, useEffect } from 'react';
+import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import * as React from 'react';
+import dayjs from 'dayjs';
+import Stack from '@mui/material/Stack';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
+import { Icon } from 'components/shared/Icon';
+import { ICON_NAMES } from 'constants/constant';
+import IconSelector from 'components/shared/IconSelector';
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: 500,
     height: '80vh',
     bgcolor: 'background.paper',
     overflowY: 'scroll',
@@ -32,36 +37,139 @@ const style = {
     p: 4,
     display: 'grid',
     gap: 4
-}
+};
+
+const iconList = [
+    { id: 1, name: 'Vacation', icon: ICON_NAMES.CATEGORY_ICONS.AIRLINE_FARE, type: 'expense' },
+    { id: 2, name: 'Biking', icon: ICON_NAMES.CATEGORY_ICONS.BICYCLE, type: 'expense' },
+    { id: 3, name: 'Transportation', icon: ICON_NAMES.CATEGORY_ICONS.BUSFARE, type: 'expense' },
+    { id: 4, name: 'Business', icon: ICON_NAMES.CATEGORY_ICONS.BUSINESS, type: 'expense' },
+    { id: 5, name: 'FullTime Job', icon: ICON_NAMES.CATEGORY_ICONS.FULLTIME_JOB, type: 'income' },
+    { id: 6, name: 'Part Time Job', icon: ICON_NAMES.CATEGORY_ICONS.GIFT, type: 'income' },
+    { id: 7, name: 'Freelance', icon: ICON_NAMES.CATEGORY_ICONS.FREELANCE_JOB, type: 'income' },
+    { id: 8, name: 'Gigs', icon: ICON_NAMES.CATEGORY_ICONS.SUBSCRIPTIONS, type: 'income' }
+];
+const accountList = [
+    {
+        id: 1,
+        account_name: 'Wallet',
+        account_amount: 100,
+        account_color: '#eeff00',
+        account_icon: ICON_NAMES.ACCOUNT_ICONS.BANK
+    },
+    {
+        id: 2,
+        account_name: 'BPI',
+        account_amount: 500,
+        account_color: '#eeff00',
+        account_icon: ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD
+    },
+    {
+        id: 3,
+        account_name: 'GCash',
+        account_amount: 200,
+        account_color: '#eeff00',
+        account_icon: ICON_NAMES.ACCOUNT_ICONS.WALLET
+    }
+];
 
 const Alert = forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
-})
+    return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
+});
 
 export default function TransactionFormModal({ open, setOpen }) {
-    const [isExpense, setIsExpense] = useState(true)
-    const [date, setDate] = useState(dayjs(new Date()))
+    // COMPONENT STATE
+    const [isExpense, setIsExpense] = useState(true);
+    const [openAlert, setOpenAlert] = React.useState(false);
+    const [categoryList, setCategoryList] = useState([]);
+    // FORM STATES
+    const [date, setDate] = useState(dayjs(new Date()));
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedAccount, setSelectedAccount] = useState('');
+    const [selectedFile, setSelectedFile] = useState('');
 
-    const handleClose = () => setOpen(false)
+    useEffect(() => {
+        let currentList = [];
+        if (isExpense) {
+            currentList = iconList.filter((category) => category.type === 'expense');
+        } else {
+            currentList = iconList.filter((category) => category.type === 'income');
+        }
+        setCategoryList(currentList);
+        setSelectedCategory('');
+    }, [isExpense]);
+
+    useEffect(() => {
+        console.log(date);
+    }, [date]);
+
+    const initialValues = {
+        amount: '',
+        comments: '',
+        targetAccountId: '',
+        targetAccountName: '',
+        targetAccountIcon: '',
+        categoryId: '',
+        categoryName: '',
+        categoryIcon: ''
+    };
+
+    const formik = useFormik({
+        initialValues,
+        onSubmit: (values) => {
+            console.log(values);
+        }
+    });
+
+    const handleDateChange = (date) => {
+        const month = Number(date.$M) + 1;
+        const year = date.$y;
+        const day = date.$D;
+
+        const dateFormat = `${month}/${day}/${year}`;
+        setDate(dateFormat);
+        console.log(dateFormat);
+    };
+
+    const handleClose = () => setOpen(false);
+
+    const handleCategoryChange = (e) => {
+        const currentCategoryId = e.target.value;
+        const currentCategory = categoryList.find((category) => category.id === currentCategoryId);
+        console.log(currentCategory);
+        setSelectedCategory(e.target.value);
+    };
+    const handleAccountChange = (e) => {
+        const currentAccountId = e.target.value;
+        const currentAccount = categoryList.find((account) => account.id === currentAccountId);
+        console.log(currentAccount);
+        setSelectedAccount(e.target.value);
+    };
+
+    const handleFileSelect = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const fileSrc = URL.createObjectURL(file);
+            setSelectedFile(fileSrc);
+        }
+    };
 
     const handleExpense = () => {
-        setIsExpense(!isExpense)
-    }
-
-    const [openAlert, setOpenAlert] = React.useState(false)
+        setIsExpense(!isExpense);
+    };
 
     const handleOpenAlert = () => {
-        setOpenAlert(true)
-        handleClose()
-    }
+        setOpenAlert(true);
+        handleClose();
+    };
 
     const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
-            return
+            return;
         }
 
-        setOpenAlert(false)
-    }
+        setOpenAlert(false);
+    };
 
     return (
         <>
@@ -77,13 +185,22 @@ export default function TransactionFormModal({ open, setOpen }) {
                 aria-labelledby='modal-modal-title'
                 aria-describedby='modal-modal-description'
             >
-                <Box sx={style}>
+                <Box sx={style} component='form'>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
                         Create a Transaction
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <TextField id='filled-basic' label='Amount' variant='filled' fullWidth />
+                        <TextField
+                            id='filled-basic'
+                            label='Amount'
+                            variant='filled'
+                            fullWidth
+                            name='amount'
+                            value={formik.values.amount}
+                            onChange={formik.handleChange}
+                            type='number'
+                        />
                     </Box>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -96,35 +213,56 @@ export default function TransactionFormModal({ open, setOpen }) {
                         <Typography variant='body1'>Expense</Typography>
                     </Box>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    {/* ACCOUNT DROPDOWN */}
+                    <Box sx={{ display: 'grid', gap: 2 }}>
                         <FormControl fullWidth>
                             <InputLabel id='demo-simple-select-label'>Choose Account</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
-                                // value={age}
+                                value={selectedAccount}
                                 label='Choose Account'
-                                onChange={() => {}}
+                                onChange={handleAccountChange}
+                                sx={{ display: 'flex', alignItems: 'center' }}
+                                defaultValue=''
                             >
-                                <MenuItem value={10}>Wallet</MenuItem>
-                                <MenuItem value={20}>GCASH</MenuItem>
-                                <MenuItem value={30}>BPI</MenuItem>
+                                {accountList.map((account) => {
+                                    return (
+                                        <MenuItem key={account.id} value={account.id}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                <ListItemIcon>
+                                                    <Icon name={account.account_icon} />
+                                                </ListItemIcon>
+                                                <ListItemText>{account.account_name}</ListItemText>
+                                            </Box>
+                                        </MenuItem>
+                                    );
+                                })}
                             </Select>
                         </FormControl>
+                        {/* CATEGORY DROPDOWN */}
                         <FormControl fullWidth>
                             <InputLabel id='demo-simple-select-label'>Choose Category</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
-                                // value={age}
-                                label='Choose Account'
-                                onChange={() => {}}
+                                value={selectedCategory.id}
+                                label='Choose Category'
+                                defaultValue=''
+                                onChange={handleCategoryChange}
                             >
-                                <MenuItem value={10}>Electricity Bills</MenuItem>
-                                <MenuItem value={20}>Food</MenuItem>
-                                <MenuItem value={30}>Groceries</MenuItem>
-                                <MenuItem value={30}>Gym</MenuItem>
-                                <MenuItem value={30}>Personal</MenuItem>
+                                {categoryList?.map((tag) => {
+                                    return (
+                                        <MenuItem key={tag.id} value={tag.id}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                <ListItemIcon>
+                                                    <Icon name={tag.icon} />
+                                                </ListItemIcon>
+                                                <ListItemText>{tag.name}</ListItemText>
+                                            </Box>
+                                        </MenuItem>
+                                    );
+                                })}
                             </Select>
                         </FormControl>
                     </Box>
@@ -135,7 +273,7 @@ export default function TransactionFormModal({ open, setOpen }) {
                                 label='Date'
                                 inputFormat='MM/DD/YYYY'
                                 value={date}
-                                onChange={setDate}
+                                onChange={handleDateChange}
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </Stack>
@@ -146,20 +284,51 @@ export default function TransactionFormModal({ open, setOpen }) {
                             fullWidth
                             id='outlined-multiline-flexible'
                             label='Comment'
+                            name='comments'
                             multiline
                             rows={4}
                             variant='outlined'
+                            value={formik.values.comments}
+                            onChange={formik.handleChange}
                         />
-                        <Button component='label' variant='contained' sx={{ height: '100%' }}>
-                            <AddPhotoIcon fontSize='large' />
-                            <input type='file' hidden />
+                        <Button
+                            component='label'
+                            variant='contained'
+                            sx={{
+                                height: '100%',
+                                width: 150,
+                                fontSize: 100,
+                                ml: 2,
+                                p: 0,
+                                display: 'flex',
+                                alignItems: 'center',
+                                position: 'relative'
+                            }}
+                        >
+                            {selectedFile ? (
+                                <Box sx={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }}>
+                                    <img
+                                        src={selectedFile}
+                                        alt=''
+                                        style={{
+                                            display: 'block',
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'fill'
+                                        }}
+                                    />
+                                </Box>
+                            ) : (
+                                <AddPhotoIcon fontSize='inherit' />
+                            )}
+                            <input type='file' hidden onChange={handleFileSelect} />
                         </Button>
                     </Box>
-                    <Button variant='contained' fullWidth onClick={handleOpenAlert}>
+                    <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
                         SUBMIT
                     </Button>
                 </Box>
             </Modal>
         </>
-    )
+    );
 }

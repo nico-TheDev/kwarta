@@ -1,31 +1,32 @@
-import { useRef, useState } from 'react'
-import PropTypes from 'prop-types'
-import styled from '@emotion/styled'
-import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip, Button } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import SearchIcon from '@mui/icons-material/Search'
-import AddIcon from '@mui/icons-material/Add'
-import { Bell as BellIcon } from '../icons/bell'
-import { UserCircle as UserCircleIcon } from '../icons/user-circle'
-import { Users as UsersIcon } from '../icons/users'
-import { AccountPopover } from './account-popover'
-import { useAuthStore } from 'stores/useAuthStore'
-import { getLanguage } from 'utils/getLanguage'
-import TransactionFormModal from './form/transaction-form-modal'
+import { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import styled from '@emotion/styled';
+import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip, Button } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import { Bell as BellIcon } from '../icons/bell';
+import { UserCircle as UserCircleIcon } from '../icons/user-circle';
+import { Users as UsersIcon } from '../icons/users';
+import { AccountPopover } from './account-popover';
+import { useAuthStore } from 'stores/useAuthStore';
+import { getLanguage } from 'utils/getLanguage';
+import TransactionFormModal from './form/transaction-form-modal';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[3]
-}))
+}));
 
 export const DashboardNavbar = (props) => {
-    const { onSidebarOpen, ...other } = props
-    const settingsRef = useRef(null)
-    const [openAccountPopover, setOpenAccountPopover] = useState(false)
-    const user = useAuthStore((state) => state.authState.user)
-    const [openTransactionModal, setOpenTransactionModal] = useState(false)
+    const { onSidebarOpen, ...other } = props;
+    const settingsRef = useRef(null);
+    const [openAccountPopover, setOpenAccountPopover] = useState(false);
+    const user = useAuthStore((state) => state.authState.user);
+    const [openTransactionModal, setOpenTransactionModal] = useState(false);
 
-    const handleOpenModal = () => setOpenTransactionModal(true)
+    const handleOpenModal = () => setOpenTransactionModal(true);
+
     return (
         <>
             <TransactionFormModal open={openTransactionModal} setOpen={setOpenTransactionModal} />
@@ -122,9 +123,9 @@ export const DashboardNavbar = (props) => {
                 onClose={() => setOpenAccountPopover(false)}
             />
         </>
-    )
-}
+    );
+};
 
 DashboardNavbar.propTypes = {
     onSidebarOpen: PropTypes.func
-}
+};
