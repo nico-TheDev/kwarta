@@ -11,7 +11,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
 import * as React from 'react';
 import dayjs from 'dayjs';
 import Stack from '@mui/material/Stack';
@@ -21,7 +20,9 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
-import IconSelector from 'components/shared/IconSelector';
+import { useTransactionStore } from 'stores/useTransactionStore';
+import CommentInput from 'components/shared/CommentInput';
+import formatDate from 'utils/format-date';
 
 const style = {
     position: 'absolute',
@@ -83,10 +84,13 @@ export default function TransactionFormModal({ open, setOpen }) {
     const [openAlert, setOpenAlert] = React.useState(false);
     const [categoryList, setCategoryList] = useState([]);
     // FORM STATES
-    const [date, setDate] = useState(dayjs(new Date()));
+    const [date, setDate] = useState(formatDate(dayjs(new Date())));
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedAccount, setSelectedAccount] = useState('');
     const [selectedFile, setSelectedFile] = useState('');
+
+    // STORE
+    const createTransaction = useTransactionStore((state) => state.createTransaction);
 
     useEffect(() => {
         let currentList = [];
@@ -99,36 +103,31 @@ export default function TransactionFormModal({ open, setOpen }) {
         setSelectedCategory('');
     }, [isExpense]);
 
-    useEffect(() => {
-        console.log(date);
-    }, [date]);
-
     const initialValues = {
         amount: '',
         comments: '',
-        targetAccountId: '',
-        targetAccountName: '',
-        targetAccountIcon: '',
-        categoryId: '',
-        categoryName: '',
-        categoryIcon: ''
+        targetAccount: '',
+        category: ''
+    };
+
+    const handleSubmit = (values) => {
+        console.log(values);
+        createTransaction({ ...values, date }, selectedFile.file);
+        formik.resetForm();
+        setSelectedFile(null);
+        setSelectedCategory('');
+        setSelectedAccount('');
     };
 
     const formik = useFormik({
         initialValues,
-        onSubmit: (values) => {
-            console.log(values);
-        }
+        onSubmit: handleSubmit
     });
 
     const handleDateChange = (date) => {
-        const month = Number(date.$M) + 1;
-        const year = date.$y;
-        const day = date.$D;
-
-        const dateFormat = `${month}/${day}/${year}`;
+        const dateFormat = formatDate(date);
         setDate(dateFormat);
-        console.log(dateFormat);
+        // console.log(dateFormat);
     };
 
     const handleClose = () => setOpen(false);
@@ -136,22 +135,19 @@ export default function TransactionFormModal({ open, setOpen }) {
     const handleCategoryChange = (e) => {
         const currentCategoryId = e.target.value;
         const currentCategory = categoryList.find((category) => category.id === currentCategoryId);
-        console.log(currentCategory);
+
+        formik.setFieldValue('category', currentCategory);
+
+        // console.log(currentCategory);
         setSelectedCategory(e.target.value);
     };
     const handleAccountChange = (e) => {
         const currentAccountId = e.target.value;
         const currentAccount = categoryList.find((account) => account.id === currentAccountId);
-        console.log(currentAccount);
-        setSelectedAccount(e.target.value);
-    };
+        formik.setFieldValue('targetAccount', currentAccount);
 
-    const handleFileSelect = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const fileSrc = URL.createObjectURL(file);
-            setSelectedFile(fileSrc);
-        }
+        // console.log(currentAccount);
+        setSelectedAccount(e.target.value);
     };
 
     const handleExpense = () => {
@@ -266,10 +262,11 @@ export default function TransactionFormModal({ open, setOpen }) {
                             </Select>
                         </FormControl>
                     </Box>
-
+                    {/* DATE PICKER */}
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
+                                name='date'
                                 label='Date'
                                 inputFormat='MM/DD/YYYY'
                                 value={date}
@@ -278,52 +275,8 @@ export default function TransactionFormModal({ open, setOpen }) {
                             />
                         </Stack>
                     </LocalizationProvider>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <TextField
-                            fullWidth
-                            id='outlined-multiline-flexible'
-                            label='Comment'
-                            name='comments'
-                            multiline
-                            rows={4}
-                            variant='outlined'
-                            value={formik.values.comments}
-                            onChange={formik.handleChange}
-                        />
-                        <Button
-                            component='label'
-                            variant='contained'
-                            sx={{
-                                height: '100%',
-                                width: 150,
-                                fontSize: 100,
-                                ml: 2,
-                                p: 0,
-                                display: 'flex',
-                                alignItems: 'center',
-                                position: 'relative'
-                            }}
-                        >
-                            {selectedFile ? (
-                                <Box sx={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }}>
-                                    <img
-                                        src={selectedFile}
-                                        alt=''
-                                        style={{
-                                            display: 'block',
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'fill'
-                                        }}
-                                    />
-                                </Box>
-                            ) : (
-                                <AddPhotoIcon fontSize='inherit' />
-                            )}
-                            <input type='file' hidden onChange={handleFileSelect} />
-                        </Button>
-                    </Box>
+                    {/* COMMENT BOX */}
+                    <CommentInput formik={formik} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
                     <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
                         SUBMIT
                     </Button>
