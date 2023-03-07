@@ -7,6 +7,8 @@ import BankIcon from '@mui/icons-material/AccountBalance'
 import PaidIcon from '@mui/icons-material/Paid'
 import { theme } from 'theme'
 import { formatPrice } from 'utils/format-price'
+import { Icon } from 'components/shared/Icon';
+import { ICON_NAMES } from 'constants/constant'
 
 export const AccountCard = ({ account, ...rest }) => (
     <Card
@@ -25,7 +27,7 @@ export const AccountCard = ({ account, ...rest }) => (
                     mb: 2
                 }}
             >
-                <BankIcon color='primary' sx={{ fontSize: '50px' }} />
+                <Icon name={account.icon} color='primary' sx={{ fontSize: '100px' }} />
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 4 }}>
                 <Typography align='center' color='textPrimary' gutterBottom variant='h6'>

@@ -196,7 +196,7 @@ export const theme = createTheme({
             primary: '#121828',
             secondary: '#65748B',
             disabled: 'rgba(55, 65, 81, 0.48)'
-        }
+        },
     },
     shape: {
         borderRadius: 8

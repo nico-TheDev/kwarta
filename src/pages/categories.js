@@ -23,9 +23,10 @@ const Page = () => (
                 <CategoriesHead />
                 <Box sx={{ pt: 3 }}>
                     <Grid container spacing={3}>
-                        {categories.map((categories) => (
-                            <Grid item key={categories.id} lg={4} md={6} xs={12}>
-                                <CategoriesCard categories={categories} />
+                        {accounts.map((account) => (
+                            <Grid item key={account.id} lg={4} md={6} xs={12}>
+                                <CategoriesCard account={account} />
+                                <Icon name={ICON_NAMES.SYSTEM_ICONS.ACCOUNTS} color='primary' fontSize='large' />
                             </Grid>
                         ))}
                     </Grid>

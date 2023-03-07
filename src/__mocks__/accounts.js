@@ -1,5 +1,4 @@
 import { v4 as uuid } from 'uuid'
-import { ICON_NAMES } from 'constants/constant';
 
 export const accounts = [
     {
@@ -7,14 +6,16 @@ export const accounts = [
         createdAt: '27/03/2019',
         description: 'For daily use and spending',
         title: 'Wallet',
-        balance: 20000
+        balance: 20000,
+        icon: ICON_NAMES.ACCOUNT_ICONS.WALLET
     },
     {
         id: uuid(),
         createdAt: '27/03/2019',
         description: 'For online transactions',
         title: 'BPI',
-        balance: 20000
+        balance: 20000,
+        icon: ICON_NAMES.ACCOUNT_ICONS.BANK
     },
     {
         id: uuid(),
@@ -22,27 +23,6 @@ export const accounts = [
         description: 'For Groceries',
         title: 'GCASH',
         balance: 10000
-    }
-]
-
-export const categories = [
-    {
-        id: uuid(),
-        createdAt: '27/03/2019',
-        title: 'Health',
-        icon: ICON_NAMES.CATEGORY_ICONS.HEALTH,
-    },
-    {
-        id: uuid(),
-        createdAt: '27/03/2019',
-        title: 'Education',
-        icon: ICON_NAMES.CATEGORY_ICONS.EDUCATION,
-    },
-    {
-        id: uuid(),
-        createdAt: '27/03/2019',
-        title: 'Hobbies',
-        icon: ICON_NAMES.CATEGORY_ICONS.TOYS,
     }
 ]
 
@@ -83,3 +63,34 @@ export const achievements = [
         percentage: 75,
     },
 ]
+
+export const colorCollection = [
+    {
+        colorID: "1",
+        color: "#1A1747",
+    },
+    {
+        colorID: "2",
+        color: "#069420",
+    },
+    {
+        colorID: "3",
+        color: "#1602FF",
+    },
+    {
+        colorID: "4",
+        color: "#FF00D6",
+    },
+    {
+        colorID: "5",
+        color: "#8BCA97",
+    },
+    {
+        colorID: "6",
+        color: "#76B65F",
+    },
+    {
+        colorID: "7",
+        color: "#5FB572",
+    },
+];
