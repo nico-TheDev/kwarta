@@ -2,18 +2,18 @@ import { useRef, useState } from 'react'
 import { Box, Button, Card, CardContent, TextField, InputAdornment, SvgIcon, Typography } from '@mui/material'
 import { useTheme } from '@mui/material'
 import { getLanguage } from 'utils/getLanguage'
-import CategoryFormModal from '../form/category-form-modal'
+import CategoryCreateModal from 'components/form/category-create-form-modal'
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant'
 
 export const CategoriesHead = (props) => {
     const theme = useTheme()
-    const [openCategoryModal, setOpenCategoryModal] = useState(false)
+    const [openCategoryCreateModal, setOpenCategoryCreateModal] = useState(false)
 
-    const handleOpenModal = () => setOpenCategoryModal(true)
+    const handleOpenCategoryCreateModal = () => setOpenCategoryCreateModal(true)
     return (
         <>
-            <CategoryFormModal open={openCategoryModal} setOpen={setOpenCategoryModal} />
+            <CategoryCreateModal open={openCategoryCreateModal} setOpen={setOpenCategoryCreateModal} />
             <Box {...props}>
                 <Box
                     sx={{
@@ -29,7 +29,7 @@ export const CategoriesHead = (props) => {
                     </Typography>
                     <Box sx={{ m: 1 }}>
                         <Button
-                            onClick={handleOpenModal}
+                            onClick={handleOpenCategoryCreateModal}
                             variant='contained'
                             color='primary'
                             startIcon={<Icon name={ICON_NAMES.SYSTEM_ICONS.ADD} color='#FFFFFF' fontSize='small' />}

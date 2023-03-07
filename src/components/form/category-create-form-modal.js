@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState, forwardRef } from 'react'
-import Router from 'next/router';
 import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material'
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
@@ -19,6 +19,7 @@ import ColorPicker from 'components/shared/ColorPicker';
 import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
 
+import { useCategoryStore } from 'stores/useCategoryStore';
 
 const style = {
     position: 'absolute',
@@ -37,10 +38,33 @@ const style = {
 }
 
 
-export default function AccountFormModal({ open, setOpen }) {
+export default function CategoryCreateModal({ open, setOpen }) {
+    const [openAlert, setOpenAlert] = React.useState(false);
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedIcon, setSelectedIcon] = useState("");
     const [showColorWheel, setShowColorWheel] = useState(false);
+
+    const createCategory = useCategoryStore((state) => state.createCategory);
+
+    const initialValues = {
+        categoryName: '',
+        categoryIcon: '',
+        categoryColor: ''
+        // user_id: user.user_id
+    }
+
+    const handleOpenAlert = () => {
+        setOpenAlert(true);
+        handleClose();
+    };
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
 
     const handleColorClick = (color) => {
         setSelectedColor(color);
@@ -53,23 +77,30 @@ export default function AccountFormModal({ open, setOpen }) {
         formik.setFieldValue("categoryIcon", icon);
     };
 
-    const formik = useFormik({
-        initialValues: {
-            categoryName: '',
-            categoryIcon: '',
-            categoryColor: ''
-        },
-        onSubmit: () => {
-            Router
-            .push('/categories')
-            .catch(console.error);
-        }
-    });
+    const handleSubmit = (values) => {
+        console.log(values);
+        createCategory({ ...values});
+        formik.resetForm();
+        setSelectedIcon('');
+        setSelectedColor('');
+        handleOpenAlert();
+    };
 
     const handleClose = () => setOpen(false)
 
+    const formik = useFormik({
+        initialValues,
+        onSubmit: handleSubmit
+    });
+
     return (
         <>
+            <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} severity='success' sx={{ width: '100%' }}>
+                    Category created.
+                </Alert>
+            </Snackbar>
+
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -86,7 +117,7 @@ export default function AccountFormModal({ open, setOpen }) {
                                 id='filled-basic'
                                 label="Category Name"
                                 variant='filled'
-                                name="accountName"
+                                name="categoryName"
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 value={formik.values.categoryName}
@@ -105,20 +136,13 @@ export default function AccountFormModal({ open, setOpen }) {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <IconOnlySelector
                                 iconData={Object.values(ICON_NAMES.CATEGORY_ICONS)}
-                                onPress={handleIconClick}
+                                onIconClick={handleIconClick}
                                 selectedIcon={selectedIcon}
                                 setSelectedIcon={setSelectedIcon}
                             />
                         </Box>
                         <Box sx={{ py: 2 }}>
-                            <Button
-                                color="primary"
-                                disabled={formik.isSubmitting}
-                                fullWidth
-                                size="large"
-                                type="submit"
-                                variant="contained"
-                            >
+                            <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
                                 Submit
                             </Button>
                         </Box>
