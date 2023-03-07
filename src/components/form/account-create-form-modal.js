@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useState, forwardRef } from 'react'
 import Router from 'next/router';
 import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material'
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
@@ -35,6 +36,7 @@ const style = {
 }
 
 export default function AccountCreateFormModal({ open, setOpen }) {
+    const [openAlert, setOpenAlert] = React.useState(false);
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedIcon, setSelectedIcon] = useState("");
     const [showColorWheel, setShowColorWheel] = useState(false);
@@ -49,6 +51,19 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         accountColor: '',
         // user_id: user.user_id
     }
+
+    const handleOpenAlert = () => {
+        setOpenAlert(true);
+        handleClose();
+    };
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAlert(false);
+    };
 
     const handleColorClick = (color) => {
         setSelectedColor(color);
@@ -67,6 +82,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         formik.resetForm();
         setSelectedIcon('');
         setSelectedColor('');
+        handleOpenAlert();
     };
 
     const handleClose = () => setOpen(false);
@@ -79,6 +95,11 @@ export default function AccountCreateFormModal({ open, setOpen }) {
 
     return (
         <>
+            <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} severity='success' sx={{ width: '100%' }}>
+                    Account created.
+                </Alert>
+            </Snackbar>
             <Modal
                 open={open}
                 onClose={handleClose}
