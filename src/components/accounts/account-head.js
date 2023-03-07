@@ -1,22 +1,19 @@
 import { useRef, useState } from 'react'
 import { Box, Button, Card, CardContent, TextField, InputAdornment, SvgIcon, Typography } from '@mui/material'
 import { useTheme } from '@mui/material'
-import { Download as DownloadIcon } from '../../icons/download'
-import AddCardIcon from '@mui/icons-material/AddCard'
-import TransferIcon from '@mui/icons-material/Autorenew'
 import { getLanguage } from 'utils/getLanguage'
-import AccountFormModal from '../form/account-form-modal'
+import AccountCreateFormModal from 'components/form/account-create-form-modal'
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant'
 
 export const AccountHead = (props) => {
     const theme = useTheme()
-    const [openAccountModal, setOpenAccountModal] = useState(false)
+    const [openAccountCreateModal, setOpenAccountCreateModal] = useState(false)
 
-    const handleOpenModal = () => setOpenAccountModal(true)
+    const handleOpenAccountCreateModal = () => setOpenAccountCreateModal(true)
     return (
         <>
-            <AccountFormModal open={openAccountModal} setOpen={setOpenAccountModal} />
+            <AccountCreateFormModal open={openAccountCreateModal} setOpen={setOpenAccountCreateModal} />
             <Box {...props}>
                 <Box
                     sx={{
@@ -32,7 +29,7 @@ export const AccountHead = (props) => {
                     </Typography>
                     <Box sx={{ m: 1 }}>
                         <Button
-                            onClick={handleOpenModal}
+                            onClick={handleOpenAccountCreateModal}
                             variant='contained'
                             color='primary'
                             startIcon={<Icon name={ICON_NAMES.SYSTEM_ICONS.ADD_ACCOUNT} color='#FFFFFF' fontSize='small' />}

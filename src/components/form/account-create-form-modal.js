@@ -15,6 +15,9 @@ import ColorPicker from 'components/shared/ColorPicker';
 import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
 
+import { useAccountStore } from 'stores/useAccountStore';
+// import { useAuthStore } from 'stores/useAuthStore';
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -31,10 +34,21 @@ const style = {
     gap: 4,
 }
 
-export default function AccountFormModal({ open, setOpen }) {
+export default function AccountCreateFormModal({ open, setOpen }) {
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedIcon, setSelectedIcon] = useState("");
     const [showColorWheel, setShowColorWheel] = useState(false);
+
+    const createAccount = useAccountStore((state) => state.createAccount);
+    // const user = useAuthStore(state => state.user);
+
+    const initialValues = {
+        accountName: '',
+        accountAmount: '',
+        accountIcon: '',
+        accountColor: '',
+        // user_id: user.user_id
+    }
 
     const handleColorClick = (color) => {
         setSelectedColor(color);
@@ -47,20 +61,20 @@ export default function AccountFormModal({ open, setOpen }) {
         formik.setFieldValue("accountIcon", icon);
     };
 
-    const handleClose = () => setOpen(false)
+    const handleSubmit = (values) => {
+        console.log(values);
+        createAccount({ ...values});
+        formik.resetForm();
+        setSelectedIcon('');
+        setSelectedColor('');
+    };
+
+    const handleClose = () => setOpen(false);
 
     const formik = useFormik({
-        initialValues: {
-            accountName: '',
-            accountAmount: '',
-            accountIcon: '',
-            accountColor: ''
-        },
-        onSubmit: () => {
-            Router
-            .push('/accounts')
-            .catch(console.error);
-        }
+        
+        initialValues,
+        onSubmit: handleSubmit
     });
 
     return (
@@ -111,20 +125,13 @@ export default function AccountFormModal({ open, setOpen }) {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <IconOnlySelector
                                 iconData={Object.values(ICON_NAMES.ACCOUNT_ICONS)}
-                                onPress={handleIconClick}
+                                onIconClick={handleIconClick}
                                 selectedIcon={selectedIcon}
                                 setSelectedIcon={setSelectedIcon}
                             />
                         </Box>
                         <Box sx={{ py: 2 }}>
-                            <Button
-                                color="primary"
-                                disabled={formik.isSubmitting}
-                                fullWidth
-                                size="large"
-                                type="submit"
-                                variant="contained"
-                            >
+                            <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
                                 Submit
                             </Button>
                         </Box>

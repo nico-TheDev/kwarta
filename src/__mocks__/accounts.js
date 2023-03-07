@@ -23,7 +23,8 @@ export const accounts = [
         createdAt: '27/03/2019',
         description: 'For Groceries',
         title: 'GCASH',
-        balance: 10000
+        balance: 10000,
+        icon: ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD
     }
 ]
 

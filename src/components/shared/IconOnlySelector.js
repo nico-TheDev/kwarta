@@ -18,7 +18,7 @@ const IconOnlySelector = ({ iconData, selectedIcon, onIconClick }) => {
                             <Grid lg={4} md={6} xs={12}>
                                 <Box item key={iconData} 
                                 sx={{fontSize: '50px', justifyContent: 'center', marginLeft: 2}}>
-                                    <Button variant='outlined' onClick={() => onIconClick(selectedIcon)}
+                                    <Button variant='outlined' onClick={() => onIconClick(iconData)}
                                     sx={{justifyContent: 'center'}}>
                                     <Icon
                                     name={iconData}
