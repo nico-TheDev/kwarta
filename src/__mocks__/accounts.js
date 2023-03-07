@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid'
+import { ICON_NAMES } from 'constants/constant';
 
 export const accounts = [
     {
@@ -23,6 +24,27 @@ export const accounts = [
         description: 'For Groceries',
         title: 'GCASH',
         balance: 10000
+    }
+]
+
+export const categories = [
+    {
+        id: uuid(),
+        createdAt: '27/03/2019',
+        title: 'Health',
+        icon: ICON_NAMES.CATEGORY_ICONS.HEALTH,
+    },
+    {
+        id: uuid(),
+        createdAt: '27/03/2019',
+        title: 'Education',
+        icon: ICON_NAMES.CATEGORY_ICONS.EDUCATION,
+    },
+    {
+        id: uuid(),
+        createdAt: '27/03/2019',
+        title: 'Hobbies',
+        icon: ICON_NAMES.CATEGORY_ICONS.TOYS,
     }
 ]
 
