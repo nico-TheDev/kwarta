@@ -1,20 +1,40 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
 
 export default function CommentInput({ formik, selectedFile, setSelectedFile }) {
+    const inputRef = useRef(null);
+    const hasSelectedFile = useRef(null);
+
     const handleFileSelect = (e) => {
         const file = e.target.files[0];
 
         if (e.target.files?.length) {
+            hasSelectedFile.current = true;
             const fileSrc = URL.createObjectURL(file);
             setSelectedFile({ source: fileSrc, file });
             // console.log(e.target.files);
-        } else {
-            setSelectedFile(null);
         }
+
+        focusBack();
+    };
+
+    const handleFileClick = () => {
+        hasSelectedFile.current = false;
+        window.addEventListener('focus', focusBack);
+    };
+
+    const focusBack = () => {
+        if (!hasSelectedFile.current) {
+            setSelectedFile(null);
+            if (inputRef.current) {
+                inputRef.current.value = null;
+            }
+        }
+
+        window.removeEventListener('focus', focusBack);
     };
 
     return (
@@ -60,7 +80,14 @@ export default function CommentInput({ formik, selectedFile, setSelectedFile }) 
                 ) : (
                     <AddPhotoIcon fontSize='inherit' />
                 )}
-                <input type='file' hidden onChange={handleFileSelect} accept='image/*' />
+                <input
+                    type='file'
+                    hidden
+                    onChange={handleFileSelect}
+                    onClick={handleFileClick}
+                    accept='image/*'
+                    ref={inputRef}
+                />
             </Button>
         </Box>
     );

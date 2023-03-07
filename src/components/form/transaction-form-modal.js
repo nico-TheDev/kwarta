@@ -83,6 +83,7 @@ export default function TransactionFormModal({ open, setOpen }) {
     const [isExpense, setIsExpense] = useState(true);
     const [openAlert, setOpenAlert] = React.useState(false);
     const [categoryList, setCategoryList] = useState([]);
+
     // FORM STATES
     const [date, setDate] = useState(formatDate(dayjs(new Date())));
     const [selectedCategory, setSelectedCategory] = useState('');
