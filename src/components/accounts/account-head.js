@@ -1,16 +1,32 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Box, Button, Card, CardContent, TextField, InputAdornment, SvgIcon, Typography } from '@mui/material'
 import { useTheme } from '@mui/material'
 import { getLanguage } from 'utils/getLanguage'
+import { formatPrice } from 'utils/format-price'
+
 import AccountCreateFormModal from 'components/form/account-create-form-modal'
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant'
 
+import { useAccountStore } from 'stores/useAccountStore';
+
 export const AccountHead = (props) => {
     const theme = useTheme()
-    const [openAccountCreateModal, setOpenAccountCreateModal] = useState(false)
 
-    const handleOpenAccountCreateModal = () => setOpenAccountCreateModal(true)
+    const accounts = useAccountStore(state => state.accounts);
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        const totalAccounts = accounts.reduce((acc, currentAccount) => {
+            acc += parseFloat(currentAccount.account_amount);
+                return acc;
+        }, 0);
+
+        setTotal(totalAccounts);
+    }, [accounts]);
+
+    const [openAccountCreateModal, setOpenAccountCreateModal] = useState(false);
+    const handleOpenAccountCreateModal = () => setOpenAccountCreateModal(true);
     return (
         <>
             <AccountCreateFormModal open={openAccountCreateModal} setOpen={setOpenAccountCreateModal} />
@@ -48,7 +64,7 @@ export const AccountHead = (props) => {
                             <Box sx={{ textAlign: 'center' }}>
                                 <Typography variant='h3'>{getLanguage().totalBalance}</Typography>
                                 <Typography variant='h3' color='primary.dark'>
-                                    ₱ 50,000.00
+                                {formatPrice(total)}
                                 </Typography>
                             </Box>
                         </CardContent>

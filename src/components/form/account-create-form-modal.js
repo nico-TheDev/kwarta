@@ -9,6 +9,8 @@ import Modal from '@mui/material/Modal'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 
+import toast from 'react-hot-toast';
+
 import { useFormik } from 'formik';
 import { colorCollection } from '__mocks__/accounts';
 import { ICON_NAMES } from 'constants/constant'
@@ -17,7 +19,7 @@ import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
 
 import { useAccountStore } from 'stores/useAccountStore';
-// import { useAuthStore } from 'stores/useAuthStore';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const style = {
     position: 'absolute',
@@ -42,14 +44,14 @@ export default function AccountCreateFormModal({ open, setOpen }) {
     const [showColorWheel, setShowColorWheel] = useState(false);
 
     const createAccount = useAccountStore((state) => state.createAccount);
-    // const user = useAuthStore(state => state.user);
+    const user = useAuthStore(state => state.authState.user);
 
     const initialValues = {
         accountName: '',
         accountAmount: '',
         accountIcon: '',
         accountColor: '',
-        // user_id: user.user_id
+        userId: user.uid
     }
 
     const handleOpenAlert = () => {
@@ -78,11 +80,19 @@ export default function AccountCreateFormModal({ open, setOpen }) {
 
     const handleSubmit = (values) => {
         console.log(values);
-        createAccount({ ...values});
+        const loader = toast.loading('Creating Account');
+        createAccount({ 
+            account_name: values.accountName,
+            account_amount: values.accountAmount,
+            account_color: values.accountColor,
+            account_icon: values.accountIcon,
+            user_id: values.userId
+        });
         formik.resetForm();
         setSelectedIcon('');
         setSelectedColor('');
-        handleOpenAlert();
+        toast.dismiss(loader);
+        toast.success('Account successfully created!');
     };
 
     const handleClose = () => setOpen(false);

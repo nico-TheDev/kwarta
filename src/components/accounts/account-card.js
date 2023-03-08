@@ -33,14 +33,14 @@ export const AccountCard = ({ account, ...rest }) => {
                             mb: 2
                         }}
                     >
-                        <Icon name={account.icon} color='primary' sx={{ fontSize: '100px' }} />
+                        <Icon name={account.account_icon} sx={{ fontSize: '100px', color:account.account_color }} />
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 4 }}>
                         <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                            {account.title}
+                            {account.account_name}
                         </Typography>
                         <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                            {formatPrice(account.balance)}
+                            {formatPrice(account.account_amount)}
                         </Typography>
                     </Box>
                     <Typography align='center' color='textPrimary' variant='body1'>

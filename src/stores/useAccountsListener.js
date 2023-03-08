@@ -4,14 +4,14 @@ import { db} from '../../firebase.config';
 
 import { useAccountStore } from 'stores/useAccountStore';
 
-const accountListener = (userID) => {
+const useAccountsListener = (userID) => {
     let [accountData, setAccountData] = useState([]);
     let [totalBalance, setTotalBalance] = useState('');
     const accountColRef = collection(db, "accounts");
     const accounts = useAccountStore((state) => (state.accounts));
     const resetAccounts = useAccountStore((state) => (state.reset));
     const setAccounts = useAccountStore((state) => (state.setAccounts));
-    const accountQuery = query(accountColRef, where("user_id", "==", userID), orderBy("created_at", "asc"));
+    const accountQuery = query(accountColRef, where("user_id", "==", userID));
 
     const data = [...accounts];
 
@@ -46,3 +46,5 @@ const accountListener = (userID) => {
 
     return [totalBalance];
 };
+
+export default useAccountsListener;

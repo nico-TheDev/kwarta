@@ -6,7 +6,8 @@ import { db, storage } from '../../firebase.config';
 
 const accountStore = (set,get) => ({
     accounts: [],
-    getAccount: () => {},
+    reset: () => set({ accounts: [] }),
+    setAccounts: (data) => set({ accounts: data }),
     createAccount: async (newAccount) => {
         try {
             console.log(newAccount);
@@ -22,7 +23,7 @@ const accountStore = (set,get) => ({
         }
     },
     updateAccount: () => {},
-    deleteAccount: () => {}
+    deleteAccount: () => {},
 });
 
 export const useAccountStore = create(accountStore);
