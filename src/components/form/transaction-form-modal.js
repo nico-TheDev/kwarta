@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import dayjs from 'dayjs';
 import Stack from '@mui/material/Stack';
+import toast from 'react-hot-toast';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -111,13 +112,20 @@ export default function TransactionFormModal({ open, setOpen }) {
         category: ''
     };
 
-    const handleSubmit = (values) => {
+    const handleSubmit = async (values) => {
         console.log(values);
-        createTransaction({ ...values, date }, selectedFile.file);
+        const loader = toast.loading('Creating Transaction');
+        const currentType = isExpense ? 'expense' : 'income';
+        await createTransaction({ ...values, type: currentType, date }, selectedFile?.file);
+        // RESET STATES
         formik.resetForm();
         setSelectedFile(null);
         setSelectedCategory('');
         setSelectedAccount('');
+        setOpen(false);
+        // HANDLE TOAST
+        toast.dismiss(loader);
+        toast.success('Transaction successfully created!');
     };
 
     const formik = useFormik({
