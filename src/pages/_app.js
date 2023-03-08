@@ -1,39 +1,41 @@
-import { Fragment, useEffect } from 'react'
-import Head from 'next/head'
-import { CacheProvider } from '@emotion/react'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { CssBaseline } from '@mui/material'
-import { ThemeProvider } from '@mui/material/styles'
-import { createEmotionCache } from '../utils/create-emotion-cache'
-import { registerChartJs } from '../utils/register-chart-js'
-import { theme } from '../theme'
-import { useAuthStore } from '../stores/useAuthStore'
-import { useRouter } from 'next/router'
+import { Fragment, useEffect } from 'react';
+import Head from 'next/head';
+import { CacheProvider } from '@emotion/react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import { Toaster } from 'react-hot-toast';
 
-registerChartJs()
+import { createEmotionCache } from '../utils/create-emotion-cache';
+import { registerChartJs } from '../utils/register-chart-js';
+import { theme } from '../theme';
+import { useAuthStore } from '../stores/useAuthStore';
+import { useRouter } from 'next/router';
 
-const clientSideEmotionCache = createEmotionCache()
+registerChartJs();
+
+const clientSideEmotionCache = createEmotionCache();
 
 const App = (props) => {
-    const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
-    const { isLoading } = useAuthStore((state) => state.authState)
-    const router = useRouter()
-    const getLayout = Component.getLayout ?? ((page) => page)
+    const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+    const { isLoading } = useAuthStore((state) => state.authState);
+    const router = useRouter();
+    const getLayout = Component.getLayout ?? ((page) => page);
 
-    const { user, isAuthenticated } = useAuthStore((state) => state.authState)
+    const { user, isAuthenticated } = useAuthStore((state) => state.authState);
 
     // HANDLE USER AUTH IF THERE IS AN EXISTING USER , REDIRECT TO DASHBOARD
     useEffect(() => {
-        console.log(router.pathname)
+        console.log(router.pathname);
         if (user) {
             if (router.pathname !== '/' && ['/login', '/sign-in', '/register'].includes(router.pathname)) {
-                router.push('/')
+                router.push('/');
             } else {
-                router.push(router.pathname)
+                router.push(router.pathname);
             }
         }
-    }, [user, isAuthenticated])
+    }, [user, isAuthenticated]);
 
     return (
         <CacheProvider value={emotionCache}>
@@ -42,13 +44,14 @@ const App = (props) => {
                 <meta name='viewport' content='initial-scale=1, width=device-width' />
             </Head>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Toaster position='bottom-left' />
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
                     {isLoading ? <Fragment /> : getLayout(<Component {...pageProps} />)}
                 </ThemeProvider>
             </LocalizationProvider>
         </CacheProvider>
-    )
-}
+    );
+};
 
-export default App
+export default App;
