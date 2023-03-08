@@ -25,6 +25,10 @@ const IconOnlySelector = ({ iconData, selectedIcon, onIconClick }) => {
                                     color='primary' 
                                     sx={{ fontSize: '40px', }}
                                     />
+                                    {selectedIcon === iconData && <Icon
+                                    name={iconData}
+                                    sx={{ fontSize: '10px', backgroundColor: '#04a5a3'}}
+                                    />}
                                     </Button>
                                 </Box>
                             </Grid>
