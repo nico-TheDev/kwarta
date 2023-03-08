@@ -1,8 +1,25 @@
-import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material'
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
-import { getLanguage } from '../../utils/getLanguage'
+import { useEffect, useState } from 'react';
+import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { getLanguage } from '../../utils/getLanguage';
+import { useTransactionStore } from 'stores/useTransactionStore';
+import { formatPrice } from 'utils/format-price';
 
 export const Expenses = (props) => {
+    const transactions = useTransactionStore((state) => state.transactions);
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        const totalExpenses = transactions.reduce((acc, current) => {
+            if (current.type === 'expense') {
+                acc += current.amount;
+            }
+            return acc;
+        }, 0);
+
+        setTotal(totalExpenses);
+    }, [transactions]);
+
     return (
         <Card {...props}>
             <CardContent>
@@ -12,7 +29,7 @@ export const Expenses = (props) => {
                             {getLanguage().expenses}
                         </Typography>
                         <Typography color='textPrimary' variant='h4'>
-                            ₱23k
+                            {formatPrice(total)}
                         </Typography>
                     </Grid>
                     <Grid item>
@@ -29,5 +46,5 @@ export const Expenses = (props) => {
                 </Grid>
             </CardContent>
         </Card>
-    )
-}
+    );
+};

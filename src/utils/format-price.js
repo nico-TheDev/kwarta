@@ -1,8 +1,9 @@
 export function formatPrice(price) {
     const peso = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'PHP'
-    })
+        currency: 'PHP',
+        notation: 'compact'
+    });
 
-    return peso.format(price)
+    return peso.format(price);
 }

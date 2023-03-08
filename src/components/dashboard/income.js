@@ -1,9 +1,27 @@
-import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material'
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
-import PeopleIcon from '@mui/icons-material/PeopleOutlined'
-import { getLanguage } from 'utils/getLanguage'
+import { useEffect, useState } from 'react';
+import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import PeopleIcon from '@mui/icons-material/PeopleOutlined';
+import { getLanguage } from 'utils/getLanguage';
+
+import { useTransactionStore } from 'stores/useTransactionStore';
+import { formatPrice } from 'utils/format-price';
 
 export const Income = (props) => {
+    const transactions = useTransactionStore((state) => state.transactions);
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        const totalExpenses = transactions.reduce((acc, current) => {
+            if (current.type === 'income') {
+                acc += current.amount;
+            }
+            return acc;
+        }, 0);
+
+        setTotal(totalExpenses);
+    }, [transactions]);
+
     return (
         <Card {...props}>
             <CardContent>
@@ -13,7 +31,7 @@ export const Income = (props) => {
                             {getLanguage().income}
                         </Typography>
                         <Typography color='textPrimary' variant='h4'>
-                            ₱50k
+                            {formatPrice(total)}
                         </Typography>
                     </Grid>
                     <Grid item>
@@ -50,5 +68,5 @@ export const Income = (props) => {
                 </Box>
             </CardContent>
         </Card>
-    )
-}
+    );
+};
