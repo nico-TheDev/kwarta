@@ -5,14 +5,13 @@ import { AccountHead } from '../components/accounts/account-head'
 import { AccountCard } from '../components/accounts/account-card'
 import { DashboardLayout } from '../components/dashboard-layout'
 
-import { useAuthStore } from 'stores/useAuthStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import useAccountsListener from 'stores/useAccountsListener';
 
 const Page = () => {
-    const user = useAuthStore(state => state.authState.user);
     const accounts = useAccountStore(state => state.accounts);
-    const [totalBalance] = useAccountsListener(user.uid);
+
+    useAccountsListener();
 
     return(
         <>
@@ -27,7 +26,7 @@ const Page = () => {
                 }}
             >
                 <Container maxWidth={false}>
-                    <AccountHead totalBalance={totalBalance}/>
+                    <AccountHead/>
                     <Box sx={{ pt: 3 }}>
                         <Grid container spacing={3}>
                             {accounts.map((account) => (

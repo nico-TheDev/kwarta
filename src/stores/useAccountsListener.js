@@ -3,13 +3,12 @@ import { onSnapshot, collection, query, where, orderBy } from 'firebase/firestor
 import { db} from '../../firebase.config';
 
 import { useAccountStore } from 'stores/useAccountStore';
+import { useAuthStore } from 'stores/useAuthStore';
 
-const useAccountsListener = (userID) => {
-    let [accountData, setAccountData] = useState([]);
-    let [totalBalance, setTotalBalance] = useState('');
+const useAccountsListener = () => {
+    const userID = useAuthStore((state) => state.authState.user.uid);
     const accountColRef = collection(db, "accounts");
     const accounts = useAccountStore((state) => (state.accounts));
-    const resetAccounts = useAccountStore((state) => (state.reset));
     const setAccounts = useAccountStore((state) => (state.setAccounts));
     const accountQuery = query(accountColRef, where("user_id", "==", userID));
 
@@ -28,23 +27,10 @@ const useAccountsListener = (userID) => {
                     id: doc.id
                 });
             });
-
-            const accountsTotal = userAccounts.reduce((acc, currentAccount) => {
-                acc += parseFloat(currentAccount.account_amount);
-                return acc;
-            }, 0);
-
-            setTotalBalance(accountsTotal);
             setAccounts(userAccounts);
         });
         return unsubscribe;
     }, []);
-
-    useEffect(() => {
-        resetAccounts();
-    }, [userID]);
-
-    return [totalBalance];
 };
 
 export default useAccountsListener;
