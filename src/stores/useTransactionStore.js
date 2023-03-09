@@ -55,7 +55,12 @@ const transactionStore = (set, get) => ({
         }
     },
     updateTransaction: () => {},
-    deleteTransaction: () => {}
+    deleteTransaction: () => {},
+    setTransactions: (transactionList) => {
+        set({
+            transactions: transactionList
+        });
+    }
 });
 
 export const useTransactionStore = create(transactionStore);

@@ -24,6 +24,7 @@ import { ICON_NAMES } from 'constants/constant';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import CommentInput from 'components/shared/CommentInput';
 import formatDate from 'utils/format-date';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const style = {
     position: 'absolute',
@@ -93,6 +94,7 @@ export default function TransactionFormModal({ open, setOpen }) {
 
     // STORE
     const createTransaction = useTransactionStore((state) => state.createTransaction);
+    const user_id = useAuthStore((state) => state.authState?.user?.uid);
 
     useEffect(() => {
         let currentList = [];
@@ -116,7 +118,7 @@ export default function TransactionFormModal({ open, setOpen }) {
         console.log(values);
         const loader = toast.loading('Creating Transaction');
         const currentType = isExpense ? 'expense' : 'income';
-        await createTransaction({ ...values, type: currentType, date }, selectedFile?.file);
+        await createTransaction({ ...values, type: currentType, date, user_id }, selectedFile?.file);
         // RESET STATES
         formik.resetForm();
         setSelectedFile(null);
