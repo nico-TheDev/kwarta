@@ -54,6 +54,7 @@ import CheckroomRoundedIcon from '@mui/icons-material/CheckroomRounded';
 import SpeakerGroupRoundedIcon from '@mui/icons-material/SpeakerGroupRounded';
 import GroupWorkRoundedIcon from '@mui/icons-material/GroupWorkRounded';
 import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
+import CheckIcon from '@mui/icons-material/Check';
 
 import { ICON_NAMES } from 'constants/constant';
 
@@ -68,7 +69,7 @@ export function Icon(props) {
     else if (name === ICON_NAMES.SYSTEM_ICONS.PROFILE) return <AccountCircleRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.SETTINGS) return <SettingsRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.TRANSACTIONS) return <PaidRoundedIcon {...props} />;
-
+    else if (name === ICON_NAMES.SYSTEM_ICONS.CHECK) return <CheckIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.ADD) return <AddRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.ADD_ACCOUNT) return <AddCardRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER) return <MoveDownRoundedIcon {...props} />;
@@ -83,12 +84,10 @@ export function Icon(props) {
     else if (name === ICON_NAMES.SYSTEM_ICONS.SEARCH) return <SearchRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.SEND_MONEY) return <OutboxRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.TIME) return <AccessTimeFilledRoundedIcon {...props} />;
-
     //ACCOUNT ICONS
     else if (name === ICON_NAMES.ACCOUNT_ICONS.BANK) return <AccountBalanceRoundedIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD) return <CreditCardRoundedIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.WALLET) return <WalletRoundedIcon {...props} />;
-
     //CATEGORY ICONS
     else if (name === ICON_NAMES.CATEGORY_ICONS.AIRLINE_FARE) return <AirplaneTicketRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.BICYCLE) return <PedalBikeRoundedIcon {...props} />;

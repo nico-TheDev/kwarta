@@ -1,19 +1,19 @@
-import * as React from 'react'
-import { useState, forwardRef } from 'react'
+import * as React from 'react';
+import { useState, forwardRef } from 'react';
 import Router from 'next/router';
-import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material'
+import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
-import Modal from '@mui/material/Modal'
-import TextField from '@mui/material/TextField'
-import FormControl from '@mui/material/FormControl'
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
 
 import toast from 'react-hot-toast';
 
 import { useFormik } from 'formik';
 import { colorCollection } from '__mocks__/accounts';
-import { ICON_NAMES } from 'constants/constant'
+import { ICON_NAMES } from 'constants/constant';
 import ColorPicker from 'components/shared/ColorPicker';
 import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
@@ -34,17 +34,17 @@ const style = {
     boxShadow: 24,
     p: 4,
     display: 'grid',
-    gap: 4,
-}
+    gap: 4
+};
 
 export default function AccountCreateFormModal({ open, setOpen }) {
     const [openAlert, setOpenAlert] = React.useState(false);
-    const [selectedColor, setSelectedColor] = useState("");
-    const [selectedIcon, setSelectedIcon] = useState("");
+    const [selectedColor, setSelectedColor] = useState('');
+    const [selectedIcon, setSelectedIcon] = useState('');
     const [showColorWheel, setShowColorWheel] = useState(false);
 
     const createAccount = useAccountStore((state) => state.createAccount);
-    const user = useAuthStore(state => state.authState.user);
+    const user = useAuthStore((state) => state.authState.user);
 
     const initialValues = {
         accountName: '',
@@ -52,7 +52,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         accountIcon: '',
         accountColor: '',
         userId: user.uid
-    }
+    };
 
     const handleOpenAlert = () => {
         setOpenAlert(true);
@@ -69,19 +69,24 @@ export default function AccountCreateFormModal({ open, setOpen }) {
 
     const handleColorClick = (color) => {
         setSelectedColor(color);
-        formik.setFieldValue("accountColor", color);
+        formik.setFieldValue('accountColor', color);
         setShowColorWheel(false);
+    };
+
+    const handleColorSelect = (color) => {
+        setSelectedColor(color.hex);
+        formik.setFieldValue('accountColor', color.hex);
     };
 
     const handleIconClick = (icon) => {
         setSelectedIcon(icon);
-        formik.setFieldValue("accountIcon", icon);
+        formik.setFieldValue('accountIcon', icon);
     };
 
     const handleSubmit = (values) => {
         console.log(values);
         const loader = toast.loading('Creating Account');
-        createAccount({ 
+        createAccount({
             account_name: values.accountName,
             account_amount: values.accountAmount,
             account_color: values.accountColor,
@@ -98,7 +103,6 @@ export default function AccountCreateFormModal({ open, setOpen }) {
     const handleClose = () => setOpen(false);
 
     const formik = useFormik({
-        
         initialValues,
         onSubmit: handleSubmit
     });
@@ -122,36 +126,43 @@ export default function AccountCreateFormModal({ open, setOpen }) {
                     </Typography>
                     <FormControl fullWidth onSubmit={formik.handleSubmit}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
-                            <TextField 
+                            <TextField
                                 id='filled-basic'
-                                label="Account Name"
+                                label='Account Name'
                                 variant='filled'
-                                name="accountName"
+                                name='accountName'
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 value={formik.values.accountName}
-                                fullWidth />
+                                fullWidth
+                            />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
-                            <TextField 
+                            <TextField
                                 id='filled-basic'
-                                label="Account Amount"
+                                label='Account Amount'
                                 variant='filled'
-                                name="accountAmount"
+                                name='accountAmount'
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 value={formik.values.accountAmount}
-                                fullWidth />
+                                fullWidth
+                            />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <ColorPickerPanel
                                 colorList={colorCollection}
                                 onColorPress={handleColorClick}
                                 selectedColor={selectedColor}
-                                setSelectedColor={setSelectedColor}
-                                onAddPress={() => setShowColorWheel(true)}
+                                setShowColorWheel={setShowColorWheel}
                             />
-                            {showColorWheel && <ColorPicker handleColorClick={handleColorClick} setShowColorWheel={setShowColorWheel} />}
+                            {showColorWheel && (
+                                <ColorPicker
+                                    handleColorSelect={handleColorSelect}
+                                    setShowColorWheel={setShowColorWheel}
+                                    selectedColor={selectedColor}
+                                />
+                            )}
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <IconOnlySelector
@@ -170,5 +181,5 @@ export default function AccountCreateFormModal({ open, setOpen }) {
                 </Box>
             </Modal>
         </>
-    )
+    );
 }
