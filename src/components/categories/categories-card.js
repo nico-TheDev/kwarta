@@ -27,11 +27,11 @@ export const CategoriesCard = ({ categories, ...rest }) => (
                     mb: 2
                 }}
             >
-                <Icon name={categories.icon} color='primary' sx={{ fontSize: '100px' }} />
+                <Icon name={categories.category_icon} color='primary' sx={{ fontSize: '100px', color:categories.category_color }} />
             </Box>
             <Box sx={{width: '100%', mb: 1 }}>
                 <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                    {categories.title}
+                    {categories.category_name}
                 </Typography>
             </Box>
         </CardContent>

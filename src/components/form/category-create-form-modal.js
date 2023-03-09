@@ -12,6 +12,8 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 
+import toast from 'react-hot-toast';
+
 import { useFormik } from 'formik';
 import { colorCollection } from '__mocks__/accounts';
 import { ICON_NAMES } from 'constants/constant'
@@ -20,6 +22,7 @@ import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
 
 import { useCategoryStore } from 'stores/useCategoryStore';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const style = {
     position: 'absolute',
@@ -39,32 +42,25 @@ const style = {
 
 
 export default function CategoryCreateModal({ open, setOpen }) {
-    const [openAlert, setOpenAlert] = React.useState(false);
+    const [isExpense, setIsExpense] = useState(true)
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedIcon, setSelectedIcon] = useState("");
     const [showColorWheel, setShowColorWheel] = useState(false);
+
+    const user = useAuthStore((state) => state.authState.user);
 
     const createCategory = useCategoryStore((state) => state.createCategory);
 
     const initialValues = {
         categoryName: '',
         categoryIcon: '',
-        categoryColor: ''
-        // user_id: user.user_id
+        categoryColor: '',
+        userId: user.uid
     }
 
-    const handleOpenAlert = () => {
-        setOpenAlert(true);
-        handleClose();
-    };
-
-    const handleCloseAlert = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpenAlert(false);
-    };
+    const handleExpense = () => {
+        setIsExpense(!isExpense)
+    }
 
     const handleColorClick = (color) => {
         setSelectedColor(color);
@@ -79,11 +75,20 @@ export default function CategoryCreateModal({ open, setOpen }) {
 
     const handleSubmit = (values) => {
         console.log(values);
-        createCategory({ ...values});
+        const loader = toast.loading('Creating Category');
+        const currentType = isExpense ? 'expense' : 'income';
+        createCategory({ 
+            category_name: values.categoryName,
+            category_color: values.categoryColor,
+            category_icon: values.categoryIcon,
+            user_id: values.userId, 
+            type: currentType,});
         formik.resetForm();
         setSelectedIcon('');
         setSelectedColor('');
-        handleOpenAlert();
+
+        toast.dismiss(loader);
+        toast.success('Category successfully created!');
     };
 
     const handleClose = () => setOpen(false)
@@ -95,12 +100,6 @@ export default function CategoryCreateModal({ open, setOpen }) {
 
     return (
         <>
-            <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
-                <Alert onClose={handleCloseAlert} severity='success' sx={{ width: '100%' }}>
-                    Category created.
-                </Alert>
-            </Snackbar>
-
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -122,6 +121,15 @@ export default function CategoryCreateModal({ open, setOpen }) {
                                 onChange={formik.handleChange}
                                 value={formik.values.categoryName}
                                 fullWidth />
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2}}>
+                            <Typography variant='body1'>Income</Typography>
+                            <Switch
+                                checked={isExpense}
+                                onChange={handleExpense}
+                                inputProps={{ 'aria-label': 'controlled' }}
+                            />
+                            <Typography variant='body1'>Expense</Typography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <ColorPickerPanel

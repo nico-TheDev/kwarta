@@ -6,7 +6,8 @@ import { db, storage } from '../../firebase.config';
 
 const categoryStore = (set,get) => ({
     categories: [],
-    getCategory: () => {},
+    reset: () => set({ categories: [] }),
+    setCategories: (data) => set({ categories: data }),
     createCategory: async (newCategory) => {
         try {
             console.log(newCategory);
@@ -22,7 +23,13 @@ const categoryStore = (set,get) => ({
         }
     },
     updateCategory: () => {},
-    deleteCategory: () => {}
+    deleteCategory: () => {},
+    incomeList: (userID) => {
+        return get().categories.filter(category => category.category_type === "income");
+    },
+    expenseList: (userID) => {
+        return get().categories.filter(category => category.category_type === "expense");
+    },
 });
 
 export const useCategoryStore = create(categoryStore);
