@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, forwardRef } from 'react'
 import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material'
 import Button from '@mui/material/Button'
 
@@ -7,7 +8,7 @@ import { ICON_NAMES } from 'constants/constant'
 
 import { SketchPicker } from 'react-color';
 
-const ColorPicker = ({ handleColorClick, setShowColorWheel }) => {
+const ColorPicker = ({ handleColorClick, setShowColorWheel}) => {
     return(
         <>
             <Box>
@@ -19,7 +20,7 @@ const ColorPicker = ({ handleColorClick, setShowColorWheel }) => {
                     />
                 </Button>
                 <SketchPicker
-                    onChange={handleColorClick}
+                    onChangeComplete={color => handleColorClick(color.hex)}
                 />
             </Box>
     

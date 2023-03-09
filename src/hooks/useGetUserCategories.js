@@ -37,10 +37,10 @@ export default function useGetUserCategories(isExpense) {
             setCategories([...prepCategories, ...userList]);
 
             if (!isExpense) {
-                setCategoryData(getExpenseList());
+                setCategoryData(getExpenseList(userID));
             }
             else {
-                setCategoryData(getIncomeList());
+                setCategoryData(getIncomeList(userID));
             }
         });
 

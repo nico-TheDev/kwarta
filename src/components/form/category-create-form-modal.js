@@ -82,7 +82,7 @@ export default function CategoryCreateModal({ open, setOpen }) {
             category_color: values.categoryColor,
             category_icon: values.categoryIcon,
             user_id: values.userId, 
-            type: currentType,});
+            category_type: currentType,});
         formik.resetForm();
         setSelectedIcon('');
         setSelectedColor('');

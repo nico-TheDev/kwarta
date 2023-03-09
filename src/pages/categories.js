@@ -22,6 +22,9 @@ const Page = () => {
     const handleExpense = () => {
         setIsExpense(!isExpense)
     }
+
+    console.log(isExpense)
+
     return(
         <>
             <Head>
