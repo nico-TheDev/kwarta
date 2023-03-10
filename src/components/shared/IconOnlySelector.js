@@ -1,42 +1,43 @@
 import React from 'react';
-import { Box, Grid, Container } from '@mui/material'
-import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
+import { Box, Grid, Container } from '@mui/material';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import { Icon } from 'components/shared/Icon';
 
 const IconOnlySelector = ({ iconData, selectedIcon, onIconClick }) => {
-    return(
-        <>
-            <Box>
-                <Typography variant='h6' component='h2'>
-                    Icons:
-                </Typography>
-                <Box>
-                    <Grid container spacing={1}>
-                        {iconData.map((iconData) => (
-                            <Grid lg={4} md={6} xs={12}>
-                                <Box item key={iconData} 
-                                sx={{fontSize: '50px', justifyContent: 'center', marginLeft: 2}}>
-                                    <Button variant='outlined' onClick={() => onIconClick(iconData)}
-                                    sx={{justifyContent: 'center'}}>
-                                    <Icon
-                                    name={iconData}
-                                    color='primary' 
-                                    sx={{ fontSize: '40px', }}
-                                    />
-                                    {selectedIcon === iconData && <Icon
-                                    name={iconData}
-                                    sx={{ fontSize: '10px', backgroundColor: '#04a5a3'}}
-                                    />}
-                                    </Button>
-                                </Box>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
+    return (
+        <Box>
+            <Typography variant='h6' component='h2' mb={2}>
+                Icons:
+            </Typography>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 2,
+                    width: '100%',
+                    justifyContent: 'space-between',
+                    height: iconData.length > 8 ? 140 : 'auto',
+                    overflowY: iconData.length > 8 ? 'scroll' : 'initial'
+                }}
+            >
+                {iconData.map((iconData) => (
+                    <Box onClick={() => onIconClick(iconData)} key={iconData}>
+                        <Button
+                            variant={selectedIcon === iconData ? 'contained' : 'outlined'}
+                            sx={{ justifyContent: 'center', color: 'white' }}
+                        >
+                            <Icon
+                                name={iconData}
+                                color={selectedIcon === iconData ? 'inherit' : 'primary'}
+                                sx={{ fontSize: '40px' }}
+                            />
+                        </Button>
+                    </Box>
+                ))}
             </Box>
-        </>
+        </Box>
     );
 };
 

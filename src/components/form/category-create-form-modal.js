@@ -1,22 +1,22 @@
-import * as React from 'react'
-import { useState, forwardRef } from 'react'
-import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material'
+import * as React from 'react';
+import { useState, forwardRef } from 'react';
+import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material';
 import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
-import Modal from '@mui/material/Modal'
-import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
 
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import toast from 'react-hot-toast';
 
 import { useFormik } from 'formik';
 import { colorCollection } from '__mocks__/accounts';
-import { ICON_NAMES } from 'constants/constant'
+import { ICON_NAMES } from 'constants/constant';
 import ColorPicker from 'components/shared/ColorPicker';
 import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
@@ -38,13 +38,12 @@ const style = {
     p: 4,
     display: 'grid',
     gap: 4
-}
-
+};
 
 export default function CategoryCreateModal({ open, setOpen }) {
-    const [isExpense, setIsExpense] = useState(true)
-    const [selectedColor, setSelectedColor] = useState("");
-    const [selectedIcon, setSelectedIcon] = useState("");
+    const [isExpense, setIsExpense] = useState(true);
+    const [selectedColor, setSelectedColor] = useState('');
+    const [selectedIcon, setSelectedIcon] = useState('');
     const [showColorWheel, setShowColorWheel] = useState(false);
 
     const user = useAuthStore((state) => state.authState.user);
@@ -56,33 +55,36 @@ export default function CategoryCreateModal({ open, setOpen }) {
         categoryIcon: '',
         categoryColor: '',
         userId: user.uid
-    }
+    };
 
     const handleExpense = () => {
-        setIsExpense(!isExpense)
-    }
+        setIsExpense(!isExpense);
+    };
 
     const handleColorClick = (color) => {
         setSelectedColor(color);
-        formik.setFieldValue("categoryColor", color);
         setShowColorWheel(false);
+    };
+    const handleColorSelect = (color) => {
+        setSelectedColor(color.hex);
     };
 
     const handleIconClick = (icon) => {
         setSelectedIcon(icon);
-        formik.setFieldValue("categoryIcon", icon);
+        formik.setFieldValue('categoryIcon', icon);
     };
 
     const handleSubmit = (values) => {
         console.log(values);
         const loader = toast.loading('Creating Category');
         const currentType = isExpense ? 'expense' : 'income';
-        createCategory({ 
+        createCategory({
             category_name: values.categoryName,
             category_color: values.categoryColor,
             category_icon: values.categoryIcon,
-            user_id: values.userId, 
-            category_type: currentType,});
+            user_id: values.userId,
+            category_type: currentType
+        });
         formik.resetForm();
         setSelectedIcon('');
         setSelectedColor('');
@@ -91,7 +93,7 @@ export default function CategoryCreateModal({ open, setOpen }) {
         toast.success('Category successfully created!');
     };
 
-    const handleClose = () => setOpen(false)
+    const handleClose = () => setOpen(false);
 
     const formik = useFormik({
         initialValues,
@@ -112,17 +114,18 @@ export default function CategoryCreateModal({ open, setOpen }) {
                     </Typography>
                     <FormControl fullWidth onSubmit={formik.handleSubmit}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
-                            <TextField 
+                            <TextField
                                 id='filled-basic'
-                                label="Category Name"
+                                label='Category Name'
                                 variant='filled'
-                                name="categoryName"
+                                name='categoryName'
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 value={formik.values.categoryName}
-                                fullWidth />
+                                fullWidth
+                            />
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2}}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
                             <Typography variant='body1'>Income</Typography>
                             <Switch
                                 checked={isExpense}
@@ -136,10 +139,15 @@ export default function CategoryCreateModal({ open, setOpen }) {
                                 colorList={colorCollection}
                                 onColorPress={handleColorClick}
                                 selectedColor={selectedColor}
-                                setSelectedColor={setSelectedColor}
-                                onAddPress={() => setShowColorWheel(true)}
+                                setShowColorWheel={setShowColorWheel}
                             />
-                            {showColorWheel && <ColorPicker handleColorClick={handleColorClick} setShowColorWheel={setShowColorWheel} />}
+                            {showColorWheel && (
+                                <ColorPicker
+                                    handleColorSelect={handleColorSelect}
+                                    setShowColorWheel={setShowColorWheel}
+                                    selectedColor={selectedColor}
+                                />
+                            )}
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <IconOnlySelector
@@ -158,5 +166,5 @@ export default function CategoryCreateModal({ open, setOpen }) {
                 </Box>
             </Modal>
         </>
-    )
+    );
 }

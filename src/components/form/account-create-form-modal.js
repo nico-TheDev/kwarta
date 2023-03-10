@@ -50,7 +50,6 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         accountName: '',
         accountAmount: '',
         accountIcon: '',
-        accountColor: '',
         userId: user.uid
     };
 
@@ -69,13 +68,11 @@ export default function AccountCreateFormModal({ open, setOpen }) {
 
     const handleColorClick = (color) => {
         setSelectedColor(color);
-        formik.setFieldValue('accountColor', color);
         setShowColorWheel(false);
     };
 
     const handleColorSelect = (color) => {
         setSelectedColor(color.hex);
-        formik.setFieldValue('accountColor', color.hex);
     };
 
     const handleIconClick = (icon) => {
@@ -89,7 +86,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         createAccount({
             account_name: values.accountName,
             account_amount: values.accountAmount,
-            account_color: values.accountColor,
+            account_color: selectedColor,
             account_icon: values.accountIcon,
             user_id: values.userId
         });
