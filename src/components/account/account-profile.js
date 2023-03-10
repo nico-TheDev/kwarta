@@ -1,10 +1,10 @@
 import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, Typography } from '@mui/material'
-import { useAuthStore } from './../../stores/useAuthStore'
+import { useAuthStore } from 'stores/useAuthStore'
 import { getLanguage } from 'utils/getLanguage'
-
 
 export const AccountProfile = (props) => {
     const user = useAuthStore((state) => state.authState.user)
+
     return (
         <Card {...props}>
             <CardContent>

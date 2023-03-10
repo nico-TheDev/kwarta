@@ -66,12 +66,12 @@ const Register = () => {
     console.log(values);
     const loader = toast.loading('Registering User');
     addUser({ 
-        first_name: values.firstName,
-        last_name: values.lastName,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        displayName: values.firstName + "" + values.lastName,
         email: values.email,
         password: values.password,
-        profile_img: selectedFile.file
-    });
+    }, selectedFile.file);
     
     formik.resetForm();
     setSelectedFile(null);

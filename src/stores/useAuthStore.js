@@ -1,8 +1,13 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { v4 as uuidv4 } from 'uuid';
 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo } from 'firebase/auth'
+import { setDoc, doc } from 'firebase/firestore';
 import { auth } from '../../firebase.config'
+import { db, storage } from '../../firebase.config';
+import { deleteObject, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import toast from 'react-hot-toast';
 
 const AuthStore = (set, get) => ({
     authState: {
@@ -10,29 +15,29 @@ const AuthStore = (set, get) => ({
         isAuthenticated: false,
         isLoading: false
     },
-    addUser: async (newUser) => {
+    addUser: async (newUser, currentFile) => {
         try {
+            let fileUrl, fileRefName;
+            if (currentFile) {
+                fileRefName = `users/${uuidv4()}-${currentFile.name}`;
+                const imageRef = ref(storage, fileRefName);
+
+                const fileUpload = await uploadBytes(imageRef, currentFile);
+                fileUrl = await getDownloadURL(fileUpload.ref);
+                console.log('UPLOADED');
+            }
+
             const createdUserResponse = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password);   //creates user
-            await updateProfile(auth.currentUser, {
-                displayName: newUser.firstName + " " + newUser.lastName,    //updates displayName
-                photoURL: newUser.profile_img,                             //updates photoURL
-            });
-            await setDoc(doc(db, "users", createdUserResponse.user.uid), {      //sets document of user
-                uid: createdUserResponse.user.uid,                              //generated uid
-                first_name: newUser.firstName,                  //fetched data from firstName (RegisterScreen) will be stored here
-                last_name: newUser.lastName,                    //fetched data from lastName (RegisterScreen) will be stored here
-                email: newUser.email,                           //fetched data from email (RegisterScreen) will be stored here
-                profile_img: newUser.profile_img                //fetched data from profile_img (RegisterScreen) will be stored here
-            });
+            console.log(newUser);
             set({
                 authState: {
                     user: {
-                        name: createdUserResponse.user.displayName,
+                        name: newUser.displayName,
                         firstName: newUser.firstName,
                         lastName: newUser.lastName,
-                        email: createdUserResponse.user.email,
-                        photo: createdUserResponse.user.photoURL,
-                        uid: createdUserResponse.user.uid,
+                        email: newUser.email,
+                        photo: newUser.photoURL,
+                        uid: newUser.uid,
                     },
                     isAuthenticated: true,
                     isLoading: false
@@ -47,11 +52,12 @@ const AuthStore = (set, get) => ({
         try {
             const verifiedResponse = await signInWithEmailAndPassword(auth, login_user.email, login_user.password);     //checks if user is registered, email and password correct
             const verifiedUser = verifiedResponse.user;
-            // console.log(verifiedResponse);
             set({
                 authState: {
                     user: {
                         name: verifiedUser.displayName,
+                        firstName: verifiedUser.displayName.split("", 0),
+                        lastName: verifiedUser.displayName.split("", 1),
                         email: verifiedUser.email,
                         photo: verifiedUser.photoURL,
                         uid: verifiedUser.uid,
