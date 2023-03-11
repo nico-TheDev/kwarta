@@ -85,7 +85,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         const loader = toast.loading('Creating Account');
         createAccount({
             account_name: values.accountName,
-            account_amount: values.accountAmount,
+            account_amount: Number(values.accountAmount),
             account_color: selectedColor,
             account_icon: values.accountIcon,
             user_id: values.userId

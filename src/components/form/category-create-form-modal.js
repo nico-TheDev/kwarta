@@ -46,15 +46,14 @@ export default function CategoryCreateModal({ open, setOpen }) {
     const [selectedIcon, setSelectedIcon] = useState('');
     const [showColorWheel, setShowColorWheel] = useState(false);
 
-    const user = useAuthStore((state) => state.authState.user);
+    const user = useAuthStore((state) => state.authState?.user);
 
     const createCategory = useCategoryStore((state) => state.createCategory);
 
     const initialValues = {
         categoryName: '',
         categoryIcon: '',
-        categoryColor: '',
-        userId: user.uid
+        categoryColor: ''
     };
 
     const handleExpense = () => {
@@ -82,8 +81,8 @@ export default function CategoryCreateModal({ open, setOpen }) {
             category_name: values.categoryName,
             category_color: selectedColor,
             category_icon: values.categoryIcon,
-            user_id: values.userId,
-            category_type: currentType
+            category_type: currentType,
+            user_id: user?.uid
         });
         formik.resetForm();
         setSelectedIcon('');

@@ -118,18 +118,17 @@ export default function TransactionFormModal({ open, setOpen }) {
 
     const handleSubmit = async (values) => {
         console.log(values);
-        const loader = toast.loading('Creating Transaction');
         const currentType = isExpense ? 'expense' : 'income';
-        await createTransaction({ ...values, type: currentType, date, user_id }, selectedFile?.file);
+        await createTransaction(
+            { ...values, amount: Number(values.amount), type: currentType, date, user_id },
+            selectedFile?.file
+        );
         // RESET STATES
         formik.resetForm();
         setSelectedFile(null);
         setSelectedCategory('');
         setSelectedAccount('');
         setOpen(false);
-        // HANDLE TOAST
-        toast.dismiss(loader);
-        toast.success('Transaction successfully created!');
     };
 
     const formik = useFormik({

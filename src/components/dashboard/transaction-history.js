@@ -24,7 +24,6 @@ import { Icon } from 'components/shared/Icon';
 export const TransactionHistory = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
 
-    console.log('HISTORY', transactions);
     return (
         <Card {...props}>
             <CardHeader subtitle={`${transactions.length} in total`} title={getLanguage().historyTransactions} />

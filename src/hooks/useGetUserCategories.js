@@ -11,6 +11,7 @@ export default function useGetUserCategories(userID) {
     const setCategories = useCategoryStore((state) => state.setCategories);
 
     useEffect(() => {
+        if (!userID) return;
         const categoryColRef = collection(db, 'categories');
         const categoryQuery = query(categoryColRef, where('user_id', '==', userID));
 
