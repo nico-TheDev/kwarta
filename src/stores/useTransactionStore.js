@@ -13,7 +13,9 @@ const transactionStore = (set, get) => ({
     createTransaction: async (newTransaction, currentFile) => {
         const loader = toast.loading('Creating Transaction');
         try {
-            console.log('FIRST');
+            if (newTransaction.amount === '' || newTransaction.targetAccount === '' || newTransaction.category === '') {
+                throw new Error('Check the input fields');
+            }
             // console.log('CURRENT FILE: ', currentFile);
             const accountRef = doc(db, 'accounts', newTransaction.targetAccount.id);
             const currentAccount = await getDoc(accountRef);

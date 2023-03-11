@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
 
-export default function CommentInput({ formik, selectedFile, setSelectedFile }) {
+export default function CommentInput({ formik, selectedFile, setSelectedFile, isEditing = true, comments }) {
     const inputRef = useRef(null);
     const hasSelectedFile = useRef(null);
 
@@ -47,8 +47,10 @@ export default function CommentInput({ formik, selectedFile, setSelectedFile }) 
                 multiline
                 rows={4}
                 variant='outlined'
-                value={formik.values.comments}
+                value={formik?.values?.comments}
                 onChange={formik.handleChange}
+                disabled={!isEditing}
+                defaultValue={comments}
             />
             <Button
                 component='label'
@@ -63,6 +65,7 @@ export default function CommentInput({ formik, selectedFile, setSelectedFile }) 
                     alignItems: 'center',
                     position: 'relative'
                 }}
+                disabled={!isEditing}
             >
                 {selectedFile?.source ? (
                     <Box sx={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }}>
