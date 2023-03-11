@@ -33,9 +33,12 @@ export const TransactionHistory = (props) => {
                 {transactions.slice(0, 5).map((transaction, i) => (
                     <ListItem divider={i < transactions.length - 1} key={transaction.id}>
                         <ListItemAvatar>
-                            <Icon name={transaction.category?.icon} />
+                            <Icon name={transaction.category?.category_icon} />
                         </ListItemAvatar>
-                        <ListItemText primary={transaction.category.name} secondary={`₱ ${transaction.amount}`} />
+                        <ListItemText
+                            primary={transaction.category.category_name}
+                            secondary={`₱ ${transaction.amount}`}
+                        />
                         <IconButton edge='end' size='small'>
                             {transaction.type === 'expense' ? (
                                 <ArrowDownwardIcon color='error' />
