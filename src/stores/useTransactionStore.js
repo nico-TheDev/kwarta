@@ -67,6 +67,44 @@ const transactionStore = (set, get) => ({
         set({
             transactions: transactionList
         });
+    },
+    getExpenseList: (user_id) => {
+        const expenseList = get().transactions.filter((transaction) => transaction.type === 'expense');
+
+        const expenseCategoryList = expenseList.reduce((acc, currentExpense) => {
+            if (!acc.includes(currentExpense.category.category_name)) {
+                acc.push(currentExpense.category.category_name);
+            }
+            return acc;
+        }, []);
+
+        // create an initial data holder
+        const expenseDataList = expenseCategoryList.map((category) => {
+            const targetCategory = expenseList.find((item) => item.category.category_name === category);
+            return {
+                user_id,
+                amount: 0,
+                type: 'expense',
+                category_name: category,
+                transaction_icon: targetCategory.category.category_icon,
+                color: targetCategory.category.category_color,
+                transaction_color: targetCategory.category.category_color
+            };
+        });
+
+        // add the amount to the initial data
+        expenseList.forEach((item) => {
+            // find the data
+            const targetCategory = expenseDataList.find(
+                (currentData) => item.category.category_name === currentData.category_name
+            );
+
+            if (item.category.category_name === targetCategory.category_name) {
+                targetCategory.amount += item.amount;
+            }
+        });
+
+        return expenseDataList;
     }
 });
 

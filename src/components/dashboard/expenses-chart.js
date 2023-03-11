@@ -1,130 +1,140 @@
 import { Doughnut } from 'react-chartjs-2';
 import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
-import FoodIcon from '@mui/icons-material/FoodBank';
-import HealthIcon from '@mui/icons-material/HealthAndSafety';
-import GymIcon from '@mui/icons-material/SportsBar';
-import BillsIcon from '@mui/icons-material/ElectricBolt';
-import { getLanguage } from 'utils/getLanguage'
+import { getLanguage } from 'utils/getLanguage';
+import { useTransactionStore } from 'stores/useTransactionStore';
+import { useEffect, useState } from 'react';
+import { useAuthStore } from 'stores/useAuthStore';
+import { Icon } from '../../components/shared/Icon';
+import { formatPrice } from 'utils/format-price';
 
 export const ExpensesChart = (props) => {
-  const theme = useTheme();
+    const theme = useTheme();
+    const user = useAuthStore((state) => state.authState?.user);
+    const transactions = useTransactionStore((state) => state.transactions);
+    const [graphData, setGraphData] = useState('');
+    const [categoryList, setCategoryList] = useState('');
 
-  const data = {
-    datasets: [
-      {
-        data: [30, 15, 15, 40],
-        backgroundColor: ['#3F51B5', '#e53935', '#FB8C00', "#2ecc71"],
-        borderWidth: 8,
-        borderColor: '#FFFFFF',
-        hoverBorderColor: '#FFFFFF'
-      }
-    ],
-    labels: ['Food', 'Health', 'Gym', 'Bills']
-  };
+    const data = {
+        datasets: [
+            {
+                data: [30, 15, 15, 40],
+                backgroundColor: ['#3F51B5', '#e53935', '#FB8C00', '#2ecc71'],
+                borderWidth: 8,
+                borderColor: '#FFFFFF',
+                hoverBorderColor: '#FFFFFF'
+            }
+        ],
+        labels: ['Food', 'Health', 'Gym', 'Bills']
+    };
 
-  const options = {
-    animation: false,
-    cutoutPercentage: 80,
-    layout: { padding: 0 },
-    legend: {
-      display: false
-    },
-    maintainAspectRatio: false,
-    responsive: true,
-    tooltips: {
-      backgroundColor: theme.palette.background.paper,
-      bodyFontColor: theme.palette.text.secondary,
-      borderColor: theme.palette.divider,
-      borderWidth: 1,
-      enabled: true,
-      footerFontColor: theme.palette.text.secondary,
-      intersect: false,
-      mode: 'index',
-      titleFontColor: theme.palette.text.primary
-    }
-  };
+    const getExpenseList = useTransactionStore((state) => state.getExpenseList);
 
-  const devices = [
-    {
-      title: 'Food',
-      value: 30,
-      icon: FoodIcon,
-      color: '#3F51B5'
-    },
-    {
-      title: 'Health',
-      value: 15,
-      icon: HealthIcon,
-      color: '#E53935'
-    },
-    {
-      title: 'Gym',
-      value: 15,
-      icon: GymIcon,
-      color: '#FB8C00'
-    },
-    {
-      title: 'Bills',
-      value: 40,
-      icon: BillsIcon,
-      color: '#2ecc71'
-    }
-  ];
+    const options = {
+        animation: false,
+        cutoutPercentage: 80,
+        layout: { padding: 0 },
+        legend: {
+            display: false
+        },
+        maintainAspectRatio: false,
+        responsive: true,
+        tooltips: {
+            backgroundColor: theme.palette.background.paper,
+            bodyFontColor: theme.palette.text.secondary,
+            borderColor: theme.palette.divider,
+            borderWidth: 1,
+            enabled: true,
+            footerFontColor: theme.palette.text.secondary,
+            intersect: false,
+            mode: 'index',
+            titleFontColor: theme.palette.text.primary
+        }
+    };
 
-  return (
-    <Card {...props}>
-      <CardHeader title={getLanguage().expenses} />
-      <Divider />
-      <CardContent>
-        <Box
-          sx={{
-            height: 300,
-            position: 'relative'
-          }}
-        >
-          <Doughnut
-            data={data}
-            options={options}
-          />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            pt: 2
-          }}
-        >
-          {devices.map(({
-            color,
-            icon: Icon,
-            title,
-            value
-          }) => (
-            <Box
-              key={title}
-              sx={{
-                p: 1,
-                textAlign: 'center'
-              }}
-            >
-              <Icon color="action" />
-              <Typography
-                color="textPrimary"
-                variant="body1"
-              >
-                {title}
-              </Typography>
-              <Typography
-                style={{ color }}
-                variant="h5"
-              >
-                {value}
-                %
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-      </CardContent>
-    </Card>
-  );
+    useEffect(() => {
+        if (!user) return;
+
+        const expenseData = getExpenseList(user?.uid);
+
+        const data = {
+            datasets: [
+                {
+                    data: expenseData.map((item) => item.amount),
+                    backgroundColor: expenseData.map((item) => item.color),
+                    borderWidth: 8,
+                    borderColor: '#FFFFFF',
+                    hoverBorderColor: '#FFFFFF'
+                }
+            ],
+            labels: expenseData.map((item) => item.category_name)
+        };
+
+        const total = expenseData.map((item) => item.amount).reduce((acc, cur) => (acc += cur), 0);
+        console.log(total);
+
+        const list = expenseData.map((item) => {
+            return {
+                title: item.category_name,
+                value: (item.amount / total).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 }),
+                icon: item.transaction_icon,
+                color: item.color
+            };
+        });
+
+        console.log(list);
+
+        setGraphData(data);
+        setCategoryList(list);
+    }, [transactions]);
+
+    return (
+        <Card {...props}>
+            <CardHeader title={getLanguage().expenses} />
+            <Divider />
+            <CardContent>
+                <Box
+                    sx={{
+                        height: 300,
+                        position: 'relative'
+                    }}
+                >
+                    {graphData && <Doughnut data={graphData} options={options} />}
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'start',
+                        flexWrap: 'wrap',
+                        p: 2,
+                        gap: 1
+                    }}
+                >
+                    {categoryList.length !== 0 &&
+                        categoryList.map(({ color, title, value, icon }) => (
+                            <Box
+                                key={title}
+                                sx={{
+                                    color,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    textAlign: 'center',
+                                    width: '30%',
+                                    p: 1
+                                }}
+                            >
+                                <Icon name={icon} color='inherit' fontSize='large' />
+                                <Typography color='textPrimary' variant='caption'>
+                                    {title}
+                                </Typography>
+                                <Typography style={{ color }} variant='body1'>
+                                    {value}
+                                </Typography>
+                            </Box>
+                        ))}
+                </Box>
+            </CardContent>
+        </Card>
+    );
 };

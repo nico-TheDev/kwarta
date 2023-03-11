@@ -47,7 +47,7 @@ const Page = () => {
                         </Grid>
                         <Grid item xl={3} lg={3} sm={6} xs={12}>
                             {/* SAVINGS PANEL */}
-                            <Savings />
+                            {/* <Savings /> */}
                         </Grid>
                         <Grid item lg={8} md={12} xl={9} xs={12}>
                             {/* BAR CHART PANEl */}
@@ -61,10 +61,10 @@ const Page = () => {
                             {/* TRANSACTION HISTORY */}
                             <TransactionHistory sx={{ height: '100%' }} />
                         </Grid>
-                        <Grid item lg={8} md={12} xl={9} xs={12}>
-                            {/* SAVINGS CHARTS */}
-                            <SavingGoals />
-                        </Grid>
+                        {/* <Grid item lg={8} md={12} xl={9} xs={12}> */}
+                        {/* SAVINGS CHARTS */}
+                        {/* <SavingGoals /> */}
+                        {/* </Grid> */}
                     </Grid>
                 </Container>
             </Box>
