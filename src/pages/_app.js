@@ -12,6 +12,8 @@ import { registerChartJs } from '../utils/register-chart-js';
 import { theme } from '../theme';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useRouter } from 'next/router';
+import useAccountsListener from 'stores/useAccountsListener';
+import useGetUserCategories from 'hooks/useGetUserCategories';
 
 registerChartJs();
 
@@ -24,6 +26,10 @@ const App = (props) => {
     const getLayout = Component.getLayout ?? ((page) => page);
 
     const { user, isAuthenticated } = useAuthStore((state) => state.authState);
+    // ACCOUNTS LISTENER
+    useAccountsListener(user?.uid);
+    // CATEGORIES LISTENER
+    useGetUserCategories(user?.uid);
 
     // HANDLE USER AUTH IF THERE IS AN EXISTING USER , REDIRECT TO DASHBOARD
     useEffect(() => {

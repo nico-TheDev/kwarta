@@ -25,6 +25,9 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 import CommentInput from 'components/shared/CommentInput';
 import formatDate from 'utils/format-date';
 import { useAuthStore } from 'stores/useAuthStore';
+import { useAccountStore } from 'stores/useAccountStore';
+import { useCategoryStore } from 'stores/useCategoryStore';
+import useSortCategories from 'hooks/useSortCategories';
 
 const style = {
     position: 'absolute',
@@ -76,15 +79,22 @@ const accountList = [
     }
 ];
 
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: 150,
+            width: 250
+        }
+    }
+};
+
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
 export default function TransactionFormModal({ open, setOpen }) {
     // COMPONENT STATE
-    const [isExpense, setIsExpense] = useState(true);
     const [openAlert, setOpenAlert] = React.useState(false);
-    const [categoryList, setCategoryList] = useState([]);
 
     // FORM STATES
     const [date, setDate] = useState(formatDate(dayjs(new Date())));
@@ -94,18 +104,10 @@ export default function TransactionFormModal({ open, setOpen }) {
 
     // STORE
     const createTransaction = useTransactionStore((state) => state.createTransaction);
+    const accounts = useAccountStore((state) => state.accounts);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
-
-    useEffect(() => {
-        let currentList = [];
-        if (isExpense) {
-            currentList = iconList.filter((category) => category.type === 'expense');
-        } else {
-            currentList = iconList.filter((category) => category.type === 'income');
-        }
-        setCategoryList(currentList);
-        setSelectedCategory('');
-    }, [isExpense]);
+    const categories = useCategoryStore((state) => state.categories);
+    const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories(setSelectedCategory);
 
     const initialValues = {
         amount: '',
@@ -145,7 +147,7 @@ export default function TransactionFormModal({ open, setOpen }) {
 
     const handleCategoryChange = (e) => {
         const currentCategoryId = e.target.value;
-        const currentCategory = categoryList.find((category) => category.id === currentCategoryId);
+        const currentCategory = categoryData.find((category) => category.id === currentCategoryId);
 
         formik.setFieldValue('category', currentCategory);
 
@@ -154,15 +156,11 @@ export default function TransactionFormModal({ open, setOpen }) {
     };
     const handleAccountChange = (e) => {
         const currentAccountId = e.target.value;
-        const currentAccount = categoryList.find((account) => account.id === currentAccountId);
+        const currentAccount = accounts.find((account) => account.id === currentAccountId);
         formik.setFieldValue('targetAccount', currentAccount);
 
-        // console.log(currentAccount);
+        console.log(currentAccount);
         setSelectedAccount(e.target.value);
-    };
-
-    const handleExpense = () => {
-        setIsExpense(!isExpense);
     };
 
     const handleOpenAlert = () => {
@@ -232,8 +230,9 @@ export default function TransactionFormModal({ open, setOpen }) {
                                 onChange={handleAccountChange}
                                 sx={{ display: 'flex', alignItems: 'center' }}
                                 defaultValue=''
+                                MenuProps={MenuProps}
                             >
-                                {accountList.map((account) => {
+                                {accounts.map((account) => {
                                     return (
                                         <MenuItem key={account.id} value={account.id}>
                                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -257,15 +256,16 @@ export default function TransactionFormModal({ open, setOpen }) {
                                 label='Choose Category'
                                 defaultValue=''
                                 onChange={handleCategoryChange}
+                                MenuProps={MenuProps}
                             >
-                                {categoryList?.map((tag) => {
+                                {categoryData?.map((tag) => {
                                     return (
                                         <MenuItem key={tag.id} value={tag.id}>
                                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                 <ListItemIcon>
-                                                    <Icon name={tag.icon} />
+                                                    <Icon name={tag.category_icon} />
                                                 </ListItemIcon>
-                                                <ListItemText>{tag.name}</ListItemText>
+                                                <ListItemText>{tag.category_name}</ListItemText>
                                             </Box>
                                         </MenuItem>
                                     );

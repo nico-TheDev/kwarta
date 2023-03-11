@@ -95,6 +95,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         setSelectedColor('');
         toast.dismiss(loader);
         toast.success('Account successfully created!');
+        setOpen(false);
     };
 
     const handleClose = () => setOpen(false);

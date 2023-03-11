@@ -4,7 +4,7 @@ import { addDoc, collection, serverTimestamp, deleteDoc, doc, updateDoc, getDoc 
 
 import { db, storage } from '../../firebase.config';
 
-const categoryStore = (set,get) => ({
+const categoryStore = (set, get) => ({
     categories: [],
     reset: () => set({ categories: [] }),
     setCategories: (data) => set({ categories: data }),
@@ -24,12 +24,12 @@ const categoryStore = (set,get) => ({
     },
     updateCategory: () => {},
     deleteCategory: () => {},
-    incomeList: (userID) => {
-        return get().categories.filter(category => category.category_type === "income");
+    incomeList: () => {
+        return get().categories.filter((category) => category.category_type === 'income');
     },
-    expenseList: (userID) => {
-        return get().categories.filter(category => category.category_type === "expense");
-    },
+    expenseList: () => {
+        return get().categories.filter((category) => category.category_type === 'expense');
+    }
 });
 
 export const useCategoryStore = create(categoryStore);

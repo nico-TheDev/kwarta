@@ -1,22 +1,22 @@
-import { useRef, useState } from 'react'
-import PropTypes from 'prop-types'
-import { Avatar, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material'
-import { Clock as ClockIcon } from '../../icons/clock'
-import Button from '@mui/material/Button'
-import { theme } from 'theme'
-import { formatPrice } from 'utils/format-price'
+import { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Avatar, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
+import { Clock as ClockIcon } from '../../icons/clock';
+import Button from '@mui/material/Button';
+import { theme } from 'theme';
+import { formatPrice } from 'utils/format-price';
 
-import AccountEditFormModal from 'components/form/account-edit-form-modal'
+import AccountEditFormModal from 'components/form/account-edit-form-modal';
 import { Icon } from 'components/shared/Icon';
-import { ICON_NAMES } from 'constants/constant'
+import { ICON_NAMES } from 'constants/constant';
 
 export const AccountCard = ({ account, ...rest }) => {
-    const [openAccountEditModal, setOpenAccountEditModal] = useState(false)
-    const handleOpenAccountEditModal = () => setOpenAccountEditModal(true)
-
-    return(
+    const [openAccountEditModal, setOpenAccountEditModal] = useState(false);
+    const handleOpenAccountEditModal = () => setOpenAccountEditModal(true);
+    console.log(account);
+    return (
         <>
-            <AccountEditFormModal open={openAccountEditModal} setOpen={setOpenAccountEditModal}/>
+            <AccountEditFormModal open={openAccountEditModal} setOpen={setOpenAccountEditModal} />
             <Card
                 sx={{
                     display: 'flex',
@@ -33,7 +33,7 @@ export const AccountCard = ({ account, ...rest }) => {
                             mb: 2
                         }}
                     >
-                        <Icon name={account.account_icon} sx={{ fontSize: '100px', color:account.account_color }} />
+                        <Icon name={account.account_icon} sx={{ fontSize: '100px', color: account.account_color }} />
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 4 }}>
                         <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
@@ -77,9 +77,9 @@ export const AccountCard = ({ account, ...rest }) => {
                 </Box>
             </Card>
         </>
-    )
-}
+    );
+};
 
 AccountCard.propTypes = {
     product: PropTypes.object.isRequired
-}
+};

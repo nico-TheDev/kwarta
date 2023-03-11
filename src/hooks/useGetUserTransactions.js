@@ -5,9 +5,9 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 import { db } from '../../firebase.config';
 import { useAuthStore } from 'stores/useAuthStore';
 
-export default function useGetUserTransactions() {
+export default function useGetUserTransactions(userID) {
     const setTransactions = useTransactionStore((state) => state.setTransactions);
-    const userID = useAuthStore((state) => state.authState.user.uid);
+
     const transactionColRef = collection(db, 'transactions');
     const transactionQuery = query(transactionColRef, where('user_id', '==', userID), orderBy('timestamp', 'desc'));
 

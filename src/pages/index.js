@@ -10,10 +10,15 @@ import { Expenses } from '../components/dashboard/expenses';
 import { ExpensesChart } from '../components/dashboard/expenses-chart';
 import { DashboardLayout } from '../components/dashboard-layout';
 import useGetUserTransactions from 'hooks/useGetUserTransactions';
+import useAccountsListener from 'stores/useAccountsListener';
+import { useEffect } from 'react';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const Page = () => {
+    const user = useAuthStore((state) => state.authState?.user);
+    const userID = user?.uid || '';
     // GET USER TRANSACTIONS
-    useGetUserTransactions();
+    useGetUserTransactions(userID);
 
     return (
         <>

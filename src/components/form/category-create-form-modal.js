@@ -80,7 +80,7 @@ export default function CategoryCreateModal({ open, setOpen }) {
         const currentType = isExpense ? 'expense' : 'income';
         createCategory({
             category_name: values.categoryName,
-            category_color: values.categoryColor,
+            category_color: selectedColor,
             category_icon: values.categoryIcon,
             user_id: values.userId,
             category_type: currentType
@@ -91,6 +91,7 @@ export default function CategoryCreateModal({ open, setOpen }) {
 
         toast.dismiss(loader);
         toast.success('Category successfully created!');
+        setOpen(false);
     };
 
     const handleClose = () => setOpen(false);

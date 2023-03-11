@@ -1,7 +1,7 @@
-import { useState, forwardRef } from 'react'
+import { useState, forwardRef, useEffect } from 'react';
 import Head from 'next/head';
 import { Box, Container, Grid, Switch, Pagination } from '@mui/material';
-import Typography from '@mui/material/Typography'
+import Typography from '@mui/material/Typography';
 import { CategoriesHead } from '../components/categories/categories-head';
 import { CategoriesCard } from '../components/categories/categories-card';
 import { DashboardLayout } from '../components/dashboard-layout';
@@ -12,20 +12,12 @@ import { ICON_NAMES } from 'constants/constant';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useCategoryStore } from 'stores/useCategoryStore';
 import useGetUserCategories from 'hooks/useGetUserCategories';
+import useSortCategories from 'hooks/useSortCategories';
 
 const Page = () => {
-    const [isExpense, setIsExpense] = useState(true)
+    const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories();
 
-    const categories = useCategoryStore(state => state.categories);
-    useGetUserCategories(isExpense);
-
-    const handleExpense = () => {
-        setIsExpense(!isExpense)
-    }
-
-    console.log(isExpense)
-
-    return(
+    return (
         <>
             <Head>
                 <title>Categories | CASH</title>
@@ -39,20 +31,20 @@ const Page = () => {
             >
                 <Container maxWidth={false}>
                     <CategoriesHead />
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2}}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
                         <Typography variant='body1'>Income</Typography>
-                            <Switch
-                                checked={isExpense}
-                                onChange={handleExpense}
-                                inputProps={{ 'aria-label': 'controlled' }}
-                            />
+                        <Switch
+                            checked={isExpense}
+                            onChange={handleExpense}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
                         <Typography variant='body1'>Expense</Typography>
                     </Box>
                     <Box sx={{ pt: 3 }}>
                         <Grid container spacing={3}>
-                            {categories.map((categories) => (
-                                <Grid item key={categories.id} lg={4} md={6} xs={12}>
-                                    <CategoriesCard categories={categories} />
+                            {categoryData.map((category) => (
+                                <Grid item key={category.id} lg={3} md={6} xs={12}>
+                                    <CategoriesCard categories={category} />
                                 </Grid>
                             ))}
                         </Grid>
