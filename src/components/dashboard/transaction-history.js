@@ -31,7 +31,11 @@ export const TransactionHistory = (props) => {
             <List>
                 {transactions.slice(0, 5).map((transaction, i) => (
                     <Link
-                        href={{ pathname: `/transactions/[transactionId]`, query: { transactionId: transaction.id } }}
+                        href={{
+                            pathname: '/transactions/[transactionId]',
+                            query: { transactionId: transaction.id }
+                        }}
+                        key={transaction.id}
                     >
                         <ListItem
                             sx={{
@@ -42,7 +46,6 @@ export const TransactionHistory = (props) => {
                                 transition: '200ms'
                             }}
                             divider={i < transactions.length - 1}
-                            key={transaction.id}
                         >
                             <ListItemAvatar>
                                 <Icon name={transaction.category?.category_icon} />

@@ -63,8 +63,147 @@ const transactionStore = (set, get) => ({
             toast.dismiss(loader);
         }
     },
-    updateTransaction: () => {},
-    deleteTransaction: () => {},
+    updateTransaction: async (documentId, updatedTransaction, newFile) => {
+        const editLoader = toast.loading('Updating Transaction');
+        try {
+            const docRef = doc(db, 'transactions', documentId);
+            const currentTransactionResponse = await getDoc(docRef);
+            const currentTransaction = currentTransactionResponse.data();
+            let accountRef, originalAmount, updatedAmount, currentAccountResponse, currentAccount;
+            // SAME ACCOUNTS
+            console.log(currentTransaction);
+            if (currentTransaction.targetAccount.id === updatedTransaction.targetAccount.id) {
+                accountRef = doc(db, 'accounts', updatedTransaction.targetAccount.id);
+                currentAccountResponse = await getDoc(accountRef);
+                currentAccount = currentAccountResponse.data();
+                // RETURN THE ORIGINAL AMOUNT
+                if (currentTransaction.type === 'expense') {
+                    originalAmount = currentAccount.account_amount + currentTransaction.amount;
+                } else {
+                    originalAmount = currentAccount.account_amount - currentTransaction.amount;
+                }
+                // UPDATE THE ACCOUNT AMOUNT
+                if (updatedTransaction.type === 'expense') {
+                    updatedAmount = originalAmount - updatedTransaction.amount;
+                } else {
+                    updatedAmount = originalAmount + updatedTransaction.amount;
+                }
+
+                // UPDATE THE ACCOUNT DOCUMENT IN THE FIRESTORE
+                await updateDoc(accountRef, {
+                    account_amount: updatedAmount
+                });
+            } else {
+                const oldAccountRef = doc(db, 'accounts', currentTransaction.targetAccount.id);
+                const oldAccountResponse = await getDoc(oldAccountRef);
+                const oldAccount = oldAccountResponse.data();
+                // RESTORE MONEY TO THE OLD ACCOUNT
+                if (currentTransaction.type === 'expense') {
+                    originalAmount = oldAccount.account_amount + currentTransaction.amount;
+                } else {
+                    originalAmount = oldAccount.account_amount - currentTransaction.amount;
+                }
+                const newAccountRef = doc(db, 'accounts', updatedTransaction.target_account);
+                const newAccountResponse = await getDoc(newAccountRef);
+                const newAccount = newAccountResponse.data();
+                // SUBTRACT MONEY TO THE NEW ACCOUNT
+                if (updatedTransaction.type === 'expense') {
+                    updatedAmount = newAccount.account_amount - updatedTransaction.amount;
+                } else {
+                    updatedAmount = newAccount.account_amount + updatedTransaction.amount;
+                }
+                // UPDATE THE ACCOUNT DOCUMENT IN THE FIRESTORE
+                await updateDoc(oldAccountRef, {
+                    account_amount: originalAmount
+                });
+                await updateDoc(newAccountRef, {
+                    account_amount: updatedAmount
+                });
+            }
+
+            // UPDATE THE FILES
+            // UPLOAD IMAGE
+            const fileRef = ref(storage, currentTransaction.photoRef);
+            let fileUrl, fileRefName;
+            if (currentTransaction.photoUrl !== newFile?.source) {
+                if (currentTransaction.photoUrl !== '') {
+                    // DELETE THE OBJECT
+                    await deleteObject(fileRef);
+                }
+
+                if (newFile) {
+                    {
+                        fileRefName = `transactions/${uuidv4()}-${newFile.file.name}`;
+                        const imageRef = ref(storage, fileRefName);
+
+                        const fileUpload = await uploadBytes(imageRef, newFile.file);
+                        fileUrl = await getDownloadURL(fileUpload.ref);
+                        console.log('UPLOADED');
+                    }
+                }
+            }
+            // CREATE A REFERENCE TO THE DOCUMENT AND THE FILE
+            await updateDoc(docRef, {
+                ...updatedTransaction,
+                photoRef: fileRefName || currentTransaction.photoRef,
+                photoUrl: fileUrl || currentTransaction.photoUrl
+            });
+
+            toast.success('Updated Successfully.');
+
+            return true;
+        } catch (err) {
+            console.log('updateTransactionError:', err);
+            toast.error(err.message);
+
+            return false;
+        } finally {
+            toast.dismiss(editLoader);
+        }
+    },
+    deleteTransaction: async (documentId, fileReference) => {
+        console.log('Delete', documentId);
+        const deleteLoader = toast.loading('Deleting Transaction');
+        // CREATE A REFERENCE FOR THE DOCUMENT AND THE FILE
+        const docRef = doc(db, 'transactions', documentId);
+        const fileRef = ref(storage, fileReference);
+        try {
+            const currentTransactionResponse = await getDoc(docRef);
+            const currentTransaction = currentTransactionResponse.data();
+            const accountRef = doc(db, 'accounts', currentTransaction.targetAccount.id);
+            const currentAccountResponse = await getDoc(accountRef);
+            const currentAccount = currentAccountResponse.data();
+            if (currentAccount) {
+                // RETURN THE SUBTRACTED AMOUNT
+                if (currentTransaction.type === 'expense') {
+                    await updateDoc(accountRef, {
+                        account_amount: currentAccount.account_amount + currentTransaction.amount
+                    });
+                } else {
+                    // INCOME
+                    await updateDoc(accountRef, {
+                        account_amount: currentAccount.account_amount - currentTransaction.amount
+                    });
+                }
+            }
+
+            // DELETE THE DOCUMENT AND OBJECT
+            await deleteDoc(docRef);
+            if (fileReference) {
+                await deleteObject(fileRef);
+            }
+            // ALERT A MESSAGE
+
+            toast.success('Deleted Successfully!');
+
+            return true;
+        } catch (err) {
+            console.log('deleteTransactionError:', err);
+            toast.error(err.message);
+        } finally {
+            toast.dismiss(deleteLoader);
+        }
+    },
     setTransactions: (transactionList) => {
         set({
             transactions: transactionList

@@ -53,38 +53,38 @@ export const ExpensesChart = (props) => {
 
     useEffect(() => {
         if (!user) return;
+        else {
+            const expenseData = getExpenseList(user?.uid);
 
-        const expenseData = getExpenseList(user?.uid);
-
-        const data = {
-            datasets: [
-                {
-                    data: expenseData.map((item) => item.amount),
-                    backgroundColor: expenseData.map((item) => item.color),
-                    borderWidth: 8,
-                    borderColor: '#FFFFFF',
-                    hoverBorderColor: '#FFFFFF'
-                }
-            ],
-            labels: expenseData.map((item) => item.category_name)
-        };
-
-        const total = expenseData.map((item) => item.amount).reduce((acc, cur) => (acc += cur), 0);
-        console.log(total);
-
-        const list = expenseData.map((item) => {
-            return {
-                title: item.category_name,
-                value: (item.amount / total).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 2 }),
-                icon: item.transaction_icon,
-                color: item.color
+            const data = {
+                datasets: [
+                    {
+                        data: expenseData.map((item) => item.amount),
+                        backgroundColor: expenseData.map((item) => item.color),
+                        borderWidth: 8,
+                        borderColor: '#FFFFFF',
+                        hoverBorderColor: '#FFFFFF'
+                    }
+                ],
+                labels: expenseData.map((item) => item.category_name)
             };
-        });
 
-        console.log(list);
+            const total = expenseData.map((item) => item.amount).reduce((acc, cur) => (acc += cur), 0);
 
-        setGraphData(data);
-        setCategoryList(list);
+            const list = expenseData.map((item) => {
+                return {
+                    title: item.category_name,
+                    value: (item.amount / total).toLocaleString(undefined, {
+                        style: 'percent',
+                        minimumFractionDigits: 2
+                    }),
+                    icon: item.transaction_icon,
+                    color: item.color
+                };
+            });
+            setGraphData(data);
+            setCategoryList(list);
+        }
     }, [transactions]);
 
     return (

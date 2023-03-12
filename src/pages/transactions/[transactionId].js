@@ -58,7 +58,8 @@ const Page = () => {
     const [currentTransaction, setCurrentTransaction] = useState('');
 
     // STORE
-    const createTransaction = useTransactionStore((state) => state.createTransaction);
+    const updateTransaction = useTransactionStore((state) => state.updateTransaction);
+    const deleteTransaction = useTransactionStore((state) => state.deleteTransaction);
     const accounts = useAccountStore((state) => state.accounts);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
     const categories = useCategoryStore((state) => state.categories);
@@ -66,12 +67,24 @@ const Page = () => {
     const transactions = useTransactionStore((state) => state.transactions);
 
     const handleSubmit = async (values) => {
-        console.log(values);
         const currentType = isExpense ? 'expense' : 'income';
-        await createTransaction(
-            { ...values, amount: Number(values.amount), type: currentType, date, user_id },
-            selectedFile?.file
-        );
+
+        updateTransaction(
+            transactionId,
+            {
+                ...values,
+                amount: Number(values.amount),
+                type: currentType,
+                date,
+                user_id
+            },
+            selectedFile
+        ).then((success) => {
+            if (success) {
+                router.push('/');
+            }
+        });
+
         // RESET STATES
         formik.resetForm();
         setSelectedFile(null);
@@ -128,13 +141,21 @@ const Page = () => {
         setOpenAlert(false);
     };
 
+    const handleDelete = () => {
+        deleteTransaction(transactionId, currentTransaction?.photoRef || '').then((success) => {
+            if (success) {
+                router.push('/');
+            }
+        });
+    };
+
     useEffect(() => {
         // GET THEN VALUES OF THE TRANSACTION
         const current = transactions.find((item) => item.id === transactionId);
 
         // SET THE VALUE OF THE FIELDS
-        setIsExpense(current.type === 'expense');
-        setSelectedCategory(current.category);
+        const currentType = current?.type === 'expense';
+        setIsExpense(currentType);
         setSelectedAccount(current.targetAccount.id);
         setDate(current.date);
         setSelectedFile({
@@ -144,10 +165,15 @@ const Page = () => {
         setCurrentTransaction(current);
 
         formik.setFieldValue('amount', current.amount);
+        formik.setFieldValue('category', current.category);
+        formik.setFieldValue('targetAccount', current.targetAccount);
         formik.setFieldValue('comments', current.comments);
+
+        console.log(current.category);
+        setSelectedCategory(current.category);
     }, [transactionId]);
 
-    if (!currentTransaction)
+    if (!currentTransaction && !selectedCategory?.id)
         return (
             <Box
                 sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
@@ -192,7 +218,6 @@ const Page = () => {
                                 onChange={formik.handleChange}
                                 type='number'
                                 disabled={!isEditing}
-                                defaultValue={initialValues.amount}
                             />
                         </Box>
 
@@ -240,9 +265,8 @@ const Page = () => {
                                 <Select
                                     labelId='demo-simple-select-label'
                                     id='demo-simple-select'
-                                    value={selectedCategory.id}
+                                    value={selectedCategory ? selectedCategory.id : formik.values.category.id}
                                     label='Choose Category'
-                                    defaultValue={selectedCategory.id}
                                     onChange={handleCategoryChange}
                                     MenuProps={MenuProps}
                                     disabled={!isEditing}
@@ -282,15 +306,32 @@ const Page = () => {
                             selectedFile={selectedFile}
                             setSelectedFile={setSelectedFile}
                             isEditing={isEditing}
-                            comments={initialValues.comments}
                         />
+                        {/* DEFAULT MODE */}
                         <Box sx={{ display: 'flex', gap: 2 }}>
-                            <Button variant='contained' sx={{ flex: 1 }} onClick={() => setIsEditing(!isEditing)}>
-                                EDIT
-                            </Button>
-                            <Button variant='outlined' sx={{ flex: 1 }} onClick={formik.handleSubmit}>
-                                DELETE
-                            </Button>
+                            {!isEditing ? (
+                                <>
+                                    <Button
+                                        variant='contained'
+                                        sx={{ flex: 1 }}
+                                        onClick={() => setIsEditing(!isEditing)}
+                                    >
+                                        EDIT
+                                    </Button>
+                                    <Button variant='outlined' sx={{ flex: 1 }} onClick={handleDelete}>
+                                        DELETE
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button variant='contained' sx={{ flex: 1 }} onClick={formik.handleSubmit}>
+                                        SAVE
+                                    </Button>
+                                    <Button variant='outlined' sx={{ flex: 1 }} onClick={() => setIsEditing(false)}>
+                                        CANCEL
+                                    </Button>
+                                </>
+                            )}
                         </Box>
                     </Box>
                 </Container>
