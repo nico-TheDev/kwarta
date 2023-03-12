@@ -118,6 +118,7 @@ export default function TransactionFormModal({ open, setOpen }) {
 
     const handleSubmit = async (values) => {
         console.log(values);
+        setOpen(false);
         const currentType = isExpense ? 'expense' : 'income';
         await createTransaction(
             { ...values, amount: Number(values.amount), type: currentType, date, user_id },
@@ -128,7 +129,6 @@ export default function TransactionFormModal({ open, setOpen }) {
         setSelectedFile(null);
         setSelectedCategory('');
         setSelectedAccount('');
-        setOpen(false);
     };
 
     const formik = useFormik({
