@@ -24,6 +24,7 @@ import { colorCollection } from '__mocks__/accounts';
 import ColorPicker from 'components/shared/ColorPicker';
 import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
+import { ICON_NAMES } from 'constants/constant';
 
 import { useAccountStore } from 'stores/useAccountStore';
 import { useAuthStore } from 'stores/useAuthStore';
@@ -55,6 +56,7 @@ const Page = () => {
     const accounts = useAccountStore((state) => state.accounts);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
 
+    console.log(isEditing);
     const handleSubmit = async (values) => {
 
         updateAccount(
@@ -161,11 +163,11 @@ const Page = () => {
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
-                                id='filled-basic'
+                                id='account-name'
                                 label='Account Name'
                                 variant='filled'
                                 fullWidth
-                                name='name'
+                                name='account-name'
                                 value={formik.values.accountName}
                                 onChange={formik.handleChange}
                                 type='text'
@@ -175,11 +177,11 @@ const Page = () => {
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
-                                id='filled-basic'
+                                id='account-amount'
                                 label='Account Amount'
                                 variant='filled'
                                 fullWidth
-                                name='amount'
+                                name='account-amount'
                                 value={formik.values.accountAmount}
                                 onChange={formik.handleChange}
                                 type='number'

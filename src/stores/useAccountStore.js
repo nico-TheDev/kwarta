@@ -23,7 +23,7 @@ const accountStore = (set,get) => ({
             console.log('addAccountError:', err);
         }
     },
-    updateAccount: (documentId, updatedAccount) => {
+    updateAccount: async (documentId, updatedAccount) => {
         const editLoader = toast.loading('Updating Account');
         try {
             const docRef = doc(db, 'accounts', documentId);
@@ -48,7 +48,7 @@ const accountStore = (set,get) => ({
             toast.dismiss(editLoader);
         }
     },
-    deleteAccount: (documentId) => {
+    deleteAccount: async (documentId) => {
         console.log('Delete', documentId);
         const deleteLoader = toast.loading('Deleting Account');
         // CREATE A REFERENCE FOR THE DOCUMENT AND THE FILE

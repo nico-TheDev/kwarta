@@ -1,12 +1,12 @@
 import Head from 'next/head';
 import { Box, Container, Grid, Pagination } from '@mui/material';
 // import { accounts } from '../__mocks__/accounts'
-import { AccountHead } from '../components/accounts/account-head';
-import { AccountCard } from '../components/accounts/account-card';
-import { DashboardLayout } from '../components/dashboard-layout';
+
+import { AccountHead } from '../../components/accounts/account-head'
+import { AccountCard } from '../../components/accounts/account-card';
+import { DashboardLayout } from '../../components/dashboard-layout';
 
 import { useAccountStore } from 'stores/useAccountStore';
-import useAccountsListener from 'stores/useAccountsListener';
 
 const Page = () => {
     const accounts = useAccountStore((state) => state.accounts);

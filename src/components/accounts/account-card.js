@@ -5,18 +5,15 @@ import { Clock as ClockIcon } from '../../icons/clock';
 import Button from '@mui/material/Button';
 import { theme } from 'theme';
 import { formatPrice } from 'utils/format-price';
+import Link from 'next/link';
 
-import AccountEditFormModal from 'components/form/account-edit-form-modal';
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 
 export const AccountCard = ({ account, ...rest }) => {
-    const [openAccountEditModal, setOpenAccountEditModal] = useState(false);
-    const handleOpenAccountEditModal = () => setOpenAccountEditModal(true);
     console.log(account);
     return (
         <>
-            <AccountEditFormModal open={openAccountEditModal} setOpen={setOpenAccountEditModal} />
             <Card
                 sx={{
                     display: 'flex',
@@ -69,9 +66,18 @@ export const AccountCard = ({ account, ...rest }) => {
                                 display: 'flex'
                             }}
                         >
-                            <Button onClick={handleOpenAccountEditModal}>
+                        <Link
+                            href={{
+                                pathname: '/accounts/[accountId]',
+                                query: { accountId: account.id }
+                                }}
+                            key={account.id}
+                        >
+                            <Button>
                                 <Icon name={ICON_NAMES.SYSTEM_ICONS.EDIT} color='action' sx={{ fontSize: '20px' }} />
+                                
                             </Button>
+                        </Link>
                         </Grid>
                     </Grid>
                 </Box>
