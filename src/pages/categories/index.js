@@ -2,16 +2,10 @@ import { useState, forwardRef, useEffect } from 'react';
 import Head from 'next/head';
 import { Box, Container, Grid, Switch, Pagination } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { CategoriesHead } from '../components/categories/categories-head';
-import { CategoriesCard } from '../components/categories/categories-card';
-import { DashboardLayout } from '../components/dashboard-layout';
+import { CategoriesHead } from '../../components/categories/categories-head';
+import { CategoriesCard } from '../../components/categories/categories-card';
+import { DashboardLayout } from '../../components/dashboard-layout';
 
-import { Icon } from 'components/shared/Icon';
-import { ICON_NAMES } from 'constants/constant';
-
-import { useAuthStore } from 'stores/useAuthStore';
-import { useCategoryStore } from 'stores/useCategoryStore';
-import useGetUserCategories from 'hooks/useGetUserCategories';
 import useSortCategories from 'hooks/useSortCategories';
 
 const Page = () => {

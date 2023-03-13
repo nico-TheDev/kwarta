@@ -7,6 +7,15 @@ import {
     Box,
     Button,
     Container,
+    FormControl,
+    Grid,
+    InputLabel,
+    ListItemIcon,
+    ListItemText,
+    MenuItem,
+    Pagination,
+    Select,
+    Switch,
     TextField,
     Typography
 } from '@mui/material';
@@ -18,8 +27,9 @@ import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
 import { ICON_NAMES } from 'constants/constant';
 
-import { useAccountStore } from 'stores/useAccountStore';
+import { useCategoryStore } from 'stores/useCategoryStore';
 import { useAuthStore } from 'stores/useAuthStore';
+import useSortCategories from 'hooks/useSortCategories';
 
 const MenuProps = {
     PaperProps: {
@@ -32,30 +42,33 @@ const MenuProps = {
 
 const Page = () => {
     const router = useRouter();
-    const { accountId } = router.query;
+    const { categoryId } = router.query;
     // FORM STATES
     const [selectedColor, setSelectedColor] = useState('');
     const [selectedIcon, setSelectedIcon] = useState('');
     const [showColorWheel, setShowColorWheel] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     const [isEditing, setIsEditing] = useState(false);
-    const [currentAccount, setCurrentAccount] = useState('');
+    const [currentCategory, setCurrentCategory] = useState('');
 
     // STORE
-    const updateAccount = useAccountStore((state) => state.updateAccount);
-    const deleteAccount = useAccountStore((state) => state.deleteAccount);
-    const accounts = useAccountStore((state) => state.accounts);
+    const updateCategory = useCategoryStore((state) => state.updateCategory);
+    const deleteCategory = useCategoryStore((state) => state.deleteCategory);
+    const categories = useCategoryStore((state) => state.categories);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
+    const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories(setSelectedCategory);
 
     console.log(isEditing);
     const handleSubmit = async (values) => {
+        const currentType = isExpense ? 'expense' : 'income';
 
-        updateAccount(
-            accountId,
+        updateCategory(
+            categoryId,
             {
-                account_name: values.accountName,
-                account_amount: values.accountAmount,
-                account_color: selectedColor,
+                category_name: values.categoryName,
+                category_color: selectedColor,
+                category_type: currentType,
                 user_id
             },
         ).then((success) => {
@@ -82,13 +95,12 @@ const Page = () => {
 
     const handleIconClick = (icon) => {
         setSelectedIcon(icon);
-        formik.setFieldValue('accountIcon', icon);
+        formik.setFieldValue('categoryIcon', icon);
     };
 
     const initialValues = {
-        accountName: '',
-        accountAmount: '',
-        accountIcon: '',
+        categoryName: '',
+        categoryIcon: '',
     };
 
     const formik = useFormik({
@@ -97,7 +109,7 @@ const Page = () => {
     });
 
     const handleDelete = () => {
-        deleteAccount(accountId).then((success) => {
+        deleteCategory(categoryId).then((success) => {
             if (success) {
                 router.push('/');
             }
@@ -105,18 +117,18 @@ const Page = () => {
     };
 
     useEffect(() => {
-        const current = accounts.find((item) => item.id === accountId);
+        const current = categories.find((item) => item.id === categoryId);
 
-        setSelectedIcon(current.account_icon);
-        setSelectedColor(current.account_color);
+        const currentType = current?.type === 'expense';
+        setSelectedIcon(current.category_icon);
+        setSelectedColor(current.category_color);
 
-        setCurrentAccount(current);
+        setCurrentCategory(current);
 
-        formik.setFieldValue('accountAmount', current.account_amount);
-        formik.setFieldValue('accountName', current.account_name);
-    }, [accountId]);
+        formik.setFieldValue('categoryName', current.category_name);
+    }, [categoryId]);
 
-    if (!currentAccount)
+    if (!currentCategory)
         return (
             <Box
                 sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
@@ -128,7 +140,7 @@ const Page = () => {
     return (
         <>
             <Head>
-                <title>Accounts Detail | CASH</title>
+                <title>Categories Detail | CASH</title>
             </Head>
             <Box
                 component='main'
@@ -147,35 +159,31 @@ const Page = () => {
                         component='form'
                     >
                         <Typography id='modal-modal-title' variant='h6' component='h2'>
-                            Account Detail
+                            Category Detail
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
-                                id='account-name'
-                                label='Account Name'
+                                id='category-name'
+                                label='Category Name'
                                 variant='filled'
                                 fullWidth
-                                name='accountName'
-                                value={formik.values.accountName}
+                                name='categoryName'
+                                value={formik.values.categoryName}
                                 onChange={formik.handleChange}
                                 type='text'
                                 disabled={!isEditing}
                             />
                         </Box>
 
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                            <TextField
-                                id='account-amount'
-                                label='Account Amount'
-                                variant='filled'
-                                fullWidth
-                                name='accountAmount'
-                                value={formik.values.accountAmount}
-                                onChange={formik.handleChange}
-                                type='number'
-                                disabled={!isEditing}
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Typography variant='body1'>Income</Typography>
+                            <Switch
+                                checked={isExpense}
+                                onChange={handleExpense}
+                                inputProps={{ 'aria-label': 'controlled' }}
                             />
+                            <Typography variant='body1'>Expense</Typography>
                         </Box>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
@@ -196,7 +204,7 @@ const Page = () => {
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <IconOnlySelector
-                                iconData={Object.values(ICON_NAMES.ACCOUNT_ICONS)}
+                                iconData={Object.values(ICON_NAMES.CATEGORY_ICONS)}
                                 onIconClick={handleIconClick}
                                 selectedIcon={selectedIcon}
                                 setSelectedIcon={setSelectedIcon}
