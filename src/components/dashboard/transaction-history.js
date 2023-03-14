@@ -20,49 +20,23 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 import { Icon } from 'components/shared/Icon';
 import Link from 'next/link';
 import { grey } from '@mui/material/colors';
+import { useRouter } from 'next/router';
+import TransactionCard from 'components/shared/TransactionCard';
 
 export const TransactionHistory = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
+    const router = useRouter();
+    const handleClick = () => {
+        router.push('/transactions');
+    };
 
     return (
         <Card {...props}>
             <CardHeader subtitle={`${transactions.length} in total`} title={getLanguage().historyTransactions} />
             <Divider />
             <List>
-                {transactions.slice(0, 5).map((transaction, i) => (
-                    <Link
-                        href={{
-                            pathname: '/transactions/[transactionId]',
-                            query: { transactionId: transaction.id }
-                        }}
-                        key={transaction.id}
-                    >
-                        <ListItem
-                            sx={{
-                                '&:hover': {
-                                    background: grey[300]
-                                },
-                                cursor: 'pointer',
-                                transition: '200ms'
-                            }}
-                            divider={i < transactions.length - 1}
-                        >
-                            <ListItemAvatar>
-                                <Icon name={transaction.category?.category_icon} />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={transaction.category.category_name}
-                                secondary={`₱ ${transaction.amount}`}
-                            />
-                            <IconButton edge='end' size='small'>
-                                {transaction.type === 'expense' ? (
-                                    <ArrowDownwardIcon color='error' />
-                                ) : (
-                                    <ArrowUpwardIcon color='success' />
-                                )}
-                            </IconButton>
-                        </ListItem>
-                    </Link>
+                {transactions.slice(0, 5).map((transaction) => (
+                    <TransactionCard transaction={transaction} key={transaction.id} />
                 ))}
             </List>
             <Divider />
@@ -73,7 +47,7 @@ export const TransactionHistory = (props) => {
                     p: 2
                 }}
             >
-                <Button color='primary' endIcon={<ArrowRightIcon />} size='small' variant='text'>
+                <Button color='primary' endIcon={<ArrowRightIcon />} size='small' variant='text' onClick={handleClick}>
                     {getLanguage().overview}
                 </Button>
             </Box>
