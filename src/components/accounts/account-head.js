@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Box, Button, Card, CardContent, TextField, InputAdornment, SvgIcon, Typography } from '@mui/material'
 import { useTheme } from '@mui/material'
 import { getLanguage } from 'utils/getLanguage'
@@ -53,9 +54,11 @@ export const AccountHead = (props) => {
                         >
                             {getLanguage().addAccount}
                         </Button>
-                        <Button variant='outlined' startIcon={<Icon name={ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER} color='#FFFFFF' fontSize='small' />} sx={{ mr: 1 }}>
-                            {getLanguage().createTransfer}
-                        </Button>
+                        <Link href='/transfers' passHref>
+                            <Button variant='outlined' startIcon={<Icon name={ICON_NAMES.SYSTEM_ICONS.HISTORY} color='#FFFFFF' fontSize='small' />} sx={{ mr: 1 }}>
+                                Transfer History
+                            </Button>
+                        </Link>
                     </Box>
                 </Box>
                 <Box sx={{ mt: 3 }}>
