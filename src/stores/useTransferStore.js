@@ -10,6 +10,7 @@ import { db, storage } from '../../firebase.config';
 const transferStore = (set,get) => ({
     transfers: [],
     getTransfer: () => {},
+    setTransfers: (data) => set({ transfers: data }),
     createTransfer: async (newTransfer, currentFile) => {
         const loader = toast.loading('Creating Transfer');
         try {

@@ -27,13 +27,13 @@ export const TransferCard = ({ transfer, ...rest }) => {
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '15%', mb: 4 }}>
                             <Icon name={ICON_NAMES.SYSTEM_ICONS.SEND_MONEY} color='primary' fontSize='small' />
                             <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                {transfer.sender}
+                                {transfer.targetSenderAccount.account_name}
                             </Typography>
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '15%', mb: 4 }}>
                             <Icon name={ICON_NAMES.SYSTEM_ICONS.RECEIVE_MONEY} color='primary' fontSize='small' />
                             <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                {transfer.receiver}
+                                {transfer.targetReceiverAccount.account_name}
                             </Typography>
                         </Box>
                     </Box>
