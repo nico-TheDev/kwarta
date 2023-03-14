@@ -26,8 +26,7 @@ import CommentInput from 'components/shared/CommentInput';
 import formatDate from 'utils/format-date';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useAccountStore } from 'stores/useAccountStore';
-import { useCategoryStore } from 'stores/useCategoryStore';
-import useSortCategories from 'hooks/useSortCategories';
+import { useTransferStore } from 'stores/useTransferStore';
 
 const style = {
     position: 'absolute',
@@ -92,43 +91,40 @@ const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
-export default function TransactionFormModal({ open, setOpen }) {
+export default function TransferFormModal({ open, setOpen }) {
     // COMPONENT STATE
     const [openAlert, setOpenAlert] = React.useState(false);
 
     // FORM STATES
     const [date, setDate] = useState(formatDate(dayjs(new Date())));
-    const [selectedCategory, setSelectedCategory] = useState('');
-    const [selectedAccount, setSelectedAccount] = useState('');
+    const [selectedSenderAccount, setSelectedSenderAccount] = useState('');
+    const [selectedReceiverAccount, setSelectedReceiverAccount] = useState('');
     const [selectedFile, setSelectedFile] = useState('');
 
     // STORE
-    const createTransaction = useTransactionStore((state) => state.createTransaction);
+    const createTransfer = useTransferStore((state) => state.createTransfer);
     const accounts = useAccountStore((state) => state.accounts);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
-    const categories = useCategoryStore((state) => state.categories);
-    const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories(setSelectedCategory);
 
     const initialValues = {
         amount: '',
         comments: '',
-        targetAccount: '',
-        category: ''
+        targetSenderAccount: '',
+        targetReceiverAccount: '',
     };
 
     const handleSubmit = async (values) => {
         console.log(values);
         setOpen(false);
-        const currentType = isExpense ? 'expense' : 'income';
-        await createTransaction(
-            { ...values, amount: Number(values.amount), type: currentType, date, user_id },
+        await createTransfer(
+            { ...values, amount: Number(values.amount), date, user_id },
             selectedFile?.file
         );
         // RESET STATES
         formik.resetForm();
         setSelectedFile(null);
-        setSelectedCategory('');
-        setSelectedAccount('');
+        setSelectedSenderAccount('');
+        setSelectedReceiverAccount('');
     };
 
     const formik = useFormik({
@@ -144,22 +140,21 @@ export default function TransactionFormModal({ open, setOpen }) {
 
     const handleClose = () => setOpen(false);
 
-    const handleCategoryChange = (e) => {
-        const currentCategoryId = e.target.value;
-        const currentCategory = categoryData.find((category) => category.id === currentCategoryId);
+    const handleSenderAccountChange = (e) => {
+        const currentSenderAccountId = e.target.value;
+        const currentSenderAccount = accounts.find((account) => account.id === currentSenderAccountId);
+        formik.setFieldValue('targetSenderAccount', currentSenderAccount);
 
-        formik.setFieldValue('category', currentCategory);
-
-        // console.log(currentCategory);
-        setSelectedCategory(e.target.value);
+        console.log(currentSenderAccount);
+        setSelectedSenderAccount(e.target.value);
     };
-    const handleAccountChange = (e) => {
-        const currentAccountId = e.target.value;
-        const currentAccount = accounts.find((account) => account.id === currentAccountId);
-        formik.setFieldValue('targetAccount', currentAccount);
+    const handleReceiverAccountChange = (e) => {
+        const currentReceiverAccountId = e.target.value;
+        const currentReceiverAccount = accounts.find((account) => account.id === currentReceiverAccountId);
+        formik.setFieldValue('targetReceiverAccount', currentReceiverAccount);
 
-        console.log(currentAccount);
-        setSelectedAccount(e.target.value);
+        console.log(currentReceiverAccount);
+        setSelectedReceiverAccount(e.target.value);
     };
 
     const handleOpenAlert = () => {
@@ -207,26 +202,45 @@ export default function TransactionFormModal({ open, setOpen }) {
                         />
                     </Box>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography variant='body1'>Income</Typography>
-                        <Switch
-                            checked={isExpense}
-                            onChange={handleExpense}
-                            inputProps={{ 'aria-label': 'controlled' }}
-                        />
-                        <Typography variant='body1'>Expense</Typography>
-                    </Box>
-
-                    {/* ACCOUNT DROPDOWN */}
+                    {/* SENDER ACCOUNT DROPDOWN */}
                     <Box sx={{ display: 'grid', gap: 2 }}>
                         <FormControl fullWidth>
                             <InputLabel id='demo-simple-select-label'>Choose Sender Account</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
-                                value={selectedAccount}
-                                label='Choose Account'
-                                onChange={handleAccountChange}
+                                value={selectedSenderAccount}
+                                label='Choose Sender Account'
+                                onChange={handleSenderAccountChange}
+                                sx={{ display: 'flex', alignItems: 'center' }}
+                                defaultValue=''
+                                MenuProps={MenuProps}
+                            >
+                                {accounts.map((account) => {
+                                    return (
+                                        <MenuItem key={account.id} value={account.id}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                <ListItemIcon>
+                                                    <Icon name={account.account_icon} />
+                                                </ListItemIcon>
+                                                <ListItemText>{account.account_name}</ListItemText>
+                                            </Box>
+                                        </MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Box>
+                    {/* RECEIVER ACCOUNT DROPDOWN */}
+                    <Box sx={{ display: 'grid', gap: 2 }}>
+                        <FormControl fullWidth>
+                            <InputLabel id='demo-simple-select-label'>Choose Receiver Account</InputLabel>
+                            <Select
+                                labelId='demo-simple-select-label'
+                                id='demo-simple-select'
+                                value={selectedReceiverAccount}
+                                label='Choose Receiver Account'
+                                onChange={handleReceiverAccountChange}
                                 sx={{ display: 'flex', alignItems: 'center' }}
                                 defaultValue=''
                                 MenuProps={MenuProps}

@@ -4,7 +4,7 @@ import { useTheme } from '@mui/material'
 import { getLanguage } from 'utils/getLanguage'
 import { formatPrice } from 'utils/format-price'
 
-import AccountCreateFormModal from 'components/form/account-create-form-modal'
+import TransferFormModal from 'components/form/transfer-create-form-modal'
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant'
 
@@ -16,11 +16,11 @@ export const TransferHead = (props) => {
     const accounts = useAccountStore(state => state.accounts);
     const [total, setTotal] = useState(0);
 
-    const [openAccountCreateModal, setOpenAccountCreateModal] = useState(false);
-    const handleOpenAccountCreateModal = () => setOpenAccountCreateModal(true);
+    const [openTransferModal, setOpenTransferModal] = useState(false);
+    const handleOpenTransferModal = () => setOpenTransferModal(true);
     return (
         <>
-            <AccountCreateFormModal open={openAccountCreateModal} setOpen={setOpenAccountCreateModal} />
+            <TransferFormModal open={openTransferModal} setOpen={setOpenTransferModal} />
             <Box {...props}>
                 <Box
                     sx={{
@@ -35,7 +35,14 @@ export const TransferHead = (props) => {
                         Transfer
                     </Typography>
                     <Box sx={{ m: 1 }}>
-                        <Button variant='outlined' startIcon={<Icon name={ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER} color='#FFFFFF' fontSize='small' />} sx={{ mr: 1 }}>
+                        <Button
+                            variant='outlined'
+                            startIcon={<Icon name={ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER}
+                            color='#FFFFFF'
+                            fontSize='small' />}
+                            sx={{ mr: 1 }}
+                            onClick={handleOpenTransferModal}
+                        >
                             {getLanguage().createTransfer}
                         </Button>
                     </Box>
