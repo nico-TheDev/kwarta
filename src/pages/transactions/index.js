@@ -216,7 +216,7 @@ const Page = () => {
             >
                 <Container maxWidth='md'>
                     <Typography variant='h3' mb={4}>
-                        Transaction List
+                        Transaction Overview
                     </Typography>
                     <Typography variant='h4' align='center' mb={4}>
                         {formatPrice(total, true)}
@@ -244,6 +244,7 @@ const Page = () => {
                                 onChange={handleCategoryChange}
                                 MenuProps={MenuProps}
                             >
+                                <MenuItem value='all'>All</MenuItem>
                                 {categoryData?.map((tag) => {
                                     return (
                                         <MenuItem key={tag.id} value={tag.id}>
@@ -256,8 +257,6 @@ const Page = () => {
                                         </MenuItem>
                                     );
                                 })}
-
-                                <MenuItem value='all'>All</MenuItem>
                             </Select>
                         </FormControl>
 
@@ -270,6 +269,7 @@ const Page = () => {
                                 label='filterAccount'
                                 onChange={handleAccountChange}
                             >
+                                <MenuItem value='all'>All</MenuItem>
                                 {accounts.map((account) => {
                                     return (
                                         <MenuItem key={account.id} value={account.id}>
@@ -282,7 +282,6 @@ const Page = () => {
                                         </MenuItem>
                                     );
                                 })}
-                                <MenuItem value='all'>All</MenuItem>
                             </Select>
                         </FormControl>
                         <FormControl fullWidth>
