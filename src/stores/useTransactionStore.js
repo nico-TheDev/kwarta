@@ -246,6 +246,44 @@ const transactionStore = (set, get) => ({
         });
 
         return expenseDataList;
+    },
+    getIncomeList: (user_id) => {
+        const incomeList = get().transactions.filter((transaction) => transaction.type === 'income');
+
+        const incomeCategoryList = incomeList.reduce((acc, currentIncome) => {
+            if (!acc.includes(currentIncome.category.category_name)) {
+                acc.push(currentIncome.category.category_name);
+            }
+            return acc;
+        }, []);
+
+        // create an initial data holder
+        const incomeDataList = incomeCategoryList.map((category) => {
+            const targetCategory = incomeList.find((item) => item.category.category_name === category);
+            return {
+                user_id,
+                amount: 0,
+                type: 'income',
+                category_name: category,
+                transaction_icon: targetCategory.category.category_icon,
+                color: targetCategory.category.category_color,
+                transaction_color: targetCategory.category.category_color
+            };
+        });
+
+        // add the amount to the initial data
+        incomeList.forEach((item) => {
+            // find the data
+            const targetCategory = incomeDataList.find(
+                (currentData) => item.category.category_name === currentData.category_name
+            );
+
+            if (item.category.category_name === targetCategory.category_name) {
+                targetCategory.amount += item.amount;
+            }
+        });
+
+        return incomeDataList;
     }
 });
 

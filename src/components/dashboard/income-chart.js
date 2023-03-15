@@ -7,14 +7,14 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { Icon } from '../../components/shared/Icon';
 import { formatPrice } from 'utils/format-price';
 
-export const ExpensesChart = (props) => {
+export const IncomeChart = (props) => {
     const theme = useTheme();
     const user = useAuthStore((state) => state.authState?.user);
     const transactions = useTransactionStore((state) => state.transactions);
     const [graphData, setGraphData] = useState('');
     const [categoryList, setCategoryList] = useState('');
 
-    const getExpenseList = useTransactionStore((state) => state.getExpenseList);
+    const getIncomeList = useTransactionStore((state) => state.getIncomeList);
 
     const options = {
         animation: false,
@@ -41,24 +41,24 @@ export const ExpensesChart = (props) => {
     useEffect(() => {
         if (!user) return;
         else {
-            const expenseData = getExpenseList(user?.uid);
+            const incomeData = getIncomeList(user?.uid);
 
             const data = {
                 datasets: [
                     {
-                        data: expenseData.map((item) => item.amount),
-                        backgroundColor: expenseData.map((item) => item.color),
+                        data: incomeData.map((item) => item.amount),
+                        backgroundColor: incomeData.map((item) => item.color),
                         borderWidth: 8,
                         borderColor: '#FFFFFF',
                         hoverBorderColor: '#FFFFFF'
                     }
                 ],
-                labels: expenseData.map((item) => item.category_name)
+                labels: incomeData.map((item) => item.category_name)
             };
 
-            const total = expenseData.map((item) => item.amount).reduce((acc, cur) => (acc += cur), 0);
+            const total = incomeData.map((item) => item.amount).reduce((acc, cur) => (acc += cur), 0);
 
-            const list = expenseData.map((item) => {
+            const list = incomeData.map((item) => {
                 return {
                     title: item.category_name,
                     value: (item.amount / total).toLocaleString(undefined, {
@@ -76,7 +76,7 @@ export const ExpensesChart = (props) => {
 
     return (
         <Card {...props}>
-            <CardHeader title={getLanguage().expenses} />
+            <CardHeader title={getLanguage().income} />
             <Divider />
             <CardContent>
                 <Box

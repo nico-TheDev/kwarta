@@ -179,14 +179,7 @@ export const Cashflow = (props) => {
 
     return (
         <Card {...props}>
-            <CardHeader
-                action={
-                    <Button endIcon={<ArrowDropDownIcon fontSize='small' />} size='small'>
-                        {getLanguage().last7Days}
-                    </Button>
-                }
-                title={getLanguage().cashflow}
-            />
+            <CardHeader title={getLanguage().cashflow} />
             <Divider />
             <CardContent>
                 <Box
