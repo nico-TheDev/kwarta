@@ -89,9 +89,9 @@ const transferStore = (set,get) => ({
             toast.dismiss(editLoader);
         }
     },
-    deleteTransaction: async (documentId, fileReference) => {
+    deleteTransfer: async (documentId, fileReference) => {
         console.log('Delete', documentId);
-        const deleteLoader = toast.loading('Deleting Transaction');
+        const deleteLoader = toast.loading('Deleting Transfer');
         // CREATE A REFERENCE FOR THE DOCUMENT AND THE FILE
         const docRef = doc(db, 'transfer', documentId);
         const fileRef = ref(storage, fileReference);

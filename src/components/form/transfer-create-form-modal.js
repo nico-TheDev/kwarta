@@ -44,40 +44,6 @@ const style = {
     gap: 4
 };
 
-const iconList = [
-    { id: 1, name: 'Vacation', icon: ICON_NAMES.CATEGORY_ICONS.AIRLINE_FARE, type: 'expense' },
-    { id: 2, name: 'Biking', icon: ICON_NAMES.CATEGORY_ICONS.BICYCLE, type: 'expense' },
-    { id: 3, name: 'Transportation', icon: ICON_NAMES.CATEGORY_ICONS.BUSFARE, type: 'expense' },
-    { id: 4, name: 'Business', icon: ICON_NAMES.CATEGORY_ICONS.BUSINESS, type: 'expense' },
-    { id: 5, name: 'FullTime Job', icon: ICON_NAMES.CATEGORY_ICONS.FULLTIME_JOB, type: 'income' },
-    { id: 6, name: 'Part Time Job', icon: ICON_NAMES.CATEGORY_ICONS.GIFT, type: 'income' },
-    { id: 7, name: 'Freelance', icon: ICON_NAMES.CATEGORY_ICONS.FREELANCE_JOB, type: 'income' },
-    { id: 8, name: 'Gigs', icon: ICON_NAMES.CATEGORY_ICONS.SUBSCRIPTIONS, type: 'income' }
-];
-const accountList = [
-    {
-        id: 1,
-        account_name: 'Wallet',
-        account_amount: 100,
-        account_color: '#eeff00',
-        account_icon: ICON_NAMES.ACCOUNT_ICONS.BANK
-    },
-    {
-        id: 2,
-        account_name: 'BPI',
-        account_amount: 500,
-        account_color: '#eeff00',
-        account_icon: ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD
-    },
-    {
-        id: 3,
-        account_name: 'GCash',
-        account_amount: 200,
-        account_color: '#eeff00',
-        account_icon: ICON_NAMES.ACCOUNT_ICONS.WALLET
-    }
-];
-
 const MenuProps = {
     PaperProps: {
         style: {

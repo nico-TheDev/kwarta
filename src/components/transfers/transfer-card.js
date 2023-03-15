@@ -65,9 +65,9 @@ export const TransferCard = ({ transfer, ...rest }) => {
                                 display: 'flex'
                             }}
                         >
-                        {/* <Link
+                        <Link
                             href={{
-                                pathname: '/transfers/[trasnferId]',
+                                pathname: '/transfers/[transferId]',
                                 query: { transferId: transfer.id }
                                 }}
                             key={transfer.id}
@@ -75,7 +75,7 @@ export const TransferCard = ({ transfer, ...rest }) => {
                             <Button>
                                 <Icon name={ICON_NAMES.SYSTEM_ICONS.EDIT} color='action' sx={{ fontSize: '20px' }} />
                             </Button>
-                        </Link> */}
+                        </Link>
                         </Grid>
                     </Grid>
                 </Box>
