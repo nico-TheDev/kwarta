@@ -1,12 +1,7 @@
 import PropTypes from 'prop-types';
 import { Avatar, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
-import { Clock as ClockIcon } from '../../icons/clock';
-import { Download as DownloadIcon } from '../../icons/download';
-import WalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import BankIcon from '@mui/icons-material/AccountBalance';
-import PaidIcon from '@mui/icons-material/Paid';
-import { theme } from 'theme';
-import { formatPrice } from 'utils/format-price';
+import Link from 'next/link';
+
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 
@@ -42,9 +37,17 @@ export const CategoriesCard = ({ categories, ...rest }) => (
             </Box>
         </CardContent>
 
-        <Box sx={{ position: 'absolute', top: 20, right: 20, cursor: 'pointer' }}>
-            <Icon name={ICON_NAMES.SYSTEM_ICONS.EDIT} color='action' sx={{ fontSize: '25px' }} />
-        </Box>
+        <Link
+            href={{
+                pathname: '/categories/[categoryId]',
+                query: { categoryId: categories.id }
+            }}
+            key={categories.id}
+        >
+            <Box sx={{ position: 'absolute', top: 20, right: 20, cursor: 'pointer' }}>
+                <Icon name={ICON_NAMES.SYSTEM_ICONS.EDIT} color='action' sx={{ fontSize: '25px' }} />
+            </Box>
+        </Link>
     </Card>
 );
 

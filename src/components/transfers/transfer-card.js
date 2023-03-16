@@ -10,8 +10,8 @@ import Link from 'next/link';
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 
-export const AccountCard = ({ account, ...rest }) => {
-    console.log(account);
+export const TransferCard = ({ transfer, ...rest }) => {
+    console.log(transfer);
     return (
         <>
             <Card
@@ -22,27 +22,26 @@ export const AccountCard = ({ account, ...rest }) => {
                 }}
                 {...rest}
             >
-                <CardContent>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            mb: 2
-                        }}
-                    >
-                        <Icon name={account.account_icon} sx={{ fontSize: '100px', color: account.account_color }} />
+                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 4 }}>
+                    <Box sx={{ width: '100%', mb: 4 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '15%', mb: 4 }}>
+                            <Icon name={ICON_NAMES.SYSTEM_ICONS.SEND_MONEY} color='primary' fontSize='small' />
+                            <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                {transfer.targetSenderAccount.account_name}
+                            </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '15%', mb: 4 }}>
+                            <Icon name={ICON_NAMES.SYSTEM_ICONS.RECEIVE_MONEY} color='primary' fontSize='small' />
+                            <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                {transfer.targetReceiverAccount.account_name}
+                            </Typography>
+                        </Box>
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 4 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
                         <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                            {account.account_name}
-                        </Typography>
-                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                            {formatPrice(account.account_amount)}
+                            {transfer.amount}
                         </Typography>
                     </Box>
-                    <Typography align='center' color='textPrimary' variant='body1'>
-                        {account.description}
-                    </Typography>
                 </CardContent>
                 <Divider />
                 <Box sx={{ p: 2 }}>
@@ -68,14 +67,13 @@ export const AccountCard = ({ account, ...rest }) => {
                         >
                         <Link
                             href={{
-                                pathname: '/accounts/[accountId]',
-                                query: { accountId: account.id }
+                                pathname: '/transfers/[transferId]',
+                                query: { transferId: transfer.id }
                                 }}
-                            key={account.id}
+                            key={transfer.id}
                         >
                             <Button>
                                 <Icon name={ICON_NAMES.SYSTEM_ICONS.EDIT} color='action' sx={{ fontSize: '20px' }} />
-                                
                             </Button>
                         </Link>
                         </Grid>
@@ -86,6 +84,6 @@ export const AccountCard = ({ account, ...rest }) => {
     );
 };
 
-AccountCard.propTypes = {
+TransferCard.propTypes = {
     product: PropTypes.object.isRequired
 };
