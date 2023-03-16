@@ -63,11 +63,13 @@ const Page = () => {
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
 
     const handleSubmit = async (values) => {
-
         updateTransfer(
             transferId,
             {
-                ...values, amount: Number(values.amount), date, user_id
+                ...values,
+                amount: Number(values.amount),
+                date,
+                user_id
             },
             selectedFile?.file
         ).then((success) => {
@@ -88,7 +90,7 @@ const Page = () => {
         amount: '',
         comments: '',
         targetSenderAccount: '',
-        targetReceiverAccount: '',
+        targetReceiverAccount: ''
     };
 
     const formik = useFormik({
@@ -145,8 +147,8 @@ const Page = () => {
         const current = transfers.find((item) => item.id === transferId);
 
         // SET THE VALUE OF THE FIELDS
-        setSelectedSenderAccount(current.targetReceiverAccount.id)
-        setSelectedReceiverAccount(current.targetSenderAccount.id)
+        setSelectedSenderAccount(current.targetReceiverAccount.id);
+        setSelectedReceiverAccount(current.targetSenderAccount.id);
         setDate(current.date);
         setSelectedFile({
             source: current.photoUrl
@@ -156,7 +158,6 @@ const Page = () => {
 
         formik.setFieldValue('amount', current.amount);
         formik.setFieldValue('comments', current.comments);
-
     }, [transferId]);
 
     if (!currentTransfer)
@@ -207,7 +208,7 @@ const Page = () => {
                             />
                         </Box>
 
-                       {/* SENDER ACCOUNT DROPDOWN */}
+                        {/* SENDER ACCOUNT DROPDOWN */}
                         <Box sx={{ display: 'grid', gap: 2 }}>
                             <FormControl fullWidth>
                                 <InputLabel id='demo-simple-select-label'>Choose Sender Account</InputLabel>

@@ -151,26 +151,28 @@ const Page = () => {
 
     useEffect(() => {
         // GET THEN VALUES OF THE TRANSACTION
+
+        console.log(router.pathname);
         const current = transactions.find((item) => item.id === transactionId);
 
         // SET THE VALUE OF THE FIELDS
         const currentType = current?.type === 'expense';
         setIsExpense(currentType);
-        setSelectedAccount(current.targetAccount.id);
-        setDate(current.date);
+        setSelectedAccount(current?.targetAccount.id);
+        setDate(current?.date);
         setSelectedFile({
-            source: current.photoUrl
+            source: current?.photoUrl
         });
 
         setCurrentTransaction(current);
 
-        formik.setFieldValue('amount', current.amount);
-        formik.setFieldValue('category', current.category);
-        formik.setFieldValue('targetAccount', current.targetAccount);
-        formik.setFieldValue('comments', current.comments);
+        formik.setFieldValue('amount', current?.amount);
+        formik.setFieldValue('category', current?.category);
+        formik.setFieldValue('targetAccount', current?.targetAccount);
+        formik.setFieldValue('comments', current?.comments);
 
-        console.log(current.category);
-        setSelectedCategory(current.category);
+        // console.log(current.category);
+        setSelectedCategory(current?.category);
     }, [transactionId]);
 
     if (!currentTransaction && !selectedCategory?.id)

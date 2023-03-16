@@ -11,7 +11,7 @@ import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 
 export const AccountCard = ({ account, ...rest }) => {
-    console.log(account);
+    // console.log(account);
     return (
         <>
             <Card
@@ -66,18 +66,21 @@ export const AccountCard = ({ account, ...rest }) => {
                                 display: 'flex'
                             }}
                         >
-                        <Link
-                            href={{
-                                pathname: '/accounts/[accountId]',
-                                query: { accountId: account.id }
+                            <Link
+                                href={{
+                                    pathname: '/accounts/[accountId]',
+                                    query: { accountId: account.id }
                                 }}
-                            key={account.id}
-                        >
-                            <Button>
-                                <Icon name={ICON_NAMES.SYSTEM_ICONS.EDIT} color='action' sx={{ fontSize: '20px' }} />
-                                
-                            </Button>
-                        </Link>
+                                key={account.id}
+                            >
+                                <Button>
+                                    <Icon
+                                        name={ICON_NAMES.SYSTEM_ICONS.EDIT}
+                                        color='action'
+                                        sx={{ fontSize: '20px' }}
+                                    />
+                                </Button>
+                            </Link>
                         </Grid>
                     </Grid>
                 </Box>

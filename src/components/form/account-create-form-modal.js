@@ -50,7 +50,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         accountName: '',
         accountAmount: '',
         accountIcon: '',
-        userId: user.uid
+        userId: user?.uid
     };
 
     const handleOpenAlert = () => {

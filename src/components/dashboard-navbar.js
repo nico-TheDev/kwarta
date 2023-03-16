@@ -1,17 +1,15 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
-import { Bell as BellIcon } from '../icons/bell';
-import { UserCircle as UserCircleIcon } from '../icons/user-circle';
-import { Users as UsersIcon } from '../icons/users';
 import { AccountPopover } from './account-popover';
 import { useAuthStore } from 'stores/useAuthStore';
 import { getLanguage } from 'utils/getLanguage';
 import TransactionFormModal from './form/transaction-form-modal';
+import { useRouter } from 'next/router';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -22,8 +20,10 @@ export const DashboardNavbar = (props) => {
     const { onSidebarOpen, ...other } = props;
     const settingsRef = useRef(null);
     const [openAccountPopover, setOpenAccountPopover] = useState(false);
-    const user = useAuthStore((state) => state.authState.user);
+    const user = useAuthStore((state) => state.authState?.user);
     const [openTransactionModal, setOpenTransactionModal] = useState(false);
+
+    const router = useRouter();
 
     const handleOpenModal = () => setOpenTransactionModal(true);
 
@@ -60,11 +60,13 @@ export const DashboardNavbar = (props) => {
                     >
                         <MenuIcon fontSize='small' />
                     </IconButton>
-                    <Tooltip title='Search'>
-                        <IconButton sx={{ ml: 1 }}>
-                            <SearchIcon fontSize='small' />
-                        </IconButton>
-                    </Tooltip>
+                    {router.pathname !== '/' && (
+                        <Tooltip title='Back Icon'>
+                            <IconButton sx={{ ml: 1 }} onClick={() => router.back()}>
+                                <ArrowBackIcon fontSize='small' />
+                            </IconButton>
+                        </Tooltip>
+                    )}
                     <Box sx={{ flexGrow: 1 }} />
                     <Button
                         onClick={handleOpenModal}
@@ -88,16 +90,10 @@ export const DashboardNavbar = (props) => {
                                     sm: 'none'
                                 }
                             }}
+                            onClick={handleOpenModal}
                         >
                             <Badge badgeContent={4} color='primary' variant='dot'>
                                 <AddIcon fontSize='small' />
-                            </Badge>
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title='Notifications'>
-                        <IconButton sx={{ ml: 1 }}>
-                            <Badge badgeContent={4} color='primary' variant='dot'>
-                                <BellIcon fontSize='small' />
                             </Badge>
                         </IconButton>
                     </Tooltip>
@@ -108,12 +104,10 @@ export const DashboardNavbar = (props) => {
                             cursor: 'pointer',
                             height: 40,
                             width: 40,
-                            ml: 1
+                            ml: 4
                         }}
                         src={user?.photo}
-                    >
-                        <UserCircleIcon fontSize='small' />
-                    </Avatar>
+                    />
                 </Toolbar>
             </DashboardNavbarRoot>
             <AccountPopover

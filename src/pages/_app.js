@@ -38,8 +38,6 @@ const App = (props) => {
         if (user) {
             if (router.pathname !== '/' && ['/login', '/sign-in', '/register'].includes(router.pathname)) {
                 router.push('/');
-            } else {
-                router.replace(router.pathname);
             }
         }
     }, [user, isAuthenticated]);

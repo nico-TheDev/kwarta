@@ -1,8 +1,9 @@
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-import { signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo } from 'firebase/auth'
-import { auth } from '../../firebase.config'
+import { signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo } from 'firebase/auth';
+import { auth } from '../../firebase.config';
+import { toast } from 'react-hot-toast';
 
 const AuthStore = (set, get) => ({
     authState: {
@@ -12,14 +13,14 @@ const AuthStore = (set, get) => ({
     },
     loginWithGoogle: async () => {
         try {
-            const provider = new GoogleAuthProvider()
-            const result = await signInWithPopup(auth, provider)
-            const credential = GoogleAuthProvider.credentialFromResult(result)
-            const token = credential.accessToken
-            const user = result.user
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            const user = result.user;
             // console.log(user)
-            const { uid } = user
-            const { name, email, picture, family_name, given_name } = getAdditionalUserInfo(result).profile
+            const { uid } = user;
+            const { name, email, picture, family_name, given_name } = getAdditionalUserInfo(result).profile;
             // console.log(getAdditionalUserInfo(result))
             set({
                 authState: {
@@ -35,15 +36,16 @@ const AuthStore = (set, get) => ({
                     isAuthenticated: true,
                     isLoading: false
                 }
-            })
+            });
         } catch (error) {
-            const errorCode = error.code
-            const errorMessage = error.message
+            const errorCode = error.code;
+            const errorMessage = error.message;
             // The email of the user's account used.
-            const email = error.customData.email
+            const email = error.customData.email;
             // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error)
-            console.log(error.message)
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            console.log(error.message);
+            toast.error(errorMessage);
         }
     },
     logout: () => {
@@ -53,12 +55,12 @@ const AuthStore = (set, get) => ({
                 isAuthenticated: false,
                 isLoading: false
             }
-        })
+        });
     }
-})
+});
 
 export const useAuthStore = create(
     persist(AuthStore, {
         name: 'auth'
     })
-)
+);

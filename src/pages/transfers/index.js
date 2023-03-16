@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 
-import { TransferHead } from '../../components/transfers/transfer-head'
-import { TransferCard } from '../../components/transfers/transfer-card'
+import { TransferHead } from '../../components/transfers/transfer-head';
+import { TransferCard } from '../../components/transfers/transfer-card';
 import { DashboardLayout } from '../../components/dashboard-layout';
 
 import { useTransferStore } from 'stores/useTransferStore';
@@ -12,30 +12,9 @@ import useGetUserTransfers from 'hooks/useGetUserTransfers';
 import { useAuthStore } from 'stores/useAuthStore';
 
 const Page = () => {
-    const userId = useAuthStore((state) => state.authState?.user?.uid)
-    useGetUserTransfers(userId)
+    const userId = useAuthStore((state) => state.authState?.user?.uid);
+    useGetUserTransfers(userId);
     const transfers = useTransferStore((state) => state.transfers);
-
-    // const transfers = [
-    //     {
-    //         id: 1,
-    //         sender: 'BDO',
-    //         receiver: 'GCASH',
-    //         amount: 100
-    //     },
-    //     {
-    //         id: 2,
-    //         sender: 'BDO',
-    //         receiver: 'GCASH',
-    //         amount: 100
-    //     },
-    //     {
-    //         id: 3,
-    //         sender: 'BDO',
-    //         receiver: 'GCASH',
-    //         amount: 100
-    //     },
-    // ]
 
     return (
         <>
