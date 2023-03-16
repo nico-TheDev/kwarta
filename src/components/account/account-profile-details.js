@@ -1,41 +1,40 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Button, Card, CardContent, CardHeader, Divider, Grid, TextField } from '@mui/material'
-import { useAuthStore } from 'stores/useAuthStore'
 import { getLanguage } from 'utils/getLanguage'
+import { useFormik } from 'formik';
 
-const states = [
-    {
-        value: 'alabama',
-        label: 'Alabama'
-    },
-    {
-        value: 'new-york',
-        label: 'New York'
-    },
-    {
-        value: 'san-francisco',
-        label: 'San Francisco'
-    }
-]
+import { useAuthStore } from 'stores/useAuthStore'
 
 export const AccountProfileDetails = (props) => {
     const user = useAuthStore((state) => state.authState.user)
+    const updateUser = useAuthStore((state) => state.updateUser)
 
-    const [values, setValues] = useState({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phone: '',
-        state: 'Alabama',
-        country: 'USA'
-    })
-
-    const handleChange = (event) => {
-        setValues({
-            ...values,
-            [event.target.name]: event.target.value
-        })
+    const initialValues = {
+        email: '',
+        firstName: '',
+        lastName: '',
     }
+
+    const handleSubmit = (values) => {
+        console.log(values);
+        updateUser({ 
+            firstName: values.firstName,
+            lastName: values.lastName,
+            new_displayName: values.firstName + " " + values.lastName,
+            new_email: values.email,
+        });
+    };
+
+    const formik = useFormik({
+        initialValues,
+        onSubmit: handleSubmit
+    });
+
+    useEffect(() => {
+        formik.setFieldValue('firstName', user.firstName);
+        formik.setFieldValue('lastName', user.lastName);
+        formik.setFieldValue('email', user.email);
+    }, []);
 
     return (
         <form autoComplete='off' noValidate {...props}>
@@ -50,9 +49,9 @@ export const AccountProfileDetails = (props) => {
                                 helperText={getLanguage().specifyFirstName}
                                 label={getLanguage().firstName}
                                 name='firstName'
-                                onChange={handleChange}
+                                onChange={formik.handleChange}
                                 required
-                                value={values.firstName}
+                                value={formik.values.firstName}
                                 variant='outlined'
                             />
                         </Grid>
@@ -61,9 +60,9 @@ export const AccountProfileDetails = (props) => {
                                 fullWidth
                                 label={getLanguage().lastName}
                                 name='lastName'
-                                onChange={handleChange}
+                                onChange={formik.handleChange}
                                 required
-                                value={values.lastName}
+                                value={formik.values.lastName}
                                 variant='outlined'
                             />
                         </Grid>
@@ -72,9 +71,9 @@ export const AccountProfileDetails = (props) => {
                                 fullWidth
                                 label='Email Address'
                                 name='email'
-                                onChange={handleChange}
+                                onChange={formik.handleChange}
                                 required
-                                value={values.email}
+                                value={formik.values.email}
                                 variant='outlined'
                             />
                         </Grid>
@@ -88,7 +87,8 @@ export const AccountProfileDetails = (props) => {
                         p: 2
                     }}
                 >
-                    <Button color='primary' variant='contained'>
+                    <Button color='primary' variant='contained'
+                    onClick={formik.handleSubmit}>
                         {getLanguage().saveDetails}
                     </Button>
                 </Box>

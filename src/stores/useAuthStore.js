@@ -2,7 +2,8 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { v4 as uuidv4 } from 'uuid';
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, getAdditionalUserInfo, 
+    updateProfile, updateEmail, } from 'firebase/auth'
 import { setDoc, doc } from 'firebase/firestore';
 import { auth } from '../../firebase.config'
 import { db, storage } from '../../firebase.config';
@@ -29,6 +30,21 @@ const AuthStore = (set, get) => ({
 
             const createdUserResponse = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password);   //creates user
             console.log(newUser);
+
+            await updateProfile(auth.currentUser, {
+                displayName: newUser.firstName + " " + newUser.lastName,    //updates displayName
+                photoURL: fileUrl,                             //updates photoURL
+            });
+
+            await setDoc(doc(db, "users", createdUserResponse.user.uid), {      //sets document of user
+                uid: createdUserResponse.user.uid,                              //generated uid
+                first_name: newUser.firstName,                  //fetched data from firstName (RegisterScreen) will be stored here
+                last_name: newUser.lastName,                    //fetched data from lastName (RegisterScreen) will be stored here
+                email: newUser.email,                           //fetched data from email (RegisterScreen) will be stored here
+                profile_img_ref: fileRefName || '',       //fetched data from profile_img (RegisterScreen) will be stored here
+                profile_img: fileUrl || ''            //fetched data from profile_img (RegisterScreen) will be stored here
+            });
+
             set({
                 authState: {
                     user: {
@@ -36,7 +52,7 @@ const AuthStore = (set, get) => ({
                         firstName: newUser.firstName,
                         lastName: newUser.lastName,
                         email: newUser.email,
-                        photo: newUser.photoURL,
+                        photo: fileUrl,
                         uid: newUser.uid,
                     },
                     isAuthenticated: true,
@@ -56,14 +72,62 @@ const AuthStore = (set, get) => ({
                 authState: {
                     user: {
                         name: verifiedUser.displayName,
-                        firstName: verifiedUser.displayName.split("", 0),
-                        lastName: verifiedUser.displayName.split("", 1),
+                        firstName: verifiedUser.displayName.split(" ", 0),
+                        lastName: verifiedUser.displayName.split(" ", 1),
                         email: verifiedUser.email,
                         photo: verifiedUser.photoURL,
                         uid: verifiedUser.uid,
                     },
                     isAuthenticated: true,
                     isLoading: false
+                }
+            })
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    },
+    updateUser: async(editUser) => {
+        try{
+            console.log(editUser)
+            await updateProfile(auth.currentUser, {
+                displayName: editUser.new_displayName,    //updates displayName
+            });
+            await updateEmail(auth.currentUser, editUser.new_email);     //updates email
+            set({
+                authState: {
+                    user: {
+                        name: editUser.displayName,
+                        firstName: editUser.firstName,
+                        lastName: editUser.lastName,
+                        email: editUser.email,
+                    },
+                }
+            })
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    },
+    updateUserPhoto: async(editUserPhoto, userPhotoName) => {
+        try{
+            let fileUrl, fileRefName;
+            if (editUserPhoto) {
+                fileRefName = `users/${uuidv4()}-${userPhotoName}`;
+                const imageRef = ref(storage, fileRefName);
+
+                const fileUpload = await uploadBytes(imageRef, editUserPhoto);
+                fileUrl = await getDownloadURL(fileUpload.ref);
+                console.log('UPLOADED');
+            }
+            await updateProfile(auth.currentUser, {
+                photoURL: fileUrl,                             //updates photoURL
+            });
+            set({
+                authState: {
+                    user: {
+                        photo: fileUrl,
+                    },
                 }
             })
         }

@@ -68,10 +68,10 @@ const Register = () => {
     addUser({ 
         firstName: values.firstName,
         lastName: values.lastName,
-        displayName: values.firstName + "" + values.lastName,
+        displayName: values.firstName + " " + values.lastName,
         email: values.email,
         password: values.password,
-    }, selectedFile.file);
+    }, selectedFile?.file);
     
     formik.resetForm();
     setSelectedFile(null);
