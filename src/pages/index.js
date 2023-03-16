@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Container, Grid, CircularProgress, Typography } from '@mui/material';
 import { Balance } from '../components/dashboard/balance';
 import { SavingGoals } from '../components/dashboard/saving-goals';
 import { TransactionHistory } from '../components/dashboard/transaction-history';
@@ -12,12 +12,37 @@ import { DashboardLayout } from '../components/dashboard-layout';
 import useGetUserTransactions from 'hooks/useGetUserTransactions';
 import { useEffect } from 'react';
 import { useAuthStore } from 'stores/useAuthStore';
+import { useTransactionStore } from 'stores/useTransactionStore';
+import { useAccountStore } from 'stores/useAccountStore';
 
 const Page = () => {
     const user = useAuthStore((state) => state.authState?.user);
     const userID = user?.uid || '';
+
+    const transactions = useTransactionStore((state) => state.transactions);
+    const isEmpty = useTransactionStore((state) => state.isEmpty);
     // GET USER TRANSACTIONS
     useGetUserTransactions(userID);
+
+    const styles = {
+        container: { width: '100%', height: '100%', display: 'grid', placeItems: 'center' }
+    };
+
+    if (transactions.length === 0 && !isEmpty) {
+        return (
+            <Box sx={styles.container}>
+                <CircularProgress size={200} />
+            </Box>
+        );
+    }
+
+    if (isEmpty) {
+        return (
+            <Box sx={{ ...styles.container }}>
+                <Typography variant='h4'>Create your first Transaction</Typography>
+            </Box>
+        );
+    }
 
     return (
         <>

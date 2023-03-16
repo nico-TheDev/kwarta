@@ -9,7 +9,11 @@ import { db, storage } from '../../firebase.config';
 
 const transactionStore = (set, get) => ({
     transactions: [],
+    isEmpty: false,
     getTransaction: () => {},
+    resetTransactions: () => {
+        set({ transactions: [] });
+    },
     createTransaction: async (newTransaction, currentFile) => {
         const loader = toast.loading('Creating Transaction');
         try {
@@ -204,9 +208,10 @@ const transactionStore = (set, get) => ({
             toast.dismiss(deleteLoader);
         }
     },
-    setTransactions: (transactionList) => {
+    setTransactions: (transactionList, isEmpty = false) => {
         set({
-            transactions: transactionList
+            transactions: transactionList,
+            isEmpty
         });
     },
     getExpenseList: (user_id) => {
@@ -228,7 +233,7 @@ const transactionStore = (set, get) => ({
                 type: 'expense',
                 category_name: category,
                 transaction_icon: targetCategory.category.category_icon,
-                color: targetCategory.category.category_color,
+                color: targetCategory?.category?.category_color,
                 transaction_color: targetCategory.category.category_color
             };
         });

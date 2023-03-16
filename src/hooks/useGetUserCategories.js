@@ -37,5 +37,5 @@ export default function useGetUserCategories(userID) {
         });
 
         return unsubscribe;
-    }, []);
+    }, [userID]);
 }

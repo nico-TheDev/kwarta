@@ -14,10 +14,11 @@ export default function useGetUserTransactions(userID) {
     useEffect(() => {
         const unsubscribe = onSnapshot(transactionQuery, (snapshotData) => {
             const dataList = [];
+            const isEmpty = snapshotData.docs.length === 0;
             snapshotData.forEach((doc) => dataList.push({ ...doc.data(), id: doc.id }));
 
             // console.log(dataList);
-            setTransactions(dataList);
+            setTransactions(dataList, isEmpty);
         });
 
         return unsubscribe;

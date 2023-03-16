@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { onSnapshot, collection, query, where, orderBy } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
 import { useAccountStore } from 'stores/useAccountStore';
-import { useAuthStore } from 'stores/useAuthStore';
 
 const useAccountsListener = (userID) => {
     const accountColRef = collection(db, 'accounts');
-    const accounts = useAccountStore((state) => state.accounts);
     const setAccounts = useAccountStore((state) => state.setAccounts);
 
     useEffect(() => {
@@ -31,7 +29,7 @@ const useAccountsListener = (userID) => {
             setAccounts(userAccounts);
         });
         return unsubscribe;
-    }, []);
+    }, [userID]);
 };
 
 export default useAccountsListener;

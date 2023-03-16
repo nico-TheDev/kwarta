@@ -5,9 +5,9 @@ import { addDoc, collection, serverTimestamp, deleteDoc, doc, updateDoc, getDoc 
 
 import { db, storage } from '../../firebase.config';
 
-const accountStore = (set,get) => ({
+const accountStore = (set, get) => ({
     accounts: [],
-    reset: () => set({ accounts: [] }),
+    resetAccounts: () => set({ accounts: [] }),
     setAccounts: (data) => set({ accounts: data }),
     createAccount: async (newAccount) => {
         try {
@@ -33,7 +33,7 @@ const accountStore = (set,get) => ({
             console.log(currentAccount);
             // CREATE A REFERENCE TO THE DOCUMENT AND THE FILE
             await updateDoc(docRef, {
-                ...updatedAccount,
+                ...updatedAccount
             });
 
             toast.success('Updated Successfully.');
@@ -67,7 +67,7 @@ const accountStore = (set,get) => ({
         } finally {
             toast.dismiss(deleteLoader);
         }
-    },
+    }
 });
 
 export const useAccountStore = create(accountStore);

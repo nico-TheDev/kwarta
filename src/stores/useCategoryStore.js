@@ -7,7 +7,7 @@ import { db, storage } from '../../firebase.config';
 
 const categoryStore = (set, get) => ({
     categories: [],
-    reset: () => set({ categories: [] }),
+    resetCategories: () => set({ categories: [] }),
     setCategories: (data) => set({ categories: data }),
     createCategory: async (newCategory) => {
         try {
@@ -33,7 +33,7 @@ const categoryStore = (set, get) => ({
             console.log(currentCategory);
             // CREATE A REFERENCE TO THE DOCUMENT AND THE FILE
             await updateDoc(docRef, {
-                ...updatedCategory,
+                ...updatedCategory
             });
 
             toast.success('Updated Successfully.');
