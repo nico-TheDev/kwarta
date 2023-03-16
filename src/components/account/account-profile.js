@@ -1,10 +1,9 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, Typography } from '@mui/material'
-import { useAuthStore } from './../../stores/useAuthStore'
-import { getLanguage } from 'utils/getLanguage'
-
+import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, Typography } from '@mui/material';
+import { useAuthStore } from './../../stores/useAuthStore';
+import { getLanguage } from 'utils/getLanguage';
 
 export const AccountProfile = (props) => {
-    const user = useAuthStore((state) => state.authState.user)
+    const user = useAuthStore((state) => state.authState.user);
     return (
         <Card {...props}>
             <CardContent>
@@ -16,7 +15,7 @@ export const AccountProfile = (props) => {
                     }}
                 >
                     <Avatar
-                        src={user.photo}
+                        src={user?.photo}
                         sx={{
                             height: 64,
                             mb: 2,
@@ -38,5 +37,5 @@ export const AccountProfile = (props) => {
                 </Button>
             </CardActions>
         </Card>
-    )
-}
+    );
+};

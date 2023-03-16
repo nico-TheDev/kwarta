@@ -1,89 +1,88 @@
-import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Avatar, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
-import { Clock as ClockIcon } from '../../icons/clock';
-import Button from '@mui/material/Button';
-import { theme } from 'theme';
-import { formatPrice } from 'utils/format-price';
+import { Box, Paper, Typography } from '@mui/material';
+import TransferIcon from '@mui/icons-material/ImportExport';
+import SendIcon from '@mui/icons-material/Reply';
+import ReceiveIcon from '@mui/icons-material/SaveAlt';
 import Link from 'next/link';
+import { grey } from '@mui/material/colors';
 
-import { Icon } from 'components/shared/Icon';
-import { ICON_NAMES } from 'constants/constant';
+import { formatPrice } from 'utils/format-price';
 
-export const TransferCard = ({ transfer, ...rest }) => {
+const styles = {
+    panel: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    card: {
+        p: 2,
+        position: 'relative',
+        cursor: 'pointer',
+        transition: '300ms',
+        '&:hover': {
+            background: grey[200]
+        }
+    },
+    iconHolder: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '15%',
+        alignItems: 'center'
+    },
+    price: {
+        ml: 'auto'
+    },
+    edit: {
+        position: 'absolute',
+        top: 10,
+        right: 10
+    },
+    holder: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'space-between',
+        ml: 4
+    }
+};
+
+export const TransferCard = ({ transfer }) => {
     console.log(transfer);
+
     return (
-        <>
-            <Card
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%'
-                }}
-                {...rest}
-            >
-                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 4 }}>
-                    <Box sx={{ width: '100%', mb: 4 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '15%', mb: 4 }}>
-                            <Icon name={ICON_NAMES.SYSTEM_ICONS.SEND_MONEY} color='primary' fontSize='small' />
-                            <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+        <Link
+            href={{
+                pathname: '/transfers/[transferId]',
+                query: { transferId: transfer.id }
+            }}
+            key={transfer.id}
+        >
+            <Paper sx={styles.card}>
+                <Box sx={styles.panel}>
+                    <TransferIcon sx={{ fontSize: 50 }} color='success' />
+                    <Box sx={styles.holder}>
+                        <Box sx={styles.iconHolder} mb={2}>
+                            <SendIcon color='error' fontSize='medium' />
+                            <Typography align='center' variant='h6' ml={1}>
                                 {transfer.targetSenderAccount.account_name}
                             </Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '15%', mb: 4 }}>
-                            <Icon name={ICON_NAMES.SYSTEM_ICONS.RECEIVE_MONEY} color='primary' fontSize='small' />
-                            <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                        <Box sx={styles.iconHolder}>
+                            <ReceiveIcon color='success' fontSize='medium' />
+                            <Typography align='center' variant='h6' ml={1}>
                                 {transfer.targetReceiverAccount.account_name}
                             </Typography>
                         </Box>
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
-                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                            {transfer.amount}
-                        </Typography>
-                    </Box>
-                </CardContent>
-                <Divider />
-                <Box sx={{ p: 2 }}>
-                    <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
-                        <Grid
-                            item
-                            sx={{
-                                alignItems: 'center',
-                                display: 'flex'
-                            }}
-                        >
-                            <ClockIcon color='action' />
-                            <Typography color='textSecondary' display='inline' sx={{ pl: 1 }} variant='body2'>
-                                Last Used: 2 hrs ago
-                            </Typography>
-                        </Grid>
-                        <Grid
-                            item
-                            sx={{
-                                alignItems: 'center',
-                                display: 'flex'
-                            }}
-                        >
-                        <Link
-                            href={{
-                                pathname: '/transfers/[transferId]',
-                                query: { transferId: transfer.id }
-                                }}
-                            key={transfer.id}
-                        >
-                            <Button>
-                                <Icon name={ICON_NAMES.SYSTEM_ICONS.EDIT} color='action' sx={{ fontSize: '20px' }} />
-                            </Button>
-                        </Link>
-                        </Grid>
-                    </Grid>
+                    <Typography sx={styles.price} align='center' color='textPrimary' gutterBottom variant='h6'>
+                        {formatPrice(transfer.amount)}
+                    </Typography>
                 </Box>
-            </Card>
-        </>
+            </Paper>
+        </Link>
     );
 };
 
 TransferCard.propTypes = {
-    product: PropTypes.object.isRequired
+    transfer: PropTypes.object.isRequired
 };

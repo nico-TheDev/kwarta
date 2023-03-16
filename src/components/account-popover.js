@@ -1,54 +1,63 @@
-import { useContext } from 'react'
-import Router from 'next/router'
-import PropTypes from 'prop-types'
-import { Box, MenuItem, MenuList, Popover, Typography } from '@mui/material'
-import { AuthContext } from '../contexts/auth-context'
-import { auth, ENABLE_AUTH } from '../lib/auth'
-import { useAuthStore } from 'stores/useAuthStore'
+import { useContext } from 'react';
+import Router from 'next/router';
+import PropTypes from 'prop-types';
+import { Box, MenuItem, MenuList, Popover, Typography } from '@mui/material';
+import { AuthContext } from '../contexts/auth-context';
+import { auth, ENABLE_AUTH } from '../lib/auth';
+import { useAuthStore } from 'stores/useAuthStore';
+import { useTransactionStore } from 'stores/useTransactionStore';
+import { useAccountStore } from 'stores/useAccountStore';
+import { useCategoryStore } from 'stores/useCategoryStore';
 
 export const AccountPopover = (props) => {
-    const { anchorEl, onClose, open, name, ...other } = props
-    const authContext = useContext(AuthContext)
-    const logout = useAuthStore((state) => state.logout)
+    const { anchorEl, onClose, open, name, ...other } = props;
+    const authContext = useContext(AuthContext);
+    const logout = useAuthStore((state) => state.logout);
+    const resetTransactions = useTransactionStore((state) => state.resetTransactions);
+    const resetAccounts = useAccountStore((state) => state.resetAccounts);
+    const resetCategories = useCategoryStore((state) => state.resetCategories);
 
     const handleSignOut = async () => {
-        onClose?.()
-        console.log('LOGOUT')
-        logout()
-        Router.push('login')
+        onClose?.();
+        console.log('LOGOUT');
+        logout();
+        resetTransactions();
+        resetAccounts();
+        resetCategories();
+        Router.push('login');
         // Check if authentication with Zalter is enabled
         // If not enabled, then redirect is not required
         if (!ENABLE_AUTH) {
-            return
+            return;
         }
 
         // Check if auth has been skipped
         // From sign-in page we may have set "skip-auth" to "true"
         // If this has been skipped, then redirect to "sign-in" directly
-        const authSkipped = globalThis.sessionStorage.getItem('skip-auth') === 'true'
+        const authSkipped = globalThis.sessionStorage.getItem('skip-auth') === 'true';
 
         if (authSkipped) {
             // Cleanup the skip auth state
-            globalThis.sessionStorage.removeItem('skip-auth')
+            globalThis.sessionStorage.removeItem('skip-auth');
 
             // Redirect to sign-in page
-            Router.push('/sign-in').catch(console.error)
-            return
+            Router.push('/sign-in').catch(console.error);
+            return;
         }
 
         try {
             // This can be call inside AuthProvider component, but we do it here for simplicity
-            await auth.signOut()
+            await auth.signOut();
 
             // Update Auth Context state
-            authContext.signOut()
+            authContext.signOut();
 
             // Redirect to sign-in page
-            Router.push('/sign-in').catch(console.error)
+            Router.push('/sign-in').catch(console.error);
         } catch (err) {
-            console.error(err)
+            console.error(err);
         }
-    }
+    };
 
     return (
         <Popover
@@ -91,11 +100,11 @@ export const AccountPopover = (props) => {
                 <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
             </MenuList>
         </Popover>
-    )
-}
+    );
+};
 
 AccountPopover.propTypes = {
     anchorEl: PropTypes.any,
     onClose: PropTypes.func,
     open: PropTypes.bool.isRequired
-}
+};
