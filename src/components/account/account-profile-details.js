@@ -30,11 +30,13 @@ export const AccountProfileDetails = (props) => {
         onSubmit: handleSubmit
     });
 
+    console.log(user);
+
     useEffect(() => {
         formik.setFieldValue('firstName', user.firstName);
         formik.setFieldValue('lastName', user.lastName);
         formik.setFieldValue('email', user.email);
-    }, []);
+    }, [user]);
 
     return (
         <form autoComplete='off' noValidate {...props}>

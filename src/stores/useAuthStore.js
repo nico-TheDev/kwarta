@@ -36,24 +36,31 @@ const AuthStore = (set, get) => ({
                 photoURL: fileUrl,                             //updates photoURL
             });
 
-            await setDoc(doc(db, "users", createdUserResponse.user.uid), {      //sets document of user
-                uid: createdUserResponse.user.uid,                              //generated uid
-                first_name: newUser.firstName,                  //fetched data from firstName (RegisterScreen) will be stored here
-                last_name: newUser.lastName,                    //fetched data from lastName (RegisterScreen) will be stored here
-                email: newUser.email,                           //fetched data from email (RegisterScreen) will be stored here
-                profile_img_ref: fileRefName || '',       //fetched data from profile_img (RegisterScreen) will be stored here
-                profile_img: fileUrl || ''            //fetched data from profile_img (RegisterScreen) will be stored here
+            await setDoc(doc(db, "users", createdUserResponse.user.uid), {      
+                uid: createdUserResponse.user.uid,                              
+                first_name: newUser.firstName,                  
+                last_name: newUser.lastName,                    
+                email: newUser.email,                           
+                profile_img_ref: fileRefName || '',       
+                profile_img: fileUrl || ''            
             });
+
+            const getUser = auth.currentUser;
+            const displayName = getUser.displayName;
+            const email = getUser.email;
+            const photoURL = getUser.photoURL;
+            const uid = getUser.uid;
+            const nameArray = displayName.split(" ", 2);
 
             set({
                 authState: {
                     user: {
-                        name: newUser.displayName,
-                        firstName: newUser.firstName,
-                        lastName: newUser.lastName,
-                        email: newUser.email,
-                        photo: fileUrl,
-                        uid: newUser.uid,
+                        name: displayName,
+                        firstName: nameArray[0],
+                        lastName: nameArray[1],
+                        email: email,
+                        photo: photoURL,
+                        uid: uid,
                     },
                     isAuthenticated: true,
                     isLoading: false
@@ -68,12 +75,14 @@ const AuthStore = (set, get) => ({
         try {
             const verifiedResponse = await signInWithEmailAndPassword(auth, login_user.email, login_user.password);     //checks if user is registered, email and password correct
             const verifiedUser = verifiedResponse.user;
+            const nameArray = verifiedUser.displayName.split(" ", 2);
+
             set({
                 authState: {
                     user: {
                         name: verifiedUser.displayName,
-                        firstName: verifiedUser.displayName.split(" ", 0),
-                        lastName: verifiedUser.displayName.split(" ", 1),
+                        firstName: nameArray[0],
+                        lastName: nameArray[1],
                         email: verifiedUser.email,
                         photo: verifiedUser.photoURL,
                         uid: verifiedUser.uid,
@@ -91,16 +100,24 @@ const AuthStore = (set, get) => ({
         try{
             console.log(editUser)
             await updateProfile(auth.currentUser, {
-                displayName: editUser.new_displayName,    //updates displayName
+                displayName: editUser.new_displayName,
             });
-            await updateEmail(auth.currentUser, editUser.new_email);     //updates email
+            await updateEmail(auth.currentUser, editUser.new_email);
+
+            const getUser = auth.currentUser;
+            const displayName = getUser.displayName;
+            const email = getUser.email;
+            const photoURL = getUser.photoURL;
+            const nameArray = displayName.split(" ", 2);
+
             set({
                 authState: {
                     user: {
-                        name: editUser.displayName,
-                        firstName: editUser.firstName,
-                        lastName: editUser.lastName,
-                        email: editUser.email,
+                        name: displayName,
+                        firstName: nameArray[0],
+                        lastName: nameArray[1],
+                        email: email,
+                        photo: photoURL,
                     },
                 }
             })
@@ -123,10 +140,22 @@ const AuthStore = (set, get) => ({
             await updateProfile(auth.currentUser, {
                 photoURL: fileUrl,                             //updates photoURL
             });
+
+            const getUser = auth.currentUser;
+            const displayName = getUser.displayName;
+            const email = getUser.email;
+            const photoURL = getUser.photoURL;
+            const nameArray = displayName.split(" ", 2);
+
             set({
                 authState: {
                     user: {
-                        photo: fileUrl,
+                        name: displayName,
+                        firstName: nameArray[0],
+                        lastName: nameArray[1],
+                        email: email,
+                        photo: photoURL,
+
                     },
                 }
             })
