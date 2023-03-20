@@ -1,9 +1,51 @@
+import { useState, useEffect, useRef } from 'react';
 import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, Typography } from '@mui/material';
-import { useAuthStore } from './../../stores/useAuthStore';
+import { useAuthStore } from 'stores/useAuthStore';
 import { getLanguage } from 'utils/getLanguage';
 
 export const AccountProfile = (props) => {
+    const [selectedFile, setSelectedFile] = useState('');
+
     const user = useAuthStore((state) => state.authState.user);
+    const updateUserPhoto = useAuthStore((state) => state.updateUserPhoto);
+
+    const inputRef = useRef(null);
+    const hasSelectedFile = useRef(null);
+
+    // FILES
+    const handleFileSelect = (e) => {
+        const file = e.target.files[0];
+
+        if (e.target.files?.length) {
+            hasSelectedFile.current = true;
+            const fileSrc = URL.createObjectURL(file);
+            setSelectedFile({ source: fileSrc, file });
+            // console.log(e.target.files);
+        }
+
+        focusBack();
+    };
+
+    const handleFileClick = () => {
+        hasSelectedFile.current = false;
+        window.addEventListener('focus', focusBack);
+    };
+
+    const focusBack = () => {
+        if (!hasSelectedFile.current) {
+            setSelectedFile(null);
+            if (inputRef.current) {
+                inputRef.current.value = null;
+            }
+        }
+
+        window.removeEventListener('focus', focusBack);
+    };
+
+    const handleSubmit = () => {
+        updateUserPhoto(selectedFile?.file, user.name);
+    };
+
     return (
         <Card {...props}>
             <CardContent>
@@ -34,6 +76,16 @@ export const AccountProfile = (props) => {
             <CardActions>
                 <Button color='primary' fullWidth variant='text'>
                     {getLanguage().uploadPicture}
+                    <input
+                        type='file'
+                        onChange={handleFileSelect}
+                        onClick={handleFileClick}
+                        accept='image/*'
+                        ref={inputRef}
+                    />
+                </Button>
+                <Button color='primary' fullWidth variant='text' onClick={handleSubmit}>
+                    Submit
                 </Button>
             </CardActions>
         </Card>

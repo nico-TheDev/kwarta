@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import Router from 'next/router';
@@ -14,47 +15,73 @@ import {
   Typography
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
+
+import toast from 'react-hot-toast';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const Register = () => {
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      firstName: '',
-      lastName: '',
-      password: '',
-      policy: false
-    },
-    validationSchema: Yup.object({
-      email: Yup
-        .string()
-        .email('Must be a valid email')
-        .max(255)
-        .required(
-          'Email is required'),
-      firstName: Yup
-        .string()
-        .max(255)
-        .required('First name is required'),
-      lastName: Yup
-        .string()
-        .max(255)
-        .required('Last name is required'),
-      password: Yup
-        .string()
-        .max(255)
-        .required('Password is required'),
-      policy: Yup
-        .boolean()
-        .oneOf(
-          [true],
-          'This field must be checked'
-        )
-    }),
-    onSubmit: () => {
-      Router
-        .push('/')
-        .catch(console.error);
+  const addUser = useAuthStore((state) => state.addUser)
+  const [selectedFile, setSelectedFile] = useState('');
+  const inputRef = useRef(null);
+  const hasSelectedFile = useRef(null);
+
+  const initialValues = {
+    email: '',
+    firstName: '',
+    lastName: '',
+    password: '',
+  }
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+
+    if (e.target.files?.length) {
+        hasSelectedFile.current = true;
+        const fileSrc = URL.createObjectURL(file);
+        setSelectedFile({ source: fileSrc, file });
+        // console.log(e.target.files);
     }
+
+    focusBack();
+  };
+
+  const handleFileClick = () => {
+      hasSelectedFile.current = false;
+      window.addEventListener('focus', focusBack);
+  };
+
+  const focusBack = () => {
+      if (!hasSelectedFile.current) {
+          setSelectedFile(null);
+          if (inputRef.current) {
+              inputRef.current.value = null;
+          }
+      }
+
+      window.removeEventListener('focus', focusBack);
+  };
+
+  const handleSubmit = (values) => {
+    console.log(values);
+    const loader = toast.loading('Registering User');
+    addUser({ 
+        firstName: values.firstName,
+        lastName: values.lastName,
+        displayName: values.firstName + " " + values.lastName,
+        email: values.email,
+        password: values.password,
+    }, selectedFile?.file);
+    
+    formik.resetForm();
+    setSelectedFile(null);
+    toast.dismiss(loader);
+    toast.success('User successfully registered!');
+  };
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit: handleSubmit
   });
 
   return (
@@ -87,6 +114,47 @@ const Register = () => {
           </NextLink>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
+              <Button
+                  component='label'
+                  variant='contained'
+                  sx={{
+                      height: '100%',
+                      width: 150,
+                      fontSize: 100,
+                      ml: 2,
+                      p: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      position: 'relative'
+                  }}
+              >
+                  {selectedFile?.source ? (
+                      <Box sx={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }}>
+                          <img
+                              src={selectedFile.source}
+                              alt=''
+                              style={{
+                                  display: 'block',
+                                  width: '100%',
+                                  height: '100%',
+                                  objectFit: 'fill'
+                              }}
+                          />
+                      </Box>
+                  ) : (
+                      <AddPhotoIcon fontSize='inherit' />
+                  )}
+                  <input
+                      type='file'
+                      hidden
+                      onChange={handleFileSelect}
+                      onClick={handleFileClick}
+                      accept='image/*'
+                      ref={inputRef}
+                  />
+              </Button>
+            </Box>
+            <Box sx={{ my: 3 }}>
               <Typography
                 color="textPrimary"
                 variant="h4"
@@ -102,9 +170,6 @@ const Register = () => {
               </Typography>
             </Box>
             <TextField
-              error={Boolean(formik.touched.firstName && formik.errors.firstName)}
-              fullWidth
-              helperText={formik.touched.firstName && formik.errors.firstName}
               label="First Name"
               margin="normal"
               name="firstName"
@@ -114,9 +179,6 @@ const Register = () => {
               variant="outlined"
             />
             <TextField
-              error={Boolean(formik.touched.lastName && formik.errors.lastName)}
-              fullWidth
-              helperText={formik.touched.lastName && formik.errors.lastName}
               label="Last Name"
               margin="normal"
               name="lastName"
@@ -126,9 +188,6 @@ const Register = () => {
               variant="outlined"
             />
             <TextField
-              error={Boolean(formik.touched.email && formik.errors.email)}
-              fullWidth
-              helperText={formik.touched.email && formik.errors.email}
               label="Email Address"
               margin="normal"
               name="email"
@@ -139,9 +198,6 @@ const Register = () => {
               variant="outlined"
             />
             <TextField
-              error={Boolean(formik.touched.password && formik.errors.password)}
-              fullWidth
-              helperText={formik.touched.password && formik.errors.password}
               label="Password"
               margin="normal"
               name="password"
@@ -151,51 +207,14 @@ const Register = () => {
               value={formik.values.password}
               variant="outlined"
             />
-            <Box
-              sx={{
-                alignItems: 'center',
-                display: 'flex',
-                ml: -1
-              }}
-            >
-              <Checkbox
-                checked={formik.values.policy}
-                name="policy"
-                onChange={formik.handleChange}
-              />
-              <Typography
-                color="textSecondary"
-                variant="body2"
-              >
-                I have read the
-                {' '}
-                <NextLink
-                  href="#"
-                  passHref
-                >
-                  <Link
-                    color="primary"
-                    underline="always"
-                    variant="subtitle2"
-                  >
-                    Terms and Conditions
-                  </Link>
-                </NextLink>
-              </Typography>
-            </Box>
-            {Boolean(formik.touched.policy && formik.errors.policy) && (
-              <FormHelperText error>
-                {formik.errors.policy}
-              </FormHelperText>
-            )}
             <Box sx={{ py: 2 }}>
               <Button
                 color="primary"
-                disabled={formik.isSubmitting}
                 fullWidth
                 size="large"
                 type="submit"
                 variant="contained"
+                onClick={formik.handleSubmit}
               >
                 Sign Up Now
               </Button>

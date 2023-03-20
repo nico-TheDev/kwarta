@@ -14,26 +14,30 @@ const Login = () => {
     const theme = useTheme()
     const router = useRouter()
     const loginWithGoogle = useAuthStore((state) => state.loginWithGoogle)
-    const formik = useFormik({
-        initialValues: {
-            email: 'test@gmail.com',
-            password: '1234'
-        },
-        validationSchema: Yup.object({
-            email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-            password: Yup.string().max(255).required('Password is required')
-        }),
-        onSubmit: (values) => {
-            console.log(values)
-            Router.push('/').catch(console.error)
-        }
-    })
+    const verifyUser = useAuthStore(state => state.verifyUser);
+
+    const initialValues = {
+        email: 'test@gmail.com',
+        password: '1234'
+    }
+
+    const handleLoginDefault = (values) => {
+        verifyUser({
+            email: values.email,
+            password: values.password
+        });
+    }
 
     const handleLoginWithGoogle = () => {
         loginWithGoogle()
         router.push('/')
         console.log('GO TO DASHBOARD')
     }
+
+    const formik = useFormik({
+        initialValues,
+        onSubmit: handleLoginDefault
+    })
 
     return (
         <>
@@ -85,9 +89,7 @@ const Login = () => {
                             </Typography>
                         </Box>
                         <TextField
-                            error={Boolean(formik.touched.email && formik.errors.email)}
                             fullWidth
-                            helperText={formik.touched.email && formik.errors.email}
                             label='Email Address'
                             margin='normal'
                             name='email'
@@ -98,9 +100,7 @@ const Login = () => {
                             variant='outlined'
                         />
                         <TextField
-                            error={Boolean(formik.touched.password && formik.errors.password)}
                             fullWidth
-                            helperText={formik.touched.password && formik.errors.password}
                             label='Password'
                             margin='normal'
                             name='password'
@@ -113,11 +113,11 @@ const Login = () => {
                         <Box sx={{ py: 2 }}>
                             <Button
                                 color='primary'
-                                disabled={formik.isSubmitting}
                                 fullWidth
                                 size='large'
                                 type='submit'
                                 variant='contained'
+                                onClick={formik.handleSubmit}
                             >
                                 Log In Now
                             </Button>
