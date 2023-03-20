@@ -57,7 +57,7 @@ export const AccountProfile = (props) => {
                     }}
                 >
                     <Avatar
-                        src={user?.photo}
+                        src={selectedFile ? selectedFile.source : user?.photo}
                         sx={{
                             height: 64,
                             mb: 2,
@@ -65,26 +65,34 @@ export const AccountProfile = (props) => {
                         }}
                     />
                     <Typography color='textPrimary' gutterBottom variant='h5'>
-                        {user.name}
+                        {user?.name}
                     </Typography>
                     <Typography color='textSecondary' variant='body2'>
-                        {user.email}
+                        {user?.email}
                     </Typography>
                 </Box>
             </CardContent>
             <Divider />
-            <CardActions>
-                <Button color='primary' fullWidth variant='text'>
+            <CardActions sx={{ display: 'flex', gap: 2 }}>
+                <Button color='primary' fullWidth variant='outlined' component='label'>
                     {getLanguage().uploadPicture}
                     <input
+                        id='choosePic'
                         type='file'
                         onChange={handleFileSelect}
                         onClick={handleFileClick}
                         accept='image/*'
                         ref={inputRef}
+                        hidden
                     />
                 </Button>
-                <Button color='primary' fullWidth variant='text' onClick={handleSubmit}>
+                <Button
+                    color='primary'
+                    fullWidth
+                    variant='contained    '
+                    onClick={handleSubmit}
+                    disabled={!selectedFile}
+                >
                     Submit
                 </Button>
             </CardActions>
