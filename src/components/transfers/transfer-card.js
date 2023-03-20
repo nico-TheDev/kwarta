@@ -47,8 +47,6 @@ const styles = {
 };
 
 export const TransferCard = ({ transfer }) => {
-    console.log(transfer);
-
     return (
         <Link
             href={{

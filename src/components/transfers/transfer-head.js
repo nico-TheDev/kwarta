@@ -1,5 +1,18 @@
 import { useRef, useState, useEffect } from 'react';
-import { Box, Button, Card, CardContent, TextField, InputAdornment, SvgIcon, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    Card,
+    CardContent,
+    TextField,
+    InputAdornment,
+    SvgIcon,
+    Typography,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
+} from '@mui/material';
 import { useTheme } from '@mui/material';
 import { getLanguage } from 'utils/getLanguage';
 import { formatPrice } from 'utils/format-price';
@@ -11,6 +24,7 @@ import { ICON_NAMES } from 'constants/constant';
 import { useAccountStore } from 'stores/useAccountStore';
 
 export const TransferHead = (props) => {
+    const { filterValue, setFilterValue } = props;
     const theme = useTheme();
 
     const accounts = useAccountStore((state) => state.accounts);
@@ -18,6 +32,10 @@ export const TransferHead = (props) => {
 
     const [openTransferModal, setOpenTransferModal] = useState(false);
     const handleOpenTransferModal = () => setOpenTransferModal(true);
+
+    const handleTypeChange = (e) => {
+        setFilterValue(e.target.value);
+    };
 
     return (
         <>
@@ -27,21 +45,41 @@ export const TransferHead = (props) => {
                     sx={{
                         alignItems: 'center',
                         display: 'flex',
-                        justifyContent: 'space-between',
-                        flexWrap: 'wrap',
-                        m: -1
+                        justifyContent: 'space-between'
                     }}
                 >
                     <Typography sx={{ m: 1 }} variant='h4'>
                         Transfer Overview
                     </Typography>
-                    <Box sx={{ m: 1 }}>
+                    <Box
+                        sx={{
+                            m: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                            width: '40%'
+                        }}
+                    >
+                        <FormControl sx={{ flex: 1 }}>
+                            <InputLabel id='demo-simple-select-label'>Filter by:</InputLabel>
+                            <Select
+                                labelId='demo-simple-select-label'
+                                id='demo-simple-select'
+                                value={filterValue}
+                                label='filterValue'
+                                onChange={handleTypeChange}
+                            >
+                                <MenuItem value={'year'}>Year</MenuItem>
+                                <MenuItem value={'month'}>Month</MenuItem>
+                                <MenuItem value={'day'}>Day</MenuItem>
+                            </Select>
+                        </FormControl>
                         <Button
                             variant='outlined'
                             startIcon={
                                 <Icon name={ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER} color='#FFFFFF' fontSize='small' />
                             }
-                            sx={{ mr: 1 }}
+                            sx={{ flex: 1, height: '100%' }}
                             onClick={handleOpenTransferModal}
                         >
                             {getLanguage().createTransfer}
