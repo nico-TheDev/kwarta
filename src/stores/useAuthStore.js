@@ -202,6 +202,7 @@ const AuthStore = (set, get) => ({
         }
     },
     logout: () => {
+        localStorage.clear();
         set({
             authState: {
                 user: null,

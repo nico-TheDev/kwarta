@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import { Box, Container, Grid, CircularProgress, Typography } from '@mui/material';
 import { Balance } from '../components/dashboard/balance';
-import { SavingGoals } from '../components/dashboard/saving-goals';
+import { InflationPanel } from '../components/dashboard/saving';
 import { TransactionHistory } from '../components/dashboard/transaction-history';
 import { Cashflow } from '../components/dashboard/cashflow';
-import { Savings } from '../components/dashboard/savings';
+import { Savings } from '../components/dashboard/inflation';
 import { Income } from '../components/dashboard/income';
 import { Expenses } from '../components/dashboard/expenses';
 import { ExpensesChart } from '../components/dashboard/expenses-chart';
@@ -71,8 +71,7 @@ const Page = () => {
                             <Income />
                         </Grid>
                         <Grid item xl={3} lg={3} sm={6} xs={12}>
-                            {/* SAVINGS PANEL */}
-                            {/* <Savings /> */}
+                            <Savings />
                         </Grid>
                         <Grid item lg={8} md={12} xl={9} xs={12}>
                             {/* BAR CHART PANEl */}
@@ -86,10 +85,9 @@ const Page = () => {
                             {/* TRANSACTION HISTORY */}
                             <TransactionHistory sx={{ height: '100%' }} />
                         </Grid>
-                        {/* <Grid item lg={8} md={12} xl={9} xs={12}> */}
-                        {/* SAVINGS CHARTS */}
-                        {/* <SavingGoals /> */}
-                        {/* </Grid> */}
+                        {/* <Grid item lg={8} md={12} xl={9} xs={12}>
+                            <InflationPanel sx={{ height: '100%' }} />
+                        </Grid> */}
                     </Grid>
                 </Container>
             </Box>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import PeopleIcon from '@mui/icons-material/PeopleOutlined';
 import { getLanguage } from 'utils/getLanguage';
 
@@ -23,7 +22,7 @@ export const Income = (props) => {
     }, [transactions]);
 
     return (
-        <Card {...props}>
+        <Card sx={{ height: '100%' }} {...props}>
             <CardContent>
                 <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
                     <Grid item>
@@ -46,26 +45,6 @@ export const Income = (props) => {
                         </Avatar>
                     </Grid>
                 </Grid>
-                <Box
-                    sx={{
-                        alignItems: 'center',
-                        display: 'flex',
-                        pt: 2
-                    }}
-                >
-                    <ArrowUpwardIcon color='success' />
-                    <Typography
-                        variant='body2'
-                        sx={{
-                            mr: 1
-                        }}
-                    >
-                        16%
-                    </Typography>
-                    <Typography color='textSecondary' variant='caption'>
-                        {getLanguage().sinceLastMonth}
-                    </Typography>
-                </Box>
             </CardContent>
         </Card>
     );

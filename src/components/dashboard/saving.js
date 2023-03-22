@@ -1,6 +1,6 @@
-import { format } from 'date-fns'
-import { v4 as uuid } from 'uuid'
-import PerfectScrollbar from 'react-perfect-scrollbar'
+import { format } from 'date-fns';
+import { v4 as uuid } from 'uuid';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
     Box,
     Button,
@@ -13,11 +13,10 @@ import {
     TableRow,
     TableSortLabel,
     Tooltip
-} from '@mui/material'
-import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import { SeverityPill } from '../severity-pill'
-import { getLanguage } from 'utils/getLanguage'
-
+} from '@mui/material';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { SeverityPill } from '../severity-pill';
+import { getLanguage } from 'utils/getLanguage';
 
 const orders = [
     {
@@ -80,24 +79,26 @@ const orders = [
         createdAt: 1554670800000,
         status: 'delivered'
     }
-]
+];
 
-export const SavingGoals = (props) => (
-    <Card {...props}>
-        <CardHeader title={getLanguage().savingGoals} />
-        <PerfectScrollbar>
-            <Box sx={{ minWidth: 800 }}></Box>
-        </PerfectScrollbar>
-        <Box
-            sx={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                p: 2
-            }}
-        >
-            <Button color='primary' endIcon={<ArrowRightIcon fontSize='small' />} size='small' variant='text'>
-                {getLanguage().overview}
-            </Button>
-        </Box>
-    </Card>
-)
+export const InflationPanel = (props) => {
+    return (
+        <Card {...props}>
+            <CardHeader title={getLanguage().savingGoals} />
+            <PerfectScrollbar>
+                <Box sx={{ minWidth: 800 }}></Box>
+            </PerfectScrollbar>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    p: 2
+                }}
+            >
+                <Button color='primary' endIcon={<ArrowRightIcon fontSize='small' />} size='small' variant='text'>
+                    {getLanguage().overview}
+                </Button>
+            </Box>
+        </Card>
+    );
+};
