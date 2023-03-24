@@ -25,21 +25,15 @@ export const ICON_NAMES = {
     },
 
     ACCOUNT_ICONS: {
-        AUB: 'AUB',
-        BANCNET: 'BANCNET',
-        BDO: 'BDO',
-        BPI: 'BPI',
-        CHINABANK: 'CHINABANK',
-        CITIBANK: 'CITIBANK',
-        EASTWEST: 'EASTWEST',
-        LANDBANK: 'LANDBANK',
-        MAYBANK: 'MAYBANK',
-        METROBANK: 'METROBANK',
-        PNB: 'PNB',
-        PSBANK: 'PSBANK',
-        ROBINSONSBANK: 'ROBINSONSBANK',
-        SECURITYBANK: 'SECURITYBANK',
-        UNIONBANK: 'UNIONBANK',
+        BANK: 'BANK',
+        CREDIT_CARD: 'CREDIT_CARD',
+        WALLET: 'WALLET',
+        RECEIPT: 'RECEIPT',
+        LIGHTBULB: 'LIGHTBULB',
+        PAPER_MONEY: 'PAPER_MONEY',
+        SAFE_SHIELD: 'SAFE_SHIELD',
+        MONETIZATION: 'MONETIZATION',
+        
     },
 
     CATEGORY_ICONS: {

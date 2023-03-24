@@ -26,21 +26,11 @@ import CheckIcon from '@mui/icons-material/Check';
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
 import WalletRoundedIcon from '@mui/icons-material/WalletRounded';
-import AubIcon from '../../assets/svg/aub';
-import BancnetIcon from '../../assets/svg/bancnet';
-import BdoIcon from '../../assets/svg/bdo';
-import BpiIcon from '../../assets/svg/bpi';
-import ChinabankIcon from '../../assets/svg/chinabank';
-import CitibankIcon from '../../assets/svg/citibank';
-import EastwestIcon from '../../assets/svg/eastwest';
-import LandbankIcon from '../../assets/svg/landbank';
-import MaybankIcon from '../../assets/svg/maybank';
-import MetrobankIcon from '../../assets/svg/metrobank';
-import PnbIcon from '../../assets/svg/pnb';
-import PsbankIcon from '../../assets/svg/psbank';
-import RobinsonsbankIcon from '../../assets/svg/robinsonsbank';
-import SecuritybankIcon from '../../assets/svg/securitybank';
-import UnionbankIcon from '../../assets/svg/unionbank';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
+import GppGoodIcon from '@mui/icons-material/GppGood';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 //Transportation
 import SailingIcon from '@mui/icons-material/Sailing';
@@ -217,22 +207,11 @@ export function Icon(props) {
     else if (name === ICON_NAMES.ACCOUNT_ICONS.BANK) return <AccountBalanceRoundedIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD) return <CreditCardRoundedIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.WALLET) return <WalletRoundedIcon {...props} />;
-
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.AUB) return <AubIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.BANCNET) return <BancnetIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.BDO) return <BdoIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.BPI) return <BpiIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.CHINABANK) return <ChinabankIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.CITIBANK) return <CitibankIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.EASTWEST) return <EastwestIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.LANDBANK) return <LandbankIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.MAYBANK) return <MaybankIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.METROBANK) return <MetrobankIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.PNB) return <PnbIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.PSBANK) return <PsbankIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.ROBINSONSBANK) return <RobinsonsbankIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.SECURITYBANK) return <SecuritybankIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.UNIONBANK) return <UnionbankIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.RECEIPT) return <ReceiptLongIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.LIGHTBULB) return <LightbulbIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.PAPER_MONEY) return <RequestPageIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.SAFE_SHIELD) return <GppGoodIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.MONETIZATION) return <MonetizationOnIcon {...props} />;
     
     //CATEGORY ICONS
     //TRANSPORTATION
