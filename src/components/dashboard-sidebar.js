@@ -115,12 +115,6 @@ export const DashboardSidebar = (props) => {
                             gap: 2
                         }}
                     >
-                        <Box>
-                            <CircularProgressWithLabel value={97} />
-                            <Typography variant='body1' textAlign='center'>
-                                {getLanguage().doingGreat}
-                            </Typography>
-                        </Box>
                         <Box
                             sx={{
                                 alignItems: 'center',
@@ -168,7 +162,7 @@ export const DashboardSidebar = (props) => {
                 </Box>
             </Box>
         </>
-    )
+    );
 
     if (lgUp) {
         return (
