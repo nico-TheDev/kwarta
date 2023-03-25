@@ -33,6 +33,7 @@ export const ICON_NAMES = {
         PAPER_MONEY: 'PAPER_MONEY',
         SAFE_SHIELD: 'SAFE_SHIELD',
         MONETIZATION: 'MONETIZATION',
+        PERCENTAGE: 'PERCENTAGE',
         
         AUB: 'AUB',
         BANCNET: 'BANCNET',
@@ -113,6 +114,7 @@ export const ICON_NAMES = {
         ELECTRICITY_BILLS: 'ELECTRICITY_BILLS',
         FURNITURE: 'FURNITURE',
         GARDEN: 'GARDEN',
+        GAS: 'GAS',
         GRILL: 'GRILL',
         HARDWARE: 'HARDWARE',
         HOUSE: 'HOUSE',
@@ -123,6 +125,7 @@ export const ICON_NAMES = {
         PAINT: 'PAINT',
         SANITIZER: 'SANITIZER',
         SUBSCRIPTIONS: 'SUBSCRIPTIONS',
+        TV: 'TV',
         WATER_BILLS: 'WATER_BILLS',
 
         //HEALTH

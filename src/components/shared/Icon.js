@@ -31,6 +31,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import GppGoodIcon from '@mui/icons-material/GppGood';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import PercentIcon from '@mui/icons-material/Percent';
 
 import { AubIcon } from 'assets/icons/AubIcon';
 import { BancnetIcon } from 'assets/icons/BancnetIcon';
@@ -106,6 +107,7 @@ import WaterDamageRoundedIcon from '@mui/icons-material/WaterDamageRounded';
 import RouterRoundedIcon from '@mui/icons-material/RouterRounded';
 import BuildCircleRoundedIcon from '@mui/icons-material/BuildCircleRounded';
 import SmartDisplayRoundedIcon from '@mui/icons-material/SmartDisplayRounded';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import FormatPaintIcon from '@mui/icons-material/FormatPaint';
 import HouseIcon from '@mui/icons-material/House';
@@ -120,6 +122,7 @@ import KeyIcon from '@mui/icons-material/Key';
 import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
 import HardwareIcon from '@mui/icons-material/Hardware';
 import BathroomIcon from '@mui/icons-material/Bathroom';
+import GasMeterIcon from '@mui/icons-material/GasMeter';
 
 //Health
 import FitnessCenterRoundedIcon from '@mui/icons-material/FitnessCenterRounded';
@@ -232,6 +235,7 @@ export function Icon(props) {
     else if (name === ICON_NAMES.ACCOUNT_ICONS.PAPER_MONEY) return <RequestPageIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.SAFE_SHIELD) return <GppGoodIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.MONETIZATION) return <MonetizationOnIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.PERCENTAGE) return <PercentIcon {...props} />;
 
     else if (name === ICON_NAMES.ACCOUNT_ICONS.AUB) return <AubIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.BANCNET) return <BancnetIcon {...props} />;
@@ -311,6 +315,7 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.ELECTRICITY_BILLS) return <OfflineBoltRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.FURNITURE) return <WeekendIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.GARDEN) return <YardIcon {...props} />;
+    else if (name === ICON_NAMES.CATEGORY_ICONS.GAS) return <GasMeterIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.GRILL) return <OutdoorGrillIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.HARDWARE) return <HardwareIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.HOUSE) return <HouseIcon {...props} />;
@@ -321,6 +326,7 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.MAINTENANCE) return <BuildCircleRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.SANITIZER) return <SanitizerIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.SUBSCRIPTIONS) return <SmartDisplayRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.CATEGORY_ICONS.TV) return <LiveTvIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.WATER_BILLS) return <WaterDamageRoundedIcon {...props} />;
 
     //HEALTH
