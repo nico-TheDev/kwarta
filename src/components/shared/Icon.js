@@ -32,6 +32,26 @@ import RequestPageIcon from '@mui/icons-material/RequestPage';
 import GppGoodIcon from '@mui/icons-material/GppGood';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
+import { AubIcon } from 'assets/icons/AubIcon';
+import { BancnetIcon } from 'assets/icons/BancnetIcon';
+import { BdoIcon } from 'assets/icons/BdoIcon';
+import { BpiIcon } from 'assets/icons/BpiIcon';
+import { ChinabankIcon } from 'assets/icons/ChinabankIcon';
+import { CitibankIcon } from 'assets/icons/CitibankIcon';
+import { EastwestIcon } from 'assets/icons/EastwestIcon';
+import { GcashIcon } from 'assets/icons/GcashIcon';
+// import { LandbankIcon } from 'assets/icons/LandbankIcon';
+import { MastercardIcon } from 'assets/icons/MastercardIcon';
+// import { MaybankIcon } from 'assets/icons/MaybankIcon';
+import { MetrobankIcon } from 'assets/icons/MetrobankIcon';
+import { PaymayaIcon } from 'assets/icons/PaymayaIcon';
+import { PaypalIcon } from 'assets/icons/PaypalIcon';
+import { PnbIcon } from 'assets/icons/PnbIcon';
+import { PsbankIcon } from 'assets/icons/PsbankIcon';
+import { RobinsonsbankIcon } from 'assets/icons/RobinsonsbankIcon';
+import { SecuritybankIcon } from 'assets/icons/SecuritybankIcon';
+import { UnionbankIcon } from 'assets/icons/UnionbankIcon';
+
 //Transportation
 import SailingIcon from '@mui/icons-material/Sailing';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
@@ -212,6 +232,26 @@ export function Icon(props) {
     else if (name === ICON_NAMES.ACCOUNT_ICONS.PAPER_MONEY) return <RequestPageIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.SAFE_SHIELD) return <GppGoodIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.MONETIZATION) return <MonetizationOnIcon {...props} />;
+
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.AUB) return <AubIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.BANCNET) return <BancnetIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.BDO) return <BdoIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.BPI) return <BpiIcon  {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.CHINABANK) return <ChinabankIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.CITIBANK) return <CitibankIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.EASTWEST) return <EastwestIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.GCASH) return <GcashIcon {...props} />;
+    // else if (name === ICON_NAMES.ACCOUNT_ICONS.LANDBANK) return <LandbankIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.MASTERCARD) return <MastercardIcon {...props} />;
+    // else if (name === ICON_NAMES.ACCOUNT_ICONS.MAYBANK) return <MaybankIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.METROBANK) return <MetrobankIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.PAYMAYA) return <PaymayaIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.PAYPAL) return <PaypalIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.PNB) return <PnbIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.PSBANK) return <PsbankIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.ROBINSONSBANK) return <RobinsonsbankIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.SECURITYBANK) return <SecuritybankIcon {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.UNIONBANK) return <UnionbankIcon {...props} />;
     
     //CATEGORY ICONS
     //TRANSPORTATION
