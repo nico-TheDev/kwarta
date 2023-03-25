@@ -37,6 +37,7 @@
         "react-color": "^2.19.3",
         "react-dom": "18.2.0",
         "react-hot-toast": "^2.4.0",
+        "react-material-ui-carousel": "^3.4.2",
         "react-perfect-scrollbar": "1.5.8",
         "uuid": "9.0.0",
         "yup": "0.32.11",
