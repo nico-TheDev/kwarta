@@ -33,9 +33,9 @@ export const AccountProfileDetails = (props) => {
     console.log(user);
 
     useEffect(() => {
-        formik.setFieldValue('firstName', user.firstName);
-        formik.setFieldValue('lastName', user.lastName);
-        formik.setFieldValue('email', user.email);
+        formik.setFieldValue('firstName', user?.firstName);
+        formik.setFieldValue('lastName', user?.lastName);
+        formik.setFieldValue('email', user?.email);
     }, [user]);
 
     return (

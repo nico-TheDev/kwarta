@@ -85,162 +85,144 @@ const Register = () => {
   });
 
   return (
-    <>
-      <Head>
-        <title>
-          Register | Material Kit
-        </title>
-      </Head>
-      <Box
-        component="main"
-        sx={{
-          alignItems: 'center',
-          display: 'flex',
-          flexGrow: 1,
-          minHeight: '100%'
-        }}
-      >
-        <Container maxWidth="sm">
-          <NextLink
-            href="/"
-            passHref
+      <>
+          <Head>
+              <title>Register | Material Kit</title>
+          </Head>
+          <Box
+              component='main'
+              sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  flexGrow: 1,
+                  minHeight: '100%'
+              }}
           >
-            <Button
-              component="a"
-              startIcon={<ArrowBackIcon fontSize="small" />}
-            >
-              Dashboard
-            </Button>
-          </NextLink>
-          <form onSubmit={formik.handleSubmit}>
-            <Box sx={{ my: 3 }}>
-              <Button
-                  component='label'
-                  variant='contained'
-                  sx={{
-                      height: '100%',
-                      width: 150,
-                      fontSize: 100,
-                      ml: 2,
-                      p: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      position: 'relative'
-                  }}
-              >
-                  {selectedFile?.source ? (
-                      <Box sx={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }}>
-                          <img
-                              src={selectedFile.source}
-                              alt=''
-                              style={{
-                                  display: 'block',
-                                  width: '100%',
-                                  height: '100%',
-                                  objectFit: 'fill'
+              <Container maxWidth='sm'>
+                  <NextLink href='/' passHref>
+                      <Button component='a' startIcon={<ArrowBackIcon fontSize='small' />}>
+                          Dashboard
+                      </Button>
+                  </NextLink>
+                  <form onSubmit={formik.handleSubmit}>
+                      <Box sx={{ my: 3 }}>
+                          <Button
+                              component='label'
+                              variant='contained'
+                              sx={{
+                                  height: 150,
+                                  width: 150,
+                                  fontSize: 80,
+                                  ml: 2,
+                                  p: 0,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  position: 'relative',
+                                  borderRadius: '100%',
+                                  overflow: 'hidden',
+                                  marginX: 'auto'
                               }}
+                          >
+                              {selectedFile?.source ? (
+                                  <Box sx={{ width: '100%', height: '100%', top: 0, left: 0 }}>
+                                      <img
+                                          src={selectedFile?.source}
+                                          alt=''
+                                          style={{
+                                              display: 'block',
+                                              width: '100%',
+                                              height: '100%',
+                                              objectFit: 'cover'
+                                          }}
+                                      />
+                                  </Box>
+                              ) : (
+                                  <AddPhotoIcon fontSize='inherit' />
+                              )}
+                              <input
+                                  type='file'
+                                  hidden
+                                  onChange={handleFileSelect}
+                                  onClick={handleFileClick}
+                                  accept='image/*'
+                                  ref={inputRef}
+                              />
+                          </Button>
+                      </Box>
+                      <Box sx={{ my: 3, textAlign: 'center' }}>
+                          <Typography color='textPrimary' variant='h4'>
+                              Create a new account
+                          </Typography>
+                          <Typography color='textSecondary' gutterBottom variant='body2'>
+                              Use your email to create a new account
+                          </Typography>
+                      </Box>
+                      <Box sx={{ display: 'grid', gap: 2 }}>
+                          <TextField
+                              label='First Name'
+                              name='firstName'
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              value={formik.values.firstName}
+                              variant='outlined'
+                          />
+                          <TextField
+                              label='Last Name'
+                              name='lastName'
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              value={formik.values.lastName}
+                              variant='outlined'
+                          />
+                          <TextField
+                              label='Email Address'
+                              name='email'
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              type='email'
+                              value={formik.values.email}
+                              variant='outlined'
+                          />
+                          <TextField
+                              label='Password'
+                              name='password'
+                              onBlur={formik.handleBlur}
+                              onChange={formik.handleChange}
+                              type='password'
+                              value={formik.values.password}
+                              variant='outlined'
                           />
                       </Box>
-                  ) : (
-                      <AddPhotoIcon fontSize='inherit' />
-                  )}
-                  <input
-                      type='file'
-                      hidden
-                      onChange={handleFileSelect}
-                      onClick={handleFileClick}
-                      accept='image/*'
-                      ref={inputRef}
-                  />
-              </Button>
-            </Box>
-            <Box sx={{ my: 3 }}>
-              <Typography
-                color="textPrimary"
-                variant="h4"
-              >
-                Create a new account
-              </Typography>
-              <Typography
-                color="textSecondary"
-                gutterBottom
-                variant="body2"
-              >
-                Use your email to create a new account
-              </Typography>
-            </Box>
-            <TextField
-              label="First Name"
-              margin="normal"
-              name="firstName"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.firstName}
-              variant="outlined"
-            />
-            <TextField
-              label="Last Name"
-              margin="normal"
-              name="lastName"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              value={formik.values.lastName}
-              variant="outlined"
-            />
-            <TextField
-              label="Email Address"
-              margin="normal"
-              name="email"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              type="email"
-              value={formik.values.email}
-              variant="outlined"
-            />
-            <TextField
-              label="Password"
-              margin="normal"
-              name="password"
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              type="password"
-              value={formik.values.password}
-              variant="outlined"
-            />
-            <Box sx={{ py: 2 }}>
-              <Button
-                color="primary"
-                fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-                onClick={formik.handleSubmit}
-              >
-                Sign Up Now
-              </Button>
-            </Box>
-            <Typography
-              color="textSecondary"
-              variant="body2"
-            >
-              Have an account?
-              {' '}
-              <NextLink
-                href="/login"
-                passHref
-              >
-                <Link
-                  variant="subtitle2"
-                  underline="hover"
-                >
-                  Sign In
-                </Link>
-              </NextLink>
-            </Typography>
-          </form>
-        </Container>
-      </Box>
-    </>
+                      <Box sx={{ py: 2 }}>
+                          <Button
+                              color='primary'
+                              fullWidth
+                              size='large'
+                              type='submit'
+                              variant='contained'
+                              onClick={formik.handleSubmit}
+                              disabled={
+                                  !formik.values.email ||
+                                  !formik.values.firstName ||
+                                  !formik.values.lastName ||
+                                  !formik.values.password
+                              }
+                          >
+                              Sign Up Now
+                          </Button>
+                      </Box>
+                      <Typography color='textSecondary' variant='body2'>
+                          Have an account?{' '}
+                          <NextLink href='/login' passHref>
+                              <Link variant='subtitle2' underline='hover'>
+                                  Sign In
+                              </Link>
+                          </NextLink>
+                      </Typography>
+                  </form>
+              </Container>
+          </Box>
+      </>
   );
 };
 

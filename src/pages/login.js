@@ -17,9 +17,9 @@ const Login = () => {
     const verifyUser = useAuthStore(state => state.verifyUser);
 
     const initialValues = {
-        email: 'test@gmail.com',
-        password: '1234'
-    }
+        email: '',
+        password: ''
+    };
 
     const handleLoginDefault = (values) => {
         verifyUser({
