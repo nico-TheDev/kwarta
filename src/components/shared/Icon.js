@@ -123,7 +123,7 @@ import OutdoorGrillIcon from '@mui/icons-material/OutdoorGrill';
 import HardwareIcon from '@mui/icons-material/Hardware';
 import BathroomIcon from '@mui/icons-material/Bathroom';
 import GasMeterIcon from '@mui/icons-material/GasMeter';
-
+import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 //Health
 import FitnessCenterRoundedIcon from '@mui/icons-material/FitnessCenterRounded';
 import LocalHospitalRoundedIcon from '@mui/icons-material/LocalHospitalRounded';
@@ -394,7 +394,7 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.OTHER_STAR) return <StarsIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.SMOKING) return <SmokingRoomsIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.VAPING) return <VapingRoomsIcon {...props} />;
-
+    else if (name === ICON_NAMES.CATEGORY_ICONS.FAMILY) return <FamilyRestroomIcon {...props} />;
     //PRIORITY
     else if (name === ICON_NAMES.CATEGORY_ICONS.BUSINESS) return <BusinessCenterRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.FREELANCE_JOB) return <GroupWorkRoundedIcon {...props} />;

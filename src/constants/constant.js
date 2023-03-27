@@ -34,7 +34,7 @@ export const ICON_NAMES = {
         SAFE_SHIELD: 'SAFE_SHIELD',
         MONETIZATION: 'MONETIZATION',
         PERCENTAGE: 'PERCENTAGE',
-        
+
         AUB: 'AUB',
         BANCNET: 'BANCNET',
         BDO: 'BDO',
@@ -53,7 +53,7 @@ export const ICON_NAMES = {
         PSBANK: 'PSBANK',
         ROBINSONSBANK: 'ROBINSONSBANK',
         SECURITYBANK: 'SECURITYBANK',
-        UNIONBANK: 'UNIONBANK',
+        UNIONBANK: 'UNIONBANK'
     },
 
     CATEGORY_ICONS: {
@@ -186,6 +186,7 @@ export const ICON_NAMES = {
         CHILD_CARE: 'CHILD_CARE',
         BABY_TOYS: 'BABY_TOYS',
         CRIB: 'CRIB',
+        FAMILY: 'FAMILY',
 
         //Other
         OTHER_QUESTION: 'OTHER_QUESTION',
@@ -200,6 +201,6 @@ export const ICON_NAMES = {
         FULLTIME_JOB: 'FULLTIME_JOB',
         SAVINGS: 'SAVINGS',
         REDEEMS: 'REDEEMS',
-        CRYPTO: 'CRYPTO',
+        CRYPTO: 'CRYPTO'
     }
-}
+};

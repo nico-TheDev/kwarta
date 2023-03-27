@@ -35,10 +35,13 @@ const App = (props) => {
     useEffect(() => {
         // console.log(router.pathname);
         // console.log(router.query);
-        if (user) {
+        if (user && user?.hasAnswered) {
             if (router.pathname !== '/' && ['/login', '/sign-in', '/register'].includes(router.pathname)) {
                 router.push('/');
             }
+        }
+        if (user && !user?.hasAnswered) {
+            router.push('/survey');
         }
     }, [user, isAuthenticated]);
 
