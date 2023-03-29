@@ -16,13 +16,13 @@ const Page = () => {
             <Head>
                 <title>Categories | CASH</title>
             </Head>
-            <Box
-                component='main'
-                sx={{
-                    flexGrow: 1,
-                    py: 8
-                }}
-            >
+                <Box
+                    component='main'
+                    sx={{
+                        flexGrow: 1,
+                        py: 8
+                    }}
+                >
                 <Container maxWidth={false}>
                     <CategoriesHead />
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
