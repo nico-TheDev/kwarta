@@ -10,7 +10,7 @@ import { SavingsCard } from 'components/savings/savings-card'
 const Page = () => (
     <>
         <Head>
-            <title>Savings | CASH</title>
+            <title>Bonds| CASH</title>
         </Head>
         <Box
             component='main'
@@ -30,7 +30,7 @@ const Page = () => (
                     }}
                 >
                 <Typography sx={{ m: 1 }} variant='h4'>
-                    Savings
+                    Bonds
                 </Typography>
                 </Box>
                 {/* <Box sx={{ pt: 3 }}>
