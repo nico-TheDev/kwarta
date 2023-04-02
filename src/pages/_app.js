@@ -35,7 +35,7 @@ const App = (props) => {
     useEffect(() => {
         // console.log(router.pathname);
         // console.log(router.query);
-        console.log(user);
+        // console.log(user);
         if (user) {
             if (user?.hasAnswered) {
                 if (

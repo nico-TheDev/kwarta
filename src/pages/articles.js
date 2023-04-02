@@ -63,7 +63,7 @@ const Page = () => {
                             {getLanguage().articles}
                         </Typography>
                     </Box>
-                    <Box sx={{ pt: 3 }}>
+                    <Box sx={{ pt: 2 }}>
                         <Stack direction='row' spacing={1}>
                             {filters.map((item) => (
                                 <Chip
@@ -71,6 +71,7 @@ const Page = () => {
                                     onClick={() => handleClick(item)}
                                     variant={filterValue.includes(item) ? 'filled' : 'outlined'}
                                     color='primary'
+                                    sx={{ fontSize: { xs: 10, lg: 'initial' } }}
                                 />
                             ))}
                         </Stack>
