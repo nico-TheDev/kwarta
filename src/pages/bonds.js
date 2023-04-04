@@ -1,16 +1,12 @@
 import Head from 'next/head'
-import { Box, Container, Grid, Pagination } from '@mui/material'
-import { savings } from '../__mocks__/accounts'
-import { AccountHead } from '../components/accounts/account-head'
-import { AccountCard } from '../components/accounts/account-card'
+import { Box, Container, Grid, Pagination, Typography } from '@mui/material'
 import { DashboardLayout } from '../components/dashboard-layout'
-import { SavingsHead } from 'components/savings/savings-head'
-import { SavingsCard } from 'components/savings/savings-card'
+import { BondsCard } from 'components/bonds/bonds-card'
 
 const Page = () => (
     <>
         <Head>
-            <title>Bonds| CASH</title>
+            <title>Bonds | CASH</title>
         </Head>
         <Box
             component='main'
@@ -33,15 +29,9 @@ const Page = () => (
                     Bonds
                 </Typography>
                 </Box>
-                {/* <Box sx={{ pt: 3 }}>
-                    <Grid container spacing={3}>
-                        {savings.map((saving) => (
-                            <Grid item key={saving.id} lg={4} md={6} xs={12}>
-                                <SavingsCard saving={saving} />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box> */}
+                <Box sx={{ pt: 3 }}>
+                    <BondsCard />
+                </Box>
             </Container>
         </Box>
     </>
