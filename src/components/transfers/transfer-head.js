@@ -45,10 +45,23 @@ export const TransferHead = (props) => {
                     sx={{
                         alignItems: 'center',
                         display: 'flex',
-                        justifyContent: 'space-between'
+                        justifyContent: 'space-between',
+                        flexDirection: {
+                            lg: 'initial',
+                            xs: 'column'
+                        }
                     }}
                 >
-                    <Typography sx={{ m: 1 }} variant='h4'>
+                    <Typography
+                        sx={{
+                            m: 1,
+                            fontSize: {
+                                lg: 'initial',
+                                xs: 20
+                            }
+                        }}
+                        variant='h4'
+                    >
                         Transfer Overview
                     </Typography>
                     <Box
@@ -57,10 +70,21 @@ export const TransferHead = (props) => {
                             display: 'flex',
                             alignItems: 'center',
                             gap: 2,
-                            width: '40%'
+                            width: {
+                                lg: '40%',
+                                xs: '100%'
+                            }
                         }}
                     >
-                        <FormControl sx={{ flex: 1 }}>
+                        <FormControl
+                            sx={{
+                                flex: 1,
+                                width: {
+                                    lg: 'initial',
+                                    xs: '100%'
+                                }
+                            }}
+                        >
                             <InputLabel id='demo-simple-select-label'>Filter by:</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'

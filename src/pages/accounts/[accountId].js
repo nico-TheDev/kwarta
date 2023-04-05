@@ -140,7 +140,10 @@ const Page = () => {
                 <Container maxWidth={'sm'}>
                     <Box
                         sx={{
-                            width: 500,
+                            width: {
+                                lg: 500,
+                                xs: '100%'
+                            },
                             display: 'grid',
                             gap: 2
                         }}
