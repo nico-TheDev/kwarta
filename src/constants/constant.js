@@ -204,3 +204,29 @@ export const ICON_NAMES = {
         CRYPTO: 'CRYPTO'
     }
 };
+
+
+
+
+
+export const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: {
+        lg: 500,
+        xs: '100%'
+    },
+    height: {
+        lg: '80vh',
+        xs: '100vh'
+    },
+    bgcolor: 'background.paper',
+    overflowY: 'scroll',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    display: 'grid',
+    gap: 4
+};

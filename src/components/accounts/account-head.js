@@ -41,10 +41,33 @@ export const AccountHead = (props) => {
                         m: -1
                     }}
                 >
-                    <Typography sx={{ m: 1 }} variant='h4'>
+                    <Typography
+                        sx={{
+                            m: 1,
+                            textAlign: 'center',
+                            width: {
+                                xs: '100%',
+                                lg: 'auto'
+                            }
+                        }}
+                        variant='h4'
+                    >
                         {getLanguage().accounts}
                     </Typography>
-                    <Box sx={{ m: 1 }}>
+                    <Box
+                        sx={{
+                            width: {
+                                xs: '100%',
+                                lg: 'auto'
+                            },
+                            m: 1,
+                            display: {
+                                lg: 'block',
+                                xs: 'grid'
+                            },
+                            gap: 2
+                        }}
+                    >
                         <Button
                             onClick={handleOpenAccountCreateModal}
                             variant='contained'

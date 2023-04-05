@@ -67,7 +67,7 @@ export const Savings = (props) => {
                             Inflation Rate
                         </Typography>
                         <Typography color='textPrimary' variant='h4'>
-                            {inflationData ? inflationData.rate : <CircularProgress size={20} />}
+                            {inflationData ? inflationData?.rate : <CircularProgress size={20} />}
                         </Typography>
                     </Grid>
                     <Grid item>

@@ -35,13 +35,18 @@ const App = (props) => {
     useEffect(() => {
         // console.log(router.pathname);
         // console.log(router.query);
-        if (user && user?.hasAnswered) {
-            if (router.pathname !== '/' && ['/login', '/sign-in', '/register'].includes(router.pathname)) {
-                router.push('/');
+        // console.log(user);
+        if (user) {
+            if (user?.hasAnswered) {
+                if (
+                    (router.pathname !== '/' && ['/login', '/sign-in', '/register'].includes(router.pathname)) ||
+                    user.hasAnswered
+                ) {
+                    router.push('/');
+                }
+            } else if (!user?.hasAnswered) {
+                router.push('/survey');
             }
-        }
-        if (user && !user?.hasAnswered) {
-            router.push('/survey');
         }
     }, [user, isAuthenticated]);
 

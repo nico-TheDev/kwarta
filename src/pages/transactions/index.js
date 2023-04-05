@@ -215,7 +215,17 @@ const Page = () => {
                 }}
             >
                 <Container maxWidth='md'>
-                    <Typography variant='h3' mb={4}>
+                    <Typography
+                        variant='h3'
+                        mb={4}
+                        sx={{
+                            fontSize: { xs: 20, lg: 'auto' },
+                            textAlign: {
+                                xs: 'center',
+                                lg: 'initial'
+                            }
+                        }}
+                    >
                         Transaction Overview
                     </Typography>
                     <Typography variant='h4' align='center' mb={4}>
@@ -232,7 +242,7 @@ const Page = () => {
                         <Typography variant='body1'>Expense</Typography>
                     </Box>
 
-                    <Box sx={{ display: 'flex', gap: 2, mb: 6 }}>
+                    <Box sx={{ display: { xs: 'grid', lg: 'flex' }, gap: 2, mb: 6 }}>
                         <FormControl fullWidth>
                             <InputLabel id='demo-simple-select-label'>Choose Category</InputLabel>
                             <Select

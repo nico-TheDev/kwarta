@@ -16,13 +16,13 @@ const Page = () => {
             <Head>
                 <title>Categories | CASH</title>
             </Head>
-                <Box
-                    component='main'
-                    sx={{
-                        flexGrow: 1,
-                        py: 8
-                    }}
-                >
+            <Box
+                component='main'
+                sx={{
+                    flexGrow: 1,
+                    py: 8
+                }}
+            >
                 <Container maxWidth={false}>
                     <CategoriesHead />
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
@@ -37,7 +37,7 @@ const Page = () => {
                     <Box sx={{ pt: 3 }}>
                         <Grid container spacing={3}>
                             {categoryData.map((category) => (
-                                <Grid item key={category.id} lg={3} md={6} xs={12}>
+                                <Grid item key={category.id} lg={3} md={6} sm={6} xs={12}>
                                     <CategoriesCard categories={category} />
                                 </Grid>
                             ))}

@@ -56,7 +56,7 @@ const Login = () => {
             >
                 <Container maxWidth='sm'>
                     <form onSubmit={formik.handleSubmit}>
-                        <Box sx={{ my: 3 }}>
+                        <Box sx={{ my: 3, textAlign: { xs: 'center', lg: 'initial' } }}>
                             <Typography color='textPrimary' variant='h4'>
                                 Log in
                             </Typography>
@@ -146,7 +146,7 @@ const Login = () => {
                         height: '100vh',
                         overflow: 'hidden',
                         display: {
-                            sm: 'none',
+                            xs: 'none',
                             md: 'flex'
                         },
                         alignItems: 'center'
@@ -170,7 +170,7 @@ const Login = () => {
                 </Box>
             </Box>
         </>
-    )
+    );
 }
 
 export default Login
