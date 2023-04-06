@@ -1,7 +1,10 @@
 import Head from 'next/head'
-import { Box, Container, Grid, Pagination, Typography } from '@mui/material'
+import Link from 'next/link';
+import { Box, Container, Grid, Pagination, Typography, Button } from '@mui/material'
 import { DashboardLayout } from '../components/dashboard-layout'
-import { SavingsCard } from 'components/savings/savings-card'
+import { OffersCard } from 'components/savings/offers-card'
+
+import { ICON_NAMES } from 'constants/constant';
 
 const Page = () => (
     <>
@@ -25,12 +28,12 @@ const Page = () => (
                         m: -1
                     }}
                 >
-                <Typography sx={{ m: 1 }} variant='h4'>
-                    Savings
-                </Typography>
+                    <Typography sx={{ m: 1 }} variant='h4'>
+                        Offers
+                    </Typography>
                 </Box>
                 <Box sx={{ pt: 3 }}>
-                    <SavingsCard />
+                    <OffersCard />
                 </Box>
             </Container>
         </Box>
