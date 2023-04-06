@@ -26,11 +26,12 @@ const MenuProps = {
 export const SavingsCard = ({ ...rest }) => {
     const [selectedAccount, setSelectedAccount] = useState('');
     const [amount, setAmount] = useState(0);
-    const [currentBdoSavings, setCurrentBdoSavings] = useState({});
-    const [currentMetrobankSavings, setCurrentMetrobankSavings] = useState([]);
-    const [currentBpiSavings, setCurrentBpiSavings] = useState([]);
-    const [currentLandbankSavings, setCurrentLandbankSavings] = useState([]);
-    const [currentSecuritybankSavings, setCurrentSecuritybankSavings] = useState([]);
+    const [savings, setSavings] = useState('');
+    // const [currentBdoSavings, setCurrentBdoSavings] = useState([]);
+    // const [currentMetrobankSavings, setCurrentMetrobankSavings] = useState([]);
+    // const [currentBpiSavings, setCurrentBpiSavings] = useState([]);
+    // const [currentLandbankSavings, setCurrentLandbankSavings] = useState([]);
+    // const [currentSecuritybankSavings, setCurrentSecuritybankSavings] = useState([]);
 
     const accounts = useAccountStore((state) => state.accounts);
 
@@ -62,15 +63,17 @@ export const SavingsCard = ({ ...rest }) => {
         const computedLandbankSavings = sortedLandbankSavings.map((item) => computeInterest(item.productName, item.interestRate, amount))
         const computedSecuritybankSavings = sortedSecuritybankSavings.map((item) => computeInterest(item.productName, item.interestRate, amount))
 
-        console.log(computedBdoSavings);
+        console.log(computedBpiSavings);
 
-        setCurrentBdoSavings(computedBdoSavings);
-        setCurrentMetrobankSavings(computedMetrobankSavings);
-        setCurrentBpiSavings(computedBpiSavings);
-        setCurrentLandbankSavings(computedLandbankSavings);
-        setCurrentSecuritybankSavings(computedSecuritybankSavings);
+        setSavings({computedBdoSavings, computedMetrobankSavings, computedBpiSavings, computedLandbankSavings, computedSecuritybankSavings});
 
-        console.log(currentBdoSavings);
+        // setCurrentBdoSavings(computedBdoSavings);
+        // setCurrentMetrobankSavings(computedMetrobankSavings);
+        // setCurrentBpiSavings(computedBpiSavings);
+        // setCurrentLandbankSavings(computedLandbankSavings);
+        // setCurrentSecuritybankSavings(computedSecuritybankSavings);
+
+        console.log(savings);
 
     }, [selectedAccount]);
 
@@ -117,58 +120,209 @@ export const SavingsCard = ({ ...rest }) => {
                         <Typography sx={{ m: 1 }} variant='h5'>
                             BDO
                         </Typography>
-                        <CardContent>
-                            <Box
+                        {savings.computedBdoSavings?.map((savings) => 
+                            <Card
                                 sx={{
                                     display: 'flex',
-                                    justifyContent: 'center',
-                                    mb: 2
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                    position: 'relative'
                                 }}
+                                {...rest}
+                                elevation={10}
                             >
-                                <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                    {currentBdoSavings.productName}
-                                </Typography>
-                            </Box>
-                            <Box sx={{ width: '100%', mb: 1 }}>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                    PHP {currentBdoSavings.total}
-                                </Typography>
-                            </Box>
-                            <Box sx={{ width: '100%', mb: 1 }}>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                    {currentBdoSavings.percent}%
-                                </Typography>
-                            </Box>
-                        </CardContent>
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            mb: 2
+                                        }}
+                                    >
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.productName}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            PHP {savings.total}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.percent}%
+                                        </Typography>
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        )}
                     </Box>
                     
                     <Box sx={{ pt: 3 }}>
                         <Typography sx={{ m: 1 }} variant='h5'>
                             Metrobank
                         </Typography>
-                        <CardContent>
-                            <Box
+                        {savings.computedMetrobankSavings?.map((savings) => 
+                            <Card
                                 sx={{
                                     display: 'flex',
-                                    justifyContent: 'center',
-                                    mb: 2
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                    position: 'relative'
                                 }}
+                                {...rest}
+                                elevation={10}
                             >
-                                <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                    {currentMetrobankSavings.productName}
-                                </Typography>
-                            </Box>
-                            <Box sx={{ width: '100%', mb: 1 }}>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                    PHP {currentMetrobankSavings.total}
-                                </Typography>
-                            </Box>
-                            <Box sx={{ width: '100%', mb: 1 }}>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                    {currentMetrobankSavings.percent}%
-                                </Typography>
-                            </Box>
-                        </CardContent>
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            mb: 2
+                                        }}
+                                    >
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.productName}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            PHP {savings.total}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.percent}%
+                                        </Typography>
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </Box>
+
+                    <Box sx={{ pt: 3 }}>
+                        <Typography sx={{ m: 1 }} variant='h5'>
+                            BPI
+                        </Typography>
+                        {savings.computedBpiSavings?.map((savings) => 
+                            <Card
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                    position: 'relative'
+                                }}
+                                {...rest}
+                                elevation={10}
+                            >
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            mb: 2
+                                        }}
+                                    >
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.productName}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            PHP {savings.total}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.percent}%
+                                        </Typography>
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </Box>
+
+                    <Box sx={{ pt: 3 }}>
+                        <Typography sx={{ m: 1 }} variant='h5'>
+                            Landbank
+                        </Typography>
+                        {savings.computedLandbankSavings?.map((savings) => 
+                            <Card
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                    position: 'relative'
+                                }}
+                                {...rest}
+                                elevation={10}
+                            >
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            mb: 2
+                                        }}
+                                    >
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.productName}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            PHP {savings.total}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.percent}%
+                                        </Typography>
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        )}
+                    </Box>
+                    <Box sx={{ pt: 3 }}>
+                        <Typography sx={{ m: 1 }} variant='h5'>
+                            Security Bank
+                        </Typography>
+                        {savings.computedSecuritybankSavings?.map((savings) => 
+                            <Card
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                    position: 'relative'
+                                }}
+                                {...rest}
+                                elevation={10}
+                            >
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            mb: 2
+                                        }}
+                                    >
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.productName}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            PHP {savings.total}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ width: '100%', mb: 1 }}>
+                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                            {savings.percent}%
+                                        </Typography>
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        )}
                     </Box>
                 </Box>
             ) : (
