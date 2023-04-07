@@ -31,6 +31,7 @@ export const languages = {
         //settings
         language: 'Wika',
         changeLanguage: 'Palitan ang wika',
+        investment: 'Pamumuhunan',
 
         //account profile
         editInformation: 'Ang iyong impormasyon ay maaaring palitan',
@@ -69,6 +70,7 @@ export const languages = {
         sinceLastMonth: 'Since last month',
         historyTransactions: 'Transaction History',
         savingGoals: 'Saving Goals',
+        investment: 'Investment',
 
         //sidebar
         achievements: 'Achievements',
@@ -107,4 +109,4 @@ export const languages = {
         totalSavings: 'Total Savings',
         lastUsed2Hours: 'Last used: 2 Hours Ago'
     }
-}
+};

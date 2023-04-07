@@ -24,7 +24,7 @@ export const Savings = (props) => {
                 setPercentage(JSON.parse(localStorage.getItem('percentage')));
             } else {
                 try {
-                    const res = await fetch('https://kwarta-custom-api.onrender.com/api');
+                    const res = await fetch('/api/inflation');
                     const data = await res.json();
 
                     const rate = data.data;
