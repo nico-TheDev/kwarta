@@ -21,7 +21,8 @@ export const ICON_NAMES = {
         RECEIVE_MONEY: 'RECEIVE_MONEY',
         SEARCH: 'SEARCH',
         SEND_MONEY: 'SEND_MONEY',
-        TIME: 'TIME'
+        TIME: 'TIME',
+        UP: 'UP'
     },
 
     ACCOUNT_ICONS: {

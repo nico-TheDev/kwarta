@@ -7,9 +7,11 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 
 import { Icon } from 'components/shared/Icon';
-
+import { ICON_NAMES } from 'constants/constant';
 import { formatPrice } from 'utils/format-price'
 import { getLanguage } from 'utils/getLanguage'
+
+import DealsCard from './deals-card';
 
 import { bdoSavings, metrobankSavings, bpiSavings, landbankSavings, securitybankSavings } from '../../data/savings'
 import { useAccountStore } from 'stores/useAccountStore';
@@ -27,11 +29,6 @@ export const SavingsCard = ({ ...rest }) => {
     const [selectedAccount, setSelectedAccount] = useState('');
     const [amount, setAmount] = useState(0);
     const [savings, setSavings] = useState('');
-    // const [currentBdoSavings, setCurrentBdoSavings] = useState([]);
-    // const [currentMetrobankSavings, setCurrentMetrobankSavings] = useState([]);
-    // const [currentBpiSavings, setCurrentBpiSavings] = useState([]);
-    // const [currentLandbankSavings, setCurrentLandbankSavings] = useState([]);
-    // const [currentSecuritybankSavings, setCurrentSecuritybankSavings] = useState([]);
 
     const accounts = useAccountStore((state) => state.accounts);
 
@@ -39,7 +36,6 @@ export const SavingsCard = ({ ...rest }) => {
         const currentAccountId = e.target.value;
         const currentAccount = accounts.find((account) => account.id === currentAccountId);
 
-        // console.log(currentAccount);
         setAmount(currentAccount.account_amount);
         setSelectedAccount(e.target.value);
     };
@@ -66,12 +62,6 @@ export const SavingsCard = ({ ...rest }) => {
         console.log(computedBpiSavings);
 
         setSavings({computedBdoSavings, computedMetrobankSavings, computedBpiSavings, computedLandbankSavings, computedSecuritybankSavings});
-
-        // setCurrentBdoSavings(computedBdoSavings);
-        // setCurrentMetrobankSavings(computedMetrobankSavings);
-        // setCurrentBpiSavings(computedBpiSavings);
-        // setCurrentLandbankSavings(computedLandbankSavings);
-        // setCurrentSecuritybankSavings(computedSecuritybankSavings);
 
         console.log(savings);
 
@@ -116,213 +106,72 @@ export const SavingsCard = ({ ...rest }) => {
 
             {amount > 2000 ? (
                 <Box sx={{ pt: 3 }}>
-                    <Box sx={{ pt: 3 }}>
+                    <Typography align='center' sx={{ m: 1 }} variant='h5'>
+                        You have PHP {amount} in your selected bank account. You may apply for savings accounts in the given banks.
+                    </Typography>
+                    <Box sx={{ pt: 3, flexGrow: 1 }}>
                         <Typography sx={{ m: 1 }} variant='h5'>
                             BDO
                         </Typography>
-                        {savings.computedBdoSavings?.map((savings) => 
-                            <Card
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: '100%',
-                                    position: 'relative'
-                                }}
-                                {...rest}
-                                elevation={10}
-                            >
-                                <CardContent>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            mb: 2
-                                        }}
-                                    >
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.productName}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            PHP {savings.total}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.percent}%
-                                        </Typography>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            {savings.computedBdoSavings?.map((savings) => (
+                                <Grid item key={savings.id} xs={2} sm={4} md={4}>
+                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.BDO} savings={savings} />
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Box>
                     
-                    <Box sx={{ pt: 3 }}>
+                    <Box sx={{ pt: 3, flexGrow: 1 }}>
                         <Typography sx={{ m: 1 }} variant='h5'>
                             Metrobank
                         </Typography>
-                        {savings.computedMetrobankSavings?.map((savings) => 
-                            <Card
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: '100%',
-                                    position: 'relative'
-                                }}
-                                {...rest}
-                                elevation={10}
-                            >
-                                <CardContent>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            mb: 2
-                                        }}
-                                    >
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.productName}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            PHP {savings.total}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.percent}%
-                                        </Typography>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            {savings.computedMetrobankSavings?.map((savings) => (
+                                <Grid  item key={savings.id} xs={2} sm={4} md={4}>
+                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.METROBANK} savings={savings} />
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Box>
 
-                    <Box sx={{ pt: 3 }}>
+                    <Box sx={{ pt: 3, flexGrow: 1 }}>
                         <Typography sx={{ m: 1 }} variant='h5'>
                             BPI
                         </Typography>
-                        {savings.computedBpiSavings?.map((savings) => 
-                            <Card
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: '100%',
-                                    position: 'relative'
-                                }}
-                                {...rest}
-                                elevation={10}
-                            >
-                                <CardContent>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            mb: 2
-                                        }}
-                                    >
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.productName}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            PHP {savings.total}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.percent}%
-                                        </Typography>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            {savings.computedBpiSavings?.map((savings) => (
+                                <Grid item key={savings.id} xs={2} sm={4} md={4}>
+                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.BPI} savings={savings} />
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Box>
 
-                    <Box sx={{ pt: 3 }}>
+                    <Box sx={{ pt: 3, flexGrow: 1 }}>
                         <Typography sx={{ m: 1 }} variant='h5'>
                             Landbank
                         </Typography>
-                        {savings.computedLandbankSavings?.map((savings) => 
-                            <Card
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: '100%',
-                                    position: 'relative'
-                                }}
-                                {...rest}
-                                elevation={10}
-                            >
-                                <CardContent>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            mb: 2
-                                        }}
-                                    >
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.productName}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            PHP {savings.total}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.percent}%
-                                        </Typography>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            {savings.computedLandbankSavings?.map((savings) => (
+                                <Grid  item key={savings.id} xs={2} sm={4} md={4}>
+                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.BANK} savings={savings} />
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Box>
-                    <Box sx={{ pt: 3 }}>
+
+                    <Box sx={{ pt: 3, flexGrow: 1 }}>
                         <Typography sx={{ m: 1 }} variant='h5'>
                             Security Bank
                         </Typography>
-                        {savings.computedSecuritybankSavings?.map((savings) => 
-                            <Card
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    height: '100%',
-                                    position: 'relative'
-                                }}
-                                {...rest}
-                                elevation={10}
-                            >
-                                <CardContent>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            mb: 2
-                                        }}
-                                    >
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.productName}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            PHP {savings.total}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ width: '100%', mb: 1 }}>
-                                        <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                            {savings.percent}%
-                                        </Typography>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            {savings.computedSecuritybankSavings?.map((savings) => (
+                                <Grid  item key={savings.id} xs={2} sm={4} md={4}>
+                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.SECURITYBANK} savings={savings} />
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Box>
                 </Box>
             ) : (

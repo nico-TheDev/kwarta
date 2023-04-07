@@ -22,6 +22,7 @@ import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import AddCardRoundedIcon from '@mui/icons-material/AddCardRounded';
 import MoveDownRoundedIcon from '@mui/icons-material/MoveDownRounded';
 import CheckIcon from '@mui/icons-material/Check';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
@@ -226,6 +227,7 @@ export function Icon(props) {
     else if (name === ICON_NAMES.SYSTEM_ICONS.SEARCH) return <SearchRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.SEND_MONEY) return <OutboxRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.TIME) return <AccessTimeFilledRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.UP) return <KeyboardDoubleArrowUpIcon {...props} />;
     //ACCOUNT ICONS
     else if (name === ICON_NAMES.ACCOUNT_ICONS.BANK) return <AccountBalanceRoundedIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD) return <CreditCardRoundedIcon {...props} />;
