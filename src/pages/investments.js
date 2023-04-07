@@ -4,7 +4,7 @@ import {
     Box,
     Container,
     Grid,
-    Stack,
+    Paper,
     Typography,
     Checkbox,
     FormControl,
@@ -47,8 +47,10 @@ const Page = () => {
     const [period, setPeriod] = useState('');
     const [subsequentDeposit, setSubsequentDeposit] = useState('');
     const [targetYear, setTargetYear] = useState('');
+    const [projectedData, setProjectedData] = useState('');
 
     const handleSubmit = async () => {
+        setProjectedData('');
         const loader = toast.loading('Loading...');
         const res = await fetch(
             `/api/investment/?initialDeposit=${initialDeposit}&period=${period}&subsequentDeposit=${subsequentDeposit}&targetYear=${targetYear}`
@@ -58,6 +60,7 @@ const Page = () => {
         toast.dismiss(loader);
         toast.success('Successfully Analyzed');
         console.log(data);
+        setProjectedData(data.data);
     };
 
     return (
@@ -90,7 +93,7 @@ const Page = () => {
                     <Typography variant='h6' mb={4}>
                         See how your money can grow over time.
                     </Typography>
-                    <Grid container spacing={2} justifyContent='center'>
+                    <Grid container spacing={2} justifyContent='center' mb={6}>
                         <Grid item xs={12} lg={3}>
                             <FormControl fullWidth>
                                 <TextField
@@ -164,6 +167,39 @@ const Page = () => {
                             </Button>
                         </Grid>
                     </Grid>
+
+                    {/* RESULT */}
+
+                    {projectedData && (
+                        <Paper sx={{ py: 8, px: 4 }}>
+                            <Grid container spacing={4} textAlign='center'>
+                                <Grid item xs={12}>
+                                    <Typography variant='body2'>Your Total Investment</Typography>
+                                    <Typography variant='h4'>{projectedData.totalInvestment}</Typography>
+                                </Grid>
+                                <Grid item xs={12} lg={4}>
+                                    <Typography variant='body2'>Savings Account</Typography>
+                                    <Typography variant='h6'>{projectedData.savingsAccount}</Typography>
+                                </Grid>
+                                <Grid item xs={12} lg={4}>
+                                    <Typography variant='body2'>Time Deposit</Typography>
+                                    <Typography variant='h6'>{projectedData.timeDeposit}</Typography>
+                                </Grid>
+                                <Grid item xs={12} lg={4}>
+                                    <Typography variant='body2'>Low Risk Fund</Typography>
+                                    <Typography variant='h6'>{projectedData.lowRiskFund}</Typography>
+                                </Grid>
+                                <Grid item xs={12} lg={4}>
+                                    <Typography variant='body2'>Moderate Risk Fund</Typography>
+                                    <Typography variant='h6'>{projectedData.moderateRiskFund}</Typography>
+                                </Grid>
+                                <Grid item xs={12} lg={4}>
+                                    <Typography variant='body2'>Aggressive Risk Fund</Typography>
+                                    <Typography variant='h6'>{projectedData.aggressiveRiskFund}</Typography>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+                    )}
                 </Container>
             </Box>
         </>
