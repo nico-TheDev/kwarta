@@ -6,7 +6,6 @@ import {
     Grid,
     Paper,
     Typography,
-    Checkbox,
     FormControl,
     InputLabel,
     Select,
@@ -15,12 +14,14 @@ import {
     FormHelperText,
     Button
 } from '@mui/material';
-import Chip from '@mui/material/Chip';
-import SearchOffIcon from '@mui/icons-material/SearchOff';
-import articles from '../data/articles';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import SavingsIcon from '@mui/icons-material/Savings';
+import TimelapseIcon from '@mui/icons-material/Timelapse';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { getLanguage } from 'utils/getLanguage';
 import { DashboardLayout } from '../components/dashboard-layout';
 import { toast } from 'react-hot-toast';
+import { useAccountStore } from 'stores/useAccountStore';
 
 const MenuProps = {
     PaperProps: {
@@ -48,6 +49,7 @@ const Page = () => {
     const [subsequentDeposit, setSubsequentDeposit] = useState('');
     const [targetYear, setTargetYear] = useState('');
     const [projectedData, setProjectedData] = useState('');
+    const accounts = useAccountStore((state) => state.accounts);
 
     const handleSubmit = async () => {
         setProjectedData('');
@@ -62,6 +64,17 @@ const Page = () => {
         console.log(data);
         setProjectedData(data.data);
     };
+
+    useEffect(() => {
+        const getSuggestions = async () => {
+            const passedAccounts = accounts.filter((account) => account.account_amount >= 10000);
+            const res = await fetch(
+                `/api/investment/?initialDeposit=${initialDeposit}&period=${period}&subsequentDeposit=${subsequentDeposit}&targetYear=${targetYear}`
+            );
+        };
+
+        getSuggestions();
+    }, []);
 
     return (
         <>
@@ -174,28 +187,46 @@ const Page = () => {
                         <Paper sx={{ py: 8, px: 4 }}>
                             <Grid container spacing={4} textAlign='center'>
                                 <Grid item xs={12}>
+                                    <Box sx={{ fontSize: 70 }}>
+                                        <AccountBalanceIcon fontSize='inherit' color='primary' />
+                                    </Box>
                                     <Typography variant='body2'>Your Total Investment</Typography>
                                     <Typography variant='h4'>{projectedData.totalInvestment}</Typography>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
+                                    <Box sx={{ fontSize: 50 }}>
+                                        <SavingsIcon fontSize='inherit' color='secondary' />
+                                    </Box>
                                     <Typography variant='body2'>Savings Account</Typography>
-                                    <Typography variant='h6'>{projectedData.savingsAccount}</Typography>
+                                    <Typography variant='h5'>{projectedData.savingsAccount}</Typography>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
+                                    <Box sx={{ fontSize: 50 }}>
+                                        <TimelapseIcon fontSize='inherit' color='action' />
+                                    </Box>
                                     <Typography variant='body2'>Time Deposit</Typography>
-                                    <Typography variant='h6'>{projectedData.timeDeposit}</Typography>
+                                    <Typography variant='h5'>{projectedData.timeDeposit}</Typography>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
+                                    <Box sx={{ fontSize: 50 }}>
+                                        <AttachMoneyIcon fontSize='inherit' color='info' />
+                                    </Box>
                                     <Typography variant='body2'>Low Risk Fund</Typography>
-                                    <Typography variant='h6'>{projectedData.lowRiskFund}</Typography>
+                                    <Typography variant='h5'>{projectedData.lowRiskFund}</Typography>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
+                                    <Box sx={{ fontSize: 50 }}>
+                                        <AttachMoneyIcon fontSize='inherit' color='warning' />
+                                    </Box>
                                     <Typography variant='body2'>Moderate Risk Fund</Typography>
-                                    <Typography variant='h6'>{projectedData.moderateRiskFund}</Typography>
+                                    <Typography variant='h5'>{projectedData.moderateRiskFund}</Typography>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
+                                    <Box sx={{ fontSize: 50 }}>
+                                        <AttachMoneyIcon fontSize='inherit' color='error' />
+                                    </Box>
                                     <Typography variant='body2'>Aggressive Risk Fund</Typography>
-                                    <Typography variant='h6'>{projectedData.aggressiveRiskFund}</Typography>
+                                    <Typography variant='h5'>{projectedData.aggressiveRiskFund}</Typography>
                                 </Grid>
                             </Grid>
                         </Paper>
