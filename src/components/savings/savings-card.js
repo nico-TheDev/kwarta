@@ -107,7 +107,7 @@ export const SavingsCard = ({ ...rest }) => {
             {amount > 2000 ? (
                 <Box sx={{ pt: 3 }}>
                     <Typography align='center' sx={{ m: 1 }} variant='h5'>
-                        You have PHP {amount} in your selected bank account. You may apply for savings accounts in the given banks.
+                        You have {formatPrice(amount, true)} in your selected bank account. You may apply for savings accounts in the given banks.
                     </Typography>
                     <Box sx={{ pt: 3, flexGrow: 1 }}>
                         <Typography sx={{ m: 1 }} variant='h5'>

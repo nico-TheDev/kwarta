@@ -4,6 +4,8 @@ import React from 'react';
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 
+import { formatPrice } from 'utils/format-price'
+
 export default function DealsCard({iconName, savings}){
     return(
         <Box sx={{ pt: 3 }}>
@@ -31,7 +33,7 @@ export default function DealsCard({iconName, savings}){
                                 {savings.productName}
                             </Typography>
                             <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                PHP {savings.total}
+                                {formatPrice(savings.total, true)}
                             </Typography>
 
                             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 1 }}>
