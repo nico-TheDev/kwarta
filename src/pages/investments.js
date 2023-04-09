@@ -12,7 +12,8 @@ import {
     MenuItem,
     TextField,
     FormHelperText,
-    Button
+    Button,
+    CircularProgress
 } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SavingsIcon from '@mui/icons-material/Savings';
@@ -22,6 +23,8 @@ import { getLanguage } from 'utils/getLanguage';
 import { DashboardLayout } from '../components/dashboard-layout';
 import { toast } from 'react-hot-toast';
 import { useAccountStore } from 'stores/useAccountStore';
+import { formatPrice } from 'utils/format-price';
+import { grey } from '@mui/material/colors';
 
 const MenuProps = {
     PaperProps: {
@@ -49,33 +52,157 @@ const Page = () => {
     const [subsequentDeposit, setSubsequentDeposit] = useState('');
     const [targetYear, setTargetYear] = useState('');
     const [projectedData, setProjectedData] = useState('');
+    const [suggestionData, setSuggestionData] = useState('');
     const accounts = useAccountStore((state) => state.accounts);
+
+    const [accountAmounts, setAccountAmounts] = useState(accounts.map((item) => item.account_amount));
 
     const handleSubmit = async () => {
         setProjectedData('');
         const loader = toast.loading('Loading...');
-        const res = await fetch(
-            `/api/investment/?initialDeposit=${initialDeposit}&period=${period}&subsequentDeposit=${subsequentDeposit}&targetYear=${targetYear}`
-        );
 
-        const data = await res.json();
-        toast.dismiss(loader);
-        toast.success('Successfully Analyzed');
-        console.log(data);
-        setProjectedData(data.data);
-    };
-
-    useEffect(() => {
-        const getSuggestions = async () => {
-            const passedAccounts = accounts.filter((account) => account.account_amount >= 10000);
+        try {
             const res = await fetch(
                 `/api/investment/?initialDeposit=${initialDeposit}&period=${period}&subsequentDeposit=${subsequentDeposit}&targetYear=${targetYear}`
             );
+
+            const data = await res.json();
+            toast.success('Successfully Analyzed');
+            console.log(data);
+            setProjectedData(data.data);
+        } catch (err) {
+            console.log(err);
+            toast.error('Something Went Wrong: ', err.message);
+        } finally {
+            toast.dismiss(loader);
+        }
+    };
+
+    console.log(Math.max(...accountAmounts));
+
+    useEffect(() => {
+        const getSuggestions = async () => {
+            const accountAmounts = accounts.map((item) => item.account_amount);
+            const highestAccount = Math.max(...accountAmounts);
+            const passedAccounts = accounts.filter((account) => account.account_amount >= 10000);
+            // console.log(passedAccounts)
+            const amount = Math.round(highestAccount / 10000) * 10000;
+            const year = new Date().getFullYear() + 20;
+            const res = await fetch(
+                `/api/investment/?initialDeposit=${amount}&period=${12}&subsequentDeposit=${1000}&targetYear=${year}`
+            );
+            const data = await res.json();
+            console.log(data, amount);
+            setSuggestionData({
+                ...data.data,
+                initial: amount,
+                period: 'monthly',
+                addOn: 1000,
+                year: Number(year) - Number(new Date().getFullYear())
+            });
         };
 
         getSuggestions();
     }, []);
 
+    const FixedSuggestions = () => (
+        <>
+            <Grid item xs={12} justifySelf='center'>
+                <Typography variant='h6' sx={{ width: '80%', mx: 'auto' }}>
+                    You should find more sources of income, but in the mean time start your investment journey with the
+                    following:
+                </Typography>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+                <Paper sx={{ p: 2 }}>
+                    <Box sx={{ fontSize: 50 }}>
+                        <AttachMoneyIcon fontSize='inherit' color='info' />
+                    </Box>
+                    <Typography variant='body1' mb={2}>
+                        GInvest
+                    </Typography>
+                    <Button
+                        variant='outlined'
+                        href='https://thebeat.asia/manila/venture/money/how-to-earn-passively-from-gcashs-ginvest-through-dividends'
+                        target='blank'
+                    >
+                        Read More
+                    </Button>
+                </Paper>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+                <Paper sx={{ p: 2 }}>
+                    <Box sx={{ fontSize: 50 }}>
+                        <AttachMoneyIcon fontSize='inherit' color='warning' />
+                    </Box>
+                    <Typography variant='body1' mb={2}>
+                        Pag-ibig MP2
+                    </Typography>
+                    <Button
+                        variant='outlined'
+                        href='https://www.pagibigfund.gov.ph/Membership_ModifiedPagIBIG2.html'
+                        target='blank'
+                    >
+                        Read More
+                    </Button>
+                </Paper>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+                <Paper sx={{ p: 2 }}>
+                    <Box sx={{ fontSize: 50 }}>
+                        <AttachMoneyIcon fontSize='inherit' color='error' />
+                    </Box>
+                    <Typography variant='body1' mb={2}>
+                        Tonik Time Deposit
+                    </Typography>
+                    <Button variant='outlined' href='https://tonikbank.com/savings-cards/time-deposit' target='blank'>
+                        Read More
+                    </Button>
+                </Paper>
+            </Grid>{' '}
+        </>
+    );
+    const VariableSuggestions = () => (
+        <>
+            <Grid item xs={10}>
+                <Typography variant='h6' mb={2}>
+                    Here are our recommendations for possible investments.
+                </Typography>
+                <Typography variant='body1'>
+                    Investing an initial amount of {formatPrice(suggestionData.initial, true)} with{' '}
+                    {formatPrice(suggestionData.addOn, true)} subsequent deposits monthly for {suggestionData.year}{' '}
+                    years could yield the following result on different funds.
+                </Typography>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+                <Paper sx={{ p: 2 }}>
+                    <Box sx={{ fontSize: 50 }}>
+                        <AttachMoneyIcon fontSize='inherit' color='success' />
+                    </Box>
+                    <Typography variant='body1'>Low Risk Fund</Typography>
+                    <Typography variant='h6'>{suggestionData.lowRiskFund}</Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+                <Paper sx={{ p: 2 }}>
+                    <Box sx={{ fontSize: 50 }}>
+                        <AttachMoneyIcon fontSize='inherit' color='warning' />
+                    </Box>
+                    <Typography variant='body1'>Moderate Risk Fund</Typography>
+                    <Typography variant='h6'>{suggestionData.moderateRiskFund}</Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+                <Paper sx={{ p: 2 }}>
+                    <Box sx={{ fontSize: 50 }}>
+                        <AttachMoneyIcon fontSize='inherit' color='error' />
+                    </Box>
+                    <Typography variant='body1'>Aggressive Risk Fund</Typography>
+                    <Typography variant='h6'>{suggestionData.aggressiveRiskFund}</Typography>
+                </Paper>
+            </Grid>
+        </>
+    );
     return (
         <>
             <Head>
@@ -106,6 +233,21 @@ const Page = () => {
                     <Typography variant='h6' mb={4}>
                         See how your money can grow over time.
                     </Typography>
+
+                    <Grid container spacing={2} mb={8} textAlign='center' justifyContent='center'>
+                        {!suggestionData ? (
+                            <Grid>
+                                <CircularProgress />
+                                <Typography variant='h6' mt={2}>
+                                    Loading recommendations...
+                                </Typography>
+                            </Grid>
+                        ) : Math.max(...accountAmounts) > 5000 ? (
+                            <VariableSuggestions />
+                        ) : (
+                            <FixedSuggestions />
+                        )}
+                    </Grid>
                     <Grid container spacing={2} justifyContent='center' mb={6}>
                         <Grid item xs={12} lg={3}>
                             <FormControl fullWidth>
@@ -190,8 +332,11 @@ const Page = () => {
                                     <Box sx={{ fontSize: 70 }}>
                                         <AccountBalanceIcon fontSize='inherit' color='primary' />
                                     </Box>
-                                    <Typography variant='body2'>Your Total Investment</Typography>
+                                    <Typography variant='body1'>Your Total Investment</Typography>
                                     <Typography variant='h4'>{projectedData.totalInvestment}</Typography>
+                                    <Typography variant='body1'>
+                                        By {targetYear}, these could be the projected value of your investment:{' '}
+                                    </Typography>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
@@ -231,6 +376,17 @@ const Page = () => {
                             </Grid>
                         </Paper>
                     )}
+
+                    <Typography variant='caption' sx={{ color: grey[400] }}>
+                        Based on SunLife Calculations.
+                        <br />
+                        The computations assume the following:
+                        <br />
+                        Average return of Sun Life Prosperity Bond Fund (low risk) - 4%
+                        <br />
+                        Average return of Sun Life Prosperity Balanced Fund (moderate risk) - 8% <br />
+                        Average return of Sun Life Prosperity Index Fund (aggressive risk) - 10%{' '}
+                    </Typography>
                 </Container>
             </Box>
         </>
