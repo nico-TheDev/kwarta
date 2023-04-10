@@ -1,20 +1,19 @@
 import Head from 'next/head'
 import NextLink from 'next/link'
 import Router, { useRouter } from 'next/router'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import { Box, Button, Container, Grid, Link, TextField, Typography, useTheme } from '@mui/material'
+import Image from 'next/image';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { Box, Button, Container, Grid, Link, TextField, Typography, useTheme } from '@mui/material';
 
-import { Google as GoogleIcon } from '../icons/google'
-import Image from 'next/image'
-import LoginBG from '../../public/static/images/login-bg.jpg'
-import { useAuthStore } from 'stores/useAuthStore'
+import { Google as GoogleIcon } from '../icons/google';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const Login = () => {
-    const theme = useTheme()
-    const router = useRouter()
-    const loginWithGoogle = useAuthStore((state) => state.loginWithGoogle)
-    const verifyUser = useAuthStore(state => state.verifyUser);
+    const theme = useTheme();
+    const router = useRouter();
+    const loginWithGoogle = useAuthStore((state) => state.loginWithGoogle);
+    const verifyUser = useAuthStore((state) => state.verifyUser);
 
     const initialValues = {
         email: '',
@@ -26,18 +25,18 @@ const Login = () => {
             email: values.email,
             password: values.password
         });
-    }
+    };
 
     const handleLoginWithGoogle = () => {
-        loginWithGoogle()
-        router.push('/')
-        console.log('GO TO DASHBOARD')
-    }
+        loginWithGoogle();
+        router.push('/');
+        console.log('GO TO DASHBOARD');
+    };
 
     const formik = useFormik({
         initialValues,
         onSubmit: handleLoginDefault
-    })
+    });
 
     return (
         <>
@@ -149,7 +148,8 @@ const Login = () => {
                             xs: 'none',
                             md: 'flex'
                         },
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        position: 'relative'
                     }}
                 >
                     <Typography
@@ -160,8 +160,9 @@ const Login = () => {
                         <span style={{ color: theme.palette.primary.main }}>Learn</span> about Financial Literacy
                     </Typography>
                     <Image
-                        src={LoginBG}
-                        fill
+                        src='/static/images/login-bg.jpg'
+                        width={750}
+                        height={1000}
                         style={{
                             filter: 'brightness(0.4) blur(2px)',
                             objectFit: 'cover'
@@ -171,6 +172,6 @@ const Login = () => {
             </Box>
         </>
     );
-}
+};
 
 export default Login
