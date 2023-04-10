@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useAccountStore } from 'stores/useAccountStore';
+import { getLanguage } from 'utils/getLanguage';
 
 const Page = () => {
     const user = useAuthStore((state) => state.authState?.user);
@@ -39,7 +40,7 @@ const Page = () => {
     if (isEmpty) {
         return (
             <Box sx={{ ...styles.container }}>
-                <Typography variant='h4'>Create your first Transaction</Typography>
+                <Typography variant='h4'>Create your first transaction</Typography>
             </Box>
         );
     }

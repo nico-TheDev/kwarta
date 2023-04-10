@@ -54,6 +54,16 @@ export const DashboardSidebar = (props) => {
             title: getLanguage().savings
         },
         {
+            href: '/bonds',
+            icon: <SavingsIcon fontSize='small' />,
+            title: 'Bonds'
+        },
+        {
+            href: '/investments',
+            icon: <PaidIcon fontSize='small' />,
+            title: getLanguage().investment
+        },
+        {
             href: '/categories',
             icon: <CategoryIcon fontSize='small' />,
             title: getLanguage().categories

@@ -18,6 +18,7 @@ import { ICON_NAMES, modalStyle } from 'constants/constant';
 import ColorPicker from 'components/shared/ColorPicker';
 import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
+import { getLanguage } from 'utils/getLanguage';
 
 import { useAccountStore } from 'stores/useAccountStore';
 import { useAuthStore } from 'stores/useAuthStore';
@@ -128,13 +129,13 @@ export default function AccountCreateFormModal({ open, setOpen }) {
                         <CloseIcon />
                     </IconButton>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
-                        Create an Account
+                        {getLanguage().createAccount}
                     </Typography>
                     <FormControl fullWidth onSubmit={formik.handleSubmit}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <TextField
                                 id='filled-basic'
-                                label='Account Name'
+                                label={getLanguage().accountName}
                                 variant='filled'
                                 name='accountName'
                                 onBlur={formik.handleBlur}
@@ -146,7 +147,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <TextField
                                 id='filled-basic'
-                                label='Account Amount'
+                                label={getLanguage().accountAmount}
                                 variant='filled'
                                 name='accountAmount'
                                 onBlur={formik.handleBlur}
@@ -180,7 +181,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
                         </Box>
                         <Box sx={{ py: 2 }}>
                             <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
-                                Submit
+                                {getLanguage().submit}
                             </Button>
                         </Box>
                     </FormControl>

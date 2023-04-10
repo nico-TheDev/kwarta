@@ -62,7 +62,7 @@ export const TransferHead = (props) => {
                         }}
                         variant='h4'
                     >
-                        Transfer Overview
+                        {getLanguage().transferOverview}
                     </Typography>
                     <Box
                         sx={{
@@ -85,7 +85,7 @@ export const TransferHead = (props) => {
                                 }
                             }}
                         >
-                            <InputLabel id='demo-simple-select-label'>Filter by:</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>{getLanguage().filter}</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
@@ -93,9 +93,9 @@ export const TransferHead = (props) => {
                                 label='filterValue'
                                 onChange={handleTypeChange}
                             >
-                                <MenuItem value={'year'}>Year</MenuItem>
-                                <MenuItem value={'month'}>Month</MenuItem>
-                                <MenuItem value={'day'}>Day</MenuItem>
+                                <MenuItem value={'year'}>{getLanguage().year}</MenuItem>
+                                <MenuItem value={'month'}>{getLanguage().month}</MenuItem>
+                                <MenuItem value={'day'}>{getLanguage().day}</MenuItem>
                             </Select>
                         </FormControl>
                         <Button
@@ -106,7 +106,7 @@ export const TransferHead = (props) => {
                             sx={{ flex: 1, height: '100%' }}
                             onClick={handleOpenTransferModal}
                         >
-                            {getLanguage().createTransfer}
+                            {getLanguage().addTransfer}
                         </Button>
                     </Box>
                 </Box>
