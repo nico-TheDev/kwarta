@@ -38,7 +38,16 @@ export default function CommentInput({ formik, selectedFile, setSelectedFile, is
     };
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: {
+                    lg: 'row',
+                    xs: 'column'
+                }
+            }}
+        >
             <TextField
                 fullWidth
                 id='outlined-multiline-flexible'
@@ -56,10 +65,23 @@ export default function CommentInput({ formik, selectedFile, setSelectedFile, is
                 component='label'
                 variant='contained'
                 sx={{
-                    height: '100%',
-                    width: 150,
+                    height: {
+                        lg: '100%',
+                        xs: 200
+                    },
+                    width: {
+                        lg: 150,
+                        xs: '100%'
+                    },
                     fontSize: 100,
-                    ml: 2,
+                    ml: {
+                        lg: 2,
+                        xs: 0
+                    },
+                    mt: {
+                        lg: 0,
+                        xs: 2
+                    },
                     p: 0,
                     display: 'flex',
                     alignItems: 'center',

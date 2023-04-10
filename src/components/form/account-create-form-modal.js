@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { useState, forwardRef } from 'react';
 import Router from 'next/router';
-import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material';
+import { Box, Switch, Snackbar, Alert as MuiAlert, IconButton } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
+import CloseIcon from '@mui/icons-material/Close';
 
 import toast from 'react-hot-toast';
 
 import { useFormik } from 'formik';
 import { colorCollection } from '__mocks__/accounts';
-import { ICON_NAMES } from 'constants/constant';
+import { ICON_NAMES, modalStyle } from 'constants/constant';
 import ColorPicker from 'components/shared/ColorPicker';
 import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
@@ -118,7 +119,14 @@ export default function AccountCreateFormModal({ open, setOpen }) {
                 aria-labelledby='modal-modal-title'
                 aria-describedby='modal-modal-description'
             >
-                <Box sx={style}>
+                <Box sx={modalStyle}>
+                    <IconButton
+                        color='primary'
+                        sx={{ position: 'absolute', top: 5, right: 5 }}
+                        onClick={() => setOpen(false)}
+                    >
+                        <CloseIcon />
+                    </IconButton>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
                         Create an Account
                     </Typography>

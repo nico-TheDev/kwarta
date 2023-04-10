@@ -253,7 +253,7 @@ const AuthStore = (set, get) => ({
             toast.success('Survey completed!');
             // console.log(answers);
         } catch (err) {
-            toast.error('Something Went Wrong', err);
+            toast.error('Something Went Wrong', err.message);
             console.error(err);
         }
     }

@@ -1,5 +1,5 @@
 import { useState, forwardRef, useEffect } from 'react';
-import { Box, Switch, Snackbar, Alert as MuiAlert } from '@mui/material';
+import { Box, Switch, Snackbar, Alert as MuiAlert, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -12,6 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useFormik } from 'formik';
 import * as React from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 import dayjs from 'dayjs';
 import Stack from '@mui/material/Stack';
 import toast from 'react-hot-toast';
@@ -20,7 +21,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Icon } from 'components/shared/Icon';
-import { ICON_NAMES } from 'constants/constant';
+import { ICON_NAMES, modalStyle } from 'constants/constant';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import CommentInput from 'components/shared/CommentInput';
 import formatDate from 'utils/format-date';
@@ -28,22 +29,6 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import { useCategoryStore } from 'stores/useCategoryStore';
 import useSortCategories from 'hooks/useSortCategories';
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 500,
-    height: '80vh',
-    bgcolor: 'background.paper',
-    overflowY: 'scroll',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-    display: 'grid',
-    gap: 4
-};
 
 const MenuProps = {
     PaperProps: {
@@ -155,7 +140,14 @@ export default function TransactionFormModal({ open, setOpen }) {
                 aria-labelledby='modal-modal-title'
                 aria-describedby='modal-modal-description'
             >
-                <Box sx={style} component='form'>
+                <Box sx={modalStyle} component='form'>
+                    <IconButton
+                        color='primary'
+                        sx={{ position: 'absolute', top: 5, right: 5 }}
+                        onClick={() => setOpen(false)}
+                    >
+                        <CloseIcon />
+                    </IconButton>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
                         Create a Transaction
                     </Typography>
