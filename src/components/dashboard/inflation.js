@@ -90,9 +90,9 @@ export const Savings = (props) => {
                     }}
                 >
                     {percentage?.hasIncreased ? (
-                        <ArrowUpwardIcon color='error' />
-                    ) : (
                         <ArrowDownwardIcon color='success' />
+                    ) : (
+                        <ArrowUpwardIcon color='error' />
                     )}
                     <Typography
                         variant='body2'

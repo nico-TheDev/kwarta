@@ -1,20 +1,17 @@
 import Head from 'next/head';
+import { useRef, useEffect } from 'react';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { DashboardLayout } from '../components/dashboard-layout';
-import { useRef, useEffect } from 'react';
 
 const Page = () => {
-    const ref = useRef(null);
+    const getStocksData = async () => {
+        const res = await fetch('/api/stocks');
+        const data = await res.json();
+
+        console.log(data);
+    };
 
     useEffect(() => {
-        const getStocksData = async () => {
-            const res = await fetch('/stocks');
-            const data = await res.json();
-
-            console.log(data);
-            console.log('WORKINg');
-        };
-
         getStocksData();
     }, []);
 
@@ -34,6 +31,7 @@ const Page = () => {
                     <Typography variant='h4' mb={3}>
                         Stocks
                         <Typography variant='body1' sx={{ display: 'block' }}>
+                            {' '}
                             View the condition of the Stock Market
                         </Typography>
                     </Typography>
@@ -44,7 +42,6 @@ const Page = () => {
                                 frameborder='1'
                                 width='100%'
                                 height='400'
-                                ref={ref}
                             ></iframe>
                         </Grid>
                     </Grid>
