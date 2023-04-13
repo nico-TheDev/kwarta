@@ -22,7 +22,11 @@ export const ICON_NAMES = {
         SEARCH: 'SEARCH',
         SEND_MONEY: 'SEND_MONEY',
         TIME: 'TIME',
-        UP: 'UP'
+        UP: 'UP',
+        TRENDING_DOWN: 'TRENDING_DOWN',
+        CHECK: 'CHECK',
+        PRICE_CHECK: 'PRICE_CHECK',
+        CALENDAR: 'CALENDAR',
     },
 
     ACCOUNT_ICONS: {

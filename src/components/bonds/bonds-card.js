@@ -5,15 +5,9 @@ import Select from '@mui/material/Select';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import TablePagination from '@mui/material/TablePagination';
 
 import { Icon } from 'components/shared/Icon';
+import { ICON_NAMES } from 'constants/constant';
 
 import { formatPrice } from 'utils/format-price'
 import { getLanguage } from 'utils/getLanguage'
@@ -32,27 +26,47 @@ const MenuProps = {
 export const BondsCard = ({ ...rest }) => {
     const [selectedAccount, setSelectedAccount] = useState('');
     const [amount, setAmount] = useState(0);
+    const [bonds, setBonds] = useState('');
 
     const accounts = useAccountStore((state) => state.accounts);
 
-    function computeInterest(productName, interestRate, taxRate, time, balanceInterest) {
-        const total = balanceInterest * (interestRate / 100) * (1 - (taxRate / 100)) * time;
-        return { productName, interestRate, taxRate, time, balanceInterest, total };
-    }
-
-    const columns = [
-        { id: 'productName', label: 'Product Name', minWidth: 170 },
-        { id: 'interestRate', label: 'Interest Rate', minWidth: 100 },
-        { id: 'taxRate', label: 'Tax Rate', minWidth: 100 },
-        { id: 'time', label: 'TIme', minWidth: 100 },
-        { id: 'balanceInterest', label: 'Balance to Earn Interest (PHP)', minWidth: 170, format: (value) => value.toLocaleString('en-US') },
-        { id: 'total', label: 'Return in 5.5 Years (PHP)', minWidth: 170, format: (value) => value.toLocaleString('en-US') },
-    ];
-
-    const rtb_rows = [
-        computeInterest('Retail Treasury Bonds', 6.125, 20, 5.5, 5000),
-    ];
-
+    const data = [
+        {
+            id: 1,
+            text: 'Affordable',
+            icon: ICON_NAMES.SYSTEM_ICONS.PRICE_CHECK,
+        },
+        {
+            id: 2,
+            text: 'Convenient',
+            icon: ICON_NAMES.SYSTEM_ICONS.CHECK,
+        },
+        {
+            id: 3,
+            text: 'Low-risk Investment',
+            icon: ICON_NAMES.SYSTEM_ICONS.TRENDING_DOWN,
+        },
+        {
+            id: 4,
+            text: 'Short-term Investment',
+            icon: ICON_NAMES.SYSTEM_ICONS.TIME,
+        },
+        {
+            id: 5,
+            text: 'Higher yielding than Time Deposits',
+            icon: ICON_NAMES.SYSTEM_ICONS.UP,
+        },
+        {
+            id: 6,
+            text: 'Negotiable and Transferrable',
+            icon:ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER,
+        },
+        {
+            id: 7,
+            text: 'Quarterly Interest Payments',
+            icon: ICON_NAMES.SYSTEM_ICONS.CALENDAR,
+        },
+    ]
 
     const handleAccountChange = (e) => {
         const currentAccountId = e.target.value;
@@ -63,23 +77,18 @@ export const BondsCard = ({ ...rest }) => {
         setSelectedAccount(e.target.value);
     };
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    useEffect(() => {
+        function computeInterest(productName, interestRate, taxRate, time, currentAmount) {
+            const total = (currentAmount * (interestRate / 100) * (1 - (taxRate / 100)) * time).toFixed(2);
+            const percent = (((total - currentAmount) / currentAmount) * 100).toFixed(2);
+            return { productName, total, percent };
+        }
+    
+        const computedRTBs = computeInterest('Retail Treasury Bonds', 6.125, 20, 5.5, amount);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
-
-    // useEffect(() => {
-    //     const current = accounts.find((item) => item.id === selectedAccount);
-    //     setAmount(current.account_amount);
+        setBonds(computedRTBs);
         
-    // }, [selectedAccount]);
+    }, [selectedAccount]);
 
     console.log(selectedAccount)
     console.log(amount);
@@ -124,55 +133,73 @@ export const BondsCard = ({ ...rest }) => {
             {amount > 5000 ?
             <Box sx={{ pt: 3 }}>
                 <Box sx={{ pt: 3 }}>
-                    <Typography sx={{ m: 1 }} variant='h5'>
-                        Retail Treasury Bonds (Republic of the Philippines)
+                    <Typography align='center' sx={{ m: 1 }} variant='h5'>
+                        You have {formatPrice(amount, true)} in your selected bank account. You may invest in bonds.
                     </Typography>
-                    <TableContainer sx={{ maxHeight: 440 }}>
-                        <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                key={column.id}
-                                align={column.align}
-                                style={{ minWidth: column.minWidth }}
-                                >
-                                {column.label}
-                                </TableCell>
-                            ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rtb_rows
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
-                                return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                    {columns.map((column) => {
-                                    const value = row[column.id];
-                                    return (
-                                        <TableCell key={column.id} align={column.align}>
-                                        {column.format && typeof value === 'number'
-                                            ? column.format(value)
-                                            : value}
-                                        </TableCell>
-                                    );
-                                    })}
-                                </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[10, 25, 100]}
-                        component="div"
-                        count={rtb_rows.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
+                    <Card
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: '100%',
+                            position: 'relative'
+                            }}
+                            // {...rest}
+                            elevation={10}
+                        >
+                        <CardContent>
+                            <Typography align='center' color='textPrimary' gutterBottom variant='h5'>
+                                {bonds.productName}
+                            </Typography>
+                            <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                Return after 5.5 years: {formatPrice(bonds.total, true)}
+                            </Typography>
+                        </CardContent>
+
+                        <Typography align='center' sx={{ m: 1 }} variant='body2'>
+                            DISCLAIMER: This calculation is for illustration purposes only and should not be able to taken as professional advice to invest in RTB 29. It should not be used as the sole basis to measure returns in said securities. Terms and conditions of the RTB 29 is governed by the applicable Program Mechanics and Notice of Offering issued for the purpose. Returns displayed assume an interest period of 5.5 years and are net of 20% final withholding tax. Investment amount in RTB 29 is for a minimum of PHP5,000 and in integral multiples thereof. 
+                        </Typography>
+                    </Card>
+                </Box>
+
+                <Box sx={{ pt: 3 }}>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
+                        Why invest in Retail Treasury Bonds?
+                    </Typography>
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        {data.map((data) => (
+                            <Grid item key={data.id} xs={2} sm={4} md={4}>
+                                <Box sx={{ pt: 3 }}>
+                                    <Card
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            height: '100%',
+                                            position: 'relative'
+                                            }}
+                                            // {...rest}
+                                            elevation={10}
+                                    >
+                                        <CardContent>
+                                            <Box>
+                                                <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+                                                    <Icon
+                                                        name={data.icon}
+                                                        color='primary'
+                                                        sx={{ fontSize: '100px'}}
+                                                    />
+                                                </Box>
+                                                <Box>
+                                                    <Typography align='center' color='textPrimary' gutterBottom variant='h5'>
+                                                        {data.text}
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </Box>
+                            </Grid>
+                        ))}
+                    </Grid>
                 </Box>
             </Box>
             :
