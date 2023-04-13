@@ -230,11 +230,8 @@ const Page = () => {
                                 </Box>{' '}
                                 journey here.
                             </Typography>
-                            <Image
+                            <img
                                 alt=''
-                                fill
-                                width={750}
-                                height={1000}
                                 src='/static/images/signin-bg.jpg'
                                 style={{ filter: 'brightness(0.5)', objectFit: 'cover' }}
                             />
