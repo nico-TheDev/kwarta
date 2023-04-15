@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { Box, Container, Grid, CircularProgress, Typography } from '@mui/material';
 import { Balance } from '../components/dashboard/balance';
-import { InflationPanel } from '../components/dashboard/saving';
 import { TransactionHistory } from '../components/dashboard/transaction-history';
 import { Cashflow } from '../components/dashboard/cashflow';
 import { Savings } from '../components/dashboard/inflation';
@@ -49,6 +48,8 @@ const Page = () => {
         <>
             <Head>
                 <title>CASH: Financial Monitoring Application</title>
+                <link rel='manifest' href='/manifest.json' />
+                <link rel='icon' href='/favicon.ico' type='image/png' />
             </Head>
             <Box
                 component='main'

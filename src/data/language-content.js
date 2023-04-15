@@ -15,7 +15,7 @@ export const languages = {
         sinceLastMonth: 'Noong nakaraang buwan',
         historyTransactions: 'Mga Nakaraang Transaksiyon',
         savingGoals: 'Mga Layunin ng Pag-iipon',
-
+        stocks: 'Stocks',
         //sidebar
         achievements: 'Mga Nakamit',
         accounts: 'Mga Lagayan ng Pera',
@@ -100,6 +100,8 @@ export const languages = {
         sinceLastMonth: 'Since last month',
         historyTransactions: 'Transaction History',
         savingGoals: 'Saving Goals',
+        investment: 'Investment',
+        stocks: 'Stocks',
 
         //sidebar
         achievements: 'Achievements',

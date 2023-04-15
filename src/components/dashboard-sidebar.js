@@ -13,6 +13,7 @@ import UserIcon from '@mui/icons-material/Person'
 import SettingsIcon from '@mui/icons-material/Settings'
 import TimelineIcon from '@mui/icons-material/Timeline'
 import CategoryIcon from '@mui/icons-material/Category'
+import StocksIcon from '@mui/icons-material/StackedBarChart';
 import PaidIcon from '@mui/icons-material/Paid';
 import { Logo } from './logo';
 import { NavItem } from './nav-item';
@@ -62,6 +63,11 @@ export const DashboardSidebar = (props) => {
             href: '/investments',
             icon: <PaidIcon fontSize='small' />,
             title: getLanguage().investment
+        },
+        {
+            href: '/stocks',
+            icon: <StocksIcon fontSize='small' />,
+            title: getLanguage().stocks
         },
         {
             href: '/categories',

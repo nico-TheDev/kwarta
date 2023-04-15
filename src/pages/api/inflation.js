@@ -19,7 +19,6 @@ async function scrapeLogic(res) {
         );
         // Close browser.
         res.status(300).json({
-            message: 'Inflation Rate in the Philippines',
             data,
             source: 'Philippine Statistics Authority'
         });
