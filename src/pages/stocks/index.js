@@ -1,12 +1,15 @@
 import Head from 'next/head';
 import { useRef, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Box, Button, Container, Grid, Paper, Typography } from '@mui/material';
-import { DashboardLayout } from '../components/dashboard-layout';
-import { formatPrice } from 'utils/format-price';
 import { green } from '@mui/material/colors';
+import { DashboardLayout } from '../../components/dashboard-layout';
+import { formatPrice } from 'utils/format-price';
+import Link from 'next/link';
 
 const Page = () => {
     const [stockData, setStockData] = useState('');
+    const router = useRouter();
 
     const getStocksData = async () => {
         try {
@@ -106,22 +109,24 @@ const Page = () => {
                         {stockData &&
                             stockData.marketMovers.map((item) => (
                                 <Grid item xs={12} md={4}>
-                                    <Paper sx={{ p: 2, display: 'grid', gap: 2, justifyItems: 'start' }}>
-                                        <Button sx={{ p: 0 }} variant='text' href={item.link} target='_blank'>
-                                            {item.company}
-                                        </Button>
+                                    <Link href={{ pathname: `/stocks/calculate`, query: item }}>
+                                        <Paper sx={{ p: 2, display: 'grid', gap: 2, justifyItems: 'start' }}>
+                                            <Button sx={{ p: 0 }} variant='text' href={item.link} target='_blank'>
+                                                {item.company}
+                                            </Button>
 
-                                        <Typography variant='h6'>{formatPrice(item.price, true)}</Typography>
-                                        <Typography variant='body2' sx={{ display: 'flex', gap: 4 }}>
-                                            <Typography
-                                                variant='body2'
-                                                color={item.pricePercentage.includes('-') ? 'error' : green[500]}
-                                            >
-                                                {item.pricePercentage}
+                                            <Typography variant='h6'>{formatPrice(item.price, true)}</Typography>
+                                            <Typography variant='body2' sx={{ display: 'flex', gap: 4 }}>
+                                                <Typography
+                                                    variant='body2'
+                                                    color={item.pricePercentage.includes('-') ? 'error' : green[500]}
+                                                >
+                                                    {item.pricePercentage}
+                                                </Typography>
                                             </Typography>
-                                        </Typography>
-                                        <Typography variant='body2'>{item.volume}</Typography>
-                                    </Paper>
+                                            <Typography variant='body2'>{item.volume}</Typography>
+                                        </Paper>
+                                    </Link>
                                 </Grid>
                             ))}
                     </Grid>

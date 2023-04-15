@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 
 async function scrapeLogic(req, res) {
     // Launch the browser
-    const browser = await puppeteer.launch({ devtools: false });
+    const browser = await puppeteer.launch({ devtools: false, timeout: 0 });
     try {
         const { initialDeposit, period, subsequentDeposit, targetYear } = req.query;
         // Create a page
@@ -10,7 +10,7 @@ async function scrapeLogic(req, res) {
 
         // Go to your site
         await page.goto('https://online.sunlife.com.ph/cdt/eCalcAge/investmentCalculator', {
-            waitUntil: 'networkidle0'
+            waitUntil: 'load'
         });
 
         // TYPE INTO THE INPUTS
@@ -47,7 +47,6 @@ async function scrapeLogic(req, res) {
         // await page.screenshot({ type: 'png', fullPage: true, path: 'sample.png' });
         // Close browser.
         res.status(201).json({
-            message: 'Investment',
             data: {
                 totalInvestment,
                 ...finalData
