@@ -19,8 +19,7 @@ async function scrapeLogic(res) {
         );
         // Close browser.
         res.status(300).json({
-            data,
-            source: 'Philippine Statistics Authority'
+            data
         });
     } catch (err) {
         console.error(err);
