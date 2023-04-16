@@ -100,8 +100,6 @@ export const languages = {
         sinceLastMonth: 'Since last month',
         historyTransactions: 'Transaction History',
         savingGoals: 'Saving Goals',
-        investment: 'Investment',
-        stocks: 'Stocks',
 
         //sidebar
         achievements: 'Achievements',
@@ -112,6 +110,7 @@ export const languages = {
         profile: 'Profile',
         doingGreat: "You're doing great",
         investment: 'Investment',
+        stocks: 'Stocks',
 
         //navbar
         addTransaction: 'Add Transaction',
