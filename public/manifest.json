@@ -1,15 +1,44 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+    "short_name": "CASH App",
+    "name": "CASH: Financial Monitoring Application",
+    "icons": [
+        {
+            "src": "icons/android-icon-36x36.ico",
+            "sizes": "36x36",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/android-icon-48x48.ico",
+            "sizes": "48x48",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/android-icon-72x72.ico",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/apple-icon-57x57.ico",
+            "sizes": "57x57",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/apple-icon-60x60.ico",
+            "sizes": "60x60",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/apple-icon-72x72.ico",
+            "sizes": "72x72",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "splash_pages": null
 }
+
+

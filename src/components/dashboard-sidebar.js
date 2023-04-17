@@ -13,18 +13,20 @@ import UserIcon from '@mui/icons-material/Person'
 import SettingsIcon from '@mui/icons-material/Settings'
 import TimelineIcon from '@mui/icons-material/Timeline'
 import CategoryIcon from '@mui/icons-material/Category'
-import { Logo } from './logo'
-import { NavItem } from './nav-item'
-import { CircularProgressWithLabel } from './circular-progress-with-label'
-import { getLanguage } from 'utils/getLanguage'
+import StocksIcon from '@mui/icons-material/StackedBarChart';
+import PaidIcon from '@mui/icons-material/Paid';
+import { Logo } from './logo';
+import { NavItem } from './nav-item';
+import { CircularProgressWithLabel } from './circular-progress-with-label';
+import { getLanguage } from 'utils/getLanguage';
 
 export const DashboardSidebar = (props) => {
-    const { open, onClose } = props
-    const router = useRouter()
+    const { open, onClose } = props;
+    const router = useRouter();
     const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'), {
         defaultMatches: true,
         noSsr: false
-    })
+    });
 
     const items = [
         {
@@ -53,6 +55,21 @@ export const DashboardSidebar = (props) => {
             title: getLanguage().savings
         },
         {
+            href: '/bonds',
+            icon: <SavingsIcon fontSize='small' />,
+            title: 'Bonds'
+        },
+        {
+            href: '/investments',
+            icon: <PaidIcon fontSize='small' />,
+            title: getLanguage().investment
+        },
+        {
+            href: '/stocks',
+            icon: <StocksIcon fontSize='small' />,
+            title: getLanguage().stocks
+        },
+        {
             href: '/categories',
             icon: <CategoryIcon fontSize='small' />,
             title: getLanguage().categories
@@ -77,21 +94,21 @@ export const DashboardSidebar = (props) => {
             icon: <SettingsIcon fontSize='small' />,
             title: 'Settings'
         }
-    ]
+    ];
 
     useEffect(
         () => {
             if (!router.isReady) {
-                return
+                return;
             }
 
             if (open) {
-                onClose?.()
+                onClose?.();
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [router.asPath]
-    )
+    );
 
     const content = (
         <>
@@ -180,7 +197,7 @@ export const DashboardSidebar = (props) => {
             >
                 {content}
             </Drawer>
-        )
+        );
     }
 
     return (
@@ -200,8 +217,8 @@ export const DashboardSidebar = (props) => {
         >
             {content}
         </Drawer>
-    )
-}
+    );
+};
 
 DashboardSidebar.propTypes = {
     onClose: PropTypes.func,

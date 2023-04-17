@@ -17,11 +17,15 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import AddCardRoundedIcon from '@mui/icons-material/AddCardRounded';
 import MoveDownRoundedIcon from '@mui/icons-material/MoveDownRounded';
-import CheckIcon from '@mui/icons-material/Check';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import PriceCheckIcon from '@mui/icons-material/PriceCheck';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
@@ -211,7 +215,7 @@ export function Icon(props) {
     else if (name === ICON_NAMES.SYSTEM_ICONS.PROFILE) return <AccountCircleRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.SETTINGS) return <SettingsRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.TRANSACTIONS) return <PaidRoundedIcon {...props} />;
-    else if (name === ICON_NAMES.SYSTEM_ICONS.CHECK) return <CheckIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.CHECK) return <CheckCircleOutlineIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.ADD) return <AddRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.ADD_ACCOUNT) return <AddCardRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER) return <MoveDownRoundedIcon {...props} />;
@@ -225,7 +229,11 @@ export function Icon(props) {
     else if (name === ICON_NAMES.SYSTEM_ICONS.RECEIVE_MONEY) return <EmailRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.SEARCH) return <SearchRoundedIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.SEND_MONEY) return <OutboxRoundedIcon {...props} />;
-    else if (name === ICON_NAMES.SYSTEM_ICONS.TIME) return <AccessTimeFilledRoundedIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.TIME) return <AccessTimeIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.UP) return <KeyboardDoubleArrowUpIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.TRENDING_DOWN) return <TrendingDownIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.PRICE_CHECK) return <PriceCheckIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.CALENDAR) return <CalendarMonthIcon {...props} />;
     //ACCOUNT ICONS
     else if (name === ICON_NAMES.ACCOUNT_ICONS.BANK) return <AccountBalanceRoundedIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD) return <CreditCardRoundedIcon {...props} />;

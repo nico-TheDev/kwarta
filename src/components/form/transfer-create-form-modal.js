@@ -29,6 +29,8 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import { useTransferStore } from 'stores/useTransferStore';
 
+import { getLanguage } from 'utils/getLanguage'
+
 const MenuProps = {
     PaperProps: {
         style: {
@@ -141,13 +143,15 @@ export default function TransferFormModal({ open, setOpen }) {
                         <CloseIcon />
                     </IconButton>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
-                        Create a Transfer
+
+                        {getLanguage().createTransfer}
+
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <TextField
                             id='filled-basic'
-                            label='Amount'
+                            label={getLanguage().transferAmount}
                             variant='filled'
                             fullWidth
                             name='amount'
@@ -160,12 +164,12 @@ export default function TransferFormModal({ open, setOpen }) {
                     {/* SENDER ACCOUNT DROPDOWN */}
                     <Box sx={{ display: 'grid', gap: 2 }}>
                         <FormControl fullWidth>
-                            <InputLabel id='demo-simple-select-label'>Choose Sender Account</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>{getLanguage().chooseSenderAccount}</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
                                 value={selectedSenderAccount}
-                                label='Choose Sender Account'
+                                label={getLanguage().chooseSenderAccount}
                                 onChange={handleSenderAccountChange}
                                 sx={{ display: 'flex', alignItems: 'center' }}
                                 defaultValue=''
@@ -189,12 +193,12 @@ export default function TransferFormModal({ open, setOpen }) {
                     {/* RECEIVER ACCOUNT DROPDOWN */}
                     <Box sx={{ display: 'grid', gap: 2 }}>
                         <FormControl fullWidth>
-                            <InputLabel id='demo-simple-select-label'>Choose Receiver Account</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>{getLanguage().chooseReceiverAccount}</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
                                 value={selectedReceiverAccount}
-                                label='Choose Receiver Account'
+                                label={getLanguage().chooseReceiverAccount}
                                 onChange={handleReceiverAccountChange}
                                 sx={{ display: 'flex', alignItems: 'center' }}
                                 defaultValue=''
@@ -220,7 +224,7 @@ export default function TransferFormModal({ open, setOpen }) {
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 name='date'
-                                label='Date'
+                                label={getLanguage().date}
                                 inputFormat='MM/DD/YYYY'
                                 value={date}
                                 onChange={handleDateChange}
@@ -231,7 +235,7 @@ export default function TransferFormModal({ open, setOpen }) {
                     {/* COMMENT BOX */}
                     <CommentInput formik={formik} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
                     <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
-                        SUBMIT
+                    {getLanguage().submit}
                     </Button>
                 </Box>
             </Modal>

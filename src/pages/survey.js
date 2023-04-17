@@ -19,10 +19,6 @@ import PollIcon from '@mui/icons-material/PollOutlined';
 import Carousel from 'react-material-ui-carousel';
 
 import { useAuthStore } from 'stores/useAuthStore';
-import surveyOne from '../../public/static/images/svg/survey-1.svg';
-import surveyTwo from '../../public/static/images/svg/survey-2.svg';
-import surveyThree from '../../public/static/images/svg/survey-3.svg';
-import surveyFour from '../../public/static/images/svg/survey-4.svg';
 
 import { DashboardLayout } from '../components/dashboard-layout';
 import Image from 'next/image';
@@ -59,7 +55,7 @@ const Page = () => {
     const surveyList = [
         {
             id: 1,
-            source: surveyOne,
+            source: '/static/images/svg/survey-1.svg',
             question: 'What is your socioeconomic standing?',
             choices: [
                 {
@@ -124,7 +120,7 @@ const Page = () => {
 
         {
             id: 2,
-            source: surveyTwo,
+            source: '/static/images/svg/survey-2.svg',
             question: 'Choose categories you prioritize when spending money \n (Select 3)',
             choices: categories,
             count: 1
@@ -132,7 +128,7 @@ const Page = () => {
 
         {
             id: 3,
-            source: surveyThree,
+            source: '/static/images/svg/survey-3.svg',
             question: 'Are you the breadwinner in your family ?',
             choices: [
                 {
@@ -153,7 +149,7 @@ const Page = () => {
 
         {
             id: 4,
-            source: surveyFour,
+            source: '/static/images/svg/survey-4.svg',
             question: 'HELLO.',
             choices: ['A', 'B', 'C', 'D'],
             count: 4,
@@ -200,7 +196,7 @@ const Page = () => {
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={4}>
                             <Box sx={{ position: 'relative', width: '100%', height: { xs: 200, md: '100%' } }}>
-                                <Image src={surveyTwo} alt='Image' layout='fill' />
+                                <Image src={surveyList[1].source} alt='Image' layout='fill' />
                             </Box>
                         </Grid>
 

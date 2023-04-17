@@ -92,9 +92,7 @@ export const DashboardNavbar = (props) => {
                             }}
                             onClick={handleOpenModal}
                         >
-                            <Badge badgeContent={4} color='primary' variant='dot'>
-                                <AddIcon fontSize='small' />
-                            </Badge>
+                            <AddIcon fontSize='small' />
                         </IconButton>
                     </Tooltip>
                     <Avatar

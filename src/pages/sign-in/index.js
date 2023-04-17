@@ -10,14 +10,13 @@ import Router from 'next/router'
 import { useAuthStore } from '../../stores/useAuthStore'
 import Image from 'next/image'
 
-import signinBg from '../../../public/static/images/signin-bg.jpg'
-import { useTheme } from '@mui/material/styles'
+import { useTheme } from '@mui/material/styles';
 
 const Page = () => {
-    const [tab, setTab] = useState('email')
-    const [emailSent, setEmailSent] = useState(false)
+    const [tab, setTab] = useState('email');
+    const [emailSent, setEmailSent] = useState(false);
     // const login = useAuthStore((state) => state.login)
-    const theme = useTheme()
+    const theme = useTheme();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -27,17 +26,17 @@ const Page = () => {
             email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
         }),
         onSubmit: async (values, helpers) => {
-            Router.push('/').catch(console.error)
+            Router.push('/').catch(console.error);
         }
-    })
+    });
 
     const handleTabChange = (event, value) => {
-        setTab(value)
-    }
+        setTab(value);
+    };
 
     const handleRetry = () => {
-        setEmailSent(false)
-    }
+        setEmailSent(false);
+    };
 
     const handleSkip = () => {
         // Update Auth Context state
@@ -47,8 +46,8 @@ const Page = () => {
         // globalThis.sessionStorage.setItem("skip-auth", "true");
 
         // Redirect to home page
-        Router.push('/').catch(console.error)
-    }
+        Router.push('/').catch(console.error);
+    };
 
     return (
         <>
@@ -231,10 +230,9 @@ const Page = () => {
                                 </Box>{' '}
                                 journey here.
                             </Typography>
-                            <Image
+                            <img
                                 alt=''
-                                fill
-                                src={signinBg}
+                                src='/static/images/signin-bg.jpg'
                                 style={{ filter: 'brightness(0.5)', objectFit: 'cover' }}
                             />
                         </Box>
@@ -242,7 +240,7 @@ const Page = () => {
                 </Grid>
             </Box>
         </>
-    )
-}
+    );
+};
 
 export default Page

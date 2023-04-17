@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { Box, Container, Grid, CircularProgress, Typography } from '@mui/material';
 import { Balance } from '../components/dashboard/balance';
-import { InflationPanel } from '../components/dashboard/saving';
 import { TransactionHistory } from '../components/dashboard/transaction-history';
 import { Cashflow } from '../components/dashboard/cashflow';
 import { Savings } from '../components/dashboard/inflation';
@@ -14,6 +13,8 @@ import { useEffect } from 'react';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useAccountStore } from 'stores/useAccountStore';
+import { getLanguage } from 'utils/getLanguage';
+import NewsPanel from 'components/news-panel';
 
 const Page = () => {
     const user = useAuthStore((state) => state.authState?.user);
@@ -39,7 +40,7 @@ const Page = () => {
     if (isEmpty) {
         return (
             <Box sx={{ ...styles.container }}>
-                <Typography variant='h4'>Create your first Transaction</Typography>
+                <Typography variant='h4'>Create your first transaction</Typography>
             </Box>
         );
     }
@@ -48,6 +49,8 @@ const Page = () => {
         <>
             <Head>
                 <title>CASH: Financial Monitoring Application</title>
+                <link rel='manifest' href='/manifest.json' />
+                <link rel='icon' href='/favicon.ico' type='image/png' />
             </Head>
             <Box
                 component='main'
@@ -85,9 +88,9 @@ const Page = () => {
                             {/* TRANSACTION HISTORY */}
                             <TransactionHistory sx={{ height: '100%' }} />
                         </Grid>
-                        {/* <Grid item lg={8} md={12} xl={9} xs={12}>
-                            <InflationPanel sx={{ height: '100%' }} />
-                        </Grid> */}
+                        <Grid item lg={8} md={12} xl={9} xs={12}>
+                            <NewsPanel />
+                        </Grid>
                     </Grid>
                 </Container>
             </Box>
