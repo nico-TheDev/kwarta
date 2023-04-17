@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, Typography } from '@mui/material';
+import { Button, CircularProgress, Grid, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useNews } from 'hooks/swr/useNews';
 import React from 'react';
@@ -6,7 +6,13 @@ import React from 'react';
 export default function NewsPanel() {
     const { data, isLoading: isLoadingNews } = useNews();
 
-    if (isLoadingNews) return 'Loading';
+    if (isLoadingNews)
+        return (
+            <Box sx={{ display: 'grid', justifyItems: 'center', height: '40vh', alignItems: 'center' }}>
+                <Typography variant='h6'>Fetching Latest News...</Typography>
+                <CircularProgress size={100} />
+            </Box>
+        );
 
     return (
         <>
@@ -18,7 +24,7 @@ export default function NewsPanel() {
                     data.newsList?.map((news) => (
                         <Grid item xs={12} md={6}>
                             <Paper sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                <Box sx={{ background: 'red', height: '100%' }}>
+                                <Box sx={{ height: '100%' }}>
                                     <img
                                         src={news?.image || '/static/images/articles/general.jpg'}
                                         alt=''

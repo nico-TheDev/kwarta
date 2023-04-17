@@ -7,26 +7,22 @@ import { ICON_NAMES } from 'constants/constant';
 import { formatPrice } from 'utils/format-price'
 
 export default function DealsCard({iconName, savings}){
-    return(
-        <Box sx={{ pt: 3 }}>
+    return (
+        <Box sx={{ pt: 3, height: '100%' }}>
             <Card
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%',
                     position: 'relative'
-                    }}
-                    // {...rest}
-                    elevation={10}
+                }}
+                // {...rest}
+                elevation={10}
             >
                 <CardContent>
                     <Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center'}}>
-                            <Icon
-                                name={iconName}
-                                color='primary'
-                                sx={{ fontSize: '100px'}}
-                            />
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Icon name={iconName} color='primary' sx={{ fontSize: '100px' }} />
                         </Box>
                         <Box>
                             <Typography align='center' color='textPrimary' gutterBottom variant='h5'>
@@ -51,5 +47,5 @@ export default function DealsCard({iconName, savings}){
                 </CardContent>
             </Card>
         </Box>
-    )
+    );
 }

@@ -7,6 +7,7 @@ import { DashboardLayout } from '../../components/dashboard-layout';
 import { formatPrice } from 'utils/format-price';
 import Link from 'next/link';
 import { useStocks } from 'hooks/swr/useStocks';
+import NewsPanel from 'components/news-panel';
 
 const Page = () => {
     const router = useRouter();
@@ -72,6 +73,10 @@ const Page = () => {
                             ></iframe>
                         </Grid>
                     </Grid>
+
+                    <Box mb={4}>
+                        <NewsPanel />
+                    </Box>
 
                     {/* SUGGESTIONS */}
                     <Grid container spacing={3}>
