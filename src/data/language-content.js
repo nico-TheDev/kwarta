@@ -24,14 +24,49 @@ export const languages = {
         articles: 'Mga Artikulo',
         profile: 'Propayl',
         doingGreat: 'Maayos ang ginagawa mo',
+        investment: 'Pamumuhunan',
 
         //navbar
         addTransaction: 'Magdagdag ng Transaksiyon',
 
+        //global
+        date: 'Petsa',
+        color: 'Kulay',
+        category:'Kategorya',
+        save: 'I-save',
+        submit: 'I-submit',
+        edit: 'Palitan',
+        delete: 'Tanggalin',
+        filter: 'Salain',
+        day: 'Araw',
+        month: 'Buwan',
+        year: 'Taon',
+
+        //dashboard
+        createFirstTransaction: 'Gumawa ng unang transaksiyon',
+
+        //account card
+        addAccount: 'Magdagdag ng Lagayan',
+        totalBalance: 'Kabuuang Halaga',
+
+        //account form
+        createAccount: 'Gumawa ng lagayan ng pera',
+        accountName: 'Pangalan ng lagayan ng pera',
+        accountAmount: 'Halagang nilalaman ng lagayan ng pera',
+
+        //transfer
+        transferOverview: 'Pangkalahatan ng paglipat ng pera',
+        addTransfer: 'Maglipat ng pera',
+
+        //transfer form
+        transferAmount: 'Halagang nilipat',
+        createTransfer: 'Gumawa ng paglipat ng pera',
+        chooseSenderAccount: 'Pumili ng nagpadala',
+        chooseReceiverAccount: 'Pumili ng taga-tanggap',
+
         //settings
         language: 'Wika',
         changeLanguage: 'Palitan ang wika',
-        investment: 'Pamumuhunan',
 
         //account profile
         editInformation: 'Ang iyong impormasyon ay maaaring palitan',
@@ -40,11 +75,6 @@ export const languages = {
         specifyFirstName: 'Ilagay ang iyong pangalan',
         uploadPicture: 'Kumuha ng litrato',
         saveDetails: 'I-save ang mga detalye',
-
-        //account card
-        addAccount: 'Magdagdag ng Lagayan',
-        createTransfer: 'Maglipat ng Pera',
-        totalBalance: 'Kabuuang Halaga',
 
         //categories card
         addCategory: 'Magdagdag ng Kategorya',
@@ -70,8 +100,7 @@ export const languages = {
         sinceLastMonth: 'Since last month',
         historyTransactions: 'Transaction History',
         savingGoals: 'Saving Goals',
-        investment: 'Investment',
-        stocks: 'Stocks',
+
         //sidebar
         achievements: 'Achievements',
         accounts: 'Accounts',
@@ -80,9 +109,46 @@ export const languages = {
         articles: 'Articles',
         profile: 'Profile',
         doingGreat: "You're doing great",
+        investment: 'Investment',
+        stocks: 'Stocks',
 
         //navbar
         addTransaction: 'Add Transaction',
+
+        //global
+        date: 'Date',
+        color: 'Color',
+        category:'Category',
+        save: 'Save',
+        submit: 'Submit',
+        edit: 'Edit',
+        delete: 'Delete',
+        filter: 'Filter by',
+        day: 'Day',
+        month: 'Month',
+        year: 'Year',
+
+        //dashboard
+        createFirstTransaction: 'Create your first transaction',
+
+        //account card
+        addAccount: 'Add Account',
+        totalBalance: 'Total Balance',
+
+        //account form
+        createAccount: 'Create an Account',
+        accountName: 'Account Name',
+        accountAmount: 'Account Amount',
+
+        //transfer
+        transferOverview: 'Transfer Overview',
+        addTransfer: 'Create transfer',
+
+        //transfer form
+        transferAmount: 'Amount',
+        createTransfer: 'Create Transfer',
+        chooseSenderAccount: 'Choose Sender Account',
+        chooseReceiverAccount: 'Choose Receiver Account',
 
         //settings
         language: 'Language',
@@ -95,11 +161,6 @@ export const languages = {
         specifyFirstName: 'Specify your First Name',
         uploadPicture: 'Upload Picture',
         saveDetails: 'Save Details',
-
-        //account card
-        addAccount: 'Add Account',
-        createTransfer: 'Create Transfer',
-        totalBalance: 'Total Balance',
 
         //categories card
         addCategory: 'Add Category',
