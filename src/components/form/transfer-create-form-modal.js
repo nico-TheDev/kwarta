@@ -143,7 +143,9 @@ export default function TransferFormModal({ open, setOpen }) {
                         <CloseIcon />
                     </IconButton>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
+
                         {getLanguage().createTransfer}
+
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
