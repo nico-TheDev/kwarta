@@ -5,7 +5,8 @@ async function scrapeLogic(res) {
     const browser = await puppeteer.launch({
         devtools: false,
         headless: true,
-        defaultViewport: false
+        defaultViewport: false,
+        args: ['--no-sandbox']
     });
     try {
         // Create a page
@@ -82,7 +83,7 @@ async function scrapeLogic(res) {
         });
     } catch (err) {
         console.error(err);
-        res.send(`Something Went Wrong:${err.message}`);
+        res.status(500).json({ error: err });
     } finally {
         // await browser.close();
     }

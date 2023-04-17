@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 
 async function scrapeLogic(req, res) {
     // Launch the browser
-    const browser = await puppeteer.launch({ devtools: false, timeout: 0 });
+    const browser = await puppeteer.launch({ devtools: false, timeout: 0, args: ['--no-sandbox'] });
     try {
         const { initialDeposit, period, subsequentDeposit, targetYear } = req.query;
         // Create a page
@@ -54,7 +54,7 @@ async function scrapeLogic(req, res) {
         });
     } catch (err) {
         console.error(err);
-        res.send(`Something Went Wrong:${err}`);
+        res.status(500).json({ error: err });
     } finally {
         await browser.close();
     }

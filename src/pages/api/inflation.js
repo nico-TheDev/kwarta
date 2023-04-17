@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 
 async function scrapeLogic(res) {
     // Launch the browser
-    const browser = await puppeteer.launch({ devtools: false });
+    const browser = await puppeteer.launch({ devtools: false, args: ['--no-sandbox'] });
     try {
         // Create a page
         const page = await browser.newPage();
@@ -23,7 +23,7 @@ async function scrapeLogic(res) {
         });
     } catch (err) {
         console.error(err);
-        res.send(`Something Went Wrong:${err}`);
+        res.status(500).json({ error: err });
     } finally {
         await browser.close();
     }
