@@ -15,7 +15,11 @@ const Page = () => {
 
     if (isLoading)
         return (
-            <Grid container sx={{ width: '100%', height: '80vh' }} justifyContent='center'>
+            <Grid
+                container
+                sx={{ width: '100%', height: '80vh', display: 'flex', alignItems: 'center' }}
+                justifyContent='center'
+            >
                 <CircularProgress size={100} />
             </Grid>
         );

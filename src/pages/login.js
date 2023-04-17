@@ -149,23 +149,24 @@ const Login = () => {
                             md: 'flex'
                         },
                         alignItems: 'center',
-                        position: 'relative'
+                        position: 'relative',
+                        justifyContent: 'center'
                     }}
                 >
                     <Typography
                         variant='h2'
                         position='absolute'
-                        sx={{ zIndex: 10, color: 'white', textAlign: 'center' }}
+                        sx={{ zIndex: 10, color: 'white', textAlign: 'center', width: '80%' }}
                     >
                         <span style={{ color: theme.palette.primary.main }}>Learn</span> about Financial Literacy
                     </Typography>
-                    <Image
+                    <img
                         src='/static/images/login-bg.jpg'
-                        width={750}
-                        height={1000}
                         style={{
                             filter: 'brightness(0.4) blur(2px)',
-                            objectFit: 'cover'
+                            objectFit: 'cover',
+                            width: '100%',
+                            height: '100%'
                         }}
                     />
                 </Box>

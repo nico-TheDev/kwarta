@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useAccountStore } from 'stores/useAccountStore';
+import NewsPanel from 'components/news-panel';
 
 const Page = () => {
     const user = useAuthStore((state) => state.authState?.user);
@@ -86,9 +87,9 @@ const Page = () => {
                             {/* TRANSACTION HISTORY */}
                             <TransactionHistory sx={{ height: '100%' }} />
                         </Grid>
-                        {/* <Grid item lg={8} md={12} xl={9} xs={12}>
-                            <InflationPanel sx={{ height: '100%' }} />
-                        </Grid> */}
+                        <Grid item lg={8} md={12} xl={9} xs={12}>
+                            <NewsPanel />
+                        </Grid>
                     </Grid>
                 </Container>
             </Box>
