@@ -23,6 +23,7 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 import useGetUserTransactions from 'hooks/useGetUserTransactions';
 import { useAuthStore } from 'stores/useAuthStore';
 import TransactionCardList from 'components/shared/TransactionCardList';
+import { getLanguage } from 'utils/getLanguage'
 
 const MenuProps = {
     PaperProps: {
@@ -226,35 +227,35 @@ const Page = () => {
                             }
                         }}
                     >
-                        Transaction Overview
+                        {getLanguage().transactionOverview}
                     </Typography>
                     <Typography variant='h4' align='center' mb={4}>
                         {formatPrice(total, true)}
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
-                        <Typography variant='body1'>Income</Typography>
+                        <Typography variant='body1'>{getLanguage().income}</Typography>
                         <Switch
                             checked={isExpense}
                             onChange={handleExpense}
                             inputProps={{ 'aria-label': 'controlled' }}
                         />
-                        <Typography variant='body1'>Expense</Typography>
+                        <Typography variant='body1'>{getLanguage().expense}</Typography>
                     </Box>
 
                     <Box sx={{ display: { xs: 'grid', lg: 'flex' }, gap: 2, mb: 6 }}>
                         <FormControl fullWidth>
-                            <InputLabel id='demo-simple-select-label'>Choose Category</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>{getLanguage().chooseCategory}</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
                                 value={selectedCategory.id}
-                                label='Choose Category'
+                                label={getLanguage().chooseCategory}
                                 defaultValue='all'
                                 onChange={handleCategoryChange}
                                 MenuProps={MenuProps}
                             >
-                                <MenuItem value='all'>All</MenuItem>
+                                <MenuItem value='all'>{getLanguage().all}</MenuItem>
                                 {categoryData?.map((tag) => {
                                     return (
                                         <MenuItem key={tag.id} value={tag.id}>
@@ -271,7 +272,7 @@ const Page = () => {
                         </FormControl>
 
                         <FormControl fullWidth>
-                            <InputLabel id='demo-simple-select-label'>Account</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>{getLanguage().chooseAccount}</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
@@ -279,7 +280,7 @@ const Page = () => {
                                 label='filterAccount'
                                 onChange={handleAccountChange}
                             >
-                                <MenuItem value='all'>All</MenuItem>
+                                <MenuItem value='all'>{getLanguage().all}</MenuItem>
                                 {accounts.map((account) => {
                                     return (
                                         <MenuItem key={account.id} value={account.id}>
@@ -295,7 +296,7 @@ const Page = () => {
                             </Select>
                         </FormControl>
                         <FormControl fullWidth>
-                            <InputLabel id='demo-simple-select-label'>Filter by:</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>{getLanguage().filter}</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
@@ -303,9 +304,9 @@ const Page = () => {
                                 label='filterType'
                                 onChange={handleTypeChange}
                             >
-                                <MenuItem value={'year'}>Year</MenuItem>
-                                <MenuItem value={'month'}>Month</MenuItem>
-                                <MenuItem value={'day'}>Day</MenuItem>
+                                <MenuItem value={'year'}>{getLanguage().year}</MenuItem>
+                                <MenuItem value={'month'}>{getLanguage().month}</MenuItem>
+                                <MenuItem value={'day'}>{getLanguage().day}</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
