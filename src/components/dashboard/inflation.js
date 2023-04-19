@@ -24,7 +24,7 @@ export const Savings = (props) => {
                 setPercentage(JSON.parse(localStorage.getItem('percentage')));
             } else {
                 try {
-                    const res = await fetch('/api/inflation');
+                    const res = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/inflation');
                     const data = await res.json();
 
                     const rate = data.data;

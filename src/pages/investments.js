@@ -63,7 +63,8 @@ const Page = () => {
 
         try {
             const res = await fetch(
-                `/api/investment/?initialDeposit=${initialDeposit}&period=${period}&subsequentDeposit=${subsequentDeposit}&targetYear=${targetYear}`
+                process.env.NEXT_PUBLIC_ENDPOINT +
+                    `/investment/?initialDeposit=${initialDeposit}&period=${period}&subsequentDeposit=${subsequentDeposit}&targetYear=${targetYear}`
             );
 
             const data = await res.json();
@@ -88,18 +89,24 @@ const Page = () => {
             // console.log(passedAccounts)
             const amount = Math.round(highestAccount / 10000) * 10000;
             const year = new Date().getFullYear() + 20;
-            const res = await fetch(
-                `/api/investment/?initialDeposit=${amount}&period=${12}&subsequentDeposit=${1000}&targetYear=${year}`
-            );
-            const data = await res.json();
-            console.log(data, amount);
-            setSuggestionData({
-                ...data.data,
-                initial: amount,
-                period: 'monthly',
-                addOn: 1000,
-                year: Number(year) - Number(new Date().getFullYear())
-            });
+            try {
+                const res = await fetch(
+                    process.env.NEXT_PUBLIC_ENDPOINT +
+                        `/investment/?initialDeposit=${amount}&period=${12}&subsequentDeposit=${1000}&targetYear=${year}`
+                );
+                const data = await res.json();
+                console.log(data, amount);
+                setSuggestionData({
+                    ...data.data,
+                    initial: amount,
+                    period: 'monthly',
+                    addOn: 1000,
+                    year: Number(year) - Number(new Date().getFullYear())
+                });
+            } catch (err) {
+                console.error(err);
+            }
+           
         };
 
         getSuggestions();
