@@ -111,7 +111,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         <>
             <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
                 <Alert onClose={handleCloseAlert} severity='success' sx={{ width: '100%' }}>
-                    Account created.
+                    {getLanguage().accountCreated}
                 </Alert>
             </Snackbar>
             <Modal

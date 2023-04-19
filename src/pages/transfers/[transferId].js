@@ -194,13 +194,13 @@ const Page = () => {
                         component='form'
                     >
                         <Typography id='modal-modal-title' variant='h6' component='h2'>
-                            Transfer Detail
+                            {getLanguage().transferDetails}
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
                                 id='filled-basic'
-                                label='Amount'
+                                label={getLanguage().transferAmount}
                                 variant='filled'
                                 fullWidth
                                 name='amount'
@@ -219,7 +219,7 @@ const Page = () => {
                                     labelId='demo-simple-select-label'
                                     id='demo-simple-select'
                                     value={selectedSenderAccount}
-                                    label='Choose Sender Account'
+                                    label={getLanguage().chooseSenderAccount}
                                     onChange={handleSenderAccountChange}
                                     sx={{ display: 'flex', alignItems: 'center' }}
                                     defaultValue=''
@@ -249,7 +249,7 @@ const Page = () => {
                                     labelId='demo-simple-select-label'
                                     id='demo-simple-select'
                                     value={selectedReceiverAccount}
-                                    label='Choose Receiver Account'
+                                    label={getLanguage().chooseReceiverAccount}
                                     onChange={handleReceiverAccountChange}
                                     sx={{ display: 'flex', alignItems: 'center' }}
                                     defaultValue=''
@@ -276,7 +276,7 @@ const Page = () => {
                             <Stack spacing={3}>
                                 <DesktopDatePicker
                                     name='date'
-                                    label='Date'
+                                    label={getLanguage().date}
                                     inputFormat='MM/DD/YYYY'
                                     value={date}
                                     onChange={handleDateChange}
@@ -301,19 +301,19 @@ const Page = () => {
                                         sx={{ flex: 1 }}
                                         onClick={() => setIsEditing(!isEditing)}
                                     >
-                                        EDIT
+                                        {getLanguage().edit}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={handleDelete}>
-                                        DELETE
+                                        {getLanguage().delete}  
                                     </Button>
                                 </>
                             ) : (
                                 <>
                                     <Button variant='contained' sx={{ flex: 1 }} onClick={formik.handleSubmit}>
-                                        SAVE
+                                        {getLanguage().save}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={() => setIsEditing(false)}>
-                                        CANCEL
+                                        {getLanguage().cancel}
                                     </Button>
                                 </>
                             )}

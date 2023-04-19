@@ -20,6 +20,7 @@ import { ICON_NAMES, modalStyle } from 'constants/constant';
 import ColorPicker from 'components/shared/ColorPicker';
 import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
+import { getLanguage } from 'utils/getLanguage'
 
 import { useCategoryStore } from 'stores/useCategoryStore';
 import { useAuthStore } from 'stores/useAuthStore';
@@ -101,13 +102,13 @@ export default function CategoryCreateModal({ open, setOpen }) {
                         <CloseIcon />
                     </IconButton>
                     <Typography id='modal-modal-title' variant='h6'>
-                        Create a Category
+                        {getLanguage().createCategory}
                     </Typography>
                     <FormControl fullWidth onSubmit={formik.handleSubmit}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <TextField
                                 id='filled-basic'
-                                label='Category Name'
+                                label={getLanguage().categoryName}
                                 variant='filled'
                                 name='categoryName'
                                 onBlur={formik.handleBlur}
@@ -117,13 +118,13 @@ export default function CategoryCreateModal({ open, setOpen }) {
                             />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
-                            <Typography variant='body1'>Income</Typography>
+                            <Typography variant='body1'>{getLanguage().income}</Typography>
                             <Switch
                                 checked={isExpense}
                                 onChange={handleExpense}
                                 inputProps={{ 'aria-label': 'controlled' }}
                             />
-                            <Typography variant='body1'>Expense</Typography>
+                            <Typography variant='body1'>{getLanguage().expense}</Typography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <ColorPickerPanel
@@ -150,7 +151,7 @@ export default function CategoryCreateModal({ open, setOpen }) {
                         </Box>
                         <Box sx={{ py: 2 }}>
                             <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
-                                Submit
+                                {getLanguage().submit}
                             </Button>
                         </Box>
                     </FormControl>

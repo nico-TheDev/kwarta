@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { CategoriesHead } from '../../components/categories/categories-head';
 import { CategoriesCard } from '../../components/categories/categories-card';
 import { DashboardLayout } from '../../components/dashboard-layout';
+import { getLanguage } from 'utils/getLanguage'
 
 import useSortCategories from 'hooks/useSortCategories';
 
@@ -26,13 +27,13 @@ const Page = () => {
                 <Container maxWidth={false}>
                     <CategoriesHead />
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
-                        <Typography variant='body1'>Income</Typography>
+                        <Typography variant='body1'>{getLanguage().income}</Typography>
                         <Switch
                             checked={isExpense}
                             onChange={handleExpense}
                             inputProps={{ 'aria-label': 'controlled' }}
                         />
-                        <Typography variant='body1'>Expense</Typography>
+                        <Typography variant='body1'>{getLanguage().expense}</Typography>
                     </Box>
                     <Box sx={{ pt: 3 }}>
                         <Grid container spacing={3}>

@@ -29,6 +29,7 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import { useCategoryStore } from 'stores/useCategoryStore';
 import useSortCategories from 'hooks/useSortCategories';
+import { getLanguage } from 'utils/getLanguage'
 
 const MenuProps = {
     PaperProps: {
@@ -130,7 +131,7 @@ export default function TransactionFormModal({ open, setOpen }) {
         <>
             <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
                 <Alert onClose={handleCloseAlert} severity='warning' sx={{ width: '100%' }}>
-                    You're overspending, you might want to rethink your expense.
+                    {getLanguage().overspendingAlert}
                 </Alert>
             </Snackbar>
 
@@ -149,13 +150,13 @@ export default function TransactionFormModal({ open, setOpen }) {
                         <CloseIcon />
                     </IconButton>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
-                        Create a Transaction
+                        {getLanguage().createTransaction}
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <TextField
                             id='filled-basic'
-                            label='Amount'
+                            label={getLanguage().transactionAmount}
                             variant='filled'
                             fullWidth
                             name='amount'
@@ -166,24 +167,24 @@ export default function TransactionFormModal({ open, setOpen }) {
                     </Box>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography variant='body1'>Income</Typography>
+                        <Typography variant='body1'>{getLanguage().income}</Typography>
                         <Switch
                             checked={isExpense}
                             onChange={handleExpense}
                             inputProps={{ 'aria-label': 'controlled' }}
                         />
-                        <Typography variant='body1'>Expense</Typography>
+                        <Typography variant='body1'>{getLanguage().expense}</Typography>
                     </Box>
 
                     {/* ACCOUNT DROPDOWN */}
                     <Box sx={{ display: 'grid', gap: 2 }}>
                         <FormControl fullWidth>
-                            <InputLabel id='demo-simple-select-label'>Choose Account</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>{getLanguage().chooseAccount}</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
                                 value={selectedAccount}
-                                label='Choose Account'
+                                label={getLanguage().chooseAccount}
                                 onChange={handleAccountChange}
                                 sx={{ display: 'flex', alignItems: 'center' }}
                                 defaultValue=''
@@ -205,12 +206,12 @@ export default function TransactionFormModal({ open, setOpen }) {
                         </FormControl>
                         {/* CATEGORY DROPDOWN */}
                         <FormControl fullWidth>
-                            <InputLabel id='demo-simple-select-label'>Choose Category</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>{getLanguage().chooseCategory}</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
                                 value={selectedCategory.id}
-                                label='Choose Category'
+                                label={getLanguage().chooseCategory}
                                 defaultValue=''
                                 onChange={handleCategoryChange}
                                 MenuProps={MenuProps}
@@ -235,7 +236,7 @@ export default function TransactionFormModal({ open, setOpen }) {
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 name='date'
-                                label='Date'
+                                label={getLanguage().date}
                                 inputFormat='MM/DD/YYYY'
                                 value={date}
                                 onChange={handleDateChange}
@@ -246,7 +247,7 @@ export default function TransactionFormModal({ open, setOpen }) {
                     {/* COMMENT BOX */}
                     <CommentInput formik={formik} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
                     <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
-                        SUBMIT
+                        {getLanguage().submit}
                     </Button>
                 </Box>
             </Modal>

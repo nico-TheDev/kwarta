@@ -17,6 +17,7 @@ import ColorPicker from 'components/shared/ColorPicker';
 import ColorPickerPanel from 'components/shared/ColorPickerPanel';
 import IconOnlySelector from 'components/shared/IconOnlySelector';
 import { ICON_NAMES } from 'constants/constant';
+import { getLanguage } from 'utils/getLanguage';
 
 import { useAccountStore } from 'stores/useAccountStore';
 import { useAuthStore } from 'stores/useAuthStore';
@@ -150,13 +151,13 @@ const Page = () => {
                         component='form'
                     >
                         <Typography id='modal-modal-title' variant='h6' component='h2'>
-                            Account Detail
+                        {getLanguage().accountDetails}
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
                                 id='account-name'
-                                label='Account Name'
+                                label={getLanguage().accountName}
                                 variant='filled'
                                 fullWidth
                                 name='accountName'
@@ -170,7 +171,7 @@ const Page = () => {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
                                 id='account-amount'
-                                label='Account Amount'
+                                label={getLanguage().accountAmount}
                                 variant='filled'
                                 fullWidth
                                 name='accountAmount'
@@ -215,19 +216,19 @@ const Page = () => {
                                         sx={{ flex: 1 }}
                                         onClick={() => setIsEditing(!isEditing)}
                                     >
-                                        EDIT
+                                        {getLanguage().edit}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={handleDelete}>
-                                        DELETE
+                                        {getLanguage().delete}
                                     </Button>
                                 </>
                             ) : (
                                 <>
                                     <Button variant='contained' sx={{ flex: 1 }} onClick={formik.handleSubmit}>
-                                        SAVE
+                                        {getLanguage().save}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={() => setIsEditing(false)}>
-                                        CANCEL
+                                        {getLanguage().cancel}
                                     </Button>
                                 </>
                             )}

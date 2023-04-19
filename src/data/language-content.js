@@ -37,36 +37,67 @@ export const languages = {
         submit: 'I-submit',
         edit: 'Palitan',
         delete: 'Tanggalin',
+        cancel: 'I-cancel',
         filter: 'Salain',
         day: 'Araw',
         month: 'Buwan',
         year: 'Taon',
+        income: 'Kita',
+        expense: 'Gastos',
+        overspendingAlert: 'Masyado kang gumagastos, baka gusto mong pag-isipang muli ang iyong gastos.',
+        all: 'Lahat',
 
         //dashboard
-        createFirstTransaction: 'Gumawa ng unang transaksiyon',
+        createFirstTransaction: 'Gumawa ng Unang Transaksiyon',
+
+        //transaction
+        transactionOverview: 'Pangkalahatan ng mga Transaksiyon',
+
+        //transaction form
+        transactionAmount: 'Halaga ng Transaksiyon',
+        createTransaction: 'Gumawa ng Transaksiyon',
+        chooseAccount: 'Pumili ng Account',
+        chooseCategory: 'Pumili ng Kategorya',
+
+        //transaction edit
+        transactionDetails: 'Mga detalye ng Transaksiyon',
 
         //account card
-        addAccount: 'Magdagdag ng Lagayan',
+        addAccount: 'Magdagdag ng Account',
         totalBalance: 'Kabuuang Halaga',
 
         //account form
-        createAccount: 'Gumawa ng lagayan ng pera',
-        accountName: 'Pangalan ng lagayan ng pera',
-        accountAmount: 'Halagang nilalaman ng lagayan ng pera',
+        createAccount: 'Gumawa ng Account',
+        accountName: 'Pangalan ng Account',
+        accountAmount: 'Halagang nilalaman ng Account',
+        accountCreated: 'Nakagawa na ng Account',
+
+        //account edit
+        accountDetails: 'Mga detalye ng Account',
 
         //transfer
-        transferOverview: 'Pangkalahatan ng paglipat ng pera',
-        addTransfer: 'Maglipat ng pera',
+        transferOverview: 'Pangkalahatan ng Paglipat ng Pera',
+        addTransfer: 'Maglipat ng Pera',
 
         //transfer form
         transferAmount: 'Halagang nilipat',
-        createTransfer: 'Gumawa ng paglipat ng pera',
+        createTransfer: 'Gumawa ng Paglipat ng Pera',
         chooseSenderAccount: 'Pumili ng nagpadala',
         chooseReceiverAccount: 'Pumili ng taga-tanggap',
 
+        //transfer edit
+        transferDetails: 'Mga detalye ng Paglipat ng Pera',
+
+        //category form
+        createCategory: 'Gumawa ng Kategorya',
+        categoryName: 'Pangalan ng Kategorya',
+
+        //category edit
+        categoryDetails: 'Mga detalye ng Kategorya',
+
         //settings
         language: 'Wika',
-        changeLanguage: 'Palitan ang wika',
+        changeLanguage: 'Palitan ang Wika',
 
         //account profile
         editInformation: 'Ang iyong impormasyon ay maaaring palitan',
@@ -123,13 +154,27 @@ export const languages = {
         submit: 'Submit',
         edit: 'Edit',
         delete: 'Delete',
+        cancel: 'Cancel',
         filter: 'Filter by',
         day: 'Day',
         month: 'Month',
         year: 'Year',
+        income: 'Income',
+        expense: 'Expense',
+        overspendingAlert: "You're overspending, you might want to rethink your expense.",
+        all: 'All',
 
         //dashboard
         createFirstTransaction: 'Create your first transaction',
+
+        //transaction
+        transactionOverview: 'Transaction Overview',
+
+        //transaction form
+        transactionAmount: 'Transaction Amount',
+        createTransaction: 'Create Transaction',
+        chooseAccount: 'Choose an Account',
+        chooseCategory: 'Choose a Category',
 
         //account card
         addAccount: 'Add Account',
@@ -139,6 +184,7 @@ export const languages = {
         createAccount: 'Create an Account',
         accountName: 'Account Name',
         accountAmount: 'Account Amount',
+        accountCreated: 'Account created',
 
         //transfer
         transferOverview: 'Transfer Overview',
@@ -149,6 +195,16 @@ export const languages = {
         createTransfer: 'Create Transfer',
         chooseSenderAccount: 'Choose Sender Account',
         chooseReceiverAccount: 'Choose Receiver Account',
+
+        //transfer edit
+        transferDetails: 'Transfer Details',
+
+        //category form
+        createCategory: 'Create a Category',
+        categoryName: 'Category Name',
+
+        //category edit
+        categoryDetails: 'Category Details',
 
         //settings
         language: 'Language',

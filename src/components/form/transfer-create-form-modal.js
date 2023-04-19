@@ -124,7 +124,7 @@ export default function TransferFormModal({ open, setOpen }) {
         <>
             <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
                 <Alert onClose={handleCloseAlert} severity='warning' sx={{ width: '100%' }}>
-                    You're overspending, you might want to rethink your expense.
+                    {getLanguage().overspendingAlert}
                 </Alert>
             </Snackbar>
 
@@ -143,9 +143,7 @@ export default function TransferFormModal({ open, setOpen }) {
                         <CloseIcon />
                     </IconButton>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
-
                         {getLanguage().createTransfer}
-
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
