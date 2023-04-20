@@ -11,27 +11,51 @@ import NewsPanel from 'components/news-panel';
 
 const Page = () => {
     const router = useRouter();
+    const [stockData, setStockData] = useState(null);
+    const [trendingStocks, setTrendingStocks] = useState(() => {
+        if (localStorage.getItem('stockData')) {
+            return JSON.parse(localStorage.getItem('stockData')).trendingStocks;
+        } else {
+            return null;
+        }
+    });
+    const [marketMovers, setMarketMovers] = useState(() => {
+        if (localStorage.getItem('stockData')) {
+            return JSON.parse(localStorage.getItem('stockData')).marketMovers;
+        } else {
+            return null;
+        }
+    });
 
-    const { data: stockData, isError, isLoading } = useStocks();
+    useEffect(() => {
+        const getStocks = async () => {
+            try {
+                const res = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/stocks');
+                const data = await res.json();
 
-    if (isLoading)
-        return (
-            <Grid
-                container
-                sx={{ width: '100%', height: '80vh', display: 'flex', alignItems: 'center' }}
-                justifyContent='center'
-            >
-                <CircularProgress size={100} />
-            </Grid>
-        );
+                // console.log(data);
+                setStockData(stockData);
 
-    if (isError)
-        return (
-            <>
-                <Typography variant='h4'>'Something Went Wrong'</Typography>
-                <Typography variant='h4'>{isError}</Typography>
-            </>
-        );
+                localStorage.setItem('stockData', JSON.stringify(data));
+                setTrendingStocks(data.trendingStocks);
+                setMarketMovers(data.marketMovers);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        getStocks();
+    }, []);
+
+    // if (stockData === null)
+    //     return (
+    //         <Grid
+    //             container
+    //             sx={{ width: '100%', height: '80vh', display: 'flex', alignItems: 'center' }}
+    //             justifyContent='center'
+    //         >
+    //             <CircularProgress size={100} />
+    //         </Grid>
+    //     );
 
     return (
         <>
@@ -84,9 +108,9 @@ const Page = () => {
                             <Typography variant='h4'>You might want to invest in</Typography>
                         </Grid>
 
-                        {stockData ? (
-                            stockData.trendingStocks.map((item) => (
-                                <Grid item xs={12} md={4}>
+                        {trendingStocks ? (
+                            trendingStocks.map((item, i) => (
+                                <Grid item xs={12} md={4} key={item.company + '-' + i}>
                                     <Link href={{ pathname: `/stocks/calculate`, query: { ...item } }}>
                                         <Paper sx={{ p: 2, display: 'grid', gap: 2, justifyItems: 'start' }}>
                                             <Button sx={{ p: 0 }} variant='text' href={item.link} target='_blank'>
@@ -113,7 +137,16 @@ const Page = () => {
                                 </Grid>
                             ))
                         ) : (
-                            <CircularProgress size={50} />
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                    p: 2
+                                }}
+                            >
+                                <CircularProgress size={50} />
+                            </Box>
                         )}
                     </Grid>
                     {/* MARKET MOVERS */}
@@ -122,9 +155,9 @@ const Page = () => {
                             <Typography variant='h4'>Top Market Movers</Typography>
                         </Grid>
 
-                        {stockData ? (
-                            stockData.marketMovers.map((item) => (
-                                <Grid item xs={12} md={4}>
+                        {marketMovers ? (
+                            marketMovers.map((item, i) => (
+                                <Grid item xs={12} md={4} key={item.company + '-' + i}>
                                     <Link href={{ pathname: `/stocks/calculate`, query: { ...item } }}>
                                         <Paper sx={{ p: 2, display: 'grid', gap: 2, justifyItems: 'start' }}>
                                             <Button sx={{ p: 0 }} variant='text' href={item.link} target='_blank'>
@@ -146,7 +179,16 @@ const Page = () => {
                                 </Grid>
                             ))
                         ) : (
-                            <CircularProgress size={50} />
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                    p: 2
+                                }}
+                            >
+                                <CircularProgress size={50} />
+                            </Box>
                         )}
                     </Grid>
                 </Container>

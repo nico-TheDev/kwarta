@@ -80,11 +80,6 @@ export const DashboardSidebar = (props) => {
             title: getLanguage().articles
         },
         {
-            href: '/achievements',
-            icon: <TrophyIcon fontSize='small' />,
-            title: getLanguage().achievements
-        },
-        {
             href: '/profile',
             icon: <UserIcon fontSize='small' />,
             title: getLanguage().profile
