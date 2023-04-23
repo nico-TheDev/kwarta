@@ -92,18 +92,20 @@ export const AccountHead = (props) => {
                         </Link>
                     </Box>
                 </Box>
-                <Box sx={{ mt: 3 }}>
-                    <Card elevation={5}>
-                        <CardContent>
-                            <Box sx={{ textAlign: 'center' }}>
-                                <Typography variant='h3'>{getLanguage().totalBalance}</Typography>
-                                <Typography variant='h3' color='primary.dark'>
-                                    {formatPrice(total, true)}
-                                </Typography>
-                            </Box>
-                        </CardContent>
-                    </Card>
-                </Box>
+                {accounts.length !== 0 && (
+                    <Box sx={{ mt: 3 }}>
+                        <Card elevation={5}>
+                            <CardContent>
+                                <Box sx={{ textAlign: 'center' }}>
+                                    <Typography variant='h3'>{getLanguage().totalBalance}</Typography>
+                                    <Typography variant='h3' color='primary.dark'>
+                                        {formatPrice(total, true)}
+                                    </Typography>
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    </Box>
+                )}
             </Box>
         </>
     );
