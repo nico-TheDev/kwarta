@@ -9,41 +9,42 @@ import Link from 'next/link';
 import { useStocks } from 'hooks/swr/useStocks';
 import NewsPanel from 'components/news-panel';
 
-const Page = () => {
+
+export async function getStaticProps(context) {
+    const res = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/stocks');
+    const data = await res.json();
+
+    return {
+        props: {
+            trendingStocksData: data.trendingStocks,
+            marketMoversData: data.marketMovers
+        } // will be passed to the page component as props
+    };
+}
+
+const Page = ({ trendingStocksData, marketMoversData }) => {
     const router = useRouter();
-    const [stockData, setStockData] = useState(null);
+    // const [stockData, setStockData] = useState(null);
     const [trendingStocks, setTrendingStocks] = useState(() => {
-        if (localStorage.getItem('stockData')) {
-            return JSON.parse(localStorage.getItem('stockData')).trendingStocks;
+        if (localStorage.getItem('trendingData')) {
+            return JSON.parse(localStorage.getItem('trendingData'));
         } else {
-            return null;
+            return trendingStocksData;
         }
     });
     const [marketMovers, setMarketMovers] = useState(() => {
-        if (localStorage.getItem('stockData')) {
-            return JSON.parse(localStorage.getItem('stockData')).marketMovers;
+        if (localStorage.getItem('marketData')) {
+            return JSON.parse(localStorage.getItem('marketData'));
         } else {
-            return null;
+            return marketMoversData;
         }
     });
 
     useEffect(() => {
-        const getStocks = async () => {
-            try {
-                const res = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/stocks');
-                const data = await res.json();
-
-                // console.log(data);
-                setStockData(stockData);
-
-                localStorage.setItem('stockData', JSON.stringify(data));
-                setTrendingStocks(data.trendingStocks);
-                setMarketMovers(data.marketMovers);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        getStocks();
+        if (trendingStocksData) {
+            localStorage.setItem('trendingData', JSON.stringify(trendingStocksData));
+            localStorage.setItem('marketData', JSON.stringify(marketMoversData));
+        }
     }, []);
 
     // if (stockData === null)
