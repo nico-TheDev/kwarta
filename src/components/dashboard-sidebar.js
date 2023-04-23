@@ -115,6 +115,7 @@ export const DashboardSidebar = (props) => {
                     pt: 2,
                     pb: 5
                 }}
+                className='sidebar'
             >
                 <div>
                     <Box
@@ -167,7 +168,7 @@ export const DashboardSidebar = (props) => {
                         my: 3
                     }}
                 />
-                <Box sx={{ flexGrow: 1 }}>
+                <Box sx={{ flexGrow: 1 }} className='navigation-list'>
                     {items.map((item) => (
                         <NavItem key={item.title} icon={item.icon} href={item.href} title={item.title} />
                     ))}
