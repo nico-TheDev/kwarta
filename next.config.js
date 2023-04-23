@@ -20,6 +20,7 @@ plugins.push(withPWA);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    staticPageGenerationTimeout: 1000,
     reactStrictMode: true,
     webpack: (config) => {
         config.plugins.push(
