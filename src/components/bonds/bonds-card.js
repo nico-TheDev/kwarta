@@ -123,13 +123,18 @@ export const BondsCard = ({ ...rest }) => {
         <>
             <Box
                 sx={{
-                    display: 'flex',
                     justifyContent: 'center',
                     mb: 2
                 }}
             >
+                <Typography sx={{ m: 1 }} variant='body1'>
+                    Bonds are a type of investment that can offer several benefits to investors, including regular income payments and a relatively low-risk profile compared to other investments.
+                </Typography>
+                <Typography sx={{ m: 1 }} variant='body1'>
+                    Bonds are essentially loans that investors make to governments, corporations, or other entities. In exchange for the loan, the issuer of the bond agrees to pay interest to the investor at a fixed rate over a specified period of time. At the end of the bond term, the investor receives the principal amount back.
+                </Typography>
                 <Typography sx={{ m: 1 }} variant='h5'>
-                    Select Account
+                    Select an Account below to to which will be used for investing to bonds.
                 </Typography>
                 <Select
                     labelId='demo-simple-select-label'
@@ -158,7 +163,7 @@ export const BondsCard = ({ ...rest }) => {
             
             {amount > 4999 ?
             <Box sx={{ p: 3 }}>
-                <Typography align='center' sx={{ m: 1 }} variant='h6'>
+                <Typography align='center' sx={{ m: 1 }} variant='body1'>
                     You have {formatPrice(amount, true)} in your selected bank account. You may invest in bonds.
                 </Typography>
                 <Box sx={{ p: 3, mx: 'auto', width: 500 }}>
