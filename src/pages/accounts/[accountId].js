@@ -21,6 +21,7 @@ import { getLanguage } from 'utils/getLanguage';
 
 import { useAccountStore } from 'stores/useAccountStore';
 import { useAuthStore } from 'stores/useAuthStore';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const MenuProps = {
     PaperProps: {
@@ -32,6 +33,7 @@ const MenuProps = {
 };
 
 const Page = () => {
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const router = useRouter();
     const { accountId } = router.query;
     // FORM STATES
@@ -50,16 +52,12 @@ const Page = () => {
 
     console.log(isEditing);
     const handleSubmit = async (values) => {
-
-        updateAccount(
-            accountId,
-            {
-                account_name: values.accountName,
-                account_amount: values.accountAmount,
-                account_color: selectedColor,
-                user_id
-            },
-        ).then((success) => {
+        updateAccount(accountId, {
+            account_name: values.accountName,
+            account_amount: values.accountAmount,
+            account_color: selectedColor,
+            user_id
+        }).then((success) => {
             if (success) {
                 router.push('/');
             }
@@ -89,7 +87,7 @@ const Page = () => {
     const initialValues = {
         accountName: '',
         accountAmount: '',
-        accountIcon: '',
+        accountIcon: ''
     };
 
     const formik = useFormik({
@@ -151,13 +149,13 @@ const Page = () => {
                         component='form'
                     >
                         <Typography id='modal-modal-title' variant='h6' component='h2'>
-                        {getLanguage().accountDetails}
+                                {getLanguage(currentLanguage).accountDetails}
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
                                 id='account-name'
-                                label={getLanguage().accountName}
+                                label={getLanguage(currentLanguage).accountName}
                                 variant='filled'
                                 fullWidth
                                 name='accountName'
@@ -171,7 +169,7 @@ const Page = () => {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
                                 id='account-amount'
-                                label={getLanguage().accountAmount}
+                                label={getLanguage(currentLanguage).accountAmount}
                                 variant='filled'
                                 fullWidth
                                 name='accountAmount'
@@ -216,19 +214,19 @@ const Page = () => {
                                         sx={{ flex: 1 }}
                                         onClick={() => setIsEditing(!isEditing)}
                                     >
-                                        {getLanguage().edit}
+                                        {getLanguage(currentLanguage).edit}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={handleDelete}>
-                                        {getLanguage().delete}
+                                        {getLanguage(currentLanguage).delete}
                                     </Button>
                                 </>
                             ) : (
                                 <>
                                     <Button variant='contained' sx={{ flex: 1 }} onClick={formik.handleSubmit}>
-                                        {getLanguage().save}
+                                        {getLanguage(currentLanguage).save}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={() => setIsEditing(false)}>
-                                        {getLanguage().cancel}
+                                        {getLanguage(currentLanguage).cancel}
                                     </Button>
                                 </>
                             )}

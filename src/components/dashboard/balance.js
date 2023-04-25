@@ -5,9 +5,11 @@ import MoneyIcon from '@mui/icons-material/AttachMoney';
 import { getLanguage } from 'utils/getLanguage';
 import { useAccountStore } from 'stores/useAccountStore';
 import { formatPrice } from 'utils/format-price';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const Balance = (props) => {
     const accounts = useAccountStore((state) => state.accounts);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const [total, setTotal] = useState(0);
 
@@ -26,7 +28,7 @@ export const Balance = (props) => {
                 <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
                     <Grid item>
                         <Typography color='textSecondary' gutterBottom variant='overline'>
-                            {getLanguage().balance}
+                            {getLanguage(currentLanguage).balance}
                         </Typography>
                         <Typography color='textPrimary' variant='h4' sx={{ whiteSpace: 'nowrap' }}>
                             {formatPrice(total)}
@@ -62,7 +64,7 @@ export const Balance = (props) => {
                         12%
                     </Typography>
                     <Typography color='textSecondary' variant='caption'>
-                        {getLanguage().sinceLastMonth}
+                        {getLanguage(currentLanguage).sinceLastMonth}
                     </Typography>
                 </Box> */}
             </CardContent>

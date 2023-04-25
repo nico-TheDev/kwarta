@@ -7,12 +7,14 @@ import articles from '../data/articles';
 import { getLanguage } from 'utils/getLanguage';
 import { ArticlesCard } from '../components/articles/articles-card';
 import { DashboardLayout } from '../components/dashboard-layout';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const filters = ['General', 'Savings', 'Stocks', 'Investments', 'Bonds'];
 
 const Page = () => {
     const [filterValue, setFilterValue] = useState([]);
     const [articleList, setArticleList] = useState(articles);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const handleClick = (value) => {
         const copy = [...filterValue];
@@ -60,7 +62,7 @@ const Page = () => {
                         }}
                     >
                         <Typography sx={{ m: 1 }} variant='h4'>
-                            {getLanguage().articles}
+                            {getLanguage(currentLanguage).articles}
                         </Typography>
                     </Box>
                     <Box sx={{ pt: 2 }}>

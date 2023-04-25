@@ -22,6 +22,7 @@ import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 
 import { useAccountStore } from 'stores/useAccountStore';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const TransferHead = (props) => {
     const { filterValue, setFilterValue } = props;
@@ -32,6 +33,7 @@ export const TransferHead = (props) => {
 
     const [openTransferModal, setOpenTransferModal] = useState(false);
     const handleOpenTransferModal = () => setOpenTransferModal(true);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const handleTypeChange = (e) => {
         setFilterValue(e.target.value);
@@ -62,8 +64,7 @@ export const TransferHead = (props) => {
                         }}
                         variant='h4'
                     >
-                        {getLanguage().transferOverview}
-
+                        {getLanguage(currentLanguage).transferOverview}
                     </Typography>
                     <Box
                         sx={{
@@ -86,7 +87,7 @@ export const TransferHead = (props) => {
                                 }
                             }}
                         >
-                            <InputLabel id='demo-simple-select-label'>{getLanguage().filter}</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>{getLanguage(currentLanguage).filter}</InputLabel>
 
                             <Select
                                 labelId='demo-simple-select-label'
@@ -95,9 +96,9 @@ export const TransferHead = (props) => {
                                 label='filterValue'
                                 onChange={handleTypeChange}
                             >
-                                <MenuItem value={'year'}>{getLanguage().year}</MenuItem>
-                                <MenuItem value={'month'}>{getLanguage().month}</MenuItem>
-                                <MenuItem value={'day'}>{getLanguage().day}</MenuItem>
+                                <MenuItem value={'year'}>{getLanguage(currentLanguage).year}</MenuItem>
+                                <MenuItem value={'month'}>{getLanguage(currentLanguage).month}</MenuItem>
+                                <MenuItem value={'day'}>{getLanguage(currentLanguage).day}</MenuItem>
                             </Select>
                         </FormControl>
                         <Button
@@ -108,7 +109,7 @@ export const TransferHead = (props) => {
                             sx={{ flex: 1, height: '100%' }}
                             onClick={handleOpenTransferModal}
                         >
-                            {getLanguage().addTransfer}
+                            {getLanguage(currentLanguage).addTransfer}
                         </Button>
                     </Box>
                 </Box>

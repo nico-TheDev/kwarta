@@ -24,6 +24,7 @@ import { getLanguage } from 'utils/getLanguage'
 
 import { useCategoryStore } from 'stores/useCategoryStore';
 import { useAuthStore } from 'stores/useAuthStore';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export default function CategoryCreateModal({ open, setOpen }) {
     const [isExpense, setIsExpense] = useState(true);
@@ -32,6 +33,7 @@ export default function CategoryCreateModal({ open, setOpen }) {
     const [showColorWheel, setShowColorWheel] = useState(false);
 
     const user = useAuthStore((state) => state.authState?.user);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const createCategory = useCategoryStore((state) => state.createCategory);
 
@@ -102,13 +104,13 @@ export default function CategoryCreateModal({ open, setOpen }) {
                         <CloseIcon />
                     </IconButton>
                     <Typography id='modal-modal-title' variant='h6'>
-                        {getLanguage().createCategory}
+                        {getLanguage(currentLanguage).createCategory}
                     </Typography>
                     <FormControl fullWidth onSubmit={formik.handleSubmit}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <TextField
                                 id='filled-basic'
-                                label={getLanguage().categoryName}
+                                label={getLanguage(currentLanguage).categoryName}
                                 variant='filled'
                                 name='categoryName'
                                 onBlur={formik.handleBlur}
@@ -118,13 +120,13 @@ export default function CategoryCreateModal({ open, setOpen }) {
                             />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
-                            <Typography variant='body1'>{getLanguage().income}</Typography>
+                            <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
                             <Switch
                                 checked={isExpense}
                                 onChange={handleExpense}
                                 inputProps={{ 'aria-label': 'controlled' }}
                             />
-                            <Typography variant='body1'>{getLanguage().expense}</Typography>
+                            <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <ColorPickerPanel
@@ -151,7 +153,7 @@ export default function CategoryCreateModal({ open, setOpen }) {
                         </Box>
                         <Box sx={{ py: 2 }}>
                             <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
-                                {getLanguage().submit}
+                                {getLanguage(currentLanguage).submit}
                             </Button>
                         </Box>
                     </FormControl>

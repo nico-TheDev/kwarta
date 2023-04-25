@@ -15,9 +15,11 @@ import { getLanguage } from 'utils/getLanguage';
 import CategoryCreateModal from 'components/form/category-create-form-modal';
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const CategoriesHead = (props) => {
     const theme = useTheme();
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const [openCategoryCreateModal, setOpenCategoryCreateModal] = useState(false);
 
     const handleOpenCategoryCreateModal = () => setOpenCategoryCreateModal(true);
@@ -35,7 +37,7 @@ export const CategoriesHead = (props) => {
                     }}
                 >
                     <Typography sx={{ m: 1, fontSize: { xs: 20, lg: 'initial' }, mb: { xs: 4, lg: 1 } }} variant='h4'>
-                        {getLanguage().categories}
+                        {getLanguage(currentLanguage).categories}
                     </Typography>
                     <Box sx={{ m: 1 }}>
                         <Button
@@ -45,7 +47,7 @@ export const CategoriesHead = (props) => {
                             startIcon={<Icon name={ICON_NAMES.SYSTEM_ICONS.ADD} color='#FFFFFF' fontSize='small' />}
                             sx={{ mr: 1, display: { xs: 'none', lg: 'flex' } }}
                         >
-                            {getLanguage().addCategory}
+                            {getLanguage(currentLanguage).addCategory}
                         </Button>
 
                         <IconButton

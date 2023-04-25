@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useAuthStore } from 'stores/useAuthStore';
 import { Icon } from '../../components/shared/Icon';
 import { formatPrice } from 'utils/format-price';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const ExpensesChart = (props) => {
     const theme = useTheme();
@@ -13,6 +14,7 @@ export const ExpensesChart = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
     const [graphData, setGraphData] = useState('');
     const [categoryList, setCategoryList] = useState('');
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const getExpenseList = useTransactionStore((state) => state.getExpenseList);
 
@@ -76,7 +78,7 @@ export const ExpensesChart = (props) => {
 
     return (
         <Card {...props}>
-            <CardHeader title={getLanguage().expenses} />
+            <CardHeader title={getLanguage(currentLanguage).expenses} />
             <Divider />
             <CardContent>
                 <Box

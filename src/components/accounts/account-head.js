@@ -10,10 +10,11 @@ import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 
 import { useAccountStore } from 'stores/useAccountStore';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const AccountHead = (props) => {
     const theme = useTheme();
-
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const accounts = useAccountStore((state) => state.accounts);
     const [total, setTotal] = useState(0);
 
@@ -52,7 +53,7 @@ export const AccountHead = (props) => {
                         }}
                         variant='h4'
                     >
-                        {getLanguage().accounts}
+                        {getLanguage(currentLanguage).accounts}
                     </Typography>
                     <Box
                         sx={{
@@ -77,7 +78,7 @@ export const AccountHead = (props) => {
                             }
                             sx={{ mr: 1 }}
                         >
-                            {getLanguage().addAccount}
+                            {getLanguage(currentLanguage).addAccount}
                         </Button>
                         <Link href='/transfers' passHref>
                             <Button
@@ -97,7 +98,7 @@ export const AccountHead = (props) => {
                         <Card elevation={5}>
                             <CardContent>
                                 <Box sx={{ textAlign: 'center' }}>
-                                    <Typography variant='h3'>{getLanguage().totalBalance}</Typography>
+                                    <Typography variant='h3'>{getLanguage(currentLanguage).totalBalance}</Typography>
                                     <Typography variant='h3' color='primary.dark'>
                                         {formatPrice(total, true)}
                                     </Typography>

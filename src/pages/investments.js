@@ -25,6 +25,7 @@ import { toast } from 'react-hot-toast';
 import { useAccountStore } from 'stores/useAccountStore';
 import { formatPrice } from 'utils/format-price';
 import { grey } from '@mui/material/colors';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const MenuProps = {
     PaperProps: {
@@ -46,23 +47,22 @@ function generateYearsArray(startYear, endYear) {
 const currentYear = new Date().getFullYear();
 const yearArray = generateYearsArray(currentYear, 2080);
 
-    //Calculates Future Value of a cash flow with constant payments and interest rate (annuities)
-    //@param    float   rate    Interest rate per period
-    //@param    int     nper    Number of periods
-    //@param    float   pmt     Periodic payment (annuity)
-    //@param    float   pv      Present Value
-    //@param    int     type    Payment Type: 0 - end of period, 1 start of period
-    function futureValue(rate = 0, nper = 0, pmt = 0, pv = 0, type = 0) {
-        var result;
-        if(rate != 0.0) {
-            result = -(pv) * Math.pow(1 + rate,nper) - pmt * (1 + rate * type) * (Math.pow(1 + rate, nper) - 1) / rate;
-        } else {
-            result = -(pv) - pmt * nper;
-        }
-            return result;
-        }
-        // futureValue((rate_of_return / 100 / 12), (years_to_grow * 12), -(monthly_contribution), -(initial_investment), 0)
-
+//Calculates Future Value of a cash flow with constant payments and interest rate (annuities)
+//@param    float   rate    Interest rate per period
+//@param    int     nper    Number of periods
+//@param    float   pmt     Periodic payment (annuity)
+//@param    float   pv      Present Value
+//@param    int     type    Payment Type: 0 - end of period, 1 start of period
+function futureValue(rate = 0, nper = 0, pmt = 0, pv = 0, type = 0) {
+    var result;
+    if (rate != 0.0) {
+        result = -pv * Math.pow(1 + rate, nper) - (pmt * (1 + rate * type) * (Math.pow(1 + rate, nper) - 1)) / rate;
+    } else {
+        result = -pv - pmt * nper;
+    }
+    return result;
+}
+// futureValue((rate_of_return / 100 / 12), (years_to_grow * 12), -(monthly_contribution), -(initial_investment), 0)
 
 const Page = () => {
     const [initialDeposit, setInitialDeposit] = useState('');
@@ -71,6 +71,7 @@ const Page = () => {
     const [targetYear, setTargetYear] = useState('');
     const [projectedData, setProjectedData] = useState('');
     const [suggestionData, setSuggestionData] = useState('');
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const accounts = useAccountStore((state) => state.accounts);
 
     const [accountAmounts, setAccountAmounts] = useState(accounts.map((item) => item.account_amount));
@@ -279,7 +280,7 @@ const Page = () => {
                         }}
                     >
                         <Typography sx={{ m: 1, mb: 4 }} variant='h4'>
-                            {getLanguage().investment}
+                            {getLanguage(currentLanguage).investment}
                         </Typography>
                     </Box>
 

@@ -31,6 +31,7 @@ import { getLanguage } from 'utils/getLanguage'
 import { useCategoryStore } from 'stores/useCategoryStore';
 import { useAuthStore } from 'stores/useAuthStore';
 import useSortCategories from 'hooks/useSortCategories';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const MenuProps = {
     PaperProps: {
@@ -42,6 +43,7 @@ const MenuProps = {
 };
 
 const Page = () => {
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const router = useRouter();
     const { categoryId } = router.query;
     // FORM STATES
@@ -64,15 +66,12 @@ const Page = () => {
     const handleSubmit = async (values) => {
         const currentType = isExpense ? 'expense' : 'income';
 
-        updateCategory(
-            categoryId,
-            {
-                category_name: values.categoryName,
-                category_color: selectedColor,
-                category_type: currentType,
-                user_id
-            },
-        ).then((success) => {
+        updateCategory(categoryId, {
+            category_name: values.categoryName,
+            category_color: selectedColor,
+            category_type: currentType,
+            user_id
+        }).then((success) => {
             if (success) {
                 router.push('/');
             }
@@ -101,7 +100,7 @@ const Page = () => {
 
     const initialValues = {
         categoryName: '',
-        categoryIcon: '',
+        categoryIcon: ''
     };
 
     const formik = useFormik({
@@ -163,13 +162,13 @@ const Page = () => {
                         component='form'
                     >
                         <Typography id='modal-modal-title' variant='h6' component='h2'>
-                            {getLanguage().categoryDetails}
+                            {getLanguage(currentLanguage).categoryDetails}
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
                                 id='category-name'
-                                label={getLanguage().categoryName}
+                                label={getLanguage(currentLanguage).categoryName}
                                 variant='filled'
                                 fullWidth
                                 name='categoryName'
@@ -181,13 +180,13 @@ const Page = () => {
                         </Box>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Typography variant='body1'>{getLanguage().income}</Typography>
+                            <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
                             <Switch
                                 checked={isExpense}
                                 onChange={handleExpense}
                                 inputProps={{ 'aria-label': 'controlled' }}
                             />
-                            <Typography variant='body1'>{getLanguage().expense}</Typography>
+                            <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
                         </Box>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
@@ -224,19 +223,19 @@ const Page = () => {
                                         sx={{ flex: 1 }}
                                         onClick={() => setIsEditing(!isEditing)}
                                     >
-                                        {getLanguage().edit}
+                                        {getLanguage(currentLanguage).edit}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={handleDelete}>
-                                        {getLanguage().delete}
+                                        {getLanguage(currentLanguage).delete}
                                     </Button>
                                 </>
                             ) : (
                                 <>
                                     <Button variant='contained' sx={{ flex: 1 }} onClick={formik.handleSubmit}>
-                                        {getLanguage().save}
+                                        {getLanguage(currentLanguage).save}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={() => setIsEditing(false)}>
-                                        {getLanguage().cancel}
+                                        {getLanguage(currentLanguage).cancel}
                                     </Button>
                                 </>
                             )}

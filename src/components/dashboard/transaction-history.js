@@ -22,17 +22,23 @@ import Link from 'next/link';
 import { grey } from '@mui/material/colors';
 import { useRouter } from 'next/router';
 import TransactionCard from 'components/shared/TransactionCard';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const TransactionHistory = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
     const router = useRouter();
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+
     const handleClick = () => {
         router.push('/transactions');
     };
 
     return (
         <Card {...props}>
-            <CardHeader subtitle={`${transactions.length} in total`} title={getLanguage().historyTransactions} />
+            <CardHeader
+                subtitle={`${transactions.length} in total`}
+                title={getLanguage(currentLanguage).historyTransactions}
+            />
             <Divider />
             <List>
                 {transactions.slice(0, 5).map((transaction) => (
@@ -48,7 +54,7 @@ export const TransactionHistory = (props) => {
                 }}
             >
                 <Button color='primary' endIcon={<ArrowRightIcon />} size='small' variant='text' onClick={handleClick}>
-                    {getLanguage().overview}
+                    {getLanguage(currentLanguage).overview}
                 </Button>
             </Box>
         </Card>

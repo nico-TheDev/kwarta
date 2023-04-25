@@ -33,7 +33,10 @@ export const SettingsNotifications = (props) => {
     return (
         <form {...props}>
             <Card>
-                <CardHeader subheader={getLanguage().changeLanguage} title={getLanguage().language} />
+                <CardHeader
+                    subheader={getLanguage(currentLanguage).changeLanguage}
+                    title={getLanguage(currentLanguage).language}
+                />
                 <Box sx={{ display: 'flex', alignItems: 'center', p: 3 }}>
                     <Typography variant='body2'>Filipino</Typography>
                     <Switch checked={isEnglish} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />
@@ -68,5 +71,5 @@ export const SettingsNotifications = (props) => {
                 </Box>
             </Card>
         </form>
-    )
+    );
 }

@@ -6,12 +6,14 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect, useState } from 'react';
 
 import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export const Savings = (props) => {
     const [inflationData, setInflationData] = useState('');
     const [percentage, setPercentage] = useState('');
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     useEffect(() => {
         async function getInflationData() {
@@ -103,7 +105,7 @@ export const Savings = (props) => {
                         {percentage?.difference}
                     </Typography>
                     <Typography color='textSecondary' variant='caption'>
-                        {getLanguage().sinceLastMonth}
+                        {getLanguage(currentLanguage).sinceLastMonth}
                     </Typography>
                 </Box>{' '}
             </CardContent>
