@@ -33,7 +33,7 @@ export default function DealsCard({iconName, savings}){
                             </Typography>
 
                             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 1 }}>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                <Typography align='center' color='textPrimary' gutterBottom variant='body1'>
                                     {savings.percent}%
                                 </Typography>
                                 <Icon

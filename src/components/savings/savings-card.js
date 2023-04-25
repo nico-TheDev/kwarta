@@ -71,42 +71,51 @@ export const SavingsCard = ({ ...rest }) => {
         <>
             <Box
                 sx={{
-                    display: 'flex',
                     justifyContent: 'center',
                     mb: 2
                 }}
             >
-                <Typography sx={{ m: 1 }} variant='h5'>
-                    Select Account
-                </Typography>
-                <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select'
-                    value={selectedAccount}
-                    label='Select Account'
-                    onChange={handleAccountChange}
-                    sx={{ display: 'flex', alignItems: 'center', width: 200 }}
-                    MenuProps={MenuProps}
-                    placeholder='Select Account'
-                >
-                    {accounts.map((account) => {
-                        return (
-                            <MenuItem key={account.id} value={account.id}>
-                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <ListItemIcon>
-                                        <Icon name={account.account_icon} />
-                                    </ListItemIcon>
-                                    <ListItemText>{account.account_name}</ListItemText>
-                                </Box>
-                            </MenuItem>
-                        );
-                    })}
-                </Select>
+                <Box sx={{ py: 4, px: 4, mx: 'auto', width: 700 }}>
+                    <Typography align='center' sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                        Saving helps individuals build wealth over time. By consistently setting aside a portion of their income, individuals can accumulate savings that can be used for larger purchases, such as a home or a car. Over time, compound interest can help to increase the value of these savings, allowing individuals to achieve their financial goals faster.
+                    </Typography>
+                </Box>
+
+                <Box sx={{ py: 4, px: 4, mx: 'auto', width: 700 }}>
+                    <Typography align='center' sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                        Select an account below to to which will be used for investing to savings.
+                    </Typography>
+                    <Select
+                        labelId='demo-simple-select-label'
+                        id='demo-simple-select'
+                        value={selectedAccount}
+                        label='Select Account'
+                        onChange={handleAccountChange}
+                        sx={{ display: 'flex', alignItems: 'center' }}
+                        MenuProps={MenuProps}
+                        placeholder='Select Account'
+                    >
+                        {accounts.map((account) => {
+                            return (
+                                <MenuItem key={account.id} value={account.id}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <ListItemIcon>
+                                            <Icon name={account.account_icon} />
+                                        </ListItemIcon>
+                                        <ListItemText>{account.account_name}</ListItemText>
+                                    </Box>
+                                </MenuItem>
+                            );
+                        })}
+                    </Select>
+                </Box>
+                
+                
             </Box>
 
-            {amount > 2000 ? (
+            {amount > 1999 ? (
                 <Box sx={{ pt: 3 }}>
-                    <Typography align='center' sx={{ m: 1 }} variant='h5'>
+                    <Typography align='center' sx={{ m: 1 }} variant='h6'>
                         You have {formatPrice(amount, true)} in your selected bank account. You may apply for savings accounts in the given banks.
                     </Typography>
                     <Box sx={{ pt: 3, flexGrow: 1 }}>
@@ -176,8 +185,8 @@ export const SavingsCard = ({ ...rest }) => {
                 </Box>
             ) : (
                 <Box sx={{ pt: 3 }}>
-                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
-                        Your selected account have insufficient maintaining balance.
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                        Your selected account have insufficient maintaining balance. The minimum amount to invest in bonds is PHP 2,000.
                     </Typography>
                 </Box>
             )}

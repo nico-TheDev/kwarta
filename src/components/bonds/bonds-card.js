@@ -127,43 +127,48 @@ export const BondsCard = ({ ...rest }) => {
                     mb: 2
                 }}
             >
-                <Typography sx={{ m: 1 }} variant='body1'>
-                    Bonds are a type of investment that can offer several benefits to investors, including regular income payments and a relatively low-risk profile compared to other investments.
-                </Typography>
-                <Typography sx={{ m: 1 }} variant='body1'>
-                    Bonds are essentially loans that investors make to governments, corporations, or other entities. In exchange for the loan, the issuer of the bond agrees to pay interest to the investor at a fixed rate over a specified period of time. At the end of the bond term, the investor receives the principal amount back.
-                </Typography>
-                <Typography sx={{ m: 1 }} variant='h5'>
-                    Select an Account below to to which will be used for investing to bonds.
-                </Typography>
-                <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select'
-                    value={selectedAccount}
-                    label='Choose Account'
-                    onChange={handleAccountChange}
-                    sx={{ display: 'flex', alignItems: 'center' }}
-                    defaultValue=''
-                    MenuProps={MenuProps}
-                >
-                    {accounts.map((account) => {
-                        return (
-                            <MenuItem key={account.id} value={account.id}>
-                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <ListItemIcon>
-                                            <Icon name={account.account_icon} />
-                                        </ListItemIcon>
-                                        <ListItemText>{account.account_name}</ListItemText>
-                                </Box>
-                            </MenuItem>
-                        );
-                    })}
-                </Select>
+                <Box sx={{ py: 4, px: 4, mx: 'auto', width: 700 }}>
+                    <Typography align='center' sx={{ m: 1 ,textAlign: 'center'}} variant='body1'>
+                        Bonds are a type of investment that can offer several benefits to investors, including regular income payments and a relatively low-risk profile compared to other investments.
+                    </Typography>
+                    <Typography align='center' sx={{ m: 1 ,textAlign: 'center'}} variant='body1'>
+                        Bonds are essentially loans that investors make to governments, corporations, or other entities. In exchange for the loan, the issuer of the bond agrees to pay interest to the investor at a fixed rate over a specified period of time. At the end of the bond term, the investor receives the principal amount back.
+                    </Typography>
+                </Box>
+                <Box sx={{ py: 4, px: 4, mx: 'auto', width: 700 }}>
+                    <Typography align='center' sx={{ m: 1 ,textAlign: 'center'}} variant='body1'>
+                        Select an account below to to which will be used for investing to bonds.
+                    </Typography>
+                    <Select
+                        labelId='demo-simple-select-label'
+                        id='demo-simple-select'
+                        value={selectedAccount}
+                        label='Choose Account'
+                        onChange={handleAccountChange}
+                        sx={{ display: 'flex', alignItems: 'center' }}
+                        defaultValue=''
+                        MenuProps={MenuProps}
+                    >
+                        {accounts.map((account) => {
+                            return (
+                                <MenuItem key={account.id} value={account.id}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <ListItemIcon>
+                                                <Icon name={account.account_icon} />
+                                            </ListItemIcon>
+                                            <ListItemText>{account.account_name}</ListItemText>
+                                    </Box>
+                                </MenuItem>
+                            );
+                        })}
+                    </Select>
+                </Box>
+                
             </Box>
             
             {amount > 4999 ?
             <Box sx={{ p: 3 }}>
-                <Typography align='center' sx={{ m: 1 }} variant='body1'>
+                <Typography align='center' sx={{ m: 1 }} variant='h6'>
                     You have {formatPrice(amount, true)} in your selected bank account. You may invest in bonds.
                 </Typography>
                 <Box sx={{ p: 3, mx: 'auto', width: 500 }}>
@@ -436,8 +441,8 @@ export const BondsCard = ({ ...rest }) => {
             </Box>
             :
             <Box sx={{ p: 3 }}>
-                <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
-                    Your selected account have insufficient maintaining balance.
+                <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                    Your selected account have insufficient maintaining balance. The minimum amount to invest in bonds is PHP 5,000.
                 </Typography>
             </Box>
             }
