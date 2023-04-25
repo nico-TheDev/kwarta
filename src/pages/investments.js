@@ -46,6 +46,24 @@ function generateYearsArray(startYear, endYear) {
 const currentYear = new Date().getFullYear();
 const yearArray = generateYearsArray(currentYear, 2080);
 
+    //Calculates Future Value of a cash flow with constant payments and interest rate (annuities)
+    //@param    float   rate    Interest rate per period
+    //@param    int     nper    Number of periods
+    //@param    float   pmt     Periodic payment (annuity)
+    //@param    float   pv      Present Value
+    //@param    int     type    Payment Type: 0 - end of period, 1 start of period
+    function futureValue(rate = 0, nper = 0, pmt = 0, pv = 0, type = 0) {
+        var result;
+        if(rate != 0.0) {
+            result = -(pv) * Math.pow(1 + rate,nper) - pmt * (1 + rate * type) * (Math.pow(1 + rate, nper) - 1) / rate;
+        } else {
+            result = -(pv) - pmt * nper;
+        }
+            return result;
+        }
+        // futureValue((rate_of_return / 100 / 12), (years_to_grow * 12), -(monthly_contribution), -(initial_investment), 0)
+
+
 const Page = () => {
     const [initialDeposit, setInitialDeposit] = useState('');
     const [period, setPeriod] = useState('');
@@ -60,17 +78,42 @@ const Page = () => {
     const handleSubmit = async () => {
         setProjectedData('');
         const loader = toast.loading('Loading...');
-
+        const year = targetYear - new Date().getFullYear();
         try {
-            const res = await fetch(
-                process.env.NEXT_PUBLIC_ENDPOINT +
-                    `/investment/?initialDeposit=${initialDeposit}&period=${period}&subsequentDeposit=${subsequentDeposit}&targetYear=${targetYear}`
-            );
+            const rate = (percentage) => percentage / 100 / 12;
+            const yearsToGrow = year * Number(period);
 
-            const data = await res.json();
+            const totalInvestment = formatPrice(Number(initialDeposit) + Number(subsequentDeposit) * yearsToGrow, true);
+            const savingsAccount = formatPrice(
+                futureValue(rate(0.3), yearsToGrow, -subsequentDeposit, -initialDeposit, 0),
+                true
+            );
+            const timeDeposit = formatPrice(
+                futureValue(rate(0.7), yearsToGrow, -subsequentDeposit, -initialDeposit, 0),
+                true
+            );
+            const lowRiskFund = formatPrice(
+                futureValue(rate(4), yearsToGrow, -subsequentDeposit, -initialDeposit, 0),
+                true
+            );
+            const moderateRiskFund = formatPrice(
+                futureValue(rate(8), yearsToGrow, -subsequentDeposit, -initialDeposit, 0),
+                true
+            );
+            const aggressiveRiskFund = formatPrice(
+                futureValue(rate(10), yearsToGrow, -subsequentDeposit, -initialDeposit, 0),
+                true
+            );
             toast.success('Successfully Analyzed');
-            console.log(data);
-            setProjectedData(data.data);
+            console.log({});
+            setProjectedData({
+                totalInvestment,
+                savingsAccount,
+                timeDeposit,
+                lowRiskFund,
+                moderateRiskFund,
+                aggressiveRiskFund
+            });
         } catch (err) {
             console.log(err);
             toast.error('Something Went Wrong: ', err.message);
@@ -90,14 +133,18 @@ const Page = () => {
             const amount = Math.round(highestAccount / 10000) * 10000;
             const year = new Date().getFullYear() + 20;
             try {
-                const res = await fetch(
-                    process.env.NEXT_PUBLIC_ENDPOINT +
-                        `/investment/?initialDeposit=${amount}&period=${12}&subsequentDeposit=${1000}&targetYear=${year}`
-                );
-                const data = await res.json();
-                console.log(data, amount);
+                const rate = (percentage) => percentage / 100 / 12;
+                const yearsToGrow = 20 * 12;
+
+                const lowRiskFund = formatPrice(futureValue(rate(4), yearsToGrow, -1000, -amount, 0), true);
+                const moderateRiskFund = formatPrice(futureValue(rate(8), yearsToGrow, -1000, -amount, 0), true);
+                const aggressiveRiskFund = formatPrice(futureValue(rate(10), yearsToGrow, -1000, -amount, 0), true);
+
+                console.log({ lowRiskFund, moderateRiskFund, aggressiveRiskFund });
                 setSuggestionData({
-                    ...data.data,
+                    lowRiskFund,
+                    moderateRiskFund,
+                    aggressiveRiskFund,
                     initial: amount,
                     period: 'monthly',
                     addOn: 1000,
@@ -106,7 +153,6 @@ const Page = () => {
             } catch (err) {
                 console.error(err);
             }
-           
         };
 
         getSuggestions();

@@ -44,7 +44,7 @@ export const Balance = (props) => {
                         </Avatar>
                     </Grid>
                 </Grid>
-                <Box
+                {/* <Box
                     sx={{
                         pt: 2,
                         display: 'flex',
@@ -64,7 +64,7 @@ export const Balance = (props) => {
                     <Typography color='textSecondary' variant='caption'>
                         {getLanguage().sinceLastMonth}
                     </Typography>
-                </Box>
+                </Box> */}
             </CardContent>
         </Card>
     );
