@@ -124,7 +124,7 @@ export default function TransferFormModal({ open, setOpen }) {
         <>
             <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
                 <Alert onClose={handleCloseAlert} severity='warning' sx={{ width: '100%' }}>
-                    {getLanguage().overspendingAlert}
+                    {getLanguage(currentLanguage).overspendingAlert}
                 </Alert>
             </Snackbar>
 
@@ -143,13 +143,13 @@ export default function TransferFormModal({ open, setOpen }) {
                         <CloseIcon />
                     </IconButton>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
-                        {getLanguage().createTransfer}
+                        {getLanguage(currentLanguage).createTransfer}
                     </Typography>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <TextField
                             id='filled-basic'
-                            label={getLanguage().transferAmount}
+                            label={getLanguage(currentLanguage).transferAmount}
                             variant='filled'
                             fullWidth
                             name='amount'
@@ -162,12 +162,14 @@ export default function TransferFormModal({ open, setOpen }) {
                     {/* SENDER ACCOUNT DROPDOWN */}
                     <Box sx={{ display: 'grid', gap: 2 }}>
                         <FormControl fullWidth>
-                            <InputLabel id='demo-simple-select-label'>{getLanguage().chooseSenderAccount}</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>
+                                {getLanguage(currentLanguage).chooseSenderAccount}
+                            </InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
                                 value={selectedSenderAccount}
-                                label={getLanguage().chooseSenderAccount}
+                                label={getLanguage(currentLanguage).chooseSenderAccount}
                                 onChange={handleSenderAccountChange}
                                 sx={{ display: 'flex', alignItems: 'center' }}
                                 defaultValue=''
@@ -191,12 +193,14 @@ export default function TransferFormModal({ open, setOpen }) {
                     {/* RECEIVER ACCOUNT DROPDOWN */}
                     <Box sx={{ display: 'grid', gap: 2 }}>
                         <FormControl fullWidth>
-                            <InputLabel id='demo-simple-select-label'>{getLanguage().chooseReceiverAccount}</InputLabel>
+                            <InputLabel id='demo-simple-select-label'>
+                                {getLanguage(currentLanguage).chooseReceiverAccount}
+                            </InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
                                 id='demo-simple-select'
                                 value={selectedReceiverAccount}
-                                label={getLanguage().chooseReceiverAccount}
+                                label={getLanguage(currentLanguage).chooseReceiverAccount}
                                 onChange={handleReceiverAccountChange}
                                 sx={{ display: 'flex', alignItems: 'center' }}
                                 defaultValue=''
@@ -222,7 +226,7 @@ export default function TransferFormModal({ open, setOpen }) {
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 name='date'
-                                label={getLanguage().date}
+                                label={getLanguage(currentLanguage).date}
                                 inputFormat='MM/DD/YYYY'
                                 value={date}
                                 onChange={handleDateChange}
@@ -233,7 +237,7 @@ export default function TransferFormModal({ open, setOpen }) {
                     {/* COMMENT BOX */}
                     <CommentInput formik={formik} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
                     <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
-                    {getLanguage().submit}
+                        {getLanguage(currentLanguage).submit}
                     </Button>
                 </Box>
             </Modal>

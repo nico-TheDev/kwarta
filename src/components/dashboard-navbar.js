@@ -10,6 +10,7 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { getLanguage } from 'utils/getLanguage';
 import TransactionFormModal from './form/transaction-form-modal';
 import { useRouter } from 'next/router';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
@@ -17,6 +18,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 }));
 
 export const DashboardNavbar = (props) => {
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const { onSidebarOpen, ...other } = props;
     const settingsRef = useRef(null);
     const [openAccountPopover, setOpenAccountPopover] = useState(false);
@@ -79,9 +81,9 @@ export const DashboardNavbar = (props) => {
                             }
                         }}
                     >
-                        {getLanguage().addTransaction}
+                        {getLanguage(currentLanguage).addTransaction}
                     </Button>
-                    <Tooltip title={getLanguage().addTransaction}>
+                    <Tooltip title={getLanguage(currentLanguage).addTransaction}>
                         <IconButton
                             sx={{
                                 ml: 1,

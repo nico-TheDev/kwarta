@@ -1,5 +1,6 @@
 import { Fragment, useEffect } from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { CacheProvider } from '@emotion/react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -14,6 +15,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useRouter } from 'next/router';
 import useAccountsListener from 'stores/useAccountsListener';
 import useGetUserCategories from 'hooks/useGetUserCategories';
+const Tour = dynamic(() => import('../components/tour'), { ssr: false });
 
 registerChartJs();
 
@@ -69,6 +71,7 @@ const App = (props) => {
                 <meta name='theme-color' content='#317EFB' />
             </Head>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Tour />
                 <Toaster position='bottom-left' />
                 <ThemeProvider theme={theme}>
                     <CssBaseline />

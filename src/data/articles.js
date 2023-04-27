@@ -180,3 +180,28 @@ const articles = [
 ]
 
 export default articles;
+
+
+
+
+
+export const accountArticles = [
+    {
+        id: 1,
+        title: 'Test ',
+        link: '',
+        desc: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente voluptatem nisi quasi iure. Eius, sit.'
+    },
+    {
+        id: 2,
+        title: 'Tester',
+        link: '',
+        desc: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente voluptatem nisi quasi iure. Eius, sit.'
+    },
+    {
+        id: 3,
+        title: 'Tested',
+        link: '',
+        desc: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente voluptatem nisi quasi iure. Eius, sit.'
+    }
+];

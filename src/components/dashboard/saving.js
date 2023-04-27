@@ -17,6 +17,7 @@ import {
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from '../severity-pill';
 import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const orders = [
     {
@@ -82,9 +83,11 @@ const orders = [
 ];
 
 export const InflationPanel = (props) => {
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+
     return (
         <Card {...props}>
-            <CardHeader title={getLanguage().savingGoals} />
+            <CardHeader title={getLanguage(currentLanguage).savingGoals} />
             <PerfectScrollbar>
                 <Box sx={{ minWidth: 800 }}></Box>
             </PerfectScrollbar>
@@ -96,7 +99,7 @@ export const InflationPanel = (props) => {
                 }}
             >
                 <Button color='primary' endIcon={<ArrowRightIcon fontSize='small' />} size='small' variant='text'>
-                    {getLanguage().overview}
+                    {getLanguage(currentLanguage).overview}
                 </Button>
             </Box>
         </Card>

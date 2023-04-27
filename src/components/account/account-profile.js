@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, Typography } from '@mui/material';
 import { useAuthStore } from 'stores/useAuthStore';
 import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const AccountProfile = (props) => {
     const [selectedFile, setSelectedFile] = useState('');
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const user = useAuthStore((state) => state.authState.user);
     const updateUserPhoto = useAuthStore((state) => state.updateUserPhoto);
@@ -75,7 +77,7 @@ export const AccountProfile = (props) => {
             <Divider />
             <CardActions sx={{ display: 'flex', gap: 2 }}>
                 <Button color='primary' fullWidth variant='outlined' component='label'>
-                    {getLanguage().uploadPicture}
+                    {getLanguage(currentLanguage).uploadPicture}
                     <input
                         id='choosePic'
                         type='file'

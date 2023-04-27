@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
+import moment from 'moment/moment';
+
 import { Clock as ClockIcon } from '../../icons/clock';
 import Button from '@mui/material/Button';
 import { theme } from 'theme';
@@ -11,7 +13,7 @@ import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 
 export const AccountCard = ({ account, ...rest }) => {
-    // console.log(account);
+    console.log(account);
     return (
         <>
             <Card
@@ -56,7 +58,7 @@ export const AccountCard = ({ account, ...rest }) => {
                         >
                             <ClockIcon color='action' />
                             <Typography color='textSecondary' display='inline' sx={{ pl: 1 }} variant='body2'>
-                                Last Used: 2 hrs ago
+                                Last Used: {moment(account.timestamp).startOf('hour').fromNow()}
                             </Typography>
                         </Grid>
                         <Grid
