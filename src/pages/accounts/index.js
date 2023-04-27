@@ -9,7 +9,6 @@ import { AccountCard } from '../../components/accounts/account-card';
 import { DashboardLayout } from '../../components/dashboard-layout';
 
 import { useAccountStore } from 'stores/useAccountStore';
-import RecommendedList from 'components/recommendedList';
 
 const Page = () => {
     const accounts = useAccountStore((state) => state.accounts);
@@ -54,8 +53,6 @@ const Page = () => {
                             </Grid>
                         </Box>
                     )}
-
-                    <RecommendedList />
                 </Container>
             </Box>
         </>
