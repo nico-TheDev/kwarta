@@ -25,17 +25,17 @@ const Page = () => (
                         m: -1
                     }}
                 >
-                <Typography sx={{ m: 1 }} variant='h4'>
-                    Bonds
-                </Typography>
+                    <Typography sx={{ m: 1 }} variant='h4'>
+                        Bonds
+                    </Typography>
                 </Box>
-                <Box sx={{ pt: 3 }}>
+                <Box sx={{ pt: 1 }}>
                     <BondsCard />
                 </Box>
             </Container>
         </Box>
     </>
-)
+);
 
 Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>
 
