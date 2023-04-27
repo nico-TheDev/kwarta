@@ -30,6 +30,7 @@ import { useAccountStore } from 'stores/useAccountStore';
 import { useTransferStore } from 'stores/useTransferStore';
 
 import { getLanguage } from 'utils/getLanguage'
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const MenuProps = {
     PaperProps: {
@@ -47,6 +48,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 export default function TransferFormModal({ open, setOpen }) {
     // COMPONENT STATE
     const [openAlert, setOpenAlert] = React.useState(false);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     // FORM STATES
     const [date, setDate] = useState(formatDate(dayjs(new Date())));

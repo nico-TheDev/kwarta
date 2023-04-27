@@ -34,6 +34,7 @@ import { useAccountStore } from 'stores/useAccountStore';
 import { useTransferStore } from 'stores/useTransferStore';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { getLanguage } from 'utils/getLanguage';
 
 const MenuProps = {
     PaperProps: {
