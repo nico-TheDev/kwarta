@@ -256,6 +256,31 @@ const AuthStore = (set, get) => ({
             toast.error('Something Went Wrong', err.message);
             console.error(err);
         }
+    },
+    getUser: async (id) => {
+        try{
+            const userRef = doc(db, "users", id);
+            const userSnapshot = await getDoc(userRef);
+
+            if(userSnapshot.exists()){
+                return userSnapshot.data();
+            }else{
+                throw new Error("User does not exist.")
+            }
+
+        }catch(err){
+            console.log(err);
+            toast.error(err.message);
+        }
+
+    },
+    updateSurvey:async(id) => {
+        const userRef = doc(db, "users", "id");
+
+// Set the "capital" field of the city 'DC'
+await updateDoc(userRef, {
+  capital: true
+});
     }
 });
 
