@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { CacheProvider } from '@emotion/react';
@@ -26,6 +26,10 @@ const App = (props) => {
     const { isLoading } = useAuthStore((state) => state.authState);
     const router = useRouter();
     const getLayout = Component.getLayout ?? ((page) => page);
+
+    const [open, setOpen] = useState(true);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const { user, isAuthenticated } = useAuthStore((state) => state.authState);
     // ACCOUNTS LISTENER
@@ -73,7 +77,7 @@ const App = (props) => {
                 <meta name='theme-color' content='#317EFB' />
             </Head>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Tour />
+                <Tour open={open} handleClose={handleClose} />
                 <Toaster position='bottom-left' />
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
