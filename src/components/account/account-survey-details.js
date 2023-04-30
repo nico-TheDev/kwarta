@@ -45,9 +45,10 @@ const categories = premadeCategories
 
 export const AccountSurveyDetails = (props) => {
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
-    const user_id = useAuthStore((state) => state.authState?.user?.uid);
+    const user = useAuthStore((state) => state.authState.user);
     const userSurvey = useAuthStore((state) => state.userSurvey);
     const updateSurvey = useAuthStore((state) => state.updateSurvey);
+    const getUser = useAuthStore((state) => state.getUser);
 
     const [questionOne, setQuestionOne] = useState('');
     const [questionTwo, setQuestionTwo] = useState([]);
@@ -177,12 +178,31 @@ export const AccountSurveyDetails = (props) => {
     };
 
     useEffect(() => {
-        const current = userSurvey.find((item) => item.id === user_id);
+        // const current = userSurvey.find((item) => item.id === user_id);
 
-        setQuestionOne(current.salary);
-        setQuestionTwo(current.priorities);
-        setQuestionThree(current.isBreadwinner);
-    }, [user_id]);
+        // setQuestionOne(current.salary);
+        // setQuestionTwo(current.priorities);
+        // setQuestionThree(current.isBreadwinner);
+
+        const fetchUser = async () => {
+            const target = await getUser(user.uid);
+            console.log(target.priorities);
+            console.log(target.isBreadwinner);
+            console.log(target.salary);
+
+            // setPreviousAnswers({
+            //     questionOne: target.priorities,
+            //     questionTwo: target.salary,
+            //     questionThree: target.isBreadwinner
+            // });
+
+            setQuestionOne(target.salary.id);
+            setQuestionTwo(target.priorities.map((item) => item.category_name));
+            setQuestionThree(target.isBreadwinner.value);
+        };
+
+        fetchUser();
+    }, []);
 
     return (
         <form autoComplete='off' noValidate {...props}>
@@ -194,7 +214,7 @@ export const AccountSurveyDetails = (props) => {
                 <Divider />
                 <CardContent>
                     <Grid container spacing={3}>
-                        <Grid item md={6} xs={12}>
+                        <Grid item md={12} xs={12}>
                             <FormControl sx={{ width: '80%' }}>
                                 <InputLabel id='demo-simple-select-label'>Socioeconomic Standing</InputLabel>
                                 <Select
@@ -222,8 +242,9 @@ export const AccountSurveyDetails = (props) => {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        {/* <Grid item md={6} xs={12}>
+                        <Grid item md={12} xs={12}>
                             <FormControl sx={{ width: '80%' }}>
+                                <InputLabel id='demo-simple-select-label'>Priority Categories</InputLabel>
                                     <Select
                                         labelId='demo-simple-select-label'
                                         id='demo-simple-select'
@@ -257,8 +278,8 @@ export const AccountSurveyDetails = (props) => {
                                     })}
                                 </Select>
                             </FormControl>
-                        </Grid> */}
-                        <Grid item md={6} xs={12}>
+                        </Grid>
+                        <Grid item md={12} xs={12}>
                             <FormControl sx={{ width: '80%' }}>
                                 <InputLabel id='demo-simple-select-label'>Breadwinner Status</InputLabel>
                                 <Select

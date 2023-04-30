@@ -170,8 +170,8 @@ const Page = () => {
 
             setPreviousAnswers({
                 questionOne: target.priorities,
-                questionTwo: target.priorities,
-                questionThree: target.priorities
+                questionTwo: target.salary,
+                questionThree: target.isBreadwinner
             });
 
             setQuestionOne(target.salary.id);
