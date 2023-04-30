@@ -35,12 +35,14 @@ const App = (props) => {
 
     // HANDLE USER AUTH IF THERE IS AN EXISTING USER , REDIRECT TO DASHBOARD
     useEffect(() => {
-        // console.log(router.pathname);
+        console.log(router.pathname);
         // console.log(router.query);
         // console.log(user);
         if (user) {
             if (user?.hasAnswered) {
-                if (
+                if (router.pathname === '/editSurvey') {
+                    router.push('/editSurvey');
+                } else if (
                     (router.pathname !== '/' && ['/login', '/sign-in', '/register'].includes(router.pathname)) ||
                     user.hasAnswered
                 ) {

@@ -258,25 +258,6 @@ const AuthStore = (set, get) => ({
             toast.error('Something Went Wrong', err.message);
             console.error(err);
         }
-    },
-    updateSurvey: async (answers) => {
-        const user = get().authState.user;
-        console.log(user?.uid);
-        const userRef = doc(db, 'users', user?.uid);
-        try {
-            await updateDoc(userRef, {
-                hasAnswered: true,
-                priorities: answers.questionTwo,
-                salary: answers.questionOne,
-                isBreadwinner: answers.questionThree
-            });
-
-            toast.success('Survey answers updated!');
-            // console.log(answers);
-        } catch (err) {
-            toast.error('Something Went Wrong', err.message);
-            console.error(err);
-        }
     }
 });
 
