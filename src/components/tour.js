@@ -19,7 +19,7 @@ const TOUR_STEPS = [
         target: '.app__carousel',
         content: (
             <Typography variant='caption'>
-                To get started, you need to create an account first. Go to the accounts tab and click add account
+                To get started, you need to create an account first. Go to the accounts tab (1) and click add account (2)
             </Typography>
         ),
         source: '/static/images/steps/step2.png',
