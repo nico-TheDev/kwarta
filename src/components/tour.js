@@ -19,7 +19,7 @@ const TOUR_STEPS = [
         target: '.app__carousel',
         content: (
             <Typography variant='caption'>
-                To get started, you need to create an account first. Go to the accounts tab (1) and click add account (2)
+                To get started, you need to create an account first. Go to the Accounts tab (1). Click add account (2).
             </Typography>
         ),
         source: '/static/images/steps/step2.png',
@@ -29,7 +29,7 @@ const TOUR_STEPS = [
         target: '.app__carousel',
         content: (
             <Typography variant='caption'>
-                Fill up the required fields to create an account. Wait for the account to appear at the account screen
+                Fill the Account Name field (1). Fill the Account Amount field (2).
             </Typography>
         ),
         source: '/static/images/steps/step3.png',
@@ -38,7 +38,9 @@ const TOUR_STEPS = [
     {
         target: '.app__carousel',
         content: (
-            <Typography variant='caption'>Click the add transaction button to create your first transaction</Typography>
+            <Typography variant='caption'>
+                Select a Color (1). Select an Icon (2). If all fields are filled, click submit (3).
+            </Typography>
         ),
         source: '/static/images/steps/step4.png',
         placement: 'bottom'
@@ -47,11 +49,30 @@ const TOUR_STEPS = [
         target: '.app__carousel',
         content: (
             <Typography variant='caption'>
-                Fill up the fields then use the account you just created. Wait for the dashboard to appear after
-                submission.
+                After adding an account, you can now add a transaction. Click the Add Transaction.
             </Typography>
         ),
         source: '/static/images/steps/step5.png',
+        placement: 'bottom'
+    },
+    {
+        target: '.app__carousel',
+        content: (
+            <Typography variant='caption'>
+                Fill the Amount field (1). Select if Income or Expense (2). Select an Account (3). Select a Category (4).
+            </Typography>
+        ),
+        source: '/static/images/steps/step6.png',
+        placement: 'bottom'
+    },
+    {
+        target: '.app__carousel',
+        content: (
+            <Typography variant='caption'>
+                You can change the date (1). Fill the Comment field (2). You can upload a picture (3). If all fields are filled, click submit (4).
+            </Typography>
+        ),
+        source: '/static/images/steps/step7.png',
         placement: 'bottom'
     },
     {
@@ -117,6 +138,9 @@ export default function tour({ open, handleClose }) {
                 stepIndex={stepIndex}
                 steps={TOUR_STEPS}
                 styles={{
+                    tooltip:{
+                        fontSize: 14
+                    },
                     tooltipContainer: {
                         textAlign: 'left'
                     },
