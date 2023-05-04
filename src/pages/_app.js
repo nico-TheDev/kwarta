@@ -15,6 +15,8 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useRouter } from 'next/router';
 import useAccountsListener from 'stores/useAccountsListener';
 import useGetUserCategories from 'hooks/useGetUserCategories';
+import { useAccountStore } from 'stores/useAccountStore';
+import { useTransactionStore } from 'stores/useTransactionStore';
 const Tour = dynamic(() => import('../components/tour'), { ssr: false });
 
 registerChartJs();
@@ -32,6 +34,8 @@ const App = (props) => {
     const handleClose = () => setOpen(false);
 
     const { user, isAuthenticated } = useAuthStore((state) => state.authState);
+    const accounts = useAccountStore((state) => state.accounts);
+    const transactions = useTransactionStore((state) => state.transactions);
     // ACCOUNTS LISTENER
     useAccountsListener(user?.uid);
     // CATEGORIES LISTENER
@@ -77,8 +81,17 @@ const App = (props) => {
                 <meta name='theme-color' content='#317EFB' />
             </Head>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Tour open={open} handleClose={handleClose} />
-                <Toaster position='bottom-left' />
+                {transactions.length === 0 && accounts.length === 0 ? (
+                    <Tour open={open} handleClose={handleClose} />
+                ) : null}
+                <Toaster
+                    position='bottom-left'
+                    toastOptions={{
+                        style: {
+                            boxShadow: '9px 9px 40px -3px rgba(0,0,0,0.81)'
+                        }
+                    }}
+                />
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
                     {isLoading ? <Fragment /> : getLayout(<Component {...pageProps} />)}

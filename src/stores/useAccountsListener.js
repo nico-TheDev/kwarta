@@ -24,7 +24,7 @@ const useAccountsListener = (userID) => {
                     account_amount: doc.data().account_amount,
                     user_id: userID || '1',
                     id: doc.id,
-                    timestamp: doc.data().timestamp.toDate()
+                    timestamp: doc.data().timestamp.toDate() || ''
                 });
             });
             setAccounts(userAccounts);
