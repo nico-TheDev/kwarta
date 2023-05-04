@@ -49,7 +49,7 @@ export const SavingsCard = ({ ...rest }) => {
         const sortedSecuritybankSavings = securitybankSavings.filter((item) => amount >= item.balanceInterest);
 
         function computeInterest(productName, interestRate, currentAmount) {
-            const total = (currentAmount * (1 + (interestRate / 100) * 5)).toFixed(2);
+            const total = (currentAmount * (Math.pow((1 + (interestRate / 100)), 5))).toFixed(2);
             const percent = (((total - currentAmount) / currentAmount) * 100).toFixed(2);
             return { productName, total, percent };
         }

@@ -10,7 +10,7 @@ import { theme } from 'theme';
 const TOUR_STEPS = [
     {
         target: '.app__carousel',
-        content: <Typography variant='caption'>Welcome to CASH: Financial Monitoring Application</Typography>,
+        content: <Typography variant='body2'>Welcome to CASH: Financial Monitoring Application</Typography>,
         disableBeacon: true,
         source: '/static/images/steps/step1.png',
         placement: 'bottom'
@@ -18,8 +18,8 @@ const TOUR_STEPS = [
     {
         target: '.app__carousel',
         content: (
-            <Typography variant='caption'>
-                To get started, you need to create an account first. Go to the accounts tab and click add account
+            <Typography variant='body2'>
+                To get started, you need to create an account first. Go to the Accounts tab (1). Click add account (2).
             </Typography>
         ),
         source: '/static/images/steps/step2.png',
@@ -28,8 +28,8 @@ const TOUR_STEPS = [
     {
         target: '.app__carousel',
         content: (
-            <Typography variant='caption'>
-                Fill up the required fields to create an account. Wait for the account to appear at the account screen
+            <Typography variant='body2'>
+                Fill the Account Name field (1). Fill the Account Amount field (2).
             </Typography>
         ),
         source: '/static/images/steps/step3.png',
@@ -38,7 +38,9 @@ const TOUR_STEPS = [
     {
         target: '.app__carousel',
         content: (
-            <Typography variant='caption'>Click the add transaction button to create your first transaction</Typography>
+            <Typography variant='body2'>
+                Select a Color (1). Select an Icon (2). If all fields are filled, click submit (3).
+            </Typography>
         ),
         source: '/static/images/steps/step4.png',
         placement: 'bottom'
@@ -46,9 +48,8 @@ const TOUR_STEPS = [
     {
         target: '.app__carousel',
         content: (
-            <Typography variant='caption'>
-                Fill up the fields then use the account you just created. Wait for the dashboard to appear after
-                submission.
+            <Typography variant='body2'>
+                After adding an account, you can now add a transaction. Click the Add Transaction.
             </Typography>
         ),
         source: '/static/images/steps/step5.png',
@@ -57,7 +58,27 @@ const TOUR_STEPS = [
     {
         target: '.app__carousel',
         content: (
-            <Typography variant='caption'>Congratulations! You just started your first step in using CASH.</Typography>
+            <Typography variant='body2'>
+                Fill the Amount field (1). Select if Income or Expense (2). Select an Account (3). Select a Category (4).
+            </Typography>
+        ),
+        source: '/static/images/steps/step6.png',
+        placement: 'bottom'
+    },
+    {
+        target: '.app__carousel',
+        content: (
+            <Typography variant='body2'>
+                Change the date (1). Fill the Comment field (2). Upload a picture (3). If all fields are filled, click submit (4).
+            </Typography>
+        ),
+        source: '/static/images/steps/step7.png',
+        placement: 'bottom'
+    },
+    {
+        target: '.app__carousel',
+        content: (
+            <Typography variant='body2'>Congratulations! You just started your first step in using CASH.</Typography>
         ),
         source: '/static/images/steps/step1.png',
         placement: 'bottom'
@@ -117,8 +138,11 @@ export default function tour({ open, handleClose }) {
                 stepIndex={stepIndex}
                 steps={TOUR_STEPS}
                 styles={{
+                    tooltip:{
+                        width: 750,
+                    },
                     tooltipContainer: {
-                        textAlign: 'left'
+                        textAlign: 'left',
                     },
                     buttonBack: {
                         marginRight: 10
@@ -145,21 +169,35 @@ export default function tour({ open, handleClose }) {
                             {TOUR_STEPS.map((item) => (
                                 <Box
                                     sx={{
-                                        height: '65vh',
+                                        height: {
+                                            xs: '100vh',
+                                            md: '65vh'
+                                        },
                                         display: 'flex',
                                         justifyContent: 'center'
                                     }}
+                                    key={item.source}
                                 >
-                                    <img
-                                        alt='1'
-                                        src={item.source}
-                                        style={{
-                                            width: '70%',
-                                            height: '100%',
-                                            display: 'block',
-                                            objectFit: 'contain'
-                                        }}
-                                    />
+                                    <Box 
+                                        sx={{
+                                        width: {
+                                            xs: '90%',
+                                            md: '70%'
+                                        },
+                                        display: 'flex',
+                                        justifyContent: 'center'
+                                    }}>
+                                        <img
+                                            alt='1'
+                                            src={item.source}
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                display: 'block',
+                                                objectFit: 'contain'
+                                            }}
+                                        />
+                                    </Box>
                                 </Box>
                             ))}
                         </Carousel>

@@ -3,7 +3,7 @@ export const languages = {
         //main screen
         balance: 'Balanse',
         expenses: 'Gastusin',
-        income: 'Sweldo',
+        income: 'Kita',
         savings: 'Ipon',
         cashflow: 'Daloy ng Pera',
         categories: 'Mga Kategorya',
@@ -28,6 +28,27 @@ export const languages = {
 
         //navbar
         addTransaction: 'Magdagdag ng Transaksiyon',
+
+        //tour
+        step1: 'Maligayang pagdating sa CASH: Financial Monitoring Application.',
+        step2_1: 'Upang makapagsimula, kailangan mong gumawa ng Account.',
+        step2_2: 'Pumunta at i-click ang Mga Lagayan ng Pera.',
+        step2_3: 'I-click ang Gumawa ng Account.',
+        step3_1: 'Punan ang Pangalan ng Account.',
+        step3_2: 'Punan ang Halagang nilalaman ng Account.',
+        step4_1: 'Pumili ng Kulay.',
+        step4_2: 'Pumili ng Icon.',
+        step4_3: 'Kung natapos na punan lahat ng kailangang impormasyon, i-click ang submit.',
+        step5: 'Pagkatapos gumawa ng Account, maaari ka ng gumawa ng transaksiyon, i-click ang Magdagdag ng Transaksiyon',
+        step6_1: 'Punan ang Halaga ng Transaksiyon.',
+        step6_2: 'Pumili kung Kita o Gastusin.',
+        step6_3: 'Pumili ng Account.',
+        step6_4: 'Pumili ng Kategorya.',
+        step7_1: 'Maaari mong baguhin ang Petsa ng Transaksiyon.',
+        step7_2: 'Punan ang Komento.',
+        step7_3: 'Maaari kang mag-upload ng larawan.',
+        step7_4: 'Kung natapos na punan lahat ng kailangang impormasyon, i-click ang submit.',
+        step8: 'Binabati kita! Natapos mo ang unang hakbang sa paggamit ng CASH.',
 
         //global
         date: 'Petsa',
@@ -145,6 +166,27 @@ export const languages = {
 
         //navbar
         addTransaction: 'Add Transaction',
+
+        //tour
+        step1: 'Welcome to CASH: Financial Monitoring Application.',
+        step2_1: 'To get started, you need to create an account first.',
+        step2_2: '1. Go to the Accounts tab.',
+        step2_3: '2. Click Add Account.',
+        step3_1: '1. Fill the Account Name field.',
+        step3_2: '2. Fill the Account Amount field.',
+        step4_1: '1. Select a Color.',
+        step4_2: '2. Select an Icon.',
+        step4_3: '3. If all fields are filled, click submit.',
+        step5: 'After adding an account, you can now add a transaction. Click the Add Transaction.',
+        step6_1: '1. Fill the Transaction Amount field.',
+        step6_2: '2. Select if Income or Expense.',
+        step6_3: '3. Select an Account.',
+        step6_4: '4. Select a Category.',
+        step7_1: '1. You can change the date.',
+        step7_2: '2. Fill the Comment field.',
+        step7_3: '3. You can upload a picture of the transaction.',
+        step7_4: '4. If all fields are filled, click submit.',
+        step8: 'Congratulations! You just started your first step in using CASH.',
 
         //global
         date: 'Date',

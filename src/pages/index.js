@@ -12,6 +12,7 @@ import { Expenses } from '../components/dashboard/expenses';
 import { ExpensesChart } from '../components/dashboard/expenses-chart';
 import { DashboardLayout } from '../components/dashboard-layout';
 import useGetUserTransactions from 'hooks/useGetUserTransactions';
+import useGetUserSurvey from 'hooks/useGetUserSurvey';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useAccountStore } from 'stores/useAccountStore';
@@ -26,6 +27,7 @@ const Page = () => {
     const isEmpty = useTransactionStore((state) => state.isEmpty);
     // GET USER TRANSACTIONS
     useGetUserTransactions(userID);
+    useGetUserSurvey(userID);
 
     const styles = {
         container: { width: '100%', height: '100%', display: 'grid', placeItems: 'center' }

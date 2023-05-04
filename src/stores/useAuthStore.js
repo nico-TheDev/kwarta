@@ -23,6 +23,8 @@ const AuthStore = (set, get) => ({
         isAuthenticated: false,
         isLoading: false
     },
+    userSurvey: [],
+    setUserSurvey: (data) => set({ userSurvey: data }),
     addUser: async (newUser, currentFile) => {
         try {
             let fileUrl, fileRefName;
@@ -274,14 +276,25 @@ const AuthStore = (set, get) => ({
         }
 
     },
-    updateSurvey:async(id) => {
-        const userRef = doc(db, "users", "id");
+    updateSurvey: async (answers) => {
+        const user = get().authState.user;
+        console.log(user?.uid);
+        const userRef = doc(db, 'users', user?.uid);
+        try {
+            await updateDoc(userRef, {
+                hasAnswered: true,
+                priorities: answers.questionTwo,
+                salary: answers.questionOne,
+                isBreadwinner: answers.questionThree
+            });
 
-// Set the "capital" field of the city 'DC'
-await updateDoc(userRef, {
-  capital: true
-});
-    }
+            toast.success('Survey answers updated!');
+            // console.log(answers);
+        } catch (err) {
+            toast.error('Something Went Wrong', err.message);
+            console.error(err);
+        }
+    },
 });
 
 export const useAuthStore = create(
