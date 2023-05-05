@@ -7,83 +7,7 @@ import { Box, Button, Modal, Typography } from '@mui/material';
 
 import { theme } from 'theme';
 
-const TOUR_STEPS = [
-    {
-        target: '.app__carousel',
-        content: <Typography variant='body2'>Welcome to CASH: Financial Monitoring Application</Typography>,
-        disableBeacon: true,
-        source: '/static/images/steps/step1.png',
-        placement: 'bottom'
-    },
-    {
-        target: '.app__carousel',
-        content: (
-            <Typography variant='body2'>
-                To get started, you need to create an account first. Go to the Accounts tab (1). Click add account (2).
-            </Typography>
-        ),
-        source: '/static/images/steps/step2.png',
-        placement: 'bottom'
-    },
-    {
-        target: '.app__carousel',
-        content: (
-            <Typography variant='body2'>
-                Fill the Account Name field (1). Fill the Account Amount field (2).
-            </Typography>
-        ),
-        source: '/static/images/steps/step3.png',
-        placement: 'bottom'
-    },
-    {
-        target: '.app__carousel',
-        content: (
-            <Typography variant='body2'>
-                Select a Color (1). Select an Icon (2). If all fields are filled, click submit (3).
-            </Typography>
-        ),
-        source: '/static/images/steps/step4.png',
-        placement: 'bottom'
-    },
-    {
-        target: '.app__carousel',
-        content: (
-            <Typography variant='body2'>
-                After adding an account, you can now add a transaction. Click the Add Transaction.
-            </Typography>
-        ),
-        source: '/static/images/steps/step5.png',
-        placement: 'bottom'
-    },
-    {
-        target: '.app__carousel',
-        content: (
-            <Typography variant='body2'>
-                Fill the Amount field (1). Select if Income or Expense (2). Select an Account (3). Select a Category (4).
-            </Typography>
-        ),
-        source: '/static/images/steps/step6.png',
-        placement: 'bottom'
-    },
-    {
-        target: '.app__carousel',
-        content: (
-            <Typography variant='body2'>
-                Change the date (1). Fill the Comment field (2). Upload a picture (3). If all fields are filled, click submit (4).
-            </Typography>
-        ),
-        source: '/static/images/steps/step7.png',
-        placement: 'bottom'
-    },
-    {
-        target: '.app__carousel',
-        content: (
-            <Typography variant='body2'>Congratulations! You just started your first step in using CASH.</Typography>
-        ),
-        source: '/static/images/steps/step1.png',
-        placement: 'bottom'
-    }
-];
+
 
 const isPortrait = window.innerHeight > window.innerWidth;
 const imageHeight = isPortrait ? 700 : 300;
@@ -98,6 +22,89 @@ function logGroup(type, data) {
 
 export default function tour({ open, handleClose }) {
     const [ref, { width }] = useMeasure();
+
+    const TOUR_STEPS = [
+        {
+            target: '.app__carousel',
+            content: <Typography variant='body2'>Welcome to CASH: Financial Monitoring Application</Typography>,
+            disableBeacon: true,
+            source: '/static/images/steps/step1.png',
+            placement: 'bottom'
+        },
+        {
+            target: '.app__carousel',
+            content: (
+                <Typography variant='body2'>
+                    To get started, you need to create an account first. Go to the Accounts tab (1). Click add account
+                    (2).
+                </Typography>
+            ),
+            source: '/static/images/steps/step2.png',
+            placement: 'bottom'
+        },
+        {
+            target: '.app__carousel',
+            content: (
+                <Typography variant='body2'>
+                    Fill the Account Name field (1). Fill the Account Amount field (2).
+                </Typography>
+            ),
+            source: '/static/images/steps/step3.png',
+            placement: 'bottom'
+        },
+        {
+            target: '.app__carousel',
+            content: (
+                <Typography variant='body2'>
+                    Select a Color (1). Select an Icon (2). If all fields are filled, click submit (3).
+                </Typography>
+            ),
+            source: '/static/images/steps/step4.png',
+            placement: 'bottom'
+        },
+        {
+            target: '.app__carousel',
+            content: (
+                <Typography variant='body2'>
+                    After adding an account, you can now add a transaction. Click the Add Transaction.
+                </Typography>
+            ),
+            source: '/static/images/steps/step5.png',
+            placement: 'bottom'
+        },
+        {
+            target: '.app__carousel',
+            content: (
+                <Typography variant='body2'>
+                    Fill the Amount field (1). Select if Income or Expense (2). Select an Account (3). Select a Category
+                    (4).
+                </Typography>
+            ),
+            source: '/static/images/steps/step6.png',
+            placement: 'bottom'
+        },
+        {
+            target: '.app__carousel',
+            content: (
+                <Typography variant='body2'>
+                    Change the date (1). Fill the Comment field (2). Upload a picture (3). If all fields are filled,
+                    click submit (4).
+                </Typography>
+            ),
+            source: '/static/images/steps/step7.png',
+            placement: 'bottom'
+        },
+        {
+            target: '.app__carousel',
+            content: (
+                <Typography variant='body2'>
+                    Congratulations! You just started your first step in using CASH.
+                </Typography>
+            ),
+            source: '/static/images/steps/step1.png',
+            placement: 'bottom'
+        }
+    ];
     const [{ run, stepIndex, steps }, setState] = useSetState({
         run: false,
         stepIndex: 0,
@@ -138,11 +145,11 @@ export default function tour({ open, handleClose }) {
                 stepIndex={stepIndex}
                 steps={TOUR_STEPS}
                 styles={{
-                    tooltip:{
-                        width: 750,
+                    tooltip: {
+                        width: 750
                     },
                     tooltipContainer: {
-                        textAlign: 'left',
+                        textAlign: 'center'
                     },
                     buttonBack: {
                         marginRight: 10
@@ -178,15 +185,16 @@ export default function tour({ open, handleClose }) {
                                     }}
                                     key={item.source}
                                 >
-                                    <Box 
+                                    <Box
                                         sx={{
-                                        width: {
-                                            xs: '90%',
-                                            md: '70%'
-                                        },
-                                        display: 'flex',
-                                        justifyContent: 'center'
-                                    }}>
+                                            width: {
+                                                xs: '90%',
+                                                md: '70%'
+                                            },
+                                            display: 'flex',
+                                            justifyContent: 'center'
+                                        }}
+                                    >
                                         <img
                                             alt='1'
                                             src={item.source}

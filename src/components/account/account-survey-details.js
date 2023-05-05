@@ -46,7 +46,7 @@ const categories = premadeCategories
 export const AccountSurveyDetails = (props) => {
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const user = useAuthStore((state) => state.authState.user);
-    const userSurvey = useAuthStore((state) => state.userSurvey);
+    const userSurvey = useAuthStore((state) => state.authState.userSurvey);
     const updateSurvey = useAuthStore((state) => state.updateSurvey);
     const getUser = useAuthStore((state) => state.getUser);
 
@@ -159,7 +159,7 @@ export const AccountSurveyDetails = (props) => {
             value: ''
         }
     ];
-    console.log(questionThree);
+    // console.log(questionThree);
     const handleSubmit = () => {
         const firstAnswer = surveyList[0].choices.find((item) => questionOne === item.value);
         const thirdAnswer = surveyList[2].choices.find((item) => questionThree === item.value);
@@ -178,39 +178,17 @@ export const AccountSurveyDetails = (props) => {
     };
 
     useEffect(() => {
-        // const current = userSurvey.find((item) => item.id === user_id);
-
-        // setQuestionOne(current.salary);
-        // setQuestionTwo(current.priorities);
-        // setQuestionThree(current.isBreadwinner);
-
-        const fetchUser = async () => {
-            const target = await getUser(user.uid);
-            console.log(target.priorities);
-            console.log(target.isBreadwinner);
-            console.log(target.salary);
-
-            // setPreviousAnswers({
-            //     questionOne: target.priorities,
-            //     questionTwo: target.salary,
-            //     questionThree: target.isBreadwinner
-            // });
-
-            setQuestionOne(target.salary.id);
-            setQuestionTwo(target.priorities.map((item) => item.category_name));
-            setQuestionThree(target.isBreadwinner.value);
-        };
-
-        fetchUser();
+        console.log('SURVEY');
+        console.log(userSurvey);
+        setQuestionOne(userSurvey.salary.id);
+        setQuestionTwo(userSurvey.priorities.map((item) => item.category_name));
+        setQuestionThree(userSurvey.isBreadwinner.value);
     }, []);
 
     return (
         <form autoComplete='off' noValidate {...props}>
             <Card>
-                <CardHeader
-                    subheader='You can update your answers in the survey'
-                    title='Survey Details'
-                />
+                <CardHeader subheader='You can update your answers in the survey' title='Survey Details' />
                 <Divider />
                 <CardContent>
                     <Grid container spacing={3}>
@@ -245,28 +223,28 @@ export const AccountSurveyDetails = (props) => {
                         <Grid item md={12} xs={12}>
                             <FormControl sx={{ width: '80%' }}>
                                 <InputLabel id='demo-simple-select-label'>Priority Categories</InputLabel>
-                                    <Select
-                                        labelId='demo-simple-select-label'
-                                        id='demo-simple-select'
-                                        value={questionTwo}
-                                        label='Priority Categories'
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-                                            setQuestionTwo(typeof value === 'string' ? value.split(',') : value);
-                                        }}
-                                        renderValue={(selected) => {
-                                            return (
-                                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                                    {selected.map((value) => (
-                                                        <Chip key={value} label={value} />
-                                                    ))}
-                                                </Box>
-                                            );
-                                        }}
-                                        multiple
-                                        sx={{ display: 'flex', alignItems: 'center' }}
-                                        MenuProps={MenuProps}
-                                    >
+                                <Select
+                                    labelId='demo-simple-select-label'
+                                    id='demo-simple-select'
+                                    value={questionTwo}
+                                    label='Priority Categories'
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setQuestionTwo(typeof value === 'string' ? value.split(',') : value);
+                                    }}
+                                    renderValue={(selected) => {
+                                        return (
+                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                                {selected.map((value) => (
+                                                    <Chip key={value} label={value} />
+                                                ))}
+                                            </Box>
+                                        );
+                                    }}
+                                    multiple
+                                    sx={{ display: 'flex', alignItems: 'center' }}
+                                    MenuProps={MenuProps}
+                                >
                                     {surveyList[1].choices.map((choice, i) => {
                                         return (
                                             <MenuItem key={choice.id + i} value={choice.text}>
@@ -317,7 +295,12 @@ export const AccountSurveyDetails = (props) => {
                         p: 2
                     }}
                 >
-                    <Button color='primary' variant='contained' onClick={handleSubmit}>
+                    <Button
+                        color='primary'
+                        variant='contained'
+                        onClick={handleSubmit}
+                        disabled={!questionOne || questionTwo.length !== 3 || !questionThree}
+                    >
                         {getLanguage(currentLanguage).saveDetails}
                     </Button>
                 </Box>

@@ -20,6 +20,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
+import InfoIcon from '@mui/icons-material/Info';
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES, modalStyle } from 'constants/constant';
 import { useTransactionStore } from 'stores/useTransactionStore';
@@ -29,7 +30,7 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import { useCategoryStore } from 'stores/useCategoryStore';
 import useSortCategories from 'hooks/useSortCategories';
-import { getLanguage } from 'utils/getLanguage'
+import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
 
 const MenuProps = {
@@ -60,6 +61,7 @@ export default function TransactionFormModal({ open, setOpen }) {
     const createTransaction = useTransactionStore((state) => state.createTransaction);
     const accounts = useAccountStore((state) => state.accounts);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
+    const userSurvey = useAuthStore((state) => state.authState?.userSurvey);
     const categories = useCategoryStore((state) => state.categories);
     const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories(setSelectedCategory);
 
@@ -74,6 +76,22 @@ export default function TransactionFormModal({ open, setOpen }) {
         // console.log(values);
         setOpen(false);
         const currentType = isExpense ? 'expense' : 'income';
+
+        // WARNING FOR OVERSPENDING
+        if (Number(values.amount) >= values.targetAccount.account_amount * 0.2) {
+            toast(`You're spending a lot for your account. `, {
+                style: {
+                    width: 'max-content'
+                },
+                icon: (
+                    <Box sx={{ color: '#ffa726' }}>
+                        <InfoIcon color='inherit' />
+                    </Box>
+                ),
+                duration: 5000
+            });
+        }
+
         await createTransaction(
             { ...values, amount: Number(values.amount), type: currentType, date, user_id },
             selectedFile?.file

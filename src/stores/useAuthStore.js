@@ -101,6 +101,11 @@ const AuthStore = (set, get) => ({
                         uid: verifiedUser.uid,
                         hasAnswered: userData.hasAnswered
                     },
+                    userSurvey: {
+                        priorities: userData.priorities || null,
+                        isBreadwinner: userData.isBreadwinner || null,
+                        salary: userData.salary || null
+                    },
                     isAuthenticated: true,
                     isLoading: false
                 }
@@ -216,7 +221,12 @@ const AuthStore = (set, get) => ({
                         hasAnswered: userData.hasAnswered
                     },
                     isAuthenticated: true,
-                    isLoading: false
+                    isLoading: false,
+                    userSurvey: {
+                        priorities: userData.priorities || null,
+                        isBreadwinner: userData.isBreadwinner || null,
+                        salary: userData.salary || null
+                    }
                 }
             });
         } catch (error) {
@@ -250,6 +260,17 @@ const AuthStore = (set, get) => ({
                 priorities: answers.questionTwo,
                 salary: answers.questionOne,
                 isBreadwinner: answers.questionThree
+            });
+
+            set({
+                authState: {
+                    ...get().authState,
+                    userSurvey: {
+                        priorities: answers.questionTwo,
+                        salary: answers.questionOne,
+                        isBreadwinner: answers.questionThree
+                    }
+                }
             });
 
             toast.success('Survey completed!');
