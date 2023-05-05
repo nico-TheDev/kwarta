@@ -23,6 +23,8 @@ const AuthStore = (set, get) => ({
         isAuthenticated: false,
         isLoading: false
     },
+    userSurvey: [],
+    setUserSurvey: (data) => set({ userSurvey: data }),
     addUser: async (newUser, currentFile) => {
         try {
             let fileUrl, fileRefName;
@@ -98,6 +100,11 @@ const AuthStore = (set, get) => ({
                         photo: verifiedUser.photoURL,
                         uid: verifiedUser.uid,
                         hasAnswered: userData.hasAnswered
+                    },
+                    userSurvey: {
+                        priorities: userData.priorities || null,
+                        isBreadwinner: userData.isBreadwinner || null,
+                        salary: userData.salary || null
                     },
                     isAuthenticated: true,
                     isLoading: false
@@ -214,7 +221,12 @@ const AuthStore = (set, get) => ({
                         hasAnswered: userData.hasAnswered
                     },
                     isAuthenticated: true,
-                    isLoading: false
+                    isLoading: false,
+                    userSurvey: {
+                        priorities: userData.priorities || null,
+                        isBreadwinner: userData.isBreadwinner || null,
+                        salary: userData.salary || null
+                    }
                 }
             });
         } catch (error) {
@@ -250,13 +262,60 @@ const AuthStore = (set, get) => ({
                 isBreadwinner: answers.questionThree
             });
 
+            set({
+                authState: {
+                    ...get().authState,
+                    userSurvey: {
+                        priorities: answers.questionTwo,
+                        salary: answers.questionOne,
+                        isBreadwinner: answers.questionThree
+                    }
+                }
+            });
+
             toast.success('Survey completed!');
             // console.log(answers);
         } catch (err) {
             toast.error('Something Went Wrong', err.message);
             console.error(err);
         }
-    }
+    },
+    getUser: async (id) => {
+        try{
+            const userRef = doc(db, "users", id);
+            const userSnapshot = await getDoc(userRef);
+
+            if(userSnapshot.exists()){
+                return userSnapshot.data();
+            }else{
+                throw new Error("User does not exist.")
+            }
+
+        }catch(err){
+            console.log(err);
+            toast.error(err.message);
+        }
+
+    },
+    updateSurvey: async (answers) => {
+        const user = get().authState.user;
+        console.log(user?.uid);
+        const userRef = doc(db, 'users', user?.uid);
+        try {
+            await updateDoc(userRef, {
+                hasAnswered: true,
+                priorities: answers.questionTwo,
+                salary: answers.questionOne,
+                isBreadwinner: answers.questionThree
+            });
+
+            toast.success('Survey answers updated!');
+            // console.log(answers);
+        } catch (err) {
+            toast.error('Something Went Wrong', err.message);
+            console.error(err);
+        }
+    },
 });
 
 export const useAuthStore = create(

@@ -22,7 +22,7 @@ export default function NewsPanel() {
             <Grid container spacing={2}>
                 {data &&
                     data.newsList?.map((news) => (
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={6} key={news.title}>
                             <Paper sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                                 <Box sx={{ height: '100%' }}>
                                     <img

@@ -18,8 +18,8 @@ export const Savings = (props) => {
     useEffect(() => {
         async function getInflationData() {
             const date = new Date();
-            const currentMonth = monthNames[date.getMonth() - 1];
-            const prevMonth = monthNames[date.getMonth() - 2];
+            const currentMonth = monthNames[date.getMonth() - 2];
+            const prevMonth = monthNames[date.getMonth() - 3];
 
             if (localStorage.getItem('inflation')) {
                 setInflationData(JSON.parse(localStorage.getItem('inflation')));
@@ -38,17 +38,14 @@ export const Savings = (props) => {
                     // 3 - 2 =  1
                     const hasIncreased = diff < 0;
 
-                    // console.log('Current Rate', currentRate);
-                    // console.log({
-                    //     difference: roundedDiff,
-                    //     hasIncreased
-                    // });
                     const currentPercentage = {
                         difference: Math.abs(roundedDiff),
                         hasIncreased
                     };
                     localStorage.setItem('inflation', JSON.stringify(currentRate));
                     localStorage.setItem('percentage', JSON.stringify(currentPercentage));
+
+                    console.log({ currentRate, currentPercentage });
 
                     setInflationData(currentRate);
                     setPercentage(currentPercentage);
@@ -69,7 +66,11 @@ export const Savings = (props) => {
                             Inflation Rate
                         </Typography>
                         <Typography color='textPrimary' variant='h4'>
-                            {inflationData ? inflationData?.rate : <CircularProgress size={20} />}
+                            {inflationData ? (
+                                inflationData?.rate || inflationData?.prevRate
+                            ) : (
+                                <CircularProgress size={20} />
+                            )}
                         </Typography>
                     </Grid>
                     <Grid item>
