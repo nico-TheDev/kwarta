@@ -26,6 +26,7 @@ const AuthStore = (set, get) => ({
     userSurvey: [],
     setUserSurvey: (data) => set({ userSurvey: data }),
     addUser: async (newUser, currentFile) => {
+        const loader = toast.loading('Registering User...');
         try {
             let fileUrl, fileRefName;
             if (currentFile) {
@@ -77,8 +78,12 @@ const AuthStore = (set, get) => ({
                     isLoading: false
                 }
             });
+
+            toast.success('User Successfully Registered.');
+            toast.dismiss(loader);
         } catch (err) {
             console.log(err);
+            toast.error('Something Went Wrong', err.message);
         }
     },
     verifyUser: async (login_user) => {
@@ -266,7 +271,7 @@ const AuthStore = (set, get) => ({
                 authState: {
                     ...get().authState,
                     user: {
-                        ...get().authState,
+                        ...get().authState.user,
                         hasAnswered: true
                     },
                     userSurvey: {

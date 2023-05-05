@@ -63,20 +63,21 @@ const Register = () => {
   };
 
   const handleSubmit = (values) => {
-    console.log(values);
-    const loader = toast.loading('Registering User');
-    addUser({ 
-        firstName: values.firstName,
-        lastName: values.lastName,
-        displayName: values.firstName + " " + values.lastName,
-        email: values.email,
-        password: values.password,
-    }, selectedFile?.file);
-    
-    formik.resetForm();
-    setSelectedFile(null);
-    toast.dismiss(loader);
-    toast.success('User successfully registered!');
+      // console.log(values);
+      // const loader = toast.loading('Registering User');
+      addUser(
+          {
+              firstName: values.firstName,
+              lastName: values.lastName,
+              displayName: values.firstName + ' ' + values.lastName,
+              email: values.email,
+              password: values.password
+          },
+          selectedFile?.file
+      );
+
+      formik.resetForm();
+      setSelectedFile(null);
   };
 
   const formik = useFormik({
