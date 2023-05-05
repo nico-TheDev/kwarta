@@ -250,6 +250,21 @@ const AuthStore = (set, get) => ({
                 isBreadwinner: answers.questionThree
             });
 
+            set({
+                authState: {
+                    ...get().authState,
+                    user: {
+                        ...get().authState,
+                        hasAnswered: true
+                    },
+                    userSurvey: {
+                        priorities: answers.questionTwo,
+                        salary: answers.questionOne,
+                        isBreadwinner: answers.questionThree
+                    }
+                }
+            });
+
             toast.success('Survey completed!');
             // console.log(answers);
         } catch (err) {
