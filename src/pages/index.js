@@ -30,7 +30,18 @@ const Page = () => {
     useGetUserSurvey(userID);
 
     const styles = {
-        container: { width: '100%', height: '100%', display: 'grid', placeItems: 'center' }
+        container: {
+            width: {
+                xs: '100%'
+            },
+            height: '100%',
+            display: 'grid',
+            placeItems: 'center',
+            textAlign: {
+                xs: 'center'
+            },
+            p: 2
+        }
     };
 
     if (transactions.length === 0 && !isEmpty) {

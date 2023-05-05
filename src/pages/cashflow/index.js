@@ -14,7 +14,18 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 const Page = () => {
     const transactions = useTransactionStore((state) => state.transactions);
     const styles = {
-        container: { width: '100%', height: '100%', display: 'grid', placeItems: 'center' }
+        container: {
+            width: {
+                xs: '100%'
+            },
+            height: '100%',
+            display: 'grid',
+            placeItems: 'center',
+            textAlign: {
+                xs: 'center'
+            },
+            p: 2
+        }
     };
     return (
         <>
