@@ -18,8 +18,8 @@ export const Savings = (props) => {
     useEffect(() => {
         async function getInflationData() {
             const date = new Date();
-            const currentMonth = monthNames[date.getMonth() - 2];
-            const prevMonth = monthNames[date.getMonth() - 3];
+            const currentMonth = monthNames[date.getMonth() - 1];
+            const prevMonth = monthNames[date.getMonth() - 2];
 
             if (localStorage.getItem('inflation')) {
                 setInflationData(JSON.parse(localStorage.getItem('inflation')));
