@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { CacheProvider } from '@emotion/react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -26,6 +26,7 @@ const App = (props) => {
     const getLayout = Component.getLayout ?? ((page) => page);
 
     const { user, isAuthenticated } = useAuthStore((state) => state.authState);
+
     // ACCOUNTS LISTENER
     useAccountsListener(user?.uid);
     // CATEGORIES LISTENER
@@ -33,12 +34,14 @@ const App = (props) => {
 
     // HANDLE USER AUTH IF THERE IS AN EXISTING USER , REDIRECT TO DASHBOARD
     useEffect(() => {
-        // console.log(router.pathname);
+        console.log(router.pathname);
         // console.log(router.query);
         // console.log(user);
         if (user) {
             if (user?.hasAnswered) {
-                if (
+                if (router.pathname === '/editSurvey') {
+                    router.push('/editSurvey');
+                } else if (
                     (router.pathname !== '/' && ['/login', '/sign-in', '/register'].includes(router.pathname)) ||
                     user.hasAnswered
                 ) {
@@ -69,7 +72,14 @@ const App = (props) => {
                 <meta name='theme-color' content='#317EFB' />
             </Head>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Toaster position='bottom-left' />
+                <Toaster
+                    position='bottom-left'
+                    toastOptions={{
+                        style: {
+                            boxShadow: '9px 9px 40px -3px rgba(0,0,0,0.81)'
+                        }
+                    }}
+                />
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
                     {isLoading ? <Fragment /> : getLayout(<Component {...pageProps} />)}

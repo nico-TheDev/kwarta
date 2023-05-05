@@ -33,6 +33,9 @@ import formatDate from 'utils/format-date';
 import { useAccountStore } from 'stores/useAccountStore';
 import { useTransferStore } from 'stores/useTransferStore';
 import { useAuthStore } from 'stores/useAuthStore';
+import { useLanguageStore } from 'stores/useLanguageStore';
+import { getLanguage } from 'utils/getLanguage';
+
 
 const MenuProps = {
     PaperProps: {
@@ -61,6 +64,7 @@ const Page = () => {
     const transfers = useTransferStore((state) => state.transfers);
     const accounts = useAccountStore((state) => state.accounts);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const handleSubmit = async (values) => {
         updateTransfer(
@@ -194,13 +198,13 @@ const Page = () => {
                         component='form'
                     >
                         <Typography id='modal-modal-title' variant='h6' component='h2'>
-                            {getLanguage().transferDetails}
+                            {getLanguage(currentLanguage).transferDetails}
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
                                 id='filled-basic'
-                                label={getLanguage().transferAmount}
+                                label={getLanguage(currentLanguage).transferAmount}
                                 variant='filled'
                                 fullWidth
                                 name='amount'
@@ -219,7 +223,7 @@ const Page = () => {
                                     labelId='demo-simple-select-label'
                                     id='demo-simple-select'
                                     value={selectedSenderAccount}
-                                    label={getLanguage().chooseSenderAccount}
+                                    label={getLanguage(currentLanguage).chooseSenderAccount}
                                     onChange={handleSenderAccountChange}
                                     sx={{ display: 'flex', alignItems: 'center' }}
                                     defaultValue=''
@@ -249,7 +253,7 @@ const Page = () => {
                                     labelId='demo-simple-select-label'
                                     id='demo-simple-select'
                                     value={selectedReceiverAccount}
-                                    label={getLanguage().chooseReceiverAccount}
+                                    label={getLanguage(currentLanguage).chooseReceiverAccount}
                                     onChange={handleReceiverAccountChange}
                                     sx={{ display: 'flex', alignItems: 'center' }}
                                     defaultValue=''
@@ -276,7 +280,7 @@ const Page = () => {
                             <Stack spacing={3}>
                                 <DesktopDatePicker
                                     name='date'
-                                    label={getLanguage().date}
+                                    label={getLanguage(currentLanguage).date}
                                     inputFormat='MM/DD/YYYY'
                                     value={date}
                                     onChange={handleDateChange}
@@ -301,19 +305,19 @@ const Page = () => {
                                         sx={{ flex: 1 }}
                                         onClick={() => setIsEditing(!isEditing)}
                                     >
-                                        {getLanguage().edit}
+                                        {getLanguage(currentLanguage).edit}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={handleDelete}>
-                                        {getLanguage().delete}  
+                                        {getLanguage(currentLanguage).delete}
                                     </Button>
                                 </>
                             ) : (
                                 <>
                                     <Button variant='contained' sx={{ flex: 1 }} onClick={formik.handleSubmit}>
-                                        {getLanguage().save}
+                                        {getLanguage(currentLanguage).save}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={() => setIsEditing(false)}>
-                                        {getLanguage().cancel}
+                                        {getLanguage(currentLanguage).cancel}
                                     </Button>
                                 </>
                             )}

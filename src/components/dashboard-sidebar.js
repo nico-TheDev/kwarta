@@ -19,8 +19,10 @@ import { Logo } from './logo';
 import { NavItem } from './nav-item';
 import { CircularProgressWithLabel } from './circular-progress-with-label';
 import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const DashboardSidebar = (props) => {
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const { open, onClose } = props;
     const router = useRouter();
     const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'), {
@@ -32,27 +34,27 @@ export const DashboardSidebar = (props) => {
         {
             href: '/',
             icon: <BarChartIcon fontSize='small' />,
-            title: getLanguage().dashboard
+            title: getLanguage(currentLanguage).dashboard
         },
         {
             href: '/accounts',
             icon: <WalletIcon fontSize='small' />,
-            title: getLanguage().accounts
+            title: getLanguage(currentLanguage).accounts
         },
         {
             href: '/transactions',
             icon: <TransactionIcon fontSize='small' />,
-            title: getLanguage().transactions
+            title: getLanguage(currentLanguage).transactions
         },
         {
             href: '/cashflow',
             icon: <TimelineIcon fontSize='small' />,
-            title: getLanguage().cashflow
+            title: getLanguage(currentLanguage).cashflow
         },
         {
             href: '/savings',
             icon: <SavingsIcon fontSize='small' />,
-            title: getLanguage().savings
+            title: getLanguage(currentLanguage).savings
         },
         {
             href: '/bonds',
@@ -62,27 +64,27 @@ export const DashboardSidebar = (props) => {
         {
             href: '/investments',
             icon: <PaidIcon fontSize='small' />,
-            title: getLanguage().investment
+            title: getLanguage(currentLanguage).investment
         },
         {
             href: '/stocks',
             icon: <StocksIcon fontSize='small' />,
-            title: getLanguage().stocks
+            title: getLanguage(currentLanguage).stocks
         },
         {
             href: '/categories',
             icon: <CategoryIcon fontSize='small' />,
-            title: getLanguage().categories
+            title: getLanguage(currentLanguage).categories
         },
         {
             href: '/articles',
             icon: <LibraryIcon fontSize='small' />,
-            title: getLanguage().articles
+            title: getLanguage(currentLanguage).articles
         },
         {
             href: '/profile',
             icon: <UserIcon fontSize='small' />,
-            title: getLanguage().profile
+            title: getLanguage(currentLanguage).profile
         },
         {
             href: '/settings',
@@ -115,6 +117,7 @@ export const DashboardSidebar = (props) => {
                     pt: 2,
                     pb: 5
                 }}
+                className='sidebar'
             >
                 <div>
                     <Box
@@ -167,7 +170,7 @@ export const DashboardSidebar = (props) => {
                         my: 3
                     }}
                 />
-                <Box sx={{ flexGrow: 1 }}>
+                <Box sx={{ flexGrow: 1 }} className='navigation-list'>
                     {items.map((item) => (
                         <NavItem key={item.title} icon={item.icon} href={item.href} title={item.title} />
                     ))}

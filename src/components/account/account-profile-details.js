@@ -4,24 +4,26 @@ import { getLanguage } from 'utils/getLanguage'
 import { useFormik } from 'formik';
 
 import { useAuthStore } from 'stores/useAuthStore'
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const AccountProfileDetails = (props) => {
-    const user = useAuthStore((state) => state.authState.user)
-    const updateUser = useAuthStore((state) => state.updateUser)
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const user = useAuthStore((state) => state.authState.user);
+    const updateUser = useAuthStore((state) => state.updateUser);
 
     const initialValues = {
         email: '',
         firstName: '',
-        lastName: '',
-    }
+        lastName: ''
+    };
 
     const handleSubmit = (values) => {
         console.log(values);
-        updateUser({ 
+        updateUser({
             firstName: values.firstName,
             lastName: values.lastName,
-            new_displayName: values.firstName + " " + values.lastName,
-            new_email: values.email,
+            new_displayName: values.firstName + ' ' + values.lastName,
+            new_email: values.email
         });
     };
 
@@ -41,15 +43,18 @@ export const AccountProfileDetails = (props) => {
     return (
         <form autoComplete='off' noValidate {...props}>
             <Card>
-                <CardHeader subheader={getLanguage().editInformation} title={getLanguage().profile} />
+                <CardHeader
+                    subheader={getLanguage(currentLanguage).editInformation}
+                    title={getLanguage(currentLanguage).profile}
+                />
                 <Divider />
                 <CardContent>
                     <Grid container spacing={3}>
                         <Grid item md={6} xs={12}>
                             <TextField
                                 fullWidth
-                                helperText={getLanguage().specifyFirstName}
-                                label={getLanguage().firstName}
+                                helperText={getLanguage(currentLanguage).specifyFirstName}
+                                label={getLanguage(currentLanguage).firstName}
                                 name='firstName'
                                 onChange={formik.handleChange}
                                 required
@@ -60,7 +65,7 @@ export const AccountProfileDetails = (props) => {
                         <Grid item md={6} xs={12}>
                             <TextField
                                 fullWidth
-                                label={getLanguage().lastName}
+                                label={getLanguage(currentLanguage).lastName}
                                 name='lastName'
                                 onChange={formik.handleChange}
                                 required
@@ -89,12 +94,11 @@ export const AccountProfileDetails = (props) => {
                         p: 2
                     }}
                 >
-                    <Button color='primary' variant='contained'
-                    onClick={formik.handleSubmit}>
-                        {getLanguage().saveDetails}
+                    <Button color='primary' variant='contained' onClick={formik.handleSubmit}>
+                        {getLanguage(currentLanguage).saveDetails}
                     </Button>
                 </Box>
             </Card>
         </form>
-    )
-}
+    );
+};

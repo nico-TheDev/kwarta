@@ -20,6 +20,10 @@ const transactionStore = (set, get) => ({
             if (newTransaction.amount === '' || newTransaction.targetAccount === '' || newTransaction.category === '') {
                 throw new Error('Check the input fields');
             }
+            
+            if (newTransaction.amount === 0 || newTransaction.amount === '') {
+                throw new Error('Please enter a valid amount');
+            }
             // console.log('CURRENT FILE: ', currentFile);
             const accountRef = doc(db, 'accounts', newTransaction.targetAccount.id);
             const currentAccount = await getDoc(accountRef);

@@ -8,9 +8,11 @@ import { DashboardLayout } from '../../components/dashboard-layout';
 import { getLanguage } from 'utils/getLanguage'
 
 import useSortCategories from 'hooks/useSortCategories';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const Page = () => {
     const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories();
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     return (
         <>
@@ -27,13 +29,13 @@ const Page = () => {
                 <Container maxWidth={false}>
                     <CategoriesHead />
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
-                        <Typography variant='body1'>{getLanguage().income}</Typography>
+                        <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
                         <Switch
                             checked={isExpense}
                             onChange={handleExpense}
                             inputProps={{ 'aria-label': 'controlled' }}
                         />
-                        <Typography variant='body1'>{getLanguage().expense}</Typography>
+                        <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
                     </Box>
                     <Box sx={{ pt: 3 }}>
                         <Grid container spacing={3}>

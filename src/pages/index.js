@@ -1,5 +1,8 @@
 import Head from 'next/head';
 import { Box, Container, Grid, CircularProgress, Typography } from '@mui/material';
+import { useEffect } from 'react';
+import CreateIcon from '@mui/icons-material/Create';
+
 import { Balance } from '../components/dashboard/balance';
 import { TransactionHistory } from '../components/dashboard/transaction-history';
 import { Cashflow } from '../components/dashboard/cashflow';
@@ -9,7 +12,7 @@ import { Expenses } from '../components/dashboard/expenses';
 import { ExpensesChart } from '../components/dashboard/expenses-chart';
 import { DashboardLayout } from '../components/dashboard-layout';
 import useGetUserTransactions from 'hooks/useGetUserTransactions';
-import { useEffect } from 'react';
+import useGetUserSurvey from 'hooks/useGetUserSurvey';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useAccountStore } from 'stores/useAccountStore';
@@ -24,6 +27,7 @@ const Page = () => {
     const isEmpty = useTransactionStore((state) => state.isEmpty);
     // GET USER TRANSACTIONS
     useGetUserTransactions(userID);
+    useGetUserSurvey(userID);
 
     const styles = {
         container: { width: '100%', height: '100%', display: 'grid', placeItems: 'center' }
@@ -39,8 +43,16 @@ const Page = () => {
 
     if (isEmpty) {
         return (
-            <Box sx={{ ...styles.container }}>
-                <Typography variant='h4'>Create your first transaction</Typography>
+            <Box sx={{ ...styles.container, alignContent: 'center' }}>
+                <Box sx={{ fontSize: 80 }}>
+                    <CreateIcon color='primary' fontSize='inherit' />
+                </Box>
+                <Typography variant='h5' mb={2}>
+                    Create your first financial transaction
+                </Typography>
+                <Typography variant='body1' color='gray'>
+                    Click the Add Transaction button to start monitoring your finances
+                </Typography>
             </Box>
         );
     }

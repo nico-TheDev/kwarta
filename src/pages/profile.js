@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { Box, Container, Grid, Typography } from '@mui/material'
 import { AccountProfile } from '../components/account/account-profile'
 import { AccountProfileDetails } from '../components/account/account-profile-details'
+import { AccountSurveyDetails } from '../components/account/account-survey-details'
 import { DashboardLayout } from '../components/dashboard-layout'
 
 const Page = () => (
@@ -26,6 +27,7 @@ const Page = () => (
                     </Grid>
                     <Grid item lg={8} md={6} xs={12}>
                         <AccountProfileDetails />
+                        <AccountSurveyDetails />
                     </Grid>
                 </Grid>
             </Container>

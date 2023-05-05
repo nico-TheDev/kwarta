@@ -4,9 +4,11 @@ import { Download as DownloadIcon } from '../../icons/download'
 import AddCardIcon from '@mui/icons-material/AddCard'
 import TransferIcon from '@mui/icons-material/Autorenew'
 import { getLanguage } from 'utils/getLanguage'
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const AchievementsHead = (props) => {
-    const theme = useTheme()
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const theme = useTheme();
     return (
         <Box {...props}>
             <Box
@@ -48,5 +50,5 @@ export const AchievementsHead = (props) => {
                 </Card>
             </Box> */}
         </Box>
-    )
-}
+    );
+};

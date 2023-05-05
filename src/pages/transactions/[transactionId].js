@@ -35,6 +35,8 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { useCategoryStore } from 'stores/useCategoryStore';
 import useSortCategories from 'hooks/useSortCategories';
 import { useEffect } from 'react';
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const MenuProps = {
     PaperProps: {
@@ -47,6 +49,7 @@ const MenuProps = {
 
 const Page = () => {
     const router = useRouter();
+
     const { transactionId } = router.query;
     // FORM STATES
     const [date, setDate] = useState(formatDate(dayjs(new Date())));
@@ -58,6 +61,7 @@ const Page = () => {
     const [currentTransaction, setCurrentTransaction] = useState('');
 
     // STORE
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const updateTransaction = useTransactionStore((state) => state.updateTransaction);
     const deleteTransaction = useTransactionStore((state) => state.deleteTransaction);
     const accounts = useAccountStore((state) => state.accounts);
@@ -209,13 +213,13 @@ const Page = () => {
                         component='form'
                     >
                         <Typography id='modal-modal-title' variant='h6' component='h2'>
-                            {getLanguage().transactionDetails}
+                            {getLanguage(currentLanguage).transactionDetails}
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                             <TextField
                                 id='filled-basic'
-                                label={getLanguage().transactionAmount}
+                                label={getLanguage(currentLanguage).transactionAmount}
                                 variant='filled'
                                 fullWidth
                                 name='amount'
@@ -227,24 +231,26 @@ const Page = () => {
                         </Box>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Typography variant='body1'>{getLanguage().income}</Typography>
+                            <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
                             <Switch
                                 checked={isExpense}
                                 onChange={handleExpense}
                                 inputProps={{ 'aria-label': 'controlled' }}
                             />
-                            <Typography variant='body1'>{getLanguage().expense}</Typography>
+                            <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
                         </Box>
 
                         {/* ACCOUNT DROPDOWN */}
                         <Box sx={{ display: 'grid', gap: 2 }}>
                             <FormControl fullWidth>
-                                <InputLabel id='demo-simple-select-label'>{getLanguage().chooseAccount}</InputLabel>
+                                <InputLabel id='demo-simple-select-label'>
+                                    {getLanguage(currentLanguage).chooseAccount}
+                                </InputLabel>
                                 <Select
                                     labelId='demo-simple-select-label'
                                     id='demo-simple-select'
                                     value={selectedAccount}
-                                    label={getLanguage().chooseAccount}
+                                    label={getLanguage(currentLanguage).chooseAccount}
                                     onChange={handleAccountChange}
                                     sx={{ display: 'flex', alignItems: 'center' }}
                                     MenuProps={MenuProps}
@@ -266,12 +272,14 @@ const Page = () => {
                             </FormControl>
                             {/* CATEGORY DROPDOWN */}
                             <FormControl fullWidth>
-                                <InputLabel id='demo-simple-select-label'>{getLanguage().chooseCategory}</InputLabel>
+                                <InputLabel id='demo-simple-select-label'>
+                                    {getLanguage(currentLanguage).chooseCategory}
+                                </InputLabel>
                                 <Select
                                     labelId='demo-simple-select-label'
                                     id='demo-simple-select'
                                     value={selectedCategory ? selectedCategory.id : formik.values.category.id}
-                                    label={getLanguage().chooseCategory}
+                                    label={getLanguage(currentLanguage).chooseCategory}
                                     onChange={handleCategoryChange}
                                     MenuProps={MenuProps}
                                     disabled={!isEditing}
@@ -296,7 +304,7 @@ const Page = () => {
                             <Stack spacing={3}>
                                 <DesktopDatePicker
                                     name='date'
-                                    label={getLanguage().date}
+                                    label={getLanguage(currentLanguage).date}
                                     inputFormat='MM/DD/YYYY'
                                     value={date}
                                     onChange={handleDateChange}
@@ -321,19 +329,19 @@ const Page = () => {
                                         sx={{ flex: 1 }}
                                         onClick={() => setIsEditing(!isEditing)}
                                     >
-                                        {getLanguage().edit}
+                                        {getLanguage(currentLanguage).edit}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={handleDelete}>
-                                        {getLanguage().delete}
+                                        {getLanguage(currentLanguage).delete}
                                     </Button>
                                 </>
                             ) : (
                                 <>
                                     <Button variant='contained' sx={{ flex: 1 }} onClick={formik.handleSubmit}>
-                                        {getLanguage().save}
+                                        {getLanguage(currentLanguage).save}
                                     </Button>
                                     <Button variant='outlined' sx={{ flex: 1 }} onClick={() => setIsEditing(false)}>
-                                        {getLanguage().cancel}
+                                        {getLanguage(currentLanguage).cancel}
                                     </Button>
                                 </>
                             )}

@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react';
 import { useAuthStore } from 'stores/useAuthStore';
 import { Icon } from '../../components/shared/Icon';
 import { formatPrice } from 'utils/format-price';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const IncomeChart = (props) => {
     const theme = useTheme();
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const user = useAuthStore((state) => state.authState?.user);
     const transactions = useTransactionStore((state) => state.transactions);
     const [graphData, setGraphData] = useState('');
@@ -76,7 +78,7 @@ export const IncomeChart = (props) => {
 
     return (
         <Card {...props}>
-            <CardHeader title={getLanguage().income} />
+            <CardHeader title={getLanguage(currentLanguage).income} />
             <Divider />
             <CardContent>
                 <Box

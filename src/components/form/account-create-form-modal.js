@@ -22,6 +22,7 @@ import { getLanguage } from 'utils/getLanguage';
 
 import { useAccountStore } from 'stores/useAccountStore';
 import { useAuthStore } from 'stores/useAuthStore';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const style = {
     position: 'absolute',
@@ -46,6 +47,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
     const [showColorWheel, setShowColorWheel] = useState(false);
 
     const createAccount = useAccountStore((state) => state.createAccount);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const user = useAuthStore((state) => state.authState.user);
 
     const initialValues = {
@@ -111,7 +113,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         <>
             <Snackbar open={openAlert} autoHideDuration={3000} onClose={handleCloseAlert}>
                 <Alert onClose={handleCloseAlert} severity='success' sx={{ width: '100%' }}>
-                    {getLanguage().accountCreated}
+                    {getLanguage(currentLanguage).accountCreated}
                 </Alert>
             </Snackbar>
             <Modal
@@ -129,13 +131,13 @@ export default function AccountCreateFormModal({ open, setOpen }) {
                         <CloseIcon />
                     </IconButton>
                     <Typography id='modal-modal-title' variant='h6' component='h2'>
-                        {getLanguage().createAccount}
+                        {getLanguage(currentLanguage).createAccount}
                     </Typography>
                     <FormControl fullWidth onSubmit={formik.handleSubmit}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <TextField
                                 id='filled-basic'
-                                label={getLanguage().accountName}
+                                label={getLanguage(currentLanguage).accountName}
                                 variant='filled'
                                 name='accountName'
                                 onBlur={formik.handleBlur}
@@ -147,7 +149,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <TextField
                                 id='filled-basic'
-                                label={getLanguage().accountAmount}
+                                label={getLanguage(currentLanguage).accountAmount}
                                 variant='filled'
                                 name='accountAmount'
                                 onBlur={formik.handleBlur}
@@ -181,7 +183,7 @@ export default function AccountCreateFormModal({ open, setOpen }) {
                         </Box>
                         <Box sx={{ py: 2 }}>
                             <Button variant='contained' fullWidth onClick={formik.handleSubmit}>
-                                {getLanguage().submit}
+                                {getLanguage(currentLanguage).submit}
                             </Button>
                         </Box>
                     </FormControl>

@@ -5,9 +5,12 @@ import { Download as DownloadIcon } from '../../icons/download'
 import AddCardIcon from '@mui/icons-material/AddCard'
 import TransferIcon from '@mui/icons-material/Autorenew'
 import { getLanguage } from 'utils/getLanguage'
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const SavingsHead = (props) => {
-    const theme = useTheme()
+    const theme = useTheme();
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+
     return (
         <Box {...props}>
             <Box
@@ -20,7 +23,7 @@ export const SavingsHead = (props) => {
                 }}
             >
                 <Typography sx={{ m: 1 }} variant='h4'>
-                    {getLanguage().savings}
+                    {getLanguage(currentLanguage).savings}
                 </Typography>
                 <Box sx={{ m: 1 }}>
                     <Button
@@ -29,7 +32,7 @@ export const SavingsHead = (props) => {
                         startIcon={<AddCardIcon fontSize='small' />}
                         sx={{ mr: 1 }}
                     >
-                        {getLanguage().addSavingsGoal}
+                        {getLanguage(currentLanguage).addSavingsGoal}
                     </Button>
                 </Box>
             </Box>
@@ -38,7 +41,7 @@ export const SavingsHead = (props) => {
                     <CardContent>
                         <Box sx={{ textAlign: 'center' }}>
                             <Typography variant='h3' mb={2}>
-                                {getLanguage().totalSavings}
+                                {getLanguage(currentLanguage).totalSavings}
                             </Typography>
                             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                 <Typography variant='h3' color='primary'>
@@ -56,5 +59,5 @@ export const SavingsHead = (props) => {
                 </Card>
             </Box>
         </Box>
-    )
-}
+    );
+};

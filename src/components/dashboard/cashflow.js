@@ -6,11 +6,13 @@ import { getLanguage } from 'utils/getLanguage';
 import { green, red } from '@mui/material/colors';
 import { useEffect, useState } from 'react';
 import { useTransactionStore } from 'stores/useTransactionStore';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const Cashflow = (props) => {
     const theme = useTheme();
     const getExpenseList = useTransactionStore((state) => state.getExpenseList);
     const transactions = useTransactionStore((state) => state.transactions);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const [expenseData, setExpenseData] = useState([]);
     const [incomeData, setIncomeData] = useState([]);
@@ -179,7 +181,7 @@ export const Cashflow = (props) => {
 
     return (
         <Card {...props}>
-            <CardHeader title={getLanguage().cashflow} />
+            <CardHeader title={getLanguage(currentLanguage).cashflow} />
             <Divider />
             <CardContent>
                 <Box
@@ -200,7 +202,7 @@ export const Cashflow = (props) => {
                 }}
             >
                 <Button color='primary' endIcon={<ArrowRightIcon fontSize='small' />} size='small'>
-                    {getLanguage().overview}
+                    {getLanguage(currentLanguage).overview}
                 </Button>
             </Box>
         </Card>
