@@ -32,7 +32,7 @@ export const DashboardLayout = (props) => {
     useEffect(() => {
         console.log({ showTour, transactions: transactions.length });
         if (transactions.length === 0 || accounts.length === 0) {
-            setShowTour(false);
+            setShowTour(true);
         } else {
             setShowTour(false);
         }
