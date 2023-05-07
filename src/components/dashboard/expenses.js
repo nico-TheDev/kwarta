@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
+import { Avatar, Card, CardContent, Grid, Typography, Tooltip } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { getLanguage } from '../../utils/getLanguage';
 import { useTransactionStore } from 'stores/useTransactionStore';
@@ -35,15 +35,17 @@ export const Expenses = (props) => {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Avatar
-                            sx={{
-                                backgroundColor: 'primary.main',
-                                height: 56,
-                                width: 56
-                            }}
-                        >
-                            <AttachMoneyIcon />
-                        </Avatar>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipTotalExpense}>
+                            <Avatar
+                                sx={{
+                                    backgroundColor: 'primary.main',
+                                    height: 56,
+                                    width: 56
+                                }}
+                            >
+                                <AttachMoneyIcon />
+                            </Avatar>
+                        </Tooltip>
                     </Grid>
                 </Grid>
             </CardContent>

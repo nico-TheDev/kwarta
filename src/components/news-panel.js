@@ -1,10 +1,15 @@
-import { Button, CircularProgress, Grid, Paper, Typography } from '@mui/material';
+import { Button, CircularProgress, Grid, Paper, Typography, Tooltip } from '@mui/material';
 import { Box } from '@mui/system';
 import { useNews } from 'hooks/swr/useNews';
 import React from 'react';
 
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
+
 export default function NewsPanel() {
     const { data, isLoading: isLoadingNews } = useNews();
+
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     if (isLoadingNews)
         return (
@@ -16,9 +21,11 @@ export default function NewsPanel() {
 
     return (
         <>
-            <Typography variant='h6' mb={4}>
-                Latest News
-            </Typography>
+            <Tooltip title={getLanguage(currentLanguage).tooltipLatestNews}>
+                <Typography variant='h6' mb={4}>
+                    Latest News
+                </Typography>
+            </Tooltip>
             <Grid container spacing={2}>
                 {data &&
                     data.newsList?.map((news) => (

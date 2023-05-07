@@ -35,15 +35,18 @@ export const Balance = (props) => {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Avatar
-                            sx={{
-                                backgroundColor: 'error.main',
-                                height: 56,
-                                width: 56
-                            }}
-                        >
-                            <MoneyIcon />
-                        </Avatar>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipTotalBalance}>
+                            <Avatar
+                                sx={{
+                                    backgroundColor: 'error.main',
+                                    height: 56,
+                                    width: 56
+                                }}
+                            >
+                                <MoneyIcon />
+                            </Avatar>
+                        </Tooltip>
+
                     </Grid>
                 </Grid>
                 {/* <Box
