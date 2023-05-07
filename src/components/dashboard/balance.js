@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Grid, Typography, Tooltip } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import MoneyIcon from '@mui/icons-material/AttachMoney';
 import { getLanguage } from 'utils/getLanguage';
@@ -27,9 +27,11 @@ export const Balance = (props) => {
             <CardContent>
                 <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
                     <Grid item>
-                        <Typography color='textSecondary' gutterBottom variant='overline'>
-                            {getLanguage(currentLanguage).balance}
-                        </Typography>
+                        <Tooltip title='Tested'>
+                            <Typography color='textSecondary' gutterBottom variant='overline'>
+                                {getLanguage(currentLanguage).balance}
+                            </Typography>
+                        </Tooltip>
                         <Typography color='textPrimary' variant='h4' sx={{ whiteSpace: 'nowrap' }}>
                             {formatPrice(total)}
                         </Typography>

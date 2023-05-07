@@ -1,27 +1,38 @@
 import { Button, CircularProgress, Grid, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { useNews } from 'hooks/swr/useNews';
-import React from 'react';
+import { useState, useEffect } from 'react';
 
-export default function NewsPanel() {
-    const { data, isLoading: isLoadingNews } = useNews();
+export default function NewsPanel(props) {
+    const [newsData, setNewsData] = useState(() => {
+        if (localStorage.getItem('newsData')) {
+            return JSON.parse(localStorage.getItem('newsData'));
+        } else {
+            return props.newsData;
+        }
+    });
 
-    if (isLoadingNews)
-        return (
-            <Box sx={{ display: 'grid', justifyItems: 'center', height: '40vh', alignItems: 'center' }}>
-                <Typography variant='h6'>Fetching Latest News...</Typography>
-                <CircularProgress size={100} />
-            </Box>
-        );
+    useEffect(() => {
+        if (newsData) {
+            localStorage.setItem('newsData', JSON.stringify(newsData));
+        }
+    }, []);
+
+    // if (isLoadingNews)
+    //     return (
+    //         <Box sx={{ display: 'grid', justifyItems: 'center', height: '40vh', alignItems: 'center' }}>
+    //             <Typography variant='h6'>Fetching Latest News...</Typography>
+    //             <CircularProgress size={100} />
+    //         </Box>
+    //     );
 
     return (
         <>
-            <Typography variant='h6' mb={4}>
+            <Typography variant='h6' mb={4} {...props}>
                 Latest News
             </Typography>
             <Grid container spacing={2}>
-                {data &&
-                    data.newsList?.map((news) => (
+                {newsData &&
+                    newsData.newsList?.map((news) => (
                         <Grid item xs={12} md={6} key={news.title}>
                             <Paper sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                                 <Box sx={{ height: '100%' }}>

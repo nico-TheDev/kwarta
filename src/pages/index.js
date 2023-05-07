@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { Box, Container, Grid, CircularProgress, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import CreateIcon from '@mui/icons-material/Create';
 
 import { Balance } from '../components/dashboard/balance';
@@ -18,10 +18,24 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import { getLanguage } from 'utils/getLanguage';
 import NewsPanel from 'components/news-panel';
+import DashboardTour from 'components/tours/DashboardTour';
 
-const Page = () => {
+export async function getStaticProps(context) {
+    const res = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + `/news`);
+
+    const data = await res.json();
+
+    return {
+        props: {
+            newsData: data
+        } // will be passed to the page component as props
+    };
+}
+
+const Page = ({ newsData }) => {
     const user = useAuthStore((state) => state.authState?.user);
     const userID = user?.uid || '';
+    const [showTour, setShowTour] = useState(false);
 
     const transactions = useTransactionStore((state) => state.transactions);
     const isEmpty = useTransactionStore((state) => state.isEmpty);
@@ -43,6 +57,10 @@ const Page = () => {
             p: 2
         }
     };
+
+    useEffect(() => {
+        setShowTour(true);
+    }, []);
 
     if (transactions.length === 0 && !isEmpty) {
         return (
@@ -70,6 +88,7 @@ const Page = () => {
 
     return (
         <>
+            {showTour && <DashboardTour setShowTour={setShowTour} />}
             <Head>
                 <title>CASH: Financial Monitoring Application</title>
                 <link rel='manifest' href='/manifest.json' />
@@ -86,33 +105,33 @@ const Page = () => {
                     <Grid container spacing={3}>
                         <Grid item lg={3} sm={6} xl={3} xs={12}>
                             {/* BALANCE PANEL */}
-                            <Balance />
+                            <Balance className='dashboard_step_one' />
                         </Grid>
                         <Grid item xl={3} lg={3} sm={6} xs={12}>
                             {/* EXPENSE PANEL */}
-                            <Expenses sx={{ height: '100%' }} />
+                            <Expenses sx={{ height: '100%' }} className='dashboard_step_two' />
                         </Grid>
                         <Grid item xl={3} lg={3} sm={6} xs={12}>
                             {/* INCOME PANEL */}
-                            <Income />
+                            <Income className='dashboard_step_three' />
                         </Grid>
                         <Grid item xl={3} lg={3} sm={6} xs={12}>
-                            <Savings />
+                            <Savings className='dashboard_step_four' />
                         </Grid>
                         <Grid item lg={8} md={12} xl={9} xs={12}>
                             {/* BAR CHART PANEl */}
-                            <Cashflow />
+                            <Cashflow className='dashboard_step_five' />
                         </Grid>
                         <Grid item lg={4} md={6} xl={3} xs={12}>
                             {/* EXPENSES GRAPH */}
-                            <ExpensesChart sx={{ height: '100%' }} />
+                            <ExpensesChart sx={{ height: '100%' }} className='dashboard_step_six' />
                         </Grid>
                         <Grid item lg={4} md={6} xl={3} xs={12}>
                             {/* TRANSACTION HISTORY */}
-                            <TransactionHistory sx={{ height: '100%' }} />
+                            <TransactionHistory sx={{ height: '100%' }} className='dashboard_step_seven' />
                         </Grid>
                         <Grid item lg={8} md={12} xl={9} xs={12}>
-                            <NewsPanel />
+                            <NewsPanel className='dashboard_step_eight' newsData={newsData} />
                         </Grid>
                     </Grid>
                 </Container>
