@@ -87,6 +87,7 @@ const AuthStore = (set, get) => ({
         }
     },
     verifyUser: async (login_user) => {
+        const loader = toast.loading('Logging in ...');
         try {
             const verifiedResponse = await signInWithEmailAndPassword(auth, login_user.email, login_user.password); //checks if user is registered, email and password correct
             const verifiedUser = verifiedResponse.user;
@@ -115,8 +116,17 @@ const AuthStore = (set, get) => ({
                     isLoading: false
                 }
             });
+
+            toast.success('Logged in successfully.');
         } catch (err) {
-            console.log(err.message);
+            if (err.code === 'auth/user-not-found') {
+                toast.error('User not found.');
+            } else {
+                toast.error('Error:', err.code);
+            }
+            console.log(err.code);
+        } finally {
+            toast.dismiss(loader);
         }
     },
     updateUser: async (editUser) => {
@@ -185,6 +195,7 @@ const AuthStore = (set, get) => ({
         }
     },
     loginWithGoogle: async () => {
+        const loader = toast.loading('Logging in...');
         try {
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
@@ -234,15 +245,20 @@ const AuthStore = (set, get) => ({
                     }
                 }
             });
+
+            toast.success('Logged in successfully.');
         } catch (error) {
             // const errorCode = error.code;
             // const errorMessage = error.message;
             // // The email of the user's account used.
             // const email = error.customData.email;
             // // The AuthCredential type that was used.
-            // const credential = GoogleAuthProvider.credentialFromError(error);
+            const credential = GoogleAuthProvider.credentialFromError(error);
             console.error(error);
-            toast.error(error.message);
+            // console.error(credential);
+            toast.error("Error: Something Went Wrong",error.message);
+        }finally{
+            toast.dismiss(loader);
         }
     },
     logout: () => {

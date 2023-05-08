@@ -43,6 +43,7 @@ export const AccountHead = (props) => {
                     }}
                 >
                     <Typography
+                        className='accounts_step_one'
                         sx={{
                             m: 1,
                             textAlign: 'center',
@@ -77,6 +78,7 @@ export const AccountHead = (props) => {
                                 <Icon name={ICON_NAMES.SYSTEM_ICONS.ADD_ACCOUNT} color='#FFFFFF' fontSize='small' />
                             }
                             sx={{ mr: 1 }}
+                            className='accounts_step_two'
                         >
                             {getLanguage(currentLanguage).addAccount}
                         </Button>
@@ -87,6 +89,7 @@ export const AccountHead = (props) => {
                                     <Icon name={ICON_NAMES.SYSTEM_ICONS.HISTORY} color='#FFFFFF' fontSize='small' />
                                 }
                                 sx={{ mr: 1 }}
+                                className='accounts_step_three'
                             >
                                 Transfer History
                             </Button>
@@ -97,7 +100,7 @@ export const AccountHead = (props) => {
                     <Box sx={{ mt: 3 }}>
                         <Card elevation={5}>
                             <CardContent>
-                                <Box sx={{ textAlign: 'center' }}>
+                                <Box sx={{ textAlign: 'center' }} className='accounts_step_four'>
                                     <Typography variant='h3'>{getLanguage(currentLanguage).totalBalance}</Typography>
                                     <Typography variant='h3' color='primary.dark'>
                                         {formatPrice(total, true)}

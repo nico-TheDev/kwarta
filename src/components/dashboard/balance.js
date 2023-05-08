@@ -27,9 +27,11 @@ export const Balance = (props) => {
             <CardContent>
                 <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>
                     <Grid item>
-                        <Typography color='textSecondary' gutterBottom variant='overline'>
-                            {getLanguage(currentLanguage).balance}
-                        </Typography>
+                        <Tooltip title='Tested'>
+                            <Typography color='textSecondary' gutterBottom variant='overline'>
+                                {getLanguage(currentLanguage).balance}
+                            </Typography>
+                        </Tooltip>
                         <Typography color='textPrimary' variant='h4' sx={{ whiteSpace: 'nowrap' }}>
                             {formatPrice(total)}
                         </Typography>

@@ -20,9 +20,9 @@ function logGroup(type, data) {
     console.groupEnd();
 }
 
-export default function tour({ open, handleClose }) {
+export default function tour({ open, handleClose, setShowTour }) {
     const [ref, { width }] = useMeasure();
-
+    // accounts_step_one
     const TOUR_STEPS = [
         {
             target: '.app__carousel',
@@ -129,6 +129,7 @@ export default function tour({ open, handleClose }) {
             // Need to set our running state to false, so we can restart if we click start again.
             setState({ run: false });
             handleClose();
+            setShowTour(false);
         }
 
         logGroup(type, data);
