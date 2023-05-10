@@ -17,9 +17,61 @@ import { db, storage } from '../../firebase.config';
 import { deleteObject, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import toast from 'react-hot-toast';
 
+const tourProgress = [
+    {
+        page: 'dashboard',
+        isDone: false
+    },
+    {
+        page: 'accounts',
+        isDone: false
+    },
+    {
+        page: 'transactions',
+        isDone: false
+    },
+    {
+        page: 'cashflow',
+        isDone: false
+    },
+    {
+        page: 'savings',
+        isDone: false
+    },
+    {
+        page: 'bonds',
+        isDone: false
+    },
+    {
+        page: 'investment',
+        isDone: false
+    },
+    {
+        page: 'stocks',
+        isDone: false
+    },
+    {
+        page: 'categories',
+        isDone: false
+    },
+    {
+        page: 'articles',
+        isDone: false
+    },
+    {
+        page: 'profile',
+        isDone: false
+    },
+    {
+        page: 'settings',
+        isDone: false
+    }
+];
+
 const AuthStore = (set, get) => ({
     authState: {
         user: null,
+        tourProgress,
         isAuthenticated: false,
         isLoading: false
     },
@@ -53,7 +105,8 @@ const AuthStore = (set, get) => ({
                 email: newUser.email,
                 profile_img_ref: fileRefName || '',
                 profile_img: fileUrl || '',
-                hasAnswered: false
+                hasAnswered: false,
+                tourProgress
             });
 
             const getUser = auth.currentUser;
@@ -75,7 +128,8 @@ const AuthStore = (set, get) => ({
                         hasAnswered: false
                     },
                     isAuthenticated: true,
-                    isLoading: false
+                    isLoading: false,
+                    ...get().authState
                 }
             });
 
@@ -98,6 +152,7 @@ const AuthStore = (set, get) => ({
 
             set({
                 authState: {
+                    ...get().authState,
                     user: {
                         name: verifiedUser.displayName,
                         firstName: nameArray[0],
@@ -113,7 +168,8 @@ const AuthStore = (set, get) => ({
                         salary: userData.salary || null
                     },
                     isAuthenticated: true,
-                    isLoading: false
+                    isLoading: false,
+                    tourProgress: userData.tourProgress || tourProgress
                 }
             });
 
@@ -217,7 +273,8 @@ const AuthStore = (set, get) => ({
                     email,
                     profile_img_ref: '',
                     profile_img: picture,
-                    hasAnswered: false
+                    hasAnswered: false,
+                    tourProgress
                 });
             }
 
@@ -226,6 +283,7 @@ const AuthStore = (set, get) => ({
             const userData = userSnap.data();
             set({
                 authState: {
+                    ...get().authState,
                     user: {
                         name,
                         firstName: given_name,
@@ -242,7 +300,8 @@ const AuthStore = (set, get) => ({
                         priorities: userData.priorities || null,
                         isBreadwinner: userData.isBreadwinner || null,
                         salary: userData.salary || null
-                    }
+                    },
+                    tourProgress: userData.tourProgress || tourProgress
                 }
             });
 
@@ -256,8 +315,8 @@ const AuthStore = (set, get) => ({
             const credential = GoogleAuthProvider.credentialFromError(error);
             console.error(error);
             // console.error(credential);
-            toast.error("Error: Something Went Wrong",error.message);
-        }finally{
+            toast.error('Error: Something Went Wrong', error.message);
+        } finally {
             toast.dismiss(loader);
         }
     },
@@ -267,7 +326,9 @@ const AuthStore = (set, get) => ({
             authState: {
                 user: null,
                 isAuthenticated: false,
-                isLoading: false
+                isLoading: false,
+                user: null,
+                tourProgress
             }
         });
     },
@@ -306,21 +367,19 @@ const AuthStore = (set, get) => ({
         }
     },
     getUser: async (id) => {
-        try{
-            const userRef = doc(db, "users", id);
+        try {
+            const userRef = doc(db, 'users', id);
             const userSnapshot = await getDoc(userRef);
 
-            if(userSnapshot.exists()){
+            if (userSnapshot.exists()) {
                 return userSnapshot.data();
-            }else{
-                throw new Error("User does not exist.")
+            } else {
+                throw new Error('User does not exist.');
             }
-
-        }catch(err){
+        } catch (err) {
             console.log(err);
             toast.error(err.message);
         }
-
     },
     updateSurvey: async (answers) => {
         const user = get().authState.user;
@@ -341,6 +400,41 @@ const AuthStore = (set, get) => ({
             console.error(err);
         }
     },
+    getTourProgress: (tour) => {
+        const targetTour = get().authState.tourProgress.find((item) => item.page === tour);
+        return targetTour;
+    },
+    manageTourProgress: async (tour) => {
+        const user = get().authState.user;
+        const userRef = doc(db, 'users', user?.uid);
+        try {
+            const editedTour = get().authState.tourProgress.map((item) => {
+                if (item.page === tour) {
+                    return { page: tour, isDone: true };
+                } else {
+                    return item;
+                }
+            });
+
+            await updateDoc(userRef, {
+                tourProgress: editedTour
+            });
+
+            toast.success(`${tour} tutorial finished`);
+
+            set({
+                authState: {
+                    ...get().authState,
+                    tourProgress: editedTour
+                }
+            });
+
+            // console.log(answers);
+        } catch (err) {
+            toast.error('Something Went Wrong', err.message);
+            console.error(err);
+        }
+    }
 });
 
 export const useAuthStore = create(

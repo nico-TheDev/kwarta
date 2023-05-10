@@ -11,9 +11,13 @@ import { DashboardLayout } from '../../components/dashboard-layout';
 import { useAccountStore } from 'stores/useAccountStore';
 import DashboardTour from 'components/tours/DashboardTour';
 import { useState, useEffect } from 'react';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const Page = () => {
     const accounts = useAccountStore((state) => state.accounts);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+
     const styles = {
         container: {
             width: {
@@ -28,10 +32,10 @@ const Page = () => {
             p: 2
         }
     };
-    const [showTour, setShowTour] = useState(false);
+    const [showTour, setShowTour] = useState(getTourProgress('accounts').isDone);
 
     useEffect(() => {
-        setShowTour(true);
+        setShowTour(getTourProgress('accounts').isDone);
     }, []);
 
     const tourSteps = [
@@ -82,7 +86,13 @@ const Page = () => {
                 }}
             >
                 <Container maxWidth={false}>
-                    {showTour && <DashboardTour setShowTour={setShowTour} tourSteps={tourSteps} />}
+                    {!showTour && (
+                        <DashboardTour
+                            setShowTour={setShowTour}
+                            tourSteps={tourSteps}
+                            finishTour={() => manageTourProgress('accounts')}
+                        />
+                    )}
                     <AccountHead />
                     {accounts.length === 0 ? (
                         <Box sx={{ ...styles.container, alignContent: 'center', mt: 10 }}>

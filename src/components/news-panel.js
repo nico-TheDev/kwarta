@@ -27,7 +27,7 @@ export default function NewsPanel(props) {
 
     return (
         <>
-            <Typography variant='h6' mb={4} {...props}>
+            <Typography variant='h6' mb={4} className={props.className}>
                 Latest News
             </Typography>
             <Grid container spacing={2}>

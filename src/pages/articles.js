@@ -9,17 +9,21 @@ import { ArticlesCard } from '../components/articles/articles-card';
 import { DashboardLayout } from '../components/dashboard-layout';
 import { useLanguageStore } from 'stores/useLanguageStore';
 import DashboardTour from 'components/tours/DashboardTour';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const filters = ['General', 'Savings', 'Stocks', 'Investments', 'Bonds'];
 
 const Page = () => {
     const [filterValue, setFilterValue] = useState([]);
     const [articleList, setArticleList] = useState(articles);
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const [showTour, setShowTour] = useState(false);
 
     useEffect(() => {
-        setShowTour(true);
+        const currentTour = getTourProgress('articles');
+        setShowTour(currentTour.isDone);
     }, []);
 
     const tourSteps = [
@@ -64,7 +68,13 @@ const Page = () => {
 
     return (
         <>
-            {showTour && <DashboardTour setShowTour={setShowTour} tourSteps={tourSteps} />}
+            {!showTour && (
+                <DashboardTour
+                    setShowTour={setShowTour}
+                    tourSteps={tourSteps}
+                    finishTour={() => manageTourProgress('articles')}
+                />
+            )}
             <Head>
                 <title>Articles | CASH</title>
             </Head>

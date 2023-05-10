@@ -10,14 +10,18 @@ import { getLanguage } from 'utils/getLanguage'
 import useSortCategories from 'hooks/useSortCategories';
 import { useLanguageStore } from 'stores/useLanguageStore';
 import DashboardTour from 'components/tours/DashboardTour';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const Page = () => {
     const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories();
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const [showTour, setShowTour] = useState(false);
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
 
     useEffect(() => {
-        setShowTour(true);
+        const currentTour = getTourProgress('articles');
+        setShowTour(currentTour.isDone);
     }, []);
 
     const tourSteps = [
@@ -46,7 +50,13 @@ const Page = () => {
 
     return (
         <>
-            {showTour && <DashboardTour setShowTour={setShowTour} tourSteps={tourSteps} />}
+            {!showTour && (
+                <DashboardTour
+                    setShowTour={setShowTour}
+                    tourSteps={tourSteps}
+                    finishTour={() => manageTourProgress('categories')}
+                />
+            )}
             <Head>
                 <title>Categories | CASH</title>
             </Head>

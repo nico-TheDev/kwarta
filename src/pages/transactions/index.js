@@ -53,6 +53,9 @@ const Page = () => {
     const accounts = useAccountStore((state) => state.accounts);
     const user = useAuthStore((state) => state.authState.user);
     const allTransactions = useTransactionStore((state) => state.transactions);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+
     const [filterAccount, setFilterAccount] = useState('all');
     const [filterType, setFilterType] = useState('year');
     const [selectedCategory, setSelectedCategory] = useState('all');
@@ -60,10 +63,10 @@ const Page = () => {
     const [historyData, setHistoryData] = useState([]);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories();
-    const [showTour, setShowTour] = useState(false);
+    const [showTour, setShowTour] = useState(getTourProgress('accounts').isDone);
 
     useEffect(() => {
-        setShowTour(true);
+        setShowTour(getTourProgress('transactions').isDone);
     }, []);
 
     const tourSteps = [
@@ -263,7 +266,13 @@ const Page = () => {
             <Head>
                 <title>Transactions | CASH</title>
             </Head>
-            {showTour && <DashboardTour setShowTour={setShowTour} tourSteps={tourSteps} />}
+            {!showTour && (
+                <DashboardTour
+                    setShowTour={setShowTour}
+                    tourSteps={tourSteps}
+                    finishTour={() => manageTourProgress('transactions')}
+                />
+            )}
             <Box
                 component='main'
                 sx={{

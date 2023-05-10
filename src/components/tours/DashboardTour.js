@@ -13,7 +13,7 @@ function logGroup(type, data) {
     console.groupEnd();
 }
 
-export default function DashboardTour({ setShowTour, tourSteps }) {
+export default function DashboardTour({ setShowTour, tourSteps, finishTour }) {
     const [{ run, steps }, setState] = useSetState({
         run: false,
         steps: tourSteps
@@ -30,6 +30,7 @@ export default function DashboardTour({ setShowTour, tourSteps }) {
         if (finishedStatuses.includes(status)) {
             setState({ run: false });
             setShowTour(false);
+            finishTour();
         }
 
         logGroup(type, data);
