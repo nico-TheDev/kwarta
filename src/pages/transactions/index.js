@@ -116,7 +116,7 @@ const Page = () => {
         }
     ];
 
-    useGetUserTransactions(user.uid);
+    useGetUserTransactions(user?.uid);
 
     const handleAccountChange = (e) => {
         const currentAccountId = e.target.value;

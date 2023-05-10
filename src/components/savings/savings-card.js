@@ -116,6 +116,7 @@ export const SavingsCard = ({ ...rest }) => {
                         sx={{ display: 'flex', alignItems: 'center', maxWidth: 400, mx: 'auto' }}
                         MenuProps={MenuProps}
                         placeholder='Select Account'
+                        className='savings_step_three'
                     >
                         {accounts.map((account) => {
                             return (

@@ -154,6 +154,7 @@ export const BondsCard = ({ ...rest }) => {
                         onChange={handleAccountChange}
                         sx={{ display: 'flex', alignItems: 'center', maxWidth: 400, mx: 'auto' }}
                         MenuProps={MenuProps}
+                        className='bonds_step_two'
                     >
                         {accounts.map((account) => {
                             return (
@@ -241,6 +242,7 @@ export const BondsCard = ({ ...rest }) => {
                                                     type='number'
                                                     value={initialDeposit}
                                                     onChange={(e) => setInitialDeposit(e.target.value)}
+                                                    className='bonds_step_three'
                                                 />
                                                 <FormHelperText>
                                                     How much would you like to invest at first?

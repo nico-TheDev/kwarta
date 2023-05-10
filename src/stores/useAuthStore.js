@@ -429,6 +429,8 @@ const AuthStore = (set, get) => ({
                 }
             });
 
+            console.log(editedTour);
+
             // console.log(answers);
         } catch (err) {
             toast.error('Something Went Wrong', err.message);
