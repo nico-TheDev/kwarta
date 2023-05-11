@@ -10,7 +10,8 @@ import {
     List,
     ListItem,
     ListItemAvatar,
-    ListItemText
+    ListItemText,
+    Tooltip
 } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -34,29 +35,33 @@ export const TransactionHistory = (props) => {
     };
 
     return (
-        <Card {...props}>
-            <CardHeader
-                subtitle={`${transactions.length} in total`}
-                title={getLanguage(currentLanguage).historyTransactions}
-            />
-            <Divider />
-            <List>
-                {transactions.slice(0, 5).map((transaction) => (
-                    <TransactionCard transaction={transaction} key={transaction.id} />
-                ))}
-            </List>
-            <Divider />
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    p: 2
-                }}
-            >
-                <Button color='primary' endIcon={<ArrowRightIcon />} size='small' variant='text' onClick={handleClick}>
-                    {getLanguage(currentLanguage).overview}
-                </Button>
-            </Box>
-        </Card>
+        <Tooltip title={getLanguage(currentLanguage).tooltipTransactionHistory}>
+            <Card {...props}>
+                <CardHeader
+                    subtitle={`${transactions.length} in total`}
+                    title={getLanguage(currentLanguage).historyTransactions}
+                />
+                <Divider />
+                
+                <List>
+                    {transactions.slice(0, 5).map((transaction) => (
+                        <TransactionCard transaction={transaction} key={transaction.id} />
+                    ))}
+                </List>
+                <Divider />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        p: 2
+                    }}
+                >
+                    <Button color='primary' endIcon={<ArrowRightIcon />} size='small' variant='text' onClick={handleClick}>
+                        {getLanguage(currentLanguage).overview}
+                    </Button>
+                </Box>
+            </Card>
+        </Tooltip>
+        
     );
 };

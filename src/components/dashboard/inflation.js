@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography, Tooltip } from '@mui/material';
 import InsertChartIcon from '@mui/icons-material/InsertChartOutlined';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -74,15 +74,17 @@ export const Savings = (props) => {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Avatar
-                            sx={{
-                                backgroundColor: 'warning.main',
-                                height: 56,
-                                width: 56
-                            }}
-                        >
-                            <InsertChartIcon />
-                        </Avatar>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipInflationRate}>
+                            <Avatar
+                                sx={{
+                                    backgroundColor: 'warning.main',
+                                    height: 56,
+                                    width: 56
+                                }}
+                            >
+                                <InsertChartIcon />
+                            </Avatar>
+                        </Tooltip>
                     </Grid>
                 </Grid>
                 <Box
@@ -93,9 +95,13 @@ export const Savings = (props) => {
                     }}
                 >
                     {percentage?.hasIncreased ? (
-                        <ArrowDownwardIcon color='success' />
+                        <Tooltip title={getLanguage(currentLanguage).tooltipInflationLower}>
+                            <ArrowDownwardIcon color='success' />
+                        </Tooltip>
                     ) : (
-                        <ArrowUpwardIcon color='error' />
+                        <Tooltip title={getLanguage(currentLanguage).tooltipInflationHigher}>
+                            <ArrowUpwardIcon color='error' />
+                        </Tooltip>
                     )}
                     <Typography
                         variant='body2'

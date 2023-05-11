@@ -1,6 +1,10 @@
-import { Button, CircularProgress, Grid, Paper, Typography } from '@mui/material';
+import { Button, CircularProgress, Grid, Paper, Typography, Tooltip } from '@mui/material';
 import { Box } from '@mui/system';
+import { useNews } from 'hooks/swr/useNews';
 import { useState, useEffect } from 'react';
+
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export default function NewsPanel(props) {
     const [newsData, setNewsData] = useState(() => {
@@ -10,6 +14,8 @@ export default function NewsPanel(props) {
             return props.newsData;
         }
     });
+
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     useEffect(() => {
         if (newsData) {
@@ -27,9 +33,12 @@ export default function NewsPanel(props) {
 
     return (
         <>
+            <Tooltip title={getLanguage(currentLanguage).tooltipLatestNews}>
             <Typography variant='h6' mb={4} className={props.className}>
                 Latest News
             </Typography>
+            </Tooltip>
+
             <Grid container spacing={2}>
                 {newsData &&
                     newsData.newsList?.map((news) => (

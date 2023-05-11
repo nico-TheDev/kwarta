@@ -134,7 +134,19 @@ export const languages = {
         //savings
         addSavingsGoal: 'Magdagdag ng Layunin ng Pag-iipon',
         totalSavings: 'Kabuuang Ipon',
-        lastUsed2Hours: 'Huling gamit: Nakaraang 2 oras'
+        lastUsed2Hours: 'Huling gamit: Nakaraang 2 oras',
+
+        //tooltips
+        tooltipTotalBalance: 'Ito ang kabuuang halaga ng iyong mga Account.',
+        tooltipTotalExpense: 'Ito ang kabuuang halaga ng iyong mga Gastusin.',
+        tooltipTotalIncome: 'Ito ang kabuuang halaga ng iyong mga Kita.',
+        tooltipInflationRate: 'Ito ang Inflation Rate ngayong buwan. Ang Inflation ay ang pagtaas ng mga presyo ng bilhin.',
+        tooltipInflationLower: 'Mas mababa ang Inflation Rate ngayon kaysa nakaraang buwan.',
+        tooltipInflationHigher: 'Mas mataas ang Inflation Rate ngayon kaysa nakaraang buwan.',
+        tooltipCashflowGraph: 'Ito ang kabuuang datos para sa Daloy ng Pera. Ang kulay pula ay iyong mga Gastusin at ang kulay berde ay iyong mga Kita.',
+        tooltipExpenseGraph: 'Ito ang kabuuang datos para sa iyong mga Gastusin. Pinapakita dito ang pagkakahati hati ng iyong mga Gastusin.',
+        tooltipTransactionHistory: 'Ito ang mga nakaraang mong Transaksiyon.',
+        tooltipLatestNews: 'Ito ang mga napapanahong balita tungkol sa aspetong Pinansyal.',
     },
     en: {
         //main screen

@@ -1,5 +1,5 @@
 import { Doughnut } from 'react-chartjs-2';
-import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme, Tooltip } from '@mui/material';
 import { getLanguage } from 'utils/getLanguage';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useEffect, useState } from 'react';
@@ -81,14 +81,16 @@ export const ExpensesChart = (props) => {
             <CardHeader title={getLanguage(currentLanguage).expenses} />
             <Divider />
             <CardContent>
-                <Box
-                    sx={{
-                        height: 300,
-                        position: 'relative'
-                    }}
-                >
-                    {graphData && <Doughnut data={graphData} options={options} />}
-                </Box>
+                <Tooltip title={getLanguage(currentLanguage).tooltipExpenseGraph}>
+                    <Box
+                        sx={{
+                            height: 300,
+                            position: 'relative'
+                        }}
+                    >
+                        {graphData && <Doughnut data={graphData} options={options} />}
+                    </Box>
+                </Tooltip>
                 <Box
                     sx={{
                         display: 'flex',
