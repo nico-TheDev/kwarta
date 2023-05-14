@@ -21,7 +21,9 @@ export async function getStaticProps(context) {
         props: {
             trendingStocksData: data.trendingStocks,
             marketMoversData: data.marketMovers
-        } // will be passed to the page component as props
+        },
+        revalidate: 10
+        // will be passed to the page component as props
     };
 }
 
