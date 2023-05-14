@@ -10,6 +10,7 @@ import {
     MenuItem,
     Select,
     Switch,
+    Tooltip,
     Typography
 } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -23,7 +24,7 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 import useGetUserTransactions from 'hooks/useGetUserTransactions';
 import { useAuthStore } from 'stores/useAuthStore';
 import TransactionCardList from 'components/shared/TransactionCardList';
-import { getLanguage } from 'utils/getLanguage'
+import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
 import DashboardTour from 'components/tours/DashboardTour';
 
@@ -281,23 +282,28 @@ const Page = () => {
                 }}
             >
                 <Container maxWidth='md'>
-                    <Typography
-                        className='transactions_step_one'
-                        variant='h3'
-                        mb={4}
-                        sx={{
-                            fontSize: { xs: 20, lg: 'auto' },
-                            textAlign: {
-                                xs: 'center',
-                                lg: 'initial'
-                            }
-                        }}
-                    >
-                        {getLanguage(currentLanguage).transactionOverview}
-                    </Typography>
-                    <Typography variant='h4' align='center' mb={4} className='transactions_step_two'>
-                        {formatPrice(total, true)}
-                    </Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipTransactionOverview}>
+                        <Typography
+                            className='transactions_step_one'
+                            variant='h3'
+                            mb={4}
+                            sx={{
+                                fontSize: { xs: 20 },
+                                textAlign: {
+                                    xs: 'center',
+                                    lg: 'initial'
+                                },
+                                width: 'max-content'
+                            }}
+                        >
+                            {getLanguage(currentLanguage).transactionOverview}
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipTransactionTotal}>
+                        <Typography variant='h4' align='center' mb={4} className='transactions_step_two'>
+                            {formatPrice(total, true)}
+                        </Typography>
+                    </Tooltip>
 
                     <Box
                         sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}

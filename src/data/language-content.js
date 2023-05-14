@@ -53,7 +53,7 @@ export const languages = {
         //global
         date: 'Petsa',
         color: 'Kulay',
-        category:'Kategorya',
+        category: 'Kategorya',
         save: 'I-save',
         submit: 'I-submit',
         edit: 'Palitan',
@@ -92,7 +92,10 @@ export const languages = {
         accountName: 'Pangalan ng Account',
         accountAmount: 'Halagang nilalaman ng Account',
         accountCreated: 'Nakagawa na ng Account',
-
+        tooltipAccounts: 'Lagayan ng pera',
+        tooltipAccountBalance: 'Ang kabuuang halaga ng pinagsama samang pera sa lahat ng iyong mga accounts',
+        tooltipTransactionOverview: 'Ipinapakita ang lahat ng transaksyon na iyong ginawa',
+        tooltipTransactionTotal: 'Ipinapakita ang kabuuuang halaga ng mga transaksyon na nakikita',
         //account edit
         accountDetails: 'Mga detalye ng Account',
 
@@ -112,7 +115,7 @@ export const languages = {
         //category form
         createCategory: 'Gumawa ng Kategorya',
         categoryName: 'Pangalan ng Kategorya',
-
+        tooltipCategories: 'Ipinapakita ang lahat ng kategorya na maaari mong gamitin sa isang transaksyon',
         //category edit
         categoryDetails: 'Mga detalye ng Kategorya',
 
@@ -135,18 +138,35 @@ export const languages = {
         addSavingsGoal: 'Magdagdag ng Layunin ng Pag-iipon',
         totalSavings: 'Kabuuang Ipon',
         lastUsed2Hours: 'Huling gamit: Nakaraang 2 oras',
-
+        stockMarketMovers: 'Nangungunang mga stocks sa market',
+        stockSuggestion: 'Maaaring nais mong mag-invest sa',
         //tooltips
         tooltipTotalBalance: 'Ito ang kabuuang halaga ng iyong mga Account.',
         tooltipTotalExpense: 'Ito ang kabuuang halaga ng iyong mga Gastusin.',
         tooltipTotalIncome: 'Ito ang kabuuang halaga ng iyong mga Kita.',
-        tooltipInflationRate: 'Ito ang Inflation Rate ngayong buwan. Ang Inflation ay ang pagtaas ng mga presyo ng bilhin.',
+        tooltipInflationRate:
+            'Ito ang Inflation Rate ngayong buwan. Ang Inflation ay ang pagtaas ng mga presyo ng bilhin.',
         tooltipInflationLower: 'Mas mababa ang Inflation Rate ngayon kaysa nakaraang buwan.',
         tooltipInflationHigher: 'Mas mataas ang Inflation Rate ngayon kaysa nakaraang buwan.',
-        tooltipCashflowGraph: 'Ito ang kabuuang datos para sa Daloy ng Pera. Ang kulay pula ay iyong mga Gastusin at ang kulay berde ay iyong mga Kita.',
-        tooltipExpenseGraph: 'Ito ang kabuuang datos para sa iyong mga Gastusin. Pinapakita dito ang pagkakahati hati ng iyong mga Gastusin.',
+        tooltipCashflowGraph:
+            'Ito ang kabuuang datos para sa Daloy ng Pera. Ang kulay pula ay iyong mga Gastusin at ang kulay berde ay iyong mga Kita.',
+        tooltipExpenseGraph:
+            'Ito ang kabuuang datos para sa iyong mga Gastusin. Pinapakita dito ang pagkakahati hati ng iyong mga Gastusin.',
         tooltipTransactionHistory: 'Ito ang mga nakaraang mong Transaksiyon.',
         tooltipLatestNews: 'Ito ang mga napapanahong balita tungkol sa aspetong Pinansyal.',
+
+        //investments
+        tooltipInvestment:
+            'Mga ari-arian na binili o ininvest para magparami ng kayamanan at magtipid ng pera mula sa pinaghirapang kita o pagtaas ng halaga.',
+        tooltipLowRisk:
+            'Puwede kang magtangkang sumugal ng kaunti pero mas gusto mo ang mga maliliit na pagbabago sa iyong mga investment.',
+        tooltipMedRisk:
+            'Ikaw ay may katamtamang kasigasigan, may pagpapahalaga sa mga pagbabago sa merkado ngunit mahilig sa mga investment sa maikling panahon.',
+        tooltipHighRisk:
+            'Nakatuon ka sa potensyal na paglago ng iyong mga investment sa pangmatagalang panahon na may mataas na kakayahang tiisin ang panganib.',
+        tooltipMarketMovers: 'Ipinapakita ang mga nangungunang stocks sa stock market',
+        tooltipStocksSuggestion:
+            'Ipinapakita ang mga nangungunang stocks na maaari mong pag tuunan ng pansin kung nais mong mag-laan ng pera sa stocks'
     },
     en: {
         //main screen
@@ -203,7 +223,7 @@ export const languages = {
         //global
         date: 'Date',
         color: 'Color',
-        category:'Category',
+        category: 'Category',
         save: 'Save',
         submit: 'Submit',
         edit: 'Edit',
@@ -229,11 +249,13 @@ export const languages = {
         createTransaction: 'Create Transaction',
         chooseAccount: 'Choose an Account',
         chooseCategory: 'Choose a Category',
-
+        tooltipTransactionOverview: 'Displays all the transaction you created.',
+        tooltipTransactionTotal: 'Displays the sum of the transactions currently shown',
         //account card
         addAccount: 'Add Account',
         totalBalance: 'Total Balance',
-
+        tooltipAccounts: 'A financial account that holds money',
+        tooltipAccountBalance: 'the full balance is the sum of money in all your accounts',
         //account form
         createAccount: 'Create an Account',
         accountName: 'Account Name',
@@ -256,7 +278,7 @@ export const languages = {
         //category form
         createCategory: 'Create a Category',
         categoryName: 'Category Name',
-
+        tooltipCategories: 'Displays all the categories you can use in your transactions',
         //category edit
         categoryDetails: 'Category Details',
 
@@ -278,6 +300,25 @@ export const languages = {
         //savings
         addSavingsGoal: 'Add Savings Goal',
         totalSavings: 'Total Savings',
-        lastUsed2Hours: 'Last used: 2 Hours Ago'
+        lastUsed2Hours: 'Last used: 2 Hours Ago',
+
+        // stocks
+
+        stockMarketMovers: 'Top Market Movers',
+        stockSuggestion: 'You might want to invest in',
+        //investments
+        tooltipInvestment:
+            'asset acquired or invested in to build wealth and save money from the hard earned income or appreciation.',
+        tooltipLowRisk: 'You can take a bit of risk but prefer slight changes in your investment',
+        tooltipMedRisk:
+            'You are moderately aggressive, with an appreciation of market changes but keen on short-term investments.',
+        tooltipHighRisk:
+            'You focus on the growth potential of your investments for the long-term with a high tolerance for risk.',
+        tooltipCashflow: 'the net amount of cash and cash equivalents being transferred in and out',
+        tooltipExpenses: '',
+        tooltipIncome: '',
+        tooltipMarketMovers: 'Displays the top market movers of the stock market',
+        tooltipStocksSuggestion:
+            'Displays the top stocks that you can consider if you want to start investing in stocks'
     }
 };

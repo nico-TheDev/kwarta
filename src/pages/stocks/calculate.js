@@ -22,9 +22,9 @@ const Page = () => {
     });
     const [input, setInput] = useState({
         sharesBought: 1000,
-        buyPrice: parseFloat(router.query.price),
+        buyPrice: parseFloat(String(router.query.price).replace(/,/g, '')),
         sharesSold: 1000,
-        sellPrice: parseFloat(router.query.price) + 2
+        sellPrice: parseFloat(String(router.query.price).replace(/,/g, '')) + 2
     });
 
     useEffect(() => {

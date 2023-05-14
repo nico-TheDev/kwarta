@@ -8,7 +8,8 @@ import {
     InputAdornment,
     SvgIcon,
     Typography,
-    IconButton
+    IconButton,
+    Tooltip
 } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { getLanguage } from 'utils/getLanguage';
@@ -36,13 +37,15 @@ export const CategoriesHead = (props) => {
                         m: -1
                     }}
                 >
-                    <Typography
-                        sx={{ m: 1, fontSize: { md: 20, xs: 'initial' }, mb: { xs: 4, lg: 1 } }}
-                        variant='h4'
-                        className='categories_step_one'
-                    >
-                        {getLanguage(currentLanguage).categories}
-                    </Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipCategories}>
+                        <Typography
+                            sx={{ m: 1, fontSize: { md: 20, xs: 'initial' }, mb: { xs: 4, lg: 1 } }}
+                            variant='h4'
+                            className='categories_step_one'
+                        >
+                            {getLanguage(currentLanguage).categories}
+                        </Typography>
+                    </Tooltip>
                     <Box sx={{ m: 1 }} className='categories_step_two'>
                         <Button
                             onClick={handleOpenCategoryCreateModal}

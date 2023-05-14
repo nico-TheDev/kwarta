@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Button, CircularProgress, Container, Grid, Paper, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Grid, Paper, Tooltip, Typography } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { DashboardLayout } from '../../components/dashboard-layout';
 import { formatPrice } from 'utils/format-price';
@@ -10,6 +10,8 @@ import { useStocks } from 'hooks/swr/useStocks';
 import NewsPanel from 'components/news-panel';
 import { useAuthStore } from 'stores/useAuthStore';
 import DashboardTour from 'components/tours/DashboardTour';
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export async function getStaticProps(context) {
     const res = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/stocks');
@@ -41,6 +43,7 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
         }
     });
 
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const getTourProgress = useAuthStore((state) => state.getTourProgress);
     const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
     const [showTour, setShowTour] = useState(false);
@@ -146,7 +149,11 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
                     {/* SUGGESTIONS */}
                     <Grid container spacing={3}>
                         <Grid item xs={12} className='stocks_step_four'>
-                            <Typography variant='h4'>You might want to invest in</Typography>
+                            <Tooltip title={getLanguage(currentLanguage).tooltipStocksSuggestion}>
+                                <Typography variant='h4' sx={{ width: 'max-content' }}>
+                                    {getLanguage(currentLanguage).stockSuggestion}
+                                </Typography>
+                            </Tooltip>
                         </Grid>
 
                         {trendingStocks ? (
@@ -193,7 +200,11 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
                     {/* MARKET MOVERS */}
                     <Grid container spacing={3}>
                         <Grid item xs={12} className='stocks_step_five'>
-                            <Typography variant='h4'>Top Market Movers</Typography>
+                            <Tooltip title={getLanguage(currentLanguage).tooltipMarketMovers}>
+                                <Typography variant='h4' sx={{ width: 'max-content' }}>
+                                    {getLanguage(currentLanguage).stockMarketMovers}
+                                </Typography>
+                            </Tooltip>
                         </Grid>
 
                         {marketMovers ? (

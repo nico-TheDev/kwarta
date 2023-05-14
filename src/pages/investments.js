@@ -13,7 +13,8 @@ import {
     TextField,
     FormHelperText,
     Button,
-    CircularProgress
+    CircularProgress,
+    Tooltip
 } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SavingsIcon from '@mui/icons-material/Savings';
@@ -267,7 +268,9 @@ const Page = () => {
                     <Box sx={{ fontSize: 50 }}>
                         <AttachMoneyIcon fontSize='inherit' color='success' />
                     </Box>
-                    <Typography variant='body1'>Low Risk Fund</Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipLowRisk}>
+                        <Typography variant='body1'>Low Risk Fund</Typography>
+                    </Tooltip>
                     <Typography variant='h6'>{suggestionData.lowRiskFund}</Typography>
                 </Paper>
             </Grid>
@@ -276,7 +279,9 @@ const Page = () => {
                     <Box sx={{ fontSize: 50 }}>
                         <AttachMoneyIcon fontSize='inherit' color='warning' />
                     </Box>
-                    <Typography variant='body1'>Moderate Risk Fund</Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipMedRisk}>
+                        <Typography variant='body1'>Moderate Risk Fund</Typography>
+                    </Tooltip>
                     <Typography variant='h6'>{suggestionData.moderateRiskFund}</Typography>
                 </Paper>
             </Grid>
@@ -285,7 +290,9 @@ const Page = () => {
                     <Box sx={{ fontSize: 50 }}>
                         <AttachMoneyIcon fontSize='inherit' color='error' />
                     </Box>
-                    <Typography variant='body1'>Aggressive Risk Fund</Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipHighRisk}>
+                        <Typography variant='body1'>Aggressive Risk Fund</Typography>
+                    </Tooltip>
                     <Typography variant='h6'>{suggestionData.aggressiveRiskFund}</Typography>
                 </Paper>
             </Grid>
@@ -320,9 +327,11 @@ const Page = () => {
                             m: -1
                         }}
                     >
-                        <Typography sx={{ m: 1, mb: 4 }} variant='h4' className='investment_step_one'>
-                            {getLanguage(currentLanguage).investment}
-                        </Typography>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipInvestment}>
+                            <Typography sx={{ m: 1, mb: 4 }} variant='h4' className='investment_step_one'>
+                                {getLanguage(currentLanguage).investment}
+                            </Typography>
+                        </Tooltip>
                     </Box>
 
                     <Typography variant='h6' mb={4}>
