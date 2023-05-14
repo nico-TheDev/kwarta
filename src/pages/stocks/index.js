@@ -122,14 +122,10 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
                     </Typography>
 
                     <Typography variant='body1' mb={2} sx={{ textIndent: 50 }}>
-                        A stock, also known as equity, is a security that represents the ownership of a fraction of the
-                        issuing corporation. Units of stock are called "shares" which entitles the owner to a proportion
-                        of the corporation's assets and profits equal to how much stock they own.
+                        {getLanguage(currentLanguage).stocksDescriptionOne}
                     </Typography>
                     <Typography variant='body1' sx={{ textIndent: 50, mb: 5 }}>
-                        Stocks are bought and sold predominantly on stock exchanges and are the foundation of many
-                        individual investors' portfolios. Stock trades have to conform to government regulations meant
-                        to protect investors from fraudulent practices.
+                        {getLanguage(currentLanguage).stocksDescriptionTwo}
                     </Typography>
                     <Grid container spacing={3} mb={4}>
                         <Grid item xs={12} className='stocks_step_two'>

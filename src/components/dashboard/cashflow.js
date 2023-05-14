@@ -181,7 +181,9 @@ export const Cashflow = (props) => {
 
     return (
         <Card {...props}>
-            <CardHeader title={getLanguage(currentLanguage).cashflow} />
+            <Tooltip title={getLanguage(currentLanguage).tooltipCashflowGraph}>
+                <CardHeader title={getLanguage(currentLanguage).cashflow} />
+            </Tooltip>
             <Divider />
             <CardContent>
                 <Tooltip title={getLanguage(currentLanguage).tooltipCashflowGraph}>

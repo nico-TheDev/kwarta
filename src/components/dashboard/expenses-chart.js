@@ -78,19 +78,19 @@ export const ExpensesChart = (props) => {
 
     return (
         <Card {...props}>
-            <CardHeader title={getLanguage(currentLanguage).expenses} />
+            <Tooltip title={getLanguage(currentLanguage).tooltipExpenseGraph}>
+                <CardHeader title={getLanguage(currentLanguage).expenses} sx={{ width: 'max-content' }} />
+            </Tooltip>
             <Divider />
             <CardContent>
-                <Tooltip title={getLanguage(currentLanguage).tooltipExpenseGraph}>
-                    <Box
-                        sx={{
-                            height: 300,
-                            position: 'relative'
-                        }}
-                    >
-                        {graphData && <Doughnut data={graphData} options={options} />}
-                    </Box>
-                </Tooltip>
+                <Box
+                    sx={{
+                        height: 300,
+                        position: 'relative'
+                    }}
+                >
+                    {graphData && <Doughnut data={graphData} options={options} />}
+                </Box>
                 <Box
                     sx={{
                         display: 'flex',
