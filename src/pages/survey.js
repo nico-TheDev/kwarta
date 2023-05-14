@@ -56,7 +56,7 @@ const Page = () => {
         {
             id: 1,
             source: '/static/images/svg/survey-1.svg',
-            question: 'What is your socioeconomic standing?',
+            question: 'What is your socioeconomic standing? \n (Ito ang iyong buwanang sweldo.)',
             choices: [
                 {
                     id: 1,
@@ -121,7 +121,7 @@ const Page = () => {
         {
             id: 2,
             source: '/static/images/svg/survey-2.svg',
-            question: 'Choose categories you prioritize when spending money \n (Select 3)',
+            question: 'Choose categories you prioritize when spending money \n (Select 3) \n (Ito ang mga kategoryang binibigyan mong prayoridad sa paggastos ng pera.)',
             choices: categories,
             count: 1
         },
@@ -129,7 +129,7 @@ const Page = () => {
         {
             id: 3,
             source: '/static/images/svg/survey-3.svg',
-            question: 'Are you the breadwinner in your family ?',
+            question: 'Are you the breadwinner in your family ? \n (Ikaw ang pangunahing nagtatrabaho para suportahan ang iyong pamilya.)',
             choices: [
                 {
                     id: 1,

@@ -130,17 +130,43 @@ export const languages = {
         specifyFirstName: 'Ilagay ang iyong pangalan',
         uploadPicture: 'Kumuha ng litrato',
         saveDetails: 'I-save ang mga detalye',
+        surveyDetails: 'Mga Detalye sa Sarbey',
+        surveyDetailsHelper: 'Maaari mong palitan ang mga sagot mo sa sarbey.',
 
         //categories card
         addCategory: 'Magdagdag ng Kategorya',
 
         //savings
+        savingsIntroPart1: 'Ang pag-iipon ay nakatutulong sa mga tao na magkaroon ng kayamanan sa mahabang panahon. Sa pamamagitan ng paglalaan ng bahagi ng kanilang kita, maaring magkapag-ipon ang mga tao na maaring magamit sa mas malalaking pagbili tulad ng bahay o kotse.',
+        savingsIntroPart2: 'Sa paglipas ng panahon, ang compound interest ay nakatutulong upang mapataas ang halaga ng mga ipon, na nagbibigay-daan sa mga tao na mas mabilis na maabot ang kanilang mga layuning pinansyal.',
+        selectAccountSavings: 'Pumili ng Account na iyong gagamitin para sa iyong savings.',
+        amountSavingsPart1: 'Mayroon kang ',
+        amountSavingsPart2: ' sa napili mong Account. Maaari kang mag-apply ng savings account sa mga inilahad na bangko.',
+        insufficientAmountSavings: 'Ang balanse sa iyong napiling Account ay kulang. Ang pinakamababang halaga na maaring gamitin para sa savings account ay PHP 2,000.',
+
+        //bonds
+        bondsIntroPart1: 'Ang mga bond ay isang uri ng investment na maaaring magbigay ng ilang benepisyo sa mga investor, kabilang ang mga regular na income payments at ang mas mababang-risk profile kumpara sa ibang mga pamumuhunan.',
+        bondsIntroPart2: 'Ang mga bond ay mga pautang na ibinibigay ng mga investor sa mga gobyerno, korporasyon, o iba pang mga entidad. Bilang kapalit ng pautang na ito, ang nag-iisue ng bond ay pumapayag na magbayad ng interes sa investor sa isang nakatakdang fixed rate sa loob ng isang tiyak na panahon. Sa katapusan ng termino ng bond, nakakatanggap ang investor ng kabuuang halaga ng pautang.',
+        amountBondsPart1: 'Mayroon kang ',
+        amountBondsPart2: ' sa napili mong Account. Maaari kang mamumuhunan sa bonds.',
+        selectAccountBonds: 'Pumili ng Account na iyong gagamitin sa pamumuhunan ng bonds.',
+        timeReturnBonds: 'Balik sa iyong puhunan, makalipas ng lima at kalahating taon',
+        calculatedAmountBonds: 'Ito ang halaga batay sa napiling Account.',
+        initialInvestment: 'Pangunahing Pamumuhunan',
+        bondsCalculatorHelperText: 'Magkano ang gusto mong gawing puhunan?',
+        totalBonds: 'Ang Kabuuang Halaga ng iyong Pamumuhunan',
+        bondsTime: 'Makalipas ng lima at kalahating taon, ito ang mababalik sa iyong pamumuhunan',
+        whyInvestBonds: 'Bakit ako mamumuhunan sa Retail Treasury Bonds?',
+        whereInvestBonds: 'Saan ako maaaring mag-apply ng pamumuhunan sa Retail Treasury Bonds?',
+        insufficientAmountBonds: 'Ang balanse sa iyong napiling Account ay kulang. Ang pinakamababang halaga na maaring gawing puhunan sa mga bond ay PHP 5,000.',
+
         addSavingsGoal: 'Magdagdag ng Layunin ng Pag-iipon',
         totalSavings: 'Kabuuang Ipon',
         lastUsed2Hours: 'Huling gamit: Nakaraang 2 oras',
         stockMarketMovers: 'Nangungunang mga stocks sa market',
         stockSuggestion: 'Maaaring nais mong mag-invest sa',
         //tooltips
+        //DASHBOARD
         tooltipTotalBalance: 'Ito ang kabuuang halaga ng iyong mga Account.',
         tooltipTotalExpense: 'Ito ang kabuuang halaga ng iyong mga Gastusin.',
         tooltipTotalIncome: 'Ito ang kabuuang halaga ng iyong mga Kita.',
@@ -154,6 +180,22 @@ export const languages = {
             'Ito ang kabuuang datos para sa iyong mga Gastusin. Pinapakita dito ang pagkakahati hati ng iyong mga Gastusin.',
         tooltipTransactionHistory: 'Ito ang mga nakaraang mong Transaksiyon.',
         tooltipLatestNews: 'Ito ang mga napapanahong balita tungkol sa aspetong Pinansyal.',
+
+        //SAVINGS
+        tooltipSavings: 'Dito makikita ang mga savings account na maaari mong aplayan sa mga bangko gamit ang napiling Account.',
+        tooltipSavingsProductName: 'Ito ang pangalan ng savings account.',
+        tooltipSavingsTotal: 'Ito ang magiging halaga ng iyong pera makalipas ng limang taon.',
+        tooltipSavingsPercent: 'Ito ang porsyentong nadagdag sa iyong pera.',
+        tooltipOffers: 'Dito makikita ang kabuuang listahan ng mga savings account na maaari mong aplayan sa mga bangko.',
+
+        //BONDS
+        tooltipBonds: 'Dito makikita ang mga bonds na maaari mong aplayan sa mga bangko gamit ang napiling Account.',
+        tooltipRTBTotal: 'Ito ang magiging halaga ng iyong pera makalipas ng limang taon.',
+        tooltipRTBCalculator: 'Maaari mo itong gamitin upang malaman ang magiging halaga ng perang gusto mong gawing puhunan sa Retail Treasury Bonds.',
+
+        //ARTICLES
+        tooltipArticles: 'Dito makikita ang mga artikulong patungkol sa aspetong pinansyal. Maaari mo itong mabasa sa pamamagitan ng pagpindot sa mga ito.',
+
 
         //investments
         tooltipInvestment:
@@ -298,6 +340,56 @@ export const languages = {
         addCategory: 'Add Category',
 
         //savings
+        savingsIntroPart1: 'Saving helps individuals build wealth over time. By consistently setting aside a portion of their income, individuals can accumulate savings that can be used for larger purchases, such as a home or a car.',
+        savingsIntroPart2: 'Over time, compound interest can help to increase the value of these savings, allowing individuals to achieve their financial goals faster.',
+        selectAccountSavings: 'Select an account below which will be used for your savings.',
+        amountSavingsPart1: 'You have ',
+        amountSavingsPart2: ' in your selected Account. You may apply for savings accounts in the given banks.',
+        insufficientAmountSavings: 'Your selected Account have insufficient maintaining balance. The minimum amount to invest in savings is PHP 2,000.',
+
+        //bonds
+        bondsIntroPart1: 'Bonds are a type of investment that can offer several benefits to investors, including regular income payments and a relatively low-risk profile compared to other investments.',
+        bondsIntroPart2: 'Bonds are essentially loans that investors make to governments, corporations, or other entities. In exchange for the loan, the issuer of the bond agrees to pay interest to the investor at a fixed rate over a specified period of time. At the end of the bond term, the investor receives the principal amount back.',
+        amountBondsPart1: 'You have ',
+        amountBondsPart2: ' in your selected Account. You may invest in bonds.',
+        selectAccountBonds: 'Select an account below to to which will be used for investing to bonds.',
+        timeReturnBonds: 'Return after 5.5 years',
+        calculatedAmountBonds: 'Calculated amount based on you selected account.',
+        initialInvestment: 'Initial Investment',
+        bondsCalculatorHelperText: 'How much would you like to invest at first?',
+        totalBonds: 'Your Total Investment',
+        bondsTime: 'After 5.5 years, these could be the projected return of your investment',
+        whyInvestBonds: 'Why invest in Retail Treasury Bonds?',
+        whereInvestBonds: 'Where I can apply for investment in Retail Treasury Bonds?',
+        insufficientAmountBonds: 'Your selected Account have insufficient maintaining balance. The minimum amount to invest in bonds is PHP 5,000.',
+
+        //tooltips
+        //DASHBOARD
+        tooltipTotalBalance: 'This is the total balance of your Accounts.',
+        tooltipTotalExpense: 'This is the total amount of your Expenses.',
+        tooltipTotalIncome: 'This is the total amount of your Income.',
+        tooltipInflationRate: 'This is the Inflation Rate this month. Inflation is an increase in the general price level of goods and services.',
+        tooltipInflationLower: 'The Inflation Rate is lower than last month.',
+        tooltipInflationHigher: 'The Inflation Rate is higher than last month.',
+        tooltipCashflowGraph: 'This is the graph for your Cashflow. The color red represents your Expenses and the color green represents your Income.',
+        tooltipExpenseGraph: 'This is the graph for your Expenses. It shows how your Expenses are divided in categories.',
+        tooltipTransactionHistory: 'This is your Transaction History.',
+        tooltipLatestNews: 'These are the latest news about finances.',
+
+        //SAVINGS
+        tooltipSavings: 'These are the savings account that you can apply in banks using your selected Account.',
+        tooltipSavingsProductName: 'Name of the savings account.',
+        tooltipSavingsTotal: 'This the amount after 5 years.',
+        tooltipSavingsPercent: 'This is the percentage added in your money.',
+        tooltipOffers: 'This is the complete list of all the savings account you can apply in the given banks.',
+
+        //BONDS
+        tooltipBonds: 'These are the bonds that you can apply in banks using your selected Account.',
+        tooltipRTBTotal: 'This the amount after 5 years.',
+        tooltipRTBCalculator: 'You can use this to calculate your desired amount to invest in Retail Treasury Bonds.',
+
+        //ARTICLES
+        tooltipArticles: 'You can read articles about finances here. Just by clicking it you will be brought to the site of the article.',
         addSavingsGoal: 'Add Savings Goal',
         totalSavings: 'Total Savings',
         lastUsed2Hours: 'Last used: 2 Hours Ago',

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Avatar, Card, CardContent, Grid, Typography, Tooltip } from '@mui/material';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import UploadIcon from '@mui/icons-material/Upload';
 import { getLanguage } from '../../utils/getLanguage';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { formatPrice } from 'utils/format-price';
@@ -43,7 +43,7 @@ export const Expenses = (props) => {
                                     width: 56
                                 }}
                             >
-                                <AttachMoneyIcon />
+                                <UploadIcon />
                             </Avatar>
                         </Tooltip>
                     </Grid>

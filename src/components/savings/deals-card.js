@@ -1,12 +1,16 @@
-import { Box, Card, CardContent, Typography } from '@mui/material'
+import { Box, Card, CardContent, Typography, Tooltip } from '@mui/material'
 import React from 'react';
 
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 
 import { formatPrice } from 'utils/format-price'
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export default function DealsCard({iconName, savings}){
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+
     return (
         <Box sx={{ pt: 3, height: '100%' }}>
             <Card
@@ -25,17 +29,24 @@ export default function DealsCard({iconName, savings}){
                             <Icon name={iconName} color='primary' sx={{ fontSize: '100px' }} />
                         </Box>
                         <Box>
-                            <Typography align='center' color='textPrimary' gutterBottom variant='h5'>
-                                {savings.productName}
-                            </Typography>
-                            <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
-                                {formatPrice(savings.total, true)}
-                            </Typography>
+                            <Tooltip title={getLanguage(currentLanguage).tooltipSavingsProductName}>
+                                <Typography align='center' color='textPrimary' gutterBottom variant='h5'>
+                                    {savings.productName}
+                                </Typography>
+                            </Tooltip>
+
+                            <Tooltip title={getLanguage(currentLanguage).tooltipSavingsTotal}>
+                                <Typography align='center' color='textPrimary' gutterBottom variant='h6'>
+                                    {formatPrice(savings.total, true)}
+                                </Typography>
+                            </Tooltip>
 
                             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 1 }}>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='body1'>
-                                    {savings.percent}%
-                                </Typography>
+                                <Tooltip title={getLanguage(currentLanguage).tooltipSavingsPercent}>
+                                    <Typography align='center' color='textPrimary' gutterBottom variant='body1'>
+                                        {savings.percent}%
+                                    </Typography>
+                                </Tooltip>
                                 <Icon
                                     name={ICON_NAMES.SYSTEM_ICONS.UP}
                                     color='primary'

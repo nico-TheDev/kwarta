@@ -1,15 +1,20 @@
 import Head from 'next/head'
-import { Box, Container, Grid, Pagination, Typography } from '@mui/material'
+import { Box, Container, Grid, Pagination, Typography, Tooltip } from '@mui/material'
 import { DashboardLayout } from '../components/dashboard-layout'
 import { BondsCard } from 'components/bonds/bonds-card'
 import { useAuthStore } from 'stores/useAuthStore';
 import { useEffect, useState } from 'react';
 import DashboardTour from 'components/tours/DashboardTour';
 
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
+
 const Page = () => {
     const getTourProgress = useAuthStore((state) => state.getTourProgress);
     const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
     const [showTour, setShowTour] = useState(false);
+
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const tourSteps = [
         {
@@ -69,9 +74,11 @@ const Page = () => {
                             m: -1
                         }}
                     >
-                        <Typography sx={{ m: 1 }} variant='h4' className='bonds_step_one'>
-                            Bonds
-                        </Typography>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipBonds}>
+                            <Typography sx={{ m: 1 }} variant='h4' className='bonds_step_one'>
+                                Bonds
+                            </Typography>
+                        </Tooltip>
                     </Box>
                     <Box sx={{ pt: 1 }}>
                         <BondsCard />

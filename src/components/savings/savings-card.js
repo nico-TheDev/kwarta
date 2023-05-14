@@ -10,7 +10,9 @@ import InfoIcon from '@mui/icons-material/Info';
 import { Icon } from 'components/shared/Icon';
 import { ICON_NAMES } from 'constants/constant';
 import { formatPrice } from 'utils/format-price';
+
 import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 import DealsCard from './deals-card';
 
@@ -32,6 +34,8 @@ export const SavingsCard = ({ ...rest }) => {
     const [savings, setSavings] = useState('');
 
     const accounts = useAccountStore((state) => state.accounts);
+
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const handleAccountChange = (e) => {
         const currentAccountId = e.target.value;
@@ -96,16 +100,13 @@ export const SavingsCard = ({ ...rest }) => {
                         <InfoIcon fontSize='inherit' />
                     </Box>
                     <Typography align='center' sx={{ m: 1, textAlign: 'center' }} variant='body1'>
-                        Saving helps individuals build wealth over time. By consistently setting aside a portion of
-                        their income, individuals can accumulate savings that can be used for larger purchases, such as
-                        a home or a car. <br></br>Over time, compound interest can help to increase the value of these
-                        savings, allowing individuals to achieve their financial goals faster.
+                        {getLanguage(currentLanguage).savingsIntroPart1} <br></br>{getLanguage(currentLanguage).savingsIntroPart2}
                     </Typography>
                 </Box>
 
                 <Box sx={{ py: 4, px: 4, mx: 'auto', width: '100%' }}>
                     <Typography align='center' sx={{ m: 1, textAlign: 'center', fontWeight: 'bold' }} variant='body1'>
-                        Select an account below which will be used for investing in savings.
+                        {getLanguage(currentLanguage).selectAccountSavings}
                     </Typography>
                     <Select
                         labelId='demo-simple-select-label'
@@ -137,8 +138,7 @@ export const SavingsCard = ({ ...rest }) => {
             {amount > 1999 ? (
                 <Box sx={{ pt: 3 }}>
                     <Typography align='center' sx={{ m: 1 }} variant='h6'>
-                        You have {formatPrice(amount, true)} in your selected bank account. You may apply for savings
-                        accounts in the given banks.
+                        {getLanguage(currentLanguage).amountSavingsPart1}{formatPrice(amount, true)}{getLanguage(currentLanguage).amountSavingsPart2}
                     </Typography>
                     <Box sx={{ pt: 3, flexGrow: 1 }}>
                         <Typography sx={{ m: 1 }} variant='h5'>
@@ -208,8 +208,7 @@ export const SavingsCard = ({ ...rest }) => {
             ) : (
                 <Box sx={{ pt: 3 }}>
                     <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
-                        Your selected account have insufficient maintaining balance. The minimum amount to invest in
-                        bonds is PHP 2,000.
+                        {getLanguage(currentLanguage).insufficientAmountSavings}
                     </Typography>
                 </Box>
             )}

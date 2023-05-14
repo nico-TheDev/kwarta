@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link';
-import { Box, Container, Grid, Pagination, Typography, Button } from '@mui/material'
+import { Box, Container, Grid, Pagination, Typography, Button, Tooltip } from '@mui/material'
 import { useEffect, useState } from 'react';
 import { DashboardLayout } from '../../components/dashboard-layout';
 import { SavingsCard } from 'components/savings/savings-card';
@@ -10,10 +10,15 @@ import { ICON_NAMES } from 'constants/constant';
 import { useAuthStore } from 'stores/useAuthStore';
 import DashboardTour from 'components/tours/DashboardTour';
 
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
+
 const Page = () => {
     const getTourProgress = useAuthStore((state) => state.getTourProgress);
     const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
     const [showTour, setShowTour] = useState(false);
+
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const tourSteps = [
         {
@@ -72,9 +77,11 @@ const Page = () => {
                             m: -1
                         }}
                     >
-                        <Typography sx={{ m: 1 }} variant='h4' className='savings_step_one'>
-                            Savings
-                        </Typography>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipSavings}>
+                            <Typography sx={{ m: 1 }} variant='h4' className='savings_step_one'>
+                                Savings
+                            </Typography>
+                        </Tooltip>
                         <Link href='/offers' passHref>
                             <Button
                                 variant='outlined'
@@ -90,6 +97,19 @@ const Page = () => {
                     </Box>
                     <Box sx={{ pt: 3 }}>
                         <SavingsCard />
+                    </Box>
+                    <Box sx={{ pt: 3 }}>
+                        <Typography
+                            sx={{ m: 1, textAlign: 'center' }}
+                            color='textSecondary'
+                            variant='caption'
+                        >
+                            DISCLAIMER: This calculation is for illustration purposes only and should not be
+                            able to taken as professional advice to invest in these saving accounts. It should not be used
+                            as the sole basis to measure returns in said securities. Interest rates and amounts are subject
+                            to change. For more information, you can go to the bank's website or go to the nearest branch
+                            in your area.
+                        </Typography>
                     </Box>
                 </Container>
             </Box>
