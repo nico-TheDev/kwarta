@@ -59,6 +59,14 @@ const Page = () => {
             question: 'What is your socioeconomic standing? \n (Ito ang iyong buwanang sweldo.)',
             choices: [
                 {
+                    id: 8,
+                    choice: 'H',
+                    value: '8',
+                    text: `I don't earn money / currently a student`,
+                    min: 0,
+                    max: 0
+                },
+                {
                     id: 1,
                     choice: 'A',
                     value: '1',
@@ -121,7 +129,8 @@ const Page = () => {
         {
             id: 2,
             source: '/static/images/svg/survey-2.svg',
-            question: 'Choose categories you prioritize when spending money \n (Select 3) \n (Ito ang mga kategoryang binibigyan mong prayoridad sa paggastos ng pera.)',
+            question:
+                'Choose categories you prioritize when spending money \n (Select 3) \n (Ito ang mga kategoryang binibigyan mong prayoridad sa paggastos ng pera.)',
             choices: categories,
             count: 1
         },
@@ -129,7 +138,8 @@ const Page = () => {
         {
             id: 3,
             source: '/static/images/svg/survey-3.svg',
-            question: 'Are you the breadwinner in your family ? \n (Ikaw ang pangunahing nagtatrabaho para suportahan ang iyong pamilya.)',
+            question:
+                'Are you the breadwinner in your family ? \n (Ikaw ang pangunahing nagtatrabaho para suportahan ang iyong pamilya.)',
             choices: [
                 {
                     id: 1,
@@ -172,9 +182,9 @@ const Page = () => {
             questionOne: firstAnswer,
             questionTwo: secondAnswer,
             questionThree: thirdAnswer
+        }).then((_) => {
+            router.push('/');
         });
-
-        router.push('/');
     };
 
     return (

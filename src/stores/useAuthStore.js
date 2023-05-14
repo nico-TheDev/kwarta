@@ -91,7 +91,7 @@ const AuthStore = (set, get) => ({
             }
 
             const createdUserResponse = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password); //creates user
-            console.log(newUser);
+            // console.log(newUser);
 
             await updateProfile(auth.currentUser, {
                 displayName: newUser.firstName + ' ' + newUser.lastName, //updates displayName
@@ -135,6 +135,8 @@ const AuthStore = (set, get) => ({
 
             toast.success('User Successfully Registered.');
             toast.dismiss(loader);
+
+            return true;
         } catch (err) {
             console.log(err);
             toast.error('Something Went Wrong', err.message);
@@ -335,7 +337,7 @@ const AuthStore = (set, get) => ({
     manageSurvey: async (answers) => {
         const user = get().authState.user;
 
-        const userRef = doc(db, 'users', user?.uid);
+        const userRef = doc(db, 'users', user.uid);
         try {
             await updateDoc(userRef, {
                 hasAnswered: true,
