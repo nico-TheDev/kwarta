@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import { Box, Container, Grid, Pagination, Stack, Typography, Checkbox } from '@mui/material';
+import { Box, Container, Grid, Pagination, Stack, Typography, Checkbox, Tooltip } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import articles from '../data/articles';
@@ -95,9 +95,11 @@ const Page = () => {
                             m: -1
                         }}
                     >
-                        <Typography sx={{ m: 1 }} variant='h4' className='articles_step_one'>
-                            {getLanguage(currentLanguage).articles}
-                        </Typography>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipArticles}>
+                            <Typography sx={{ m: 1 }} variant='h4' className='articles_step_one'>
+                                {getLanguage(currentLanguage).articles}
+                            </Typography>
+                        </Tooltip>
                     </Box>
                     <Box sx={{ pt: 2 }} className='articles_step_two'>
                         <Stack direction='row' spacing={1}>

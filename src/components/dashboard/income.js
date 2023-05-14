@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Card, CardContent, Grid, Typography, Tooltip } from '@mui/material';
-import PeopleIcon from '@mui/icons-material/PeopleOutlined';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import { getLanguage } from 'utils/getLanguage';
 
 import { useTransactionStore } from 'stores/useTransactionStore';
@@ -44,7 +44,7 @@ export const Income = (props) => {
                                     width: 56
                                 }}
                             >
-                                <PeopleIcon />
+                                <GetAppIcon />
                             </Avatar>
                         </Tooltip>
                     </Grid>

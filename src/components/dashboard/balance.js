@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Avatar, Box, Card, CardContent, Grid, Typography, Tooltip } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import MoneyIcon from '@mui/icons-material/AttachMoney';
+import BalanceIcon from '@mui/icons-material/Balance';
 import { getLanguage } from 'utils/getLanguage';
 import { useAccountStore } from 'stores/useAccountStore';
 import { formatPrice } from 'utils/format-price';
@@ -45,7 +46,7 @@ export const Balance = (props) => {
                                     width: 56
                                 }}
                             >
-                                <MoneyIcon />
+                                <BalanceIcon />
                             </Avatar>
                         </Tooltip>
 
