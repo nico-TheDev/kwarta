@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Grid, Typography, Tooltip } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import MoneyIcon from '@mui/icons-material/AttachMoney';
+import BalanceIcon from '@mui/icons-material/Balance';
 import { getLanguage } from 'utils/getLanguage';
 import { useAccountStore } from 'stores/useAccountStore';
 import { formatPrice } from 'utils/format-price';
@@ -35,15 +36,17 @@ export const Balance = (props) => {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Avatar
-                            sx={{
-                                backgroundColor: 'error.main',
-                                height: 56,
-                                width: 56
-                            }}
-                        >
-                            <MoneyIcon />
-                        </Avatar>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipTotalBalance}>
+                            <Avatar
+                                sx={{
+                                    backgroundColor: 'error.main',
+                                    height: 56,
+                                    width: 56
+                                }}
+                            >
+                                <BalanceIcon />
+                            </Avatar>
+                        </Tooltip>
                     </Grid>
                 </Grid>
                 {/* <Box

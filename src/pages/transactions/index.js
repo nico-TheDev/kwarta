@@ -10,6 +10,7 @@ import {
     MenuItem,
     Select,
     Switch,
+    Tooltip,
     Typography
 } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -23,8 +24,9 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 import useGetUserTransactions from 'hooks/useGetUserTransactions';
 import { useAuthStore } from 'stores/useAuthStore';
 import TransactionCardList from 'components/shared/TransactionCardList';
-import { getLanguage } from 'utils/getLanguage'
+import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import DashboardTour from 'components/tours/DashboardTour';
 
 const MenuProps = {
     PaperProps: {
@@ -52,6 +54,9 @@ const Page = () => {
     const accounts = useAccountStore((state) => state.accounts);
     const user = useAuthStore((state) => state.authState.user);
     const allTransactions = useTransactionStore((state) => state.transactions);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+
     const [filterAccount, setFilterAccount] = useState('all');
     const [filterType, setFilterType] = useState('year');
     const [selectedCategory, setSelectedCategory] = useState('all');
@@ -59,8 +64,60 @@ const Page = () => {
     const [historyData, setHistoryData] = useState([]);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories();
+    const [showTour, setShowTour] = useState(getTourProgress('accounts').isDone);
 
-    useGetUserTransactions(user.uid);
+    useEffect(() => {
+        setShowTour(getTourProgress('transactions').isDone);
+    }, []);
+
+    const tourSteps = [
+        {
+            target: '.transactions_step_one',
+            title: 'Transaction Overview',
+            content: 'Displays all the transactions you made while using the application',
+            disableBeacon: true,
+            placement: 'bottom'
+        },
+        {
+            target: '.transactions_step_two',
+            title: 'Total',
+            content: 'Sum of all the transactions currently displayed on the list',
+            placement: 'bottom'
+        },
+        {
+            target: '.transactions_step_three',
+            title: 'Type',
+            content: 'used for sorting the transactions into expense or category',
+            disableBeacon: true,
+            placement: 'bottom'
+        },
+        {
+            target: '.transactions_step_four',
+            title: 'Sort by Category',
+            content: 'used to sort the transactions by categories.',
+            placement: 'bottom'
+        },
+        {
+            target: '.transactions_step_five',
+            title: 'Sort by Account',
+            content: 'used to sort the transactions by accounts used for that transaction.',
+            placement: 'bottom'
+        },
+        {
+            target: '.transactions_step_six',
+            title: 'Sort by Time',
+            content: 'used to sort the transactions by year, month or day.',
+            placement: 'bottom'
+        },
+        {
+            target: '.transactions_step_seven',
+            title: 'List of Transactions',
+            content: 'Displays all the financial transactions and their amount',
+            placement: 'bottom'
+        }
+    ];
+
+    useGetUserTransactions(user?.uid);
 
     const handleAccountChange = (e) => {
         const currentAccountId = e.target.value;
@@ -210,6 +267,13 @@ const Page = () => {
             <Head>
                 <title>Transactions | CASH</title>
             </Head>
+            {!showTour && (
+                <DashboardTour
+                    setShowTour={setShowTour}
+                    tourSteps={tourSteps}
+                    finishTour={() => manageTourProgress('transactions')}
+                />
+            )}
             <Box
                 component='main'
                 sx={{
@@ -218,24 +282,33 @@ const Page = () => {
                 }}
             >
                 <Container maxWidth='md'>
-                    <Typography
-                        variant='h3'
-                        mb={4}
-                        sx={{
-                            fontSize: { xs: 20, lg: 'auto' },
-                            textAlign: {
-                                xs: 'center',
-                                lg: 'initial'
-                            }
-                        }}
-                    >
-                        {getLanguage(currentLanguage).transactionOverview}
-                    </Typography>
-                    <Typography variant='h4' align='center' mb={4}>
-                        {formatPrice(total, true)}
-                    </Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipTransactionOverview}>
+                        <Typography
+                            className='transactions_step_one'
+                            variant='h3'
+                            mb={4}
+                            sx={{
+                                fontSize: { xs: 20 },
+                                textAlign: {
+                                    xs: 'center',
+                                    lg: 'initial'
+                                },
+                                width: 'max-content'
+                            }}
+                        >
+                            {getLanguage(currentLanguage).transactionOverview}
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipTransactionTotal}>
+                        <Typography variant='h4' align='center' mb={4} className='transactions_step_two'>
+                            {formatPrice(total, true)}
+                        </Typography>
+                    </Tooltip>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
+                    <Box
+                        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}
+                        className='transactions_step_three'
+                    >
                         <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
                         <Switch
                             checked={isExpense}
@@ -246,7 +319,7 @@ const Page = () => {
                     </Box>
 
                     <Box sx={{ display: { xs: 'grid', lg: 'flex' }, gap: 2, mb: 6 }}>
-                        <FormControl fullWidth>
+                        <FormControl fullWidth className='transactions_step_four'>
                             <InputLabel id='demo-simple-select-label'>
                                 {getLanguage(currentLanguage).chooseCategory}
                             </InputLabel>
@@ -275,7 +348,7 @@ const Page = () => {
                             </Select>
                         </FormControl>
 
-                        <FormControl fullWidth>
+                        <FormControl fullWidth className='transactions_step_five'>
                             <InputLabel id='demo-simple-select-label'>
                                 {getLanguage(currentLanguage).chooseAccount}
                             </InputLabel>
@@ -301,7 +374,7 @@ const Page = () => {
                                 })}
                             </Select>
                         </FormControl>
-                        <FormControl fullWidth>
+                        <FormControl fullWidth className='transactions_step_six'>
                             <InputLabel id='demo-simple-select-label'>{getLanguage(currentLanguage).filter}</InputLabel>
                             <Select
                                 labelId='demo-simple-select-label'
@@ -317,7 +390,7 @@ const Page = () => {
                         </FormControl>
                     </Box>
 
-                    <Box sx={{ display: 'grid', gap: 2 }}>
+                    <Box sx={{ display: 'grid', gap: 2 }} className='transactions_step_seven'>
                         {historyData.map((item) => (
                             <>
                                 <Typography variant='h4'>{item.title}</Typography>

@@ -13,7 +13,8 @@ import {
     TextField,
     FormHelperText,
     Button,
-    CircularProgress
+    CircularProgress,
+    Tooltip
 } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SavingsIcon from '@mui/icons-material/Savings';
@@ -26,6 +27,8 @@ import { useAccountStore } from 'stores/useAccountStore';
 import { formatPrice } from 'utils/format-price';
 import { grey } from '@mui/material/colors';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { useAuthStore } from 'stores/useAuthStore';
+import DashboardTour from 'components/tours/DashboardTour';
 
 const MenuProps = {
     PaperProps: {
@@ -76,6 +79,38 @@ const Page = () => {
 
     const [accountAmounts, setAccountAmounts] = useState(accounts.map((item) => item.account_amount));
 
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
+    const [showTour, setShowTour] = useState(false);
+
+    const tourSteps = [
+        {
+            target: '.investment_step_one',
+            title: 'Investments',
+            content:
+                'An investment is an asset or item acquired with the goal of generating income or appreciation. Appreciation refers to an increase in the value of an asset over time. When an individual purchases a good as an investment, the intent is not to consume the good but rather to use it in the future to create wealth. ',
+            disableBeacon: true,
+            placement: 'bottom'
+        },
+        {
+            target: '.investment_step_two',
+            title: 'Recommendations',
+            content: 'Displays the recommendations for investments depending on your financial accounts.',
+            placement: 'bottom'
+        },
+        {
+            target: '.investment_step_three',
+            title: 'Investment Calculator',
+            content: `Displays the possible investment result based on the variables you're going to input`,
+            placement: 'bottom'
+        }
+    ];
+
+    useEffect(() => {
+        const currentTour = getTourProgress('investment');
+        setShowTour(currentTour.isDone);
+    }, []);
+
     const handleSubmit = async () => {
         setProjectedData('');
         const loader = toast.loading('Loading...');
@@ -123,7 +158,7 @@ const Page = () => {
         }
     };
 
-    console.log(Math.max(...accountAmounts));
+    // console.log(Math.max(...accountAmounts));
 
     useEffect(() => {
         const getSuggestions = async () => {
@@ -233,7 +268,9 @@ const Page = () => {
                     <Box sx={{ fontSize: 50 }}>
                         <AttachMoneyIcon fontSize='inherit' color='success' />
                     </Box>
-                    <Typography variant='body1'>Low Risk Fund</Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipLowRisk}>
+                        <Typography variant='body1'>Low Risk Fund</Typography>
+                    </Tooltip>
                     <Typography variant='h6'>{suggestionData.lowRiskFund}</Typography>
                 </Paper>
             </Grid>
@@ -242,7 +279,9 @@ const Page = () => {
                     <Box sx={{ fontSize: 50 }}>
                         <AttachMoneyIcon fontSize='inherit' color='warning' />
                     </Box>
-                    <Typography variant='body1'>Moderate Risk Fund</Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipMedRisk}>
+                        <Typography variant='body1'>Moderate Risk Fund</Typography>
+                    </Tooltip>
                     <Typography variant='h6'>{suggestionData.moderateRiskFund}</Typography>
                 </Paper>
             </Grid>
@@ -251,7 +290,9 @@ const Page = () => {
                     <Box sx={{ fontSize: 50 }}>
                         <AttachMoneyIcon fontSize='inherit' color='error' />
                     </Box>
-                    <Typography variant='body1'>Aggressive Risk Fund</Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipHighRisk}>
+                        <Typography variant='body1'>Aggressive Risk Fund</Typography>
+                    </Tooltip>
                     <Typography variant='h6'>{suggestionData.aggressiveRiskFund}</Typography>
                 </Paper>
             </Grid>
@@ -259,6 +300,13 @@ const Page = () => {
     );
     return (
         <>
+            {!showTour && (
+                <DashboardTour
+                    setShowTour={setShowTour}
+                    tourSteps={tourSteps}
+                    finishTour={() => manageTourProgress('investment')}
+                />
+            )}
             <Head>
                 <title>Investments | CASH</title>
             </Head>
@@ -279,16 +327,25 @@ const Page = () => {
                             m: -1
                         }}
                     >
-                        <Typography sx={{ m: 1, mb: 4 }} variant='h4'>
-                            {getLanguage(currentLanguage).investment}
-                        </Typography>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipInvestment}>
+                            <Typography sx={{ m: 1, mb: 4 }} variant='h4' className='investment_step_one'>
+                                {getLanguage(currentLanguage).investment}
+                            </Typography>
+                        </Tooltip>
                     </Box>
 
                     <Typography variant='h6' mb={4}>
                         See how your money can grow over time.
                     </Typography>
 
-                    <Grid container spacing={2} mb={8} textAlign='center' justifyContent='center'>
+                    <Grid
+                        container
+                        spacing={2}
+                        mb={8}
+                        textAlign='center'
+                        justifyContent='center'
+                        className='investment_step_two'
+                    >
                         {!suggestionData ? (
                             <Grid>
                                 <CircularProgress />
@@ -302,7 +359,7 @@ const Page = () => {
                             <FixedSuggestions />
                         )}
                     </Grid>
-                    <Grid container spacing={2} justifyContent='center' mb={6}>
+                    <Grid container spacing={2} justifyContent='center' mb={6} className='investment_step_three'>
                         <Grid item xs={12} lg={3}>
                             <FormControl fullWidth>
                                 <TextField

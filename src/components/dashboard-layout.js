@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { styled } from '@mui/material/styles';
@@ -22,17 +22,26 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 export const DashboardLayout = (props) => {
     const { children } = props;
     const [open, setOpen] = useState(true);
+    const [showTour, setShowTour] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     const accounts = useAccountStore((state) => state.accounts);
     const transactions = useTransactionStore((state) => state.transactions);
+
+    useEffect(() => {
+        console.log({ showTour, transactions: transactions.length });
+        if (transactions.length === 0 || accounts.length === 0) {
+            setShowTour(true);
+        } else {
+            setShowTour(false);
+        }
+    }, [transactions.length, accounts.length]);
+
     return (
         <AuthGuard>
+            {showTour && <Tour open={open} handleClose={handleClose} setShowTour={setShowTour} />}
             <DashboardLayoutRoot>
-                {(transactions && transactions.length === 0) || accounts.length === 0 ? (
-                    <Tour open={open} handleClose={handleClose} />
-                ) : null}
                 <Box
                     sx={{
                         display: 'flex',

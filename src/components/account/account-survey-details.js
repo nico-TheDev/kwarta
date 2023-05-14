@@ -188,7 +188,7 @@ export const AccountSurveyDetails = (props) => {
     return (
         <form autoComplete='off' noValidate {...props}>
             <Card>
-                <CardHeader subheader='You can update your answers in the survey' title='Survey Details' />
+                <CardHeader subheader={getLanguage(currentLanguage).surveyDetailsHelper} title={getLanguage(currentLanguage).surveyDetails} />
                 <Divider />
                 <CardContent>
                     <Grid container spacing={3}>

@@ -1,6 +1,6 @@
-import {useEffect, useState} from 'react';
-import Head from 'next/head'
-import { Box, Container, Grid, Pagination, Stack, Typography, Checkbox } from '@mui/material';
+import { useEffect, useState } from 'react';
+import Head from 'next/head';
+import { Box, Container, Grid, Pagination, Stack, Typography, Checkbox, Tooltip } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import articles from '../data/articles';
@@ -8,13 +8,40 @@ import { getLanguage } from 'utils/getLanguage';
 import { ArticlesCard } from '../components/articles/articles-card';
 import { DashboardLayout } from '../components/dashboard-layout';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import DashboardTour from 'components/tours/DashboardTour';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const filters = ['General', 'Savings', 'Stocks', 'Investments', 'Bonds'];
 
 const Page = () => {
     const [filterValue, setFilterValue] = useState([]);
     const [articleList, setArticleList] = useState(articles);
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const [showTour, setShowTour] = useState(false);
+
+    useEffect(() => {
+        const currentTour = getTourProgress('articles');
+        setShowTour(currentTour.isDone);
+    }, []);
+
+    const tourSteps = [
+        {
+            target: '.articles_step_one',
+            title: 'Articles',
+            content:
+                'This tab displays all the articles about financial literacy, savings, general finance, stocks,investments and bonds.',
+            disableBeacon: true,
+            placement: 'bottom'
+        },
+        {
+            target: '.articles_step_two',
+            title: 'Article Sorter',
+            content: 'select each button to sort the article list by their genre',
+            placement: 'bottom'
+        }
+    ];
 
     const handleClick = (value) => {
         const copy = [...filterValue];
@@ -41,6 +68,13 @@ const Page = () => {
 
     return (
         <>
+            {!showTour && (
+                <DashboardTour
+                    setShowTour={setShowTour}
+                    tourSteps={tourSteps}
+                    finishTour={() => manageTourProgress('articles')}
+                />
+            )}
             <Head>
                 <title>Articles | CASH</title>
             </Head>
@@ -61,11 +95,13 @@ const Page = () => {
                             m: -1
                         }}
                     >
-                        <Typography sx={{ m: 1 }} variant='h4'>
-                            {getLanguage(currentLanguage).articles}
-                        </Typography>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipArticles}>
+                            <Typography sx={{ m: 1 }} variant='h4' className='articles_step_one'>
+                                {getLanguage(currentLanguage).articles}
+                            </Typography>
+                        </Tooltip>
                     </Box>
-                    <Box sx={{ pt: 2 }}>
+                    <Box sx={{ pt: 2 }} className='articles_step_two'>
                         <Stack direction='row' spacing={1}>
                             {filters.map((item) => (
                                 <Chip
@@ -102,6 +138,6 @@ const Page = () => {
     );
 };
 
-Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>
+Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
-export default Page
+export default Page;

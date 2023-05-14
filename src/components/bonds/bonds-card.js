@@ -16,7 +16,8 @@ import {
     FormHelperText,
     ListItemIcon,
     ListItemText,
-    Link
+    Link,
+    Tooltip
 } from '@mui/material'
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import { Icon } from 'components/shared/Icon';
@@ -25,6 +26,7 @@ import InfoIcon from '@mui/icons-material/Info';
 
 import { formatPrice } from 'utils/format-price';
 import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 import { useAccountStore } from 'stores/useAccountStore';
 
@@ -47,6 +49,8 @@ export const BondsCard = ({ ...rest }) => {
     const [bondReturn, setBondReturn] = useState('');
 
     const accounts = useAccountStore((state) => state.accounts);
+
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const data = [
         {
@@ -132,19 +136,15 @@ export const BondsCard = ({ ...rest }) => {
                         <InfoIcon fontSize='inherit' />
                     </Box>
                     <Typography align='center' sx={{ m: 1, textAlign: 'center' }} variant='body1'>
-                        Bonds are a type of investment that can offer several benefits to investors, including regular
-                        income payments and a relatively low-risk profile compared to other investments.
+                        {getLanguage(currentLanguage).bondsIntroPart1}
                     </Typography>
                     <Typography align='center' sx={{ m: 1, textAlign: 'center' }} variant='body1'>
-                        Bonds are essentially loans that investors make to governments, corporations, or other entities.
-                        In exchange for the loan, the issuer of the bond agrees to pay interest to the investor at a
-                        fixed rate over a specified period of time. At the end of the bond term, the investor receives
-                        the principal amount back.
+                        {getLanguage(currentLanguage).bondsIntroPart2}
                     </Typography>
                 </Box>
                 <Box sx={{ py: 4, px: 4, mx: 'auto' }}>
                     <Typography align='center' sx={{ m: 1, textAlign: 'center', fontWeight: 'bold' }} variant='body1'>
-                        Select an account below to to which will be used for investing to bonds.
+                        {getLanguage(currentLanguage).selectAccountBonds}
                     </Typography>
                     <Select
                         labelId='demo-simple-select-label'
@@ -154,6 +154,7 @@ export const BondsCard = ({ ...rest }) => {
                         onChange={handleAccountChange}
                         sx={{ display: 'flex', alignItems: 'center', maxWidth: 400, mx: 'auto' }}
                         MenuProps={MenuProps}
+                        className='bonds_step_two'
                     >
                         {accounts.map((account) => {
                             return (
@@ -174,7 +175,7 @@ export const BondsCard = ({ ...rest }) => {
             {amount > 4999 ? (
                 <Box sx={{ p: 1 }}>
                     <Typography align='center' sx={{ m: 1 }} variant='h6'>
-                        You have {formatPrice(amount, true)} in your selected bank account. You may invest in bonds.
+                        {getLanguage(currentLanguage).amountBondsPart1}{formatPrice(amount, true)}{getLanguage(currentLanguage).amountBondsPart2}
                     </Typography>
                     <Box sx={{ p: 1, mx: 'auto' }}>
                         <Card
@@ -190,14 +191,16 @@ export const BondsCard = ({ ...rest }) => {
                                 <Typography align='center' color='textPrimary' gutterBottom variant='h5'>
                                     {bonds.productName}
                                 </Typography>
-                                <Typography align='center' color='primary' gutterBottom variant='h4'>
-                                    {formatPrice(bonds.total, true)}
+                                <Tooltip title={getLanguage(currentLanguage).tooltipRTBTotal}>
+                                    <Typography align='center' color='primary' gutterBottom variant='h4'>
+                                        {formatPrice(bonds.total, true)}
+                                    </Typography>
+                                </Tooltip>
+                                <Typography align='center' color='textPrimary' gutterBottom variant='body2'>
+                                    {getLanguage(currentLanguage).timeReturnBonds}
                                 </Typography>
                                 <Typography align='center' color='textPrimary' gutterBottom variant='body2'>
-                                    Return after 5.5 years
-                                </Typography>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='body2'>
-                                    Calculated amount based on you selected account.
+                                    {getLanguage(currentLanguage).calculatedAmountBonds}
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -213,14 +216,16 @@ export const BondsCard = ({ ...rest }) => {
                         <Container maxWidth={false}>
                             <Paper sx={{ py: 4, px: 4, mx: 'auto' }}>
                                 <Box sx={{ p: 1 }}>
-                                    <Typography
-                                        sx={{ m: 1, textAlign: 'center' }}
-                                        color='textPrimary'
-                                        gutterBottom
-                                        variant='h5'
-                                    >
-                                        Retail Treasury Bonds Calculator
-                                    </Typography>
+                                    <Tooltip title={getLanguage(currentLanguage).tooltipRTBCalculator}>
+                                        <Typography
+                                            sx={{ m: 1, textAlign: 'center' }}
+                                            color='textPrimary'
+                                            gutterBottom
+                                            variant='h5'
+                                        >
+                                            Retail Treasury Bonds Calculator
+                                        </Typography>
+                                    </Tooltip>
                                 </Box>
                                 <Box
                                     sx={{
@@ -236,14 +241,15 @@ export const BondsCard = ({ ...rest }) => {
                                             <FormControl fullWidth>
                                                 <TextField
                                                     id='standard-basic'
-                                                    label='Initial Investment'
+                                                    label={getLanguage(currentLanguage).initialInvestment}
                                                     variant='outlined'
                                                     type='number'
                                                     value={initialDeposit}
                                                     onChange={(e) => setInitialDeposit(e.target.value)}
+                                                    className='bonds_step_three'
                                                 />
                                                 <FormHelperText>
-                                                    How much would you like to invest at first?
+                                                    {getLanguage(currentLanguage).bondsCalculatorHelperText}
                                                 </FormHelperText>
                                             </FormControl>
                                         </Grid>
@@ -259,10 +265,10 @@ export const BondsCard = ({ ...rest }) => {
                                         <Box sx={{ fontSize: 70 }}>
                                             <AccountBalanceIcon fontSize='inherit' color='primary' />
                                         </Box>
-                                        <Typography variant='body1'>Your Total Investment</Typography>
+                                        <Typography variant='body1'>{getLanguage(currentLanguage).totalBonds}</Typography>
                                         <Typography variant='h4'>{formatPrice(bondReturn, true)}</Typography>
                                         <Typography variant='body1'>
-                                            After 5.5 years, these could be the projected return of your investment
+                                            {getLanguage(currentLanguage).bondsTime}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -288,7 +294,7 @@ export const BondsCard = ({ ...rest }) => {
                     <Box sx={{ p: 3 }}>
                         <Paper sx={{ py: 8, px: 4 }}>
                             <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
-                                Why invest in Retail Treasury Bonds?
+                                {getLanguage(currentLanguage).whyInvestBonds}
                             </Typography>
                             <Box sx={{ p: 3 }}>
                                 <Grid container spacing={4} textAlign='center'>
@@ -366,7 +372,7 @@ export const BondsCard = ({ ...rest }) => {
                             </Box>
 
                             <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
-                                Where I can apply for investment in Retail Treasury Bonds?
+                                {getLanguage(currentLanguage).whereInvestBonds}
                             </Typography>
                             <Box sx={{ p: 3 }}>
                                 <Grid container spacing={4} textAlign='center'>
@@ -463,8 +469,7 @@ export const BondsCard = ({ ...rest }) => {
             ) : (
                 <Box sx={{ p: 3 }}>
                     <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
-                        Your selected account have insufficient maintaining balance. The minimum amount to invest in
-                        bonds is PHP 5,000.
+                        {getLanguage(currentLanguage).insufficientAmountBonds}
                     </Typography>
                 </Box>
             )}

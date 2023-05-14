@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid, Tooltip, Typography } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 
 import useGetUserTransactions from 'hooks/useGetUserTransactions';
@@ -10,9 +10,12 @@ import { ExpensesChart } from 'components/dashboard/expenses-chart';
 import { Cashflow } from 'components/dashboard/cashflow';
 import { IncomeChart } from 'components/dashboard/income-chart';
 import { useTransactionStore } from 'stores/useTransactionStore';
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const Page = () => {
     const transactions = useTransactionStore((state) => state.transactions);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const styles = {
         container: {
             width: {
@@ -42,8 +45,12 @@ const Page = () => {
                 <Container maxWidth={false}>
                     {transactions.length !== 0 ? (
                         <>
-                            <Typography variant='h3'>Cashflow</Typography>
-                            <Box sx={{ display: { md: 'flex', xs: 'block' } }}>
+                            <Tooltip title={getLanguage(currentLanguage).tooltipCashflow}>
+                                <Typography variant='h3' sx={{ width: 'max-content' }}>
+                                    {getLanguage(currentLanguage).cashflow}
+                                </Typography>
+                            </Tooltip>
+                            <Box sx={{ display: { md: 'flex', xs: 'block' }, gap: 2, mb: 2 }}>
                                 <ExpensesChart />
                                 <IncomeChart />
                             </Box>

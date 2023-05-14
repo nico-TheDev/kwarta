@@ -1,14 +1,17 @@
 import Head from 'next/head';
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Button, CircularProgress, Container, Grid, Paper, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Grid, Paper, Tooltip, Typography } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { DashboardLayout } from '../../components/dashboard-layout';
 import { formatPrice } from 'utils/format-price';
 import Link from 'next/link';
 import { useStocks } from 'hooks/swr/useStocks';
 import NewsPanel from 'components/news-panel';
-
+import { useAuthStore } from 'stores/useAuthStore';
+import DashboardTour from 'components/tours/DashboardTour';
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export async function getStaticProps(context) {
     const res = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/stocks');
@@ -40,6 +43,50 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
         }
     });
 
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
+    const [showTour, setShowTour] = useState(false);
+
+    const tourSteps = [
+        {
+            target: '.stocks_step_one',
+            title: 'Stocks',
+            content: `A stock, also known as equity, is a security that represents the ownership of a fraction of the issuing corporation. Units of stock are called "shares" which entitles the owner to a proportion of the corporation's assets and profits equal to how much stock they own.  `,
+            disableBeacon: true,
+            placement: 'bottom'
+        },
+        {
+            target: '.stocks_step_two',
+            title: 'Stocks List',
+            content: 'Displays the market prices for different stocks.',
+            placement: 'bottom'
+        },
+        {
+            target: '.stocks_step_three',
+            title: 'Latest News',
+            content: `Displays the latest news about the financial world.`,
+            placement: 'bottom'
+        },
+        {
+            target: '.stocks_step_four',
+            title: 'Stocks Recommendations',
+            content: `Displays the stocks that you might want to invest in`,
+            placement: 'bottom'
+        },
+        {
+            target: '.stocks_step_five',
+            title: 'Top Stocks',
+            content: `Displays the market movers in the stock market. `,
+            placement: 'bottom'
+        }
+    ];
+
+    useEffect(() => {
+        const currentTour = getTourProgress('stocks');
+        setShowTour(currentTour.isDone);
+    }, []);
+
     useEffect(() => {
         if (trendingStocksData) {
             localStorage.setItem('trendingData', JSON.stringify(trendingStocksData));
@@ -47,19 +94,15 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
         }
     }, []);
 
-    // if (stockData === null)
-    //     return (
-    //         <Grid
-    //             container
-    //             sx={{ width: '100%', height: '80vh', display: 'flex', alignItems: 'center' }}
-    //             justifyContent='center'
-    //         >
-    //             <CircularProgress size={100} />
-    //         </Grid>
-    //     );
-
     return (
         <>
+            {!showTour && (
+                <DashboardTour
+                    setShowTour={setShowTour}
+                    tourSteps={tourSteps}
+                    finishTour={() => manageTourProgress('stocks')}
+                />
+            )}
             <Head>
                 <title>Stocks |</title>
             </Head>
@@ -71,7 +114,7 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
                 }}
             >
                 <Container maxWidth='lg'>
-                    <Typography variant='h4' mb={3}>
+                    <Typography variant='h4' mb={3} className='stocks_step_one'>
                         Stocks
                         {/* <Typography variant='body1' sx={{ display: 'block' }}>
                             View the condition of the Stock Market
@@ -79,17 +122,13 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
                     </Typography>
 
                     <Typography variant='body1' mb={2} sx={{ textIndent: 50 }}>
-                        A stock, also known as equity, is a security that represents the ownership of a fraction of the
-                        issuing corporation. Units of stock are called "shares" which entitles the owner to a proportion
-                        of the corporation's assets and profits equal to how much stock they own.
+                        {getLanguage(currentLanguage).stocksDescriptionOne}
                     </Typography>
                     <Typography variant='body1' sx={{ textIndent: 50, mb: 5 }}>
-                        Stocks are bought and sold predominantly on stock exchanges and are the foundation of many
-                        individual investors' portfolios. Stock trades have to conform to government regulations meant
-                        to protect investors from fraudulent practices.
+                        {getLanguage(currentLanguage).stocksDescriptionTwo}
                     </Typography>
                     <Grid container spacing={3} mb={4}>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} className='stocks_step_two'>
                             <iframe
                                 src='https://www.pesobility.com/stock?sort=prevYrCashDivPerc'
                                 frameborder='1'
@@ -99,14 +138,18 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
                         </Grid>
                     </Grid>
 
-                    <Box mb={4}>
+                    <Box mb={4} className='stocks_step_three'>
                         <NewsPanel />
                     </Box>
 
                     {/* SUGGESTIONS */}
                     <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Typography variant='h4'>You might want to invest in</Typography>
+                        <Grid item xs={12} className='stocks_step_four'>
+                            <Tooltip title={getLanguage(currentLanguage).tooltipStocksSuggestion}>
+                                <Typography variant='h4' sx={{ width: 'max-content' }}>
+                                    {getLanguage(currentLanguage).stockSuggestion}
+                                </Typography>
+                            </Tooltip>
                         </Grid>
 
                         {trendingStocks ? (
@@ -152,8 +195,12 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
                     </Grid>
                     {/* MARKET MOVERS */}
                     <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Typography variant='h4'>Top Market Movers</Typography>
+                        <Grid item xs={12} className='stocks_step_five'>
+                            <Tooltip title={getLanguage(currentLanguage).tooltipMarketMovers}>
+                                <Typography variant='h4' sx={{ width: 'max-content' }}>
+                                    {getLanguage(currentLanguage).stockMarketMovers}
+                                </Typography>
+                            </Tooltip>
                         </Grid>
 
                         {marketMovers ? (

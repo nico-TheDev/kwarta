@@ -9,13 +9,54 @@ import { getLanguage } from 'utils/getLanguage'
 
 import useSortCategories from 'hooks/useSortCategories';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import DashboardTour from 'components/tours/DashboardTour';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const Page = () => {
     const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories();
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const [showTour, setShowTour] = useState(false);
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
+
+    useEffect(() => {
+        const currentTour = getTourProgress('articles');
+        setShowTour(currentTour.isDone);
+    }, []);
+
+    const tourSteps = [
+        {
+            target: '.categories_step_one',
+            title: 'Categories',
+            content:
+                'This tab displays all categories for your transactions. Each transaction can be categorized to a  category. Categories can be created, updated and deleted.',
+            disableBeacon: true,
+            placement: 'bottom'
+        },
+        {
+            target: '.categories_step_two',
+            title: 'Add Category Button',
+            content: 'Used to create new category if existing categories do not fit your needs',
+            placement: 'bottom'
+        },
+        {
+            target: '.categories_step_three',
+            title: 'Sort By Type',
+            content:
+                'used to sort categories into expense or income. Categories can be classified as an expense or an income.',
+            placement: 'bottom'
+        }
+    ];
 
     return (
         <>
+            {!showTour && (
+                <DashboardTour
+                    setShowTour={setShowTour}
+                    tourSteps={tourSteps}
+                    finishTour={() => manageTourProgress('categories')}
+                />
+            )}
             <Head>
                 <title>Categories | CASH</title>
             </Head>
@@ -34,6 +75,7 @@ const Page = () => {
                             checked={isExpense}
                             onChange={handleExpense}
                             inputProps={{ 'aria-label': 'controlled' }}
+                            className='categories_step_three'
                         />
                         <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
                     </Box>

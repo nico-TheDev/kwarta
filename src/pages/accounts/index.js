@@ -9,9 +9,15 @@ import { AccountCard } from '../../components/accounts/account-card';
 import { DashboardLayout } from '../../components/dashboard-layout';
 
 import { useAccountStore } from 'stores/useAccountStore';
+import DashboardTour from 'components/tours/DashboardTour';
+import { useState, useEffect } from 'react';
+import { useAuthStore } from 'stores/useAuthStore';
 
 const Page = () => {
     const accounts = useAccountStore((state) => state.accounts);
+    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
+    const getTourProgress = useAuthStore((state) => state.getTourProgress);
+
     const styles = {
         container: {
             width: {
@@ -26,6 +32,46 @@ const Page = () => {
             p: 2
         }
     };
+    const [showTour, setShowTour] = useState(getTourProgress('accounts').isDone);
+
+    useEffect(() => {
+        setShowTour(getTourProgress('accounts').isDone);
+    }, []);
+
+    const tourSteps = [
+        {
+            target: '.accounts_step_one',
+            title: 'Accounts',
+            content: 'This tab shows all the financial accounts ',
+            disableBeacon: true,
+            placement: 'bottom'
+        },
+        {
+            target: '.accounts_step_two',
+            title: 'Add Account ',
+            content: 'use this button to create new financial account.',
+            placement: 'bottom'
+        },
+        {
+            target: '.accounts_step_three',
+            title: 'Transfer history',
+            content: 'Used for checking the history of transfers between financial accounts.',
+            disableBeacon: true,
+            placement: 'bottom'
+        },
+        {
+            target: '.accounts_step_four',
+            title: 'Total Balance',
+            content: 'The sum of all financial accounts you created.',
+            placement: 'bottom'
+        },
+        {
+            target: '.accounts_step_five',
+            title: 'List of Accounts',
+            content: 'Displays all the financial accounts you created and their current balance.',
+            placement: 'bottom'
+        }
+    ];
 
     return (
         <>
@@ -40,6 +86,13 @@ const Page = () => {
                 }}
             >
                 <Container maxWidth={false}>
+                    {!showTour && (
+                        <DashboardTour
+                            setShowTour={setShowTour}
+                            tourSteps={tourSteps}
+                            finishTour={() => manageTourProgress('accounts')}
+                        />
+                    )}
                     <AccountHead />
                     {accounts.length === 0 ? (
                         <Box sx={{ ...styles.container, alignContent: 'center', mt: 10 }}>
@@ -55,7 +108,7 @@ const Page = () => {
                         </Box>
                     ) : (
                         <Box sx={{ pt: 3 }}>
-                            <Grid container spacing={3}>
+                            <Grid container spacing={3} className='accounts_step_five'>
                                 {accounts.map((account) => (
                                     <Grid item key={account.id} lg={4} md={6} xs={12}>
                                         <AccountCard account={account} />

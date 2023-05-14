@@ -15,6 +15,7 @@ import TimelineIcon from '@mui/icons-material/Timeline'
 import CategoryIcon from '@mui/icons-material/Category'
 import StocksIcon from '@mui/icons-material/StackedBarChart';
 import PaidIcon from '@mui/icons-material/Paid';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
 import { Logo } from './logo';
 import { NavItem } from './nav-item';
 import { CircularProgressWithLabel } from './circular-progress-with-label';
@@ -58,7 +59,7 @@ export const DashboardSidebar = (props) => {
         },
         {
             href: '/bonds',
-            icon: <SavingsIcon fontSize='small' />,
+            icon: <RequestPageIcon fontSize='small' />,
             title: 'Bonds'
         },
         {

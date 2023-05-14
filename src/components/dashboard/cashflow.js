@@ -1,5 +1,5 @@
 import { Bar } from 'react-chartjs-2';
-import { Box, Button, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Divider, Typography, useTheme, Tooltip } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { getLanguage } from 'utils/getLanguage';
@@ -181,17 +181,21 @@ export const Cashflow = (props) => {
 
     return (
         <Card {...props}>
-            <CardHeader title={getLanguage(currentLanguage).cashflow} />
+            <Tooltip title={getLanguage(currentLanguage).tooltipCashflowGraph}>
+                <CardHeader title={getLanguage(currentLanguage).cashflow} />
+            </Tooltip>
             <Divider />
             <CardContent>
-                <Box
-                    sx={{
-                        height: 400,
-                        position: 'relative'
-                    }}
-                >
-                    <Bar data={data} options={options} />
-                </Box>
+                <Tooltip title={getLanguage(currentLanguage).tooltipCashflowGraph}>
+                    <Box
+                        sx={{
+                            height: 400,
+                            position: 'relative'
+                        }}
+                    >
+                        <Bar data={data} options={options} />
+                    </Box>
+                </Tooltip>
             </CardContent>
             <Divider />
             <Box

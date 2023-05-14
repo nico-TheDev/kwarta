@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Box, Button, Card, CardContent, TextField, InputAdornment, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, TextField, InputAdornment, SvgIcon, Typography, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { getLanguage } from 'utils/getLanguage';
 import { formatPrice } from 'utils/format-price';
@@ -42,19 +42,22 @@ export const AccountHead = (props) => {
                         m: -1
                     }}
                 >
-                    <Typography
-                        sx={{
-                            m: 1,
-                            textAlign: 'center',
-                            width: {
-                                xs: '100%',
-                                lg: 'auto'
-                            }
-                        }}
-                        variant='h4'
-                    >
-                        {getLanguage(currentLanguage).accounts}
-                    </Typography>
+                    <Tooltip title={getLanguage(currentLanguage).tooltipAccounts}>
+                        <Typography
+                            className='accounts_step_one'
+                            sx={{
+                                m: 1,
+                                textAlign: 'center',
+                                width: {
+                                    xs: '100%',
+                                    lg: 'auto'
+                                }
+                            }}
+                            variant='h4'
+                        >
+                            {getLanguage(currentLanguage).accounts}
+                        </Typography>
+                    </Tooltip>
                     <Box
                         sx={{
                             width: {
@@ -77,6 +80,7 @@ export const AccountHead = (props) => {
                                 <Icon name={ICON_NAMES.SYSTEM_ICONS.ADD_ACCOUNT} color='#FFFFFF' fontSize='small' />
                             }
                             sx={{ mr: 1 }}
+                            className='accounts_step_two'
                         >
                             {getLanguage(currentLanguage).addAccount}
                         </Button>
@@ -87,6 +91,7 @@ export const AccountHead = (props) => {
                                     <Icon name={ICON_NAMES.SYSTEM_ICONS.HISTORY} color='#FFFFFF' fontSize='small' />
                                 }
                                 sx={{ mr: 1 }}
+                                className='accounts_step_three'
                             >
                                 Transfer History
                             </Button>
@@ -97,8 +102,12 @@ export const AccountHead = (props) => {
                     <Box sx={{ mt: 3 }}>
                         <Card elevation={5}>
                             <CardContent>
-                                <Box sx={{ textAlign: 'center' }}>
-                                    <Typography variant='h3'>{getLanguage(currentLanguage).totalBalance}</Typography>
+                                <Box sx={{ textAlign: 'center' }} className='accounts_step_four'>
+                                    <Tooltip title={getLanguage(currentLanguage).tooltipAccountBalance}>
+                                        <Typography variant='h3'>
+                                            {getLanguage(currentLanguage).totalBalance}
+                                        </Typography>
+                                    </Tooltip>
                                     <Typography variant='h3' color='primary.dark'>
                                         {formatPrice(total, true)}
                                     </Typography>

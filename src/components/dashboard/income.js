@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material';
-import PeopleIcon from '@mui/icons-material/PeopleOutlined';
+import { Avatar, Box, Card, CardContent, Grid, Typography, Tooltip } from '@mui/material';
+import GetAppIcon from '@mui/icons-material/GetApp';
 import { getLanguage } from 'utils/getLanguage';
 
 import { useTransactionStore } from 'stores/useTransactionStore';
@@ -36,15 +36,17 @@ export const Income = (props) => {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Avatar
-                            sx={{
-                                backgroundColor: 'success.main',
-                                height: 56,
-                                width: 56
-                            }}
-                        >
-                            <PeopleIcon />
-                        </Avatar>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipTotalIncome}>
+                            <Avatar
+                                sx={{
+                                    backgroundColor: 'success.main',
+                                    height: 56,
+                                    width: 56
+                                }}
+                            >
+                                <GetAppIcon />
+                            </Avatar>
+                        </Tooltip>
                     </Grid>
                 </Grid>
             </CardContent>
