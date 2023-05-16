@@ -129,14 +129,12 @@ const AuthStore = (set, get) => ({
                     },
                     isAuthenticated: true,
                     isLoading: false,
-                    ...get().authState
+                    tourProgress
                 }
             });
 
             toast.success('User Successfully Registered.');
             toast.dismiss(loader);
-
-            return true;
         } catch (err) {
             console.log(err);
             toast.error('Something Went Wrong', err.message);
@@ -334,10 +332,8 @@ const AuthStore = (set, get) => ({
             }
         });
     },
-    manageSurvey: async (answers) => {
-        const user = get().authState.user;
-
-        const userRef = doc(db, 'users', user.uid);
+    manageSurvey: async (answers, uid) => {
+        const userRef = doc(db, 'users', uid);
         try {
             await updateDoc(userRef, {
                 hasAnswered: true,

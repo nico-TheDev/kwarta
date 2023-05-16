@@ -49,7 +49,7 @@ const Page = () => {
     const [questionOne, setQuestionOne] = useState('');
     const [questionTwo, setQuestionTwo] = useState([]);
     const [questionThree, setQuestionThree] = useState('');
-
+    const user = useAuthStore((state) => state.authState.user);
     const manageSurvey = useAuthStore((state) => state.manageSurvey);
 
     const surveyList = [
@@ -178,11 +178,14 @@ const Page = () => {
             if (found) secondAnswer.push(found);
         });
 
-        manageSurvey({
-            questionOne: firstAnswer,
-            questionTwo: secondAnswer,
-            questionThree: thirdAnswer
-        }).then((_) => {
+        manageSurvey(
+            {
+                questionOne: firstAnswer,
+                questionTwo: secondAnswer,
+                questionThree: thirdAnswer
+            },
+            user.uid
+        ).then((_) => {
             router.push('/');
         });
     };
