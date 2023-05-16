@@ -17,6 +17,10 @@ import { db, storage } from '../../firebase.config';
 import { deleteObject, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import toast from 'react-hot-toast';
 
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 const tourProgress = [
     {
         page: 'dashboard',
@@ -418,7 +422,7 @@ const AuthStore = (set, get) => ({
                 tourProgress: editedTour
             });
 
-            toast.success(`${tour} tutorial finished`);
+            toast.success(`${capitalizeFirstLetter(tour)} tutorial finished`);
 
             set({
                 authState: {
