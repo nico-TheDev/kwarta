@@ -145,7 +145,7 @@ const Page = ({ newsdata }) => {
 
     return (
         <>
-            {showTour && (
+            {transactions.length !== 0 && !showTour && (
                 <DashboardTour
                     setShowTour={setShowTour}
                     tourSteps={tourSteps}

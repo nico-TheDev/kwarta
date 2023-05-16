@@ -86,7 +86,7 @@ const Page = () => {
                 }}
             >
                 <Container maxWidth={false}>
-                    {!showTour && (
+                    {accounts.length !== 0 && !showTour && (
                         <DashboardTour
                             setShowTour={setShowTour}
                             tourSteps={tourSteps}

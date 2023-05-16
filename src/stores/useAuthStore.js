@@ -91,7 +91,7 @@ const AuthStore = (set, get) => ({
             }
 
             const createdUserResponse = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password); //creates user
-            console.log(newUser);
+            // console.log(newUser);
 
             await updateProfile(auth.currentUser, {
                 displayName: newUser.firstName + ' ' + newUser.lastName, //updates displayName
@@ -129,7 +129,7 @@ const AuthStore = (set, get) => ({
                     },
                     isAuthenticated: true,
                     isLoading: false,
-                    ...get().authState
+                    tourProgress
                 }
             });
 
@@ -332,10 +332,8 @@ const AuthStore = (set, get) => ({
             }
         });
     },
-    manageSurvey: async (answers) => {
-        const user = get().authState.user;
-
-        const userRef = doc(db, 'users', user?.uid);
+    manageSurvey: async (answers, uid) => {
+        const userRef = doc(db, 'users', uid);
         try {
             await updateDoc(userRef, {
                 hasAnswered: true,
