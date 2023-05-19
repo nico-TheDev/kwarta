@@ -27,6 +27,8 @@ const App = (props) => {
 
     const { user, isAuthenticated } = useAuthStore((state) => state.authState);
 
+    const [disablePopup, setDisablePopup] = useState(false);
+
     // ACCOUNTS LISTENER
     useAccountsListener(user?.uid);
     // CATEGORIES LISTENER
