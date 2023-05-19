@@ -29,6 +29,8 @@ import { grey } from '@mui/material/colors';
 import { useLanguageStore } from 'stores/useLanguageStore';
 import { useAuthStore } from 'stores/useAuthStore';
 import DashboardTour from 'components/tours/DashboardTour';
+import calculateTable from 'utils/create-table';
+import InvestmentTable from 'components/investment-table';
 
 const MenuProps = {
     PaperProps: {
@@ -74,6 +76,7 @@ const Page = () => {
     const [targetYear, setTargetYear] = useState('');
     const [projectedData, setProjectedData] = useState('');
     const [suggestionData, setSuggestionData] = useState('');
+    const [tableData, setTableData] = useState('');
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const accounts = useAccountStore((state) => state.accounts);
 
@@ -141,7 +144,11 @@ const Page = () => {
                 true
             );
             toast.success('Successfully Analyzed');
-            console.log({});
+            setTableData({
+                lowRiskFund: calculateTable(initialDeposit, subsequentDeposit, year, 4, '₱', '', Number(period)),
+                medRiskFund: calculateTable(initialDeposit, subsequentDeposit, year, 8, '₱', '', Number(period)),
+                highRiskFund: calculateTable(initialDeposit, subsequentDeposit, year, 10, '₱', '', Number(period))
+            });
             setProjectedData({
                 totalInvestment,
                 savingsAccount,
@@ -486,6 +493,29 @@ const Page = () => {
                                 </Grid>
                             </Grid>
                         </Paper>
+                    )}
+
+                    {tableData.length !== 0 && (
+                        <Grid container mt={4} p={4}>
+                            <Grid item>
+                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
+                                    Low Risk Fund{' '}
+                                </Typography>
+                            </Grid>
+                            <InvestmentTable dataset={tableData.lowRiskFund} />
+                            <Grid item my={4}>
+                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
+                                    Moderate Risk Fund{' '}
+                                </Typography>
+                            </Grid>
+                            <InvestmentTable dataset={tableData.medRiskFund} />
+                            <Grid item my={4}>
+                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
+                                    High Risk Fund{' '}
+                                </Typography>
+                            </Grid>
+                            <InvestmentTable dataset={tableData.highRiskFund} />
+                        </Grid>
                     )}
 
                     <Typography variant='caption' sx={{ color: grey[400] }}>
