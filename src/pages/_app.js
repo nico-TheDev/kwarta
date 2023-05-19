@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import { registerChartJs } from '../utils/register-chart-js';
@@ -52,6 +52,19 @@ const App = (props) => {
             }
         }
     }, [user, isAuthenticated]);
+
+    useEffect(() => {
+        const popupInterval = setInterval(() => {
+            if (!disablePopup) {
+                toast('Welcome! This is the toast notification.', {
+                duration: 10000, // Automatically close after 5 seconds
+                position: 'top-right'
+                });
+            }
+            }, 5 * 1000); // 5 minutes in milliseconds
+        
+            return () => clearInterval(popupInterval);
+        }, [toast, disablePopup]);
 
     return (
         <CacheProvider value={emotionCache}>
