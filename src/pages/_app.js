@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { CacheProvider } from '@emotion/react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { CssBaseline } from '@mui/material';
+import { Button, CssBaseline, Paper } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -58,15 +58,21 @@ const App = (props) => {
     useEffect(() => {
         const popupInterval = setInterval(() => {
             if (!disablePopup) {
-                toast('Welcome! This is the toast notification.', {
-                duration: 10000, // Automatically close after 5 seconds
-                position: 'top-right'
-                });
+                toast.custom(
+                    <Paper sx={{ p: 2, display: 'flex', gap: 2, alignItems: 'center' }}>
+                        Welcome! This is the toast notification.
+                        <Button variant='outlined'>Turn off reminder</Button>
+                    </Paper>,
+                    {
+                        duration: 3000, // Automatically close after 5 seconds
+                        position: 'top-right'
+                    }
+                );
             }
-            }, 5 * 1000); // 5 minutes in milliseconds
-        
-            return () => clearInterval(popupInterval);
-        }, [toast, disablePopup]);
+        }, 5 * 1000); // 5 minutes in milliseconds
+
+        return () => clearInterval(popupInterval);
+    }, [toast, disablePopup]);
 
     return (
         <CacheProvider value={emotionCache}>
