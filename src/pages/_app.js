@@ -88,44 +88,38 @@ const App = (props) => {
             if (!disablePopup) {
                 toast.custom(
                     <Paper sx={{ p: 2, gap: 2, alignItems: 'center' }}>
-                        <Box sx={{ mb: 1 }}>
-                            <Typography sx={{ mb: 1 }}>
+                        <Box sx={{ mb: 1, width: 300 }}>
+                            <Typography
+                                variant='subtitle1'
+                                color='textSecondary'
+                                sx={{ mb: 2, display: 'inline-block' }}
+                            >
                                 So you may want to read about:
                             </Typography>
                             <Link href={article.articleLink} underline='none' target='_blank'>
-                                <Card sx={{ height: '100%' }}>
-                                    <CardContent>
-                                        {/* <CardMedia
-                                            sx={{ height: 140, mb: 2 }}
-                                            image={article.articleImage}
-                                            title={article.articleTitle}
-                                        /> */}
-                                        <Box>
-                                            <Typography color='textPrimary' variant='h6' mb={4}>
-                                                {article.articleTitle}
-                                            </Typography>
-                                            {/* <Stack direction='row' spacing={1} mb={2}>
-                                                {article.articleTags.map((item) => (
-                                                    <Chip label={item} variant='outlined' color='secondary' />
-                                                ))}
-                                            </Stack> */}
-                                            <Typography color='textSecondary' variant='subtitle1'>
-                                                {article.articleAuthor}
-                                            </Typography>
-                                        </Box>
-                                    </CardContent>
-                                </Card>
+                                <Box>
+                                    <Typography color='textPrimary' variant='body1' mb={2}>
+                                        {article.articleTitle}
+                                    </Typography>
+
+                                    <Typography color='textSecondary' variant='subtitle1'>
+                                        {article.articleAuthor}
+                                    </Typography>
+                                </Box>
                             </Link>
                         </Box>
-                        <Button sx={{ mt: 1 }} variant='outlined' onClick={handleClick}>Turn off reminders</Button>
+                        <Button sx={{ mt: 1 }} variant='outlined' onClick={handleClick} fullWidth>
+                            Turn off reminders
+                        </Button>
                     </Paper>,
                     {
                         duration: 3000, // Automatically close after 5 seconds
-                        position: 'top-right'
+                        position: 'top-right',
+                        id: 'popup'
                     }
                 );
             }
-        },  10 * 1000); // 5 minutes in milliseconds
+        }, 1000); // 5 minutes in milliseconds
 
         return () => clearInterval(popupInterval);
     }, [toast, disablePopup, article]);
