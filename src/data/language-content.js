@@ -147,7 +147,7 @@ export const languages = {
             ' sa napili mong Account. Maaari kang mag-apply ng savings account sa mga inilahad na bangko.',
         insufficientAmountSavings:
             'Ang balanse sa iyong napiling Account ay kulang. Ang pinakamababang halaga na maaring gamitin para sa savings account ay PHP 2,000.',
-
+        capitalGainsSub: `Ang bilang ng mga shares ay itinakda sa 1000 dahil ito ang batayan kapag bumibili ng mga stocks sa isang makatotohanang sitwasyon.`,
         //bonds
         bondsIntroPart1:
             'Ang mga bond ay isang uri ng investment na maaaring magbigay ng ilang benepisyo sa mga investor, kabilang ang mga regular na income payments at ang mas mababang-risk profile kumpara sa ibang mga pamumuhunan.',
@@ -169,6 +169,7 @@ export const languages = {
         stocksDescriptionOne: `
         Ang stock, kilala rin bilang equity, ay isang seguridad na kumakatawan sa pagmamay-ari ng isang bahagdan ng isang korporasyon. Ang mga yunit ng stock ay tinatawag na "shares" na nagbibigay-daan sa may-ari na magkaroon ng bahagi sa mga ari-arian at tubo ng korporasyon na katumbas ng dami ng stock na kanilang pagmamay-ari.`,
         stocksDescriptionTwo: `Ang mga stock ay binibili at ibinibenta sa pangkalahatan sa mga stock exchange at sila ang pundasyon ng mga portapolyo ng maraming indibidwal na nag-iinvest. Ang mga transaksyon sa stock ay kailangang sumunod sa mga regulasyon ng pamahalaan na naglalayong protektahan ang mga mamumuhunan mula sa mga mapanlinlang na gawain.`,
+        capitalGains: `Ang capital gain o pagtaas ng halaga ay ang pagtaas ng presyo ng iyong stock sa merkado. Ito ay ang pagkakaiba sa halaga na iyong binayaran kapag binili mo ang mga shares at ang kasalukuyang presyo ng stock sa merkado. Gayunpaman, kung hindi gaya ng inaasahan ang pagkakapalakad ng kumpanya, maaaring bumaba ang presyo ng stock pababa sa iyong presyong binili.`,
 
         addSavingsGoal: 'Magdagdag ng Layunin ng Pag-iipon',
         totalSavings: 'Kabuuang Ipon',
@@ -339,7 +340,8 @@ export const languages = {
         tooltipCategories: 'Displays all the categories you can use in your transactions',
         //category edit
         categoryDetails: 'Category Details',
-
+        capitalGains: `Capital gain or appreciation is an increase in the market price of your stock. It is the difference between the amount you paid when buying shares and the current market price of the stock. However, if the company doesn’t perform as expected, the stock’s price may go down below your buying price.`,
+        capitalGainsSub: `The number of shares are set to 1000 because it is the baseline when buying stocks in a realistic setting.`,
         //settings
         language: 'Language',
         changeLanguage: 'Change the language',
