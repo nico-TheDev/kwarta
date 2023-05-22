@@ -113,13 +113,13 @@ const App = (props) => {
                         </Button>
                     </Paper>,
                     {
-                        duration: 5000, // Automatically close after 5 seconds
+                        duration: 7000, // Automatically close after 5 seconds
                         position: 'top-right',
                         id: 'popup'
                     }
                 );
             }
-        }, 120000); // 5 minutes in milliseconds
+        }, 1000 * 60 * 5); // 5 minutes in milliseconds
 
         return () => clearInterval(popupInterval);
     }, [toast, disablePopup, article]);

@@ -3,7 +3,7 @@
     "rules": {
         "@next/next/no-img-element": "off",
         "jsx-a11y/alt-text": "off",
-        "react/display-name": 2,
+        "react/display-name": 1,
         "react/jsx-max-props-per-line": [
             1,
             {

@@ -5,11 +5,15 @@ import { Box, Button, Container, Grid, Paper, TextField, Typography } from '@mui
 import { green, lightGreen, red } from '@mui/material/colors';
 import { DashboardLayout } from '../../components/dashboard-layout';
 import { formatPrice } from 'utils/format-price';
+import { getLanguage } from 'utils/getLanguage';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const paperStyle = { p: 2, display: 'grid', gap: 2, height: '100%', alignItems: 'start' };
 const resultStyle = { fontWeight: 'bold', alignSelf: 'end', mb: 2 };
 const Page = () => {
     const router = useRouter();
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+
     const [result, setResult] = useState({
         amountBought: '',
         amountSold: '',
@@ -49,7 +53,17 @@ const Page = () => {
             amountSold: soldAmount,
             grossGains: soldAmount - boughtAmount,
             finalTradeCost: formatPrice(finalTradeCost, true),
-            netGains: tradeCostSell - tradeCostBuy
+            netGains: tradeCostSell - tradeCostBuy,
+            stockCommsBuy: formatPrice(stockCommsBuy, true),
+            clearFeeBuy: formatPrice(clearFeeBuy, true),
+            transFeeBuy: formatPrice(transFeeBuy, true),
+            tradeCostBuy: formatPrice(tradeCostBuy, true),
+            stockCommsSell: formatPrice(stockCommsSell, true),
+            clearFeeSell: formatPrice(clearFeeSell, true),
+            transFeeSell: formatPrice(transFeeSell, true),
+            stockTax: formatPrice(stockTax, true),
+            tradeCostSell: formatPrice(tradeCostSell, true),
+            finalTradeCost
         });
     }, [input.sharesBought, input.buyPrice, input.sharesSold, input.sellPrice]);
 
@@ -76,14 +90,10 @@ const Page = () => {
                         Capital Gains & Transaction Costs{' '}
                     </Typography>
                     <Typography variant='body2' mb={2}>
-                        Capital gain or appreciation is an increase in the market price of your stock. It is the
-                        difference between the amount you paid when buying shares and the current market price of the
-                        stock. However, if the company doesn’t perform as expected, the stock’s price may go down below
-                        your buying price.
+                        {getLanguage(currentLanguage).capitalGains}
                     </Typography>
                     <Typography variant='body2' mb={4} color='gray'>
-                        The number of shares are set to 1000 because it is the baseline when buying stocks in a
-                        realistic setting.
+                        {getLanguage(currentLanguage).capitalGainsSub}
                     </Typography>
 
                     <Grid container spacing={2}>
@@ -108,6 +118,13 @@ const Page = () => {
                                 <Typography fontSize={14} variant='body1' sx={{ fontWeight: 'bold' }}>
                                     Amount: {formatPrice(result.amountBought, true)}
                                 </Typography>
+
+                                <Typography variant='caption' color='textSecondary'>
+                                    Stockbroker's Commission = {result.stockCommsBuy} <br />
+                                    Clearing Fee = {result.clearFeeBuy} <br />
+                                    PSE Transaction Fee = {result.transFeeBuy} <br />
+                                    Total Trading Costs = {result.tradeCostBuy} <br />
+                                </Typography>
                             </Paper>
                         </Grid>
                         <Grid item xs={12} md={3}>
@@ -130,6 +147,14 @@ const Page = () => {
 
                                 <Typography fontSize={14} variant='body1' sx={{ fontWeight: 'bold' }}>
                                     Amount: {formatPrice(result.amountSold, true)}
+                                </Typography>
+
+                                <Typography variant='caption' color='textSecondary'>
+                                    Stockbroker's Commission = {result.stockCommsSell} <br />
+                                    Clearing Fee = {result.clearFeeSell} <br />
+                                    PSE Transaction Fee = {result.transFeeSell} <br />
+                                    Stock Transaction Tax = {result.stockTax} <br />
+                                    Total Trading Costs = {result.tradeCostSell} <br />
                                 </Typography>
                             </Paper>
                         </Grid>
@@ -160,6 +185,10 @@ const Page = () => {
                                 >
                                     Capital Gains: {formatPrice(result.grossGains, true)}
                                 </Typography>
+
+                                <Typography variant='caption' color='textSecondary'>
+                                    Capital Gains = {result.amountSold} - {result.amountBought}
+                                </Typography>
                             </Paper>
                         </Grid>
                         <Grid item xs={12} md={3}>
@@ -183,7 +212,7 @@ const Page = () => {
                                     id='outlined-basic'
                                     label='Trading Cost'
                                     variant='outlined'
-                                    value={result.finalTradeCost}
+                                    value={formatPrice(result.finalTradeCost, true)}
                                     disabled
                                 />
 
@@ -194,6 +223,11 @@ const Page = () => {
                                     color={result.netGains < 0 ? red[500] : 'green'}
                                 >
                                     Net Capital Gains: {formatPrice(result.netGains, true)}
+                                </Typography>
+
+                                <Typography variant='caption' color='textSecondary'>
+                                    Net Capital Gains = {formatPrice(result.grossGains, true)} -{' '}
+                                    {formatPrice(result.finalTradeCost, true)}
                                 </Typography>
                             </Paper>
                         </Grid>
