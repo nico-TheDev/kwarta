@@ -189,7 +189,7 @@ export const AccountSurveyDetails = (props) => {
         console.log(userSurvey);
         setQuestionOne(userSurvey.salary.id);
         setQuestionTwo(userSurvey.priorities.map((item) => item.category_name));
-        setQuestionThree(userSurvey.isBreadwinner.value);
+        setQuestionThree(userSurvey.financeRule.value);
     }, []);
 
     return (

@@ -27,6 +27,8 @@ export const ICON_NAMES = {
         CHECK: 'CHECK',
         PRICE_CHECK: 'PRICE_CHECK',
         CALENDAR: 'CALENDAR',
+        WANTS: 'WANTS',
+        NEEDS: 'NEEDS'
     },
 
     ACCOUNT_ICONS: {

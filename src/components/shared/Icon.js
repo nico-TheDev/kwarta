@@ -200,6 +200,8 @@ import GroupWorkRoundedIcon from '@mui/icons-material/GroupWorkRounded';
 import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import SavingsIcon from '@mui/icons-material/Savings';
 import RedeemIcon from '@mui/icons-material/Redeem';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import LowPriorityIcon from '@mui/icons-material/LowPriority';
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 
 import { ICON_NAMES } from 'constants/constant';
@@ -234,6 +236,8 @@ export function Icon(props) {
     else if (name === ICON_NAMES.SYSTEM_ICONS.TRENDING_DOWN) return <TrendingDownIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.PRICE_CHECK) return <PriceCheckIcon {...props} />;
     else if (name === ICON_NAMES.SYSTEM_ICONS.CALENDAR) return <CalendarMonthIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.WANTS) return <PriorityHighIcon {...props} />;
+    else if (name === ICON_NAMES.SYSTEM_ICONS.NEEDS) return <LowPriorityIcon {...props} />;
     //ACCOUNT ICONS
     else if (name === ICON_NAMES.ACCOUNT_ICONS.BANK) return <AccountBalanceRoundedIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD) return <CreditCardRoundedIcon {...props} />;
@@ -244,11 +248,10 @@ export function Icon(props) {
     else if (name === ICON_NAMES.ACCOUNT_ICONS.SAFE_SHIELD) return <GppGoodIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.MONETIZATION) return <MonetizationOnIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.PERCENTAGE) return <PercentIcon {...props} />;
-
     else if (name === ICON_NAMES.ACCOUNT_ICONS.AUB) return <AubIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.BANCNET) return <BancnetIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.BDO) return <BdoIcon {...props} />;
-    else if (name === ICON_NAMES.ACCOUNT_ICONS.BPI) return <BpiIcon  {...props} />;
+    else if (name === ICON_NAMES.ACCOUNT_ICONS.BPI) return <BpiIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.CHINABANK) return <ChinabankIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.CITIBANK) return <CitibankIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.EASTWEST) return <EastwestIcon {...props} />;
@@ -264,7 +267,6 @@ export function Icon(props) {
     else if (name === ICON_NAMES.ACCOUNT_ICONS.ROBINSONSBANK) return <RobinsonsbankIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.SECURITYBANK) return <SecuritybankIcon {...props} />;
     else if (name === ICON_NAMES.ACCOUNT_ICONS.UNIONBANK) return <UnionbankIcon {...props} />;
-    
     //CATEGORY ICONS
     //TRANSPORTATION
     else if (name === ICON_NAMES.CATEGORY_ICONS.AIRLINE_FARE) return <AirplaneTicketRoundedIcon {...props} />;
@@ -282,7 +284,6 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.SUBWAY) return <SubwayIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.TAXI) return <LocalTaxiIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.TRAINFARE) return <DirectionsRailwayRoundedIcon {...props} />;
-
     //SHOPPING
     else if (name === ICON_NAMES.CATEGORY_ICONS.APPLIANCES) return <CoffeeMakerIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.CAMERA) return <CameraAltRoundedIcon {...props} />;
@@ -300,7 +301,6 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.SHOPPING_BAG) return <ShoppingBagRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.TOYS) return <SmartToyRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.WATCH) return <WatchIcon {...props} />;
-
     //FOOD
     else if (name === ICON_NAMES.CATEGORY_ICONS.FOOD) return <FastfoodRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.BREAD) return <BakeryDiningIcon {...props} />;
@@ -313,11 +313,10 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.COOKIE) return <CookieIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.CAKE) return <CakeIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.LIQUOR) return <LiquorIcon {...props} />;
-
     //HOME
     else if (name === ICON_NAMES.CATEGORY_ICONS.AIRCON) return <AcUnitIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.APARTMENT) return <ApartmentIcon {...props} />;
-    else if (name === ICON_NAMES.CATEGORY_ICONS.BATHROOM) return <BathroomIcon  {...props} />;
+    else if (name === ICON_NAMES.CATEGORY_ICONS.BATHROOM) return <BathroomIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.CLEANING) return <CleaningServicesIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.DEVICES) return <DevicesIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.ELECTRICITY_BILLS) return <OfflineBoltRoundedIcon {...props} />;
@@ -336,7 +335,6 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.SUBSCRIPTIONS) return <SmartDisplayRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.TV) return <LiveTvIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.WATER_BILLS) return <WaterDamageRoundedIcon {...props} />;
-
     //HEALTH
     else if (name === ICON_NAMES.CATEGORY_ICONS.FITNESS) return <FitnessCenterRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.HEALTH) return <LocalHospitalRoundedIcon {...props} />;
@@ -346,7 +344,6 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.PERSONAL_CARE) return <SpaRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.PSYCHOLOGY) return <PsychologyIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.VACCINE) return <VaccinesIcon {...props} />;
-
     //ENTERTAINMENT
     else if (name === ICON_NAMES.CATEGORY_ICONS.BAR) return <LocalBarIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.PARTY) return <CelebrationIcon {...props} />;
@@ -358,7 +355,6 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.ROOM_SERVICE) return <RoomServiceIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.SPORTS_STADIUM) return <StadiumIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.THEATRE) return <TheaterComedyIcon {...props} />;
-
     //ACTIVITIES
     else if (name === ICON_NAMES.CATEGORY_ICONS.BASKETBALL) return <SportsBasketballIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.BIKING) return <DirectionsBikeIcon {...props} />;
@@ -375,7 +371,6 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.SURFING) return <SurfingIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.PARAGLIDING) return <ParaglidingIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.MEDITATION) return <SelfImprovementIcon {...props} />;
-
     //RELAXATION
     else if (name === ICON_NAMES.CATEGORY_ICONS.BEACH) return <BeachAccessIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.SUNSET) return <WbTwilightIcon {...props} />;
@@ -383,19 +378,16 @@ export function Icon(props) {
     else if (name === ICON_NAMES.CATEGORY_ICONS.HOUSE_BOAT) return <HouseboatIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.LUGGAGE) return <LuggageIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.HOLIDAY_CABIN) return <CabinIcon {...props} />;
-
     //EDUCATION
     else if (name === ICON_NAMES.CATEGORY_ICONS.EDUCATION) return <SchoolRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.SCHOOL_SUPPLIES) return <SquareFootIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.BOOKS) return <SchoolRoundedIcon {...props} />;
-
     //FAMILY
     else if (name === ICON_NAMES.CATEGORY_ICONS.PETS) return <PetsRoundedIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.STROLLER) return <ChildFriendlyIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.CHILD_CARE) return <ChildCareIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.BABY_TOYS) return <ToysIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.CRIB) return <CribIcon {...props} />;
-
     //OTHER
     else if (name === ICON_NAMES.CATEGORY_ICONS.OTHER_QUESTION) return <HelpIcon {...props} />;
     else if (name === ICON_NAMES.CATEGORY_ICONS.OTHER_INFO) return <InfoIcon {...props} />;

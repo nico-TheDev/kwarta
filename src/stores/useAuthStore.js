@@ -422,7 +422,7 @@ const AuthStore = (set, get) => ({
                 tourProgress: editedTour
             });
 
-            toast.success(`${capitalizeFirstLetter(tour)} tutorial finished`);
+            toast.success(`${capitalizeFirstLetter(tour)} tutorial finished`, { id: 'tour' });
 
             set({
                 authState: {
@@ -435,7 +435,7 @@ const AuthStore = (set, get) => ({
 
             // console.log(answers);
         } catch (err) {
-            toast.error('Something Went Wrong', err.message);
+            toast.error('Something Went Wrong', err.message, { id: 'tour' });
             console.error(err);
         }
     }

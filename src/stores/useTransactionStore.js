@@ -6,6 +6,8 @@ import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
 
 import { db, storage } from '../../firebase.config';
+import { blue, green, red, yellow } from '@mui/material/colors';
+import { ICON_NAMES } from 'constants/constant';
 
 const transactionStore = (set, get) => ({
     transactions: [],
@@ -20,7 +22,7 @@ const transactionStore = (set, get) => ({
             if (newTransaction.amount === '' || newTransaction.targetAccount === '' || newTransaction.category === '') {
                 throw new Error('Check the input fields');
             }
-            
+
             if (newTransaction.amount === 0 || newTransaction.amount === '') {
                 throw new Error('Please enter a valid amount');
             }
@@ -293,6 +295,47 @@ const transactionStore = (set, get) => ({
         });
 
         return incomeDataList;
+    },
+    getExpenseTypeList: (user_id) => {
+        const expenseList = get().transactions.filter((transaction) => transaction.type === 'expense');
+        // create an initial data holder
+        const expenseTypeDataList = [
+            {
+                name: 'Needs',
+                amount: 0,
+                type: 'needs',
+                color: green[500],
+                icon: ICON_NAMES.SYSTEM_ICONS.WANTS
+            },
+            {
+                name: 'Wants',
+                amount: 0,
+                type: 'wants',
+                color: red[500],
+                icon: ICON_NAMES.SYSTEM_ICONS.NEEDS
+            },
+            {
+                name: 'Savings',
+                amount: 0,
+                type: 'savings',
+                color: blue[500],
+                icon: ICON_NAMES.CATEGORY_ICONS.SAVINGS
+            }
+        ];
+
+        // add the amount to the initial data
+        expenseList.forEach((item) => {
+            // find the data
+            const targetCategory = expenseTypeDataList.find(
+                (currentData) => item.category.expense_type === currentData.type
+            );
+
+            if (item.category.expense_type === targetCategory.type) {
+                targetCategory.amount += item.amount;
+            }
+        });
+
+        return expenseTypeDataList;
     }
 });
 

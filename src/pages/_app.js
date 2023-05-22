@@ -3,8 +3,19 @@ import Head from 'next/head';
 import { CacheProvider } from '@emotion/react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Button, CssBaseline, Paper, Typography, Box, Link,
-    CardMedia, Card, CardContent, Stack, Chip} from '@mui/material';
+import {
+    Button,
+    CssBaseline,
+    Paper,
+    Typography,
+    Box,
+    Link,
+    CardMedia,
+    Card,
+    CardContent,
+    Stack,
+    Chip
+} from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -68,13 +79,13 @@ const App = (props) => {
         const disablePopupValue = localStorage.getItem('disablePopup');
         if (disablePopupValue) {
             setDisablePopup(true);
-            }
+        }
     }, []);
 
     const handleClick = (e) => {
-        const isChecked = true
+        const isChecked = true;
         setDisablePopup(isChecked);
-        
+
         if (isChecked) {
             localStorage.setItem('disablePopup', true);
         } else {

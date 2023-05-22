@@ -12,6 +12,7 @@ import { IncomeChart } from 'components/dashboard/income-chart';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { ExpenseTypeChart } from 'components/ExpenseTypeChart';
 
 const Page = () => {
     const transactions = useTransactionStore((state) => state.transactions);
@@ -51,6 +52,7 @@ const Page = () => {
                                 </Typography>
                             </Tooltip>
                             <Box sx={{ display: { md: 'flex', xs: 'block' }, gap: 2, mb: 2 }}>
+                                <ExpenseTypeChart />
                                 <ExpensesChart />
                                 <IncomeChart />
                             </Box>
