@@ -61,7 +61,7 @@ export default function TransactionFormModal({ open, setOpen }) {
     const createTransaction = useTransactionStore((state) => state.createTransaction);
     const accounts = useAccountStore((state) => state.accounts);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
-    const userSurvey = useAuthStore((state) => state.authState?.userSurvey);
+    const userSurvey = useAuthStore((state) => state.authState.userSurvey);
     const categories = useCategoryStore((state) => state.categories);
     const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories(setSelectedCategory);
 
@@ -78,18 +78,50 @@ export default function TransactionFormModal({ open, setOpen }) {
         const currentType = isExpense ? 'expense' : 'income';
 
         // WARNING FOR OVERSPENDING
-        if (Number(values.amount) >= values.targetAccount.account_amount * 0.2) {
-            toast(`You're spending a lot for your account. `, {
-                style: {
-                    width: 'max-content'
-                },
-                icon: (
-                    <Box sx={{ color: '#ffa726' }}>
-                        <InfoIcon color='inherit' />
-                    </Box>
-                ),
-                duration: 5000
-            });
+        if(userSurvey.financeRule.value === '1'){
+            if (Number(values.amount) >= values.targetAccount.account_amount * 0.2) {
+                toast(`You're spending a lot for your account. You must save at least 20% for savings`, {
+                    style: {
+                        width: 'max-content'
+                    },
+                    icon: (
+                        <Box sx={{ color: '#ffa726' }}>
+                            <InfoIcon color='inherit' />
+                        </Box>
+                    ),
+                    duration: 5000
+                });
+            }
+        }
+        else if(userSurvey.financeRule.value === '2'){
+            if (Number(values.amount) >= values.targetAccount.account_amount * 0.3) {
+                toast(`You're spending a lot for your account. You must save at least 30% for savings.`, {
+                    style: {
+                        width: 'max-content'
+                    },
+                    icon: (
+                        <Box sx={{ color: '#ffa726' }}>
+                            <InfoIcon color='inherit' />
+                        </Box>
+                    ),
+                    duration: 5000
+                });
+            }
+        }
+        else if(userSurvey.financeRule.value === '3'){
+            if (Number(values.amount) >= values.targetAccount.account_amount * 0.1) {
+                toast(`You're spending a lot for your account. You must save at least 10% for savings`, {
+                    style: {
+                        width: 'max-content'
+                    },
+                    icon: (
+                        <Box sx={{ color: '#ffa726' }}>
+                            <InfoIcon color='inherit' />
+                        </Box>
+                    ),
+                    duration: 5000
+                });
+            }
         }
 
         await createTransaction(

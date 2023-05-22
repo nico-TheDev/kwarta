@@ -343,7 +343,7 @@ const AuthStore = (set, get) => ({
                 hasAnswered: true,
                 priorities: answers.questionTwo,
                 salary: answers.questionOne,
-                isBreadwinner: answers.questionThree
+                financeRule: answers.questionThree
             });
 
             set({
@@ -356,7 +356,7 @@ const AuthStore = (set, get) => ({
                     userSurvey: {
                         priorities: answers.questionTwo,
                         salary: answers.questionOne,
-                        isBreadwinner: answers.questionThree
+                        financeRule: answers.questionThree
                     }
                 }
             });

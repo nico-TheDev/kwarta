@@ -139,20 +139,26 @@ const Page = () => {
             id: 3,
             source: '/static/images/svg/survey-3.svg',
             question:
-                'Are you the breadwinner in your family ? \n (Ikaw ang pangunahing nagtatrabaho para suportahan ang iyong pamilya.)',
+                'How you divide your finances? \n (Paano ang pagkakahati-hati ng iyong pera?)',
             choices: [
                 {
                     id: 1,
                     choice: 'A',
                     value: '1',
-                    text: 'Yes'
+                    text: '50% Needs, 30% Wants, 20% Savings'
                 },
                 {
-                    id: 1,
+                    id: 2,
                     choice: 'B',
                     value: '2',
-                    text: 'No'
-                }
+                    text: '40% Needs, 30% Wants, 30% Savings'
+                },
+                {
+                    id: 3,
+                    choice: 'C',
+                    value: '3',
+                    text: '60% Needs, 30% Wants, 10% Savings'
+                },
             ],
             count: 3
         },
