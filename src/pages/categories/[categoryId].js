@@ -51,6 +51,7 @@ const Page = () => {
     const [selectedIcon, setSelectedIcon] = useState('');
     const [showColorWheel, setShowColorWheel] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [expenseType, setExpenseType] = useState('');
 
     const [isEditing, setIsEditing] = useState(false);
     const [currentCategory, setCurrentCategory] = useState('');
@@ -70,7 +71,8 @@ const Page = () => {
             category_name: values.categoryName,
             category_color: selectedColor,
             category_type: currentType,
-            user_id
+            user_id,
+            expense_type: expenseType
         }).then((success) => {
             if (success) {
                 router.push('/');
@@ -96,6 +98,11 @@ const Page = () => {
     const handleIconClick = (icon) => {
         setSelectedIcon(icon);
         formik.setFieldValue('categoryIcon', icon);
+    };
+
+    const handleExpenseType = (e) => {
+        // console.log(e.target.value);
+        setExpenseType(e.target.value);
     };
 
     const initialValues = {
@@ -124,6 +131,7 @@ const Page = () => {
         setSelectedColor(current.category_color);
 
         setCurrentCategory(current);
+        setExpenseType(current.expense_type);
 
         formik.setFieldValue('categoryName', current.category_name);
     }, [categoryId]);
@@ -185,8 +193,27 @@ const Page = () => {
                                 checked={isExpense}
                                 onChange={handleExpense}
                                 inputProps={{ 'aria-label': 'controlled' }}
+                                disabled={!isEditing}
                             />
                             <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
+                        </Box>
+
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id='demo-simple-select-label'>Expense Type</InputLabel>
+                                <Select
+                                    labelId='demo-simple-select-label'
+                                    id='demo-simple-select'
+                                    value={expenseType}
+                                    label='Expense Type'
+                                    onChange={handleExpenseType}
+                                    disabled={!isEditing}
+                                >
+                                    <MenuItem value='needs'>Needs</MenuItem>
+                                    <MenuItem value='wants'>Wants</MenuItem>
+                                    <MenuItem value='savings'>Savings</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Box>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
