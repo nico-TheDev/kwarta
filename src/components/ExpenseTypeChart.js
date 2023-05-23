@@ -80,50 +80,33 @@ export const ExpenseTypeChart = (props) => {
                 };
             });
 
-            const savings = expenseData.map((item) => {
-                if(item.name === 'Savings'){
-                    return{
-                        value: (item.amount / total) * 100
-                    };
-                }
-            });
-            
-            const savingsValue = savings.map((value) => {
-                return(value);
-            })
-
-            console.log(savingsValue)
+            const savings = (expenseData[2].amount / total) * 100;
 
             if (userSurvey.financeRule.value === '1') {
-                if(savings <= 20){
-                    setPrompt("You're spending a lot for your account. You must save at least 20% for savings")
-                    setIsPositive(false)
-                }
-                else{
-                    setPrompt("You've made a good decision. Continue placing 20% of your income in savings")
-                    setIsPositive(true)
+                if (savings <= 20) {
+                    setPrompt("You're spending a lot for your account. You must save at least 20% for savings");
+                    setIsPositive(false);
+                } else {
+                    setPrompt("You've made a good decision. Continue placing 20% of your income in savings");
+                    setIsPositive(true);
                 }
             } else if (userSurvey.financeRule.value === '2') {
-                if(savings <= 30){
-                    setPrompt("You're spending a lot for your account. You must save at least 30% for savings")
-                    setIsPositive(false)
-                }
-                else{
-                    setPrompt("You've made a good decision. Continue placing 30% of your income in savings")
-                    setIsPositive(true)
+                if (savings <= 30) {
+                    setPrompt("You're spending a lot for your account. You must save at least 30% for savings");
+                    setIsPositive(false);
+                } else {
+                    setPrompt("You've made a good decision. Continue placing 30% of your income in savings");
+                    setIsPositive(true);
                 }
             } else if (userSurvey.financeRule.value === '3') {
-                if(savings <= 10){
-                    setPrompt("You're spending a lot for your account. You must save at least 10% for savings")
-                    setIsPositive(false)
-                }
-                else{
-                    setPrompt("You've made a good decision. Continue placing 10% of your income in savings")
-                    setIsPositive(true)
+                if (savings <= 10) {
+                    setPrompt("You're spending a lot for your account. You must save at least 10% for savings");
+                    setIsPositive(false);
+                } else {
+                    setPrompt("You've made a good decision. Continue placing 10% of your income in savings");
+                    setIsPositive(true);
                 }
             }
-
-            
 
             setGraphData(data);
             setCategoryList(list);
@@ -132,9 +115,7 @@ export const ExpenseTypeChart = (props) => {
 
     return (
         <Card {...props}>
-            <Tooltip title={getLanguage(currentLanguage).tooltipExpenseGraph}>
-                <CardHeader title='Expenses Type' sx={{ width: 'max-content' }} />
-            </Tooltip>
+            <CardHeader title='Expenses Type' sx={{ width: 'max-content' }} />
             <Divider />
             <CardContent>
                 <Box
@@ -180,13 +161,14 @@ export const ExpenseTypeChart = (props) => {
                         ))}
                 </Box>
                 <Divider />
-                <Box sx={{mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',}}>
-                    {
-                        isPositive ? 
-                        <SentimentVerySatisfiedIcon color='success' fontSize='large'/>
-                        :
-                        <SentimentVeryDissatisfiedIcon color='danger' fontSize='large'/>
-                    }
+                <Box
+                    sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}
+                >
+                    {isPositive ? (
+                        <SentimentVerySatisfiedIcon color='success' fontSize='large' />
+                    ) : (
+                        <SentimentVeryDissatisfiedIcon color='danger' fontSize='large' />
+                    )}
                     <Typography color='textPrimary' variant='caption'>
                         {prompt}
                     </Typography>
