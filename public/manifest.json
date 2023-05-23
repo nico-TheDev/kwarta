@@ -3,32 +3,32 @@
     "name": "CASH: Financial Monitoring Application",
     "icons": [
         {
-            "src": "icons/android-icon-36x36.ico",
+            "src": "/static/icons/android-icon-36x36.ico",
             "sizes": "36x36",
             "type": "image/png"
         },
         {
-            "src": "icons/android-icon-48x48.ico",
+            "src": "/static/icons/android-icon-48x48.ico",
             "sizes": "48x48",
             "type": "image/png"
         },
         {
-            "src": "icons/android-icon-72x72.ico",
+            "src": "/static/icons/android-icon-72x72.ico",
             "sizes": "72x72",
             "type": "image/png"
         },
         {
-            "src": "icons/apple-icon-57x57.ico",
+            "src": "/static/icons/apple-icon-57x57.ico",
             "sizes": "57x57",
             "type": "image/png"
         },
         {
-            "src": "icons/apple-icon-60x60.ico",
+            "src": "/static/icons/apple-icon-60x60.ico",
             "sizes": "60x60",
             "type": "image/png"
         },
         {
-            "src": "icons/apple-icon-72x72.ico",
+            "src": "/static/icons/apple-icon-72x72.ico",
             "sizes": "72x72",
             "type": "image/png"
         }

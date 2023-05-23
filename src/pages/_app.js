@@ -150,7 +150,7 @@ const App = (props) => {
                 <meta name='viewport' content='initial-scale=1, width=device-width' />
 
                 <link rel='manifest' href='/manifest.json' />
-                <link rel='icon' href='/static/favicon.ico' type='image/png' />
+                <link rel='icon' href='/static/icons/favicon.ico' type='image/png' />
                 <meta name='theme-color' content='#317EFB' />
             </Head>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
