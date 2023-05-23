@@ -11,10 +11,12 @@ import useSortCategories from 'hooks/useSortCategories';
 import { useLanguageStore } from 'stores/useLanguageStore';
 import DashboardTour from 'components/tours/DashboardTour';
 import { useAuthStore } from 'stores/useAuthStore';
+import CategoryCardList from 'components/shared/CategoryCardList';
 
 const Page = () => {
     const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories();
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const [currentCategoriesList, setCurrentCategoriesList] = useState([]);
     const [showTour, setShowTour] = useState(false);
     const getTourProgress = useAuthStore((state) => state.getTourProgress);
     const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
@@ -23,6 +25,24 @@ const Page = () => {
         const currentTour = getTourProgress('articles');
         setShowTour(currentTour.isDone);
     }, []);
+
+    useEffect(() => {
+        const expenseList = categoryData.filter((item) => item.category_type === 'expense');
+        console.log({ expenseList });
+        if (isExpense) {
+            const updatedArr = [
+                { name: 'Needs', data: [], type: 'needs' },
+                { name: 'Wants', data: [], type: 'wants' },
+                { name: 'Savings', data: [], type: 'savings' }
+            ];
+            expenseList.forEach((category) => {
+                const targetArr = updatedArr.find((item) => item.type === category.expense_type);
+                targetArr?.data.push(category);
+            });
+
+            setCurrentCategoriesList(updatedArr);
+        }
+    }, [isExpense, categoryData]);
 
     const tourSteps = [
         {
@@ -80,13 +100,24 @@ const Page = () => {
                         <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
                     </Box>
                     <Box sx={{ pt: 3 }}>
-                        <Grid container spacing={3}>
-                            {categoryData.map((category) => (
-                                <Grid item key={category.id} lg={3} md={6} sm={6} xs={12}>
-                                    <CategoriesCard categories={category} />
-                                </Grid>
-                            ))}
-                        </Grid>
+                        {isExpense ? (
+                            currentCategoriesList.map((item) => (
+                                <>
+                                    <Typography variant='h6' mb={2}>
+                                        {item.name}
+                                    </Typography>
+                                    <CategoryCardList categoryList={item.data} />
+                                </>
+                            ))
+                        ) : (
+                            <Grid container spacing={3}>
+                                {categoryData.map((category) => (
+                                    <Grid item key={category.id} lg={3} md={6} sm={6} xs={12}>
+                                        <CategoriesCard categories={category} />
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        )}
                     </Box>
                 </Container>
             </Box>

@@ -4,6 +4,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Food and Beverage',
         category_icon: ICON_NAMES.CATEGORY_ICONS.FOOD,
         category_color: '#FF8200',
@@ -14,6 +15,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Transportation',
         category_icon: ICON_NAMES.CATEGORY_ICONS.BUSFARE,
         category_color: '#38438b',
@@ -24,6 +26,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Rentals',
         category_icon: ICON_NAMES.CATEGORY_ICONS.HOUSE,
         category_color: '#0a0926',
@@ -34,6 +37,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Water Bill',
         category_icon: ICON_NAMES.CATEGORY_ICONS.WATER_BILLS,
         category_color: '#1a6bc6',
@@ -44,6 +48,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Phone Bill',
         category_icon: ICON_NAMES.CATEGORY_ICONS.PHONE,
         category_color: '#1a6bc6',
@@ -54,6 +59,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Electricity Bill',
         category_icon: ICON_NAMES.CATEGORY_ICONS.ELECTRICITY_BILLS,
         category_color: '#FEDD00',
@@ -64,6 +70,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Gas Bill',
         category_icon: ICON_NAMES.CATEGORY_ICONS.GAS,
         category_color: '#1a6bc6',
@@ -74,6 +81,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Television Bill',
         category_icon: ICON_NAMES.CATEGORY_ICONS.TV,
         category_color: '#1a6bc6',
@@ -84,6 +92,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Internet Bill',
         category_icon: ICON_NAMES.CATEGORY_ICONS.INTERNET_BILLS,
         category_color: '#B295C7',
@@ -94,6 +103,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Other Bills',
         category_icon: ICON_NAMES.CATEGORY_ICONS.OTHER_QUESTION,
         category_color: '#E6B8B8',
@@ -105,6 +115,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Home Maintenance',
         category_icon: ICON_NAMES.CATEGORY_ICONS.MAINTENANCE,
         category_color: '#5ABFC6',
@@ -115,6 +126,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Vehicle Maintenance',
         category_icon: ICON_NAMES.CATEGORY_ICONS.CAR_REPAIR,
         category_color: '#F9C9A8',
@@ -125,6 +137,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Medical Check-up',
         category_icon: ICON_NAMES.CATEGORY_ICONS.HEALTH_MONITOR,
         category_color: '#C7D1B1',
@@ -135,6 +148,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Education',
         category_icon: ICON_NAMES.CATEGORY_ICONS.EDUCATION,
         category_color: '#D2A8A8',
@@ -145,6 +159,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'needs',
         category_name: 'Houseware',
         category_icon: ICON_NAMES.CATEGORY_ICONS.FURNITURE,
         category_color: '#FFD9A4',
@@ -155,6 +170,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Personal Items',
         category_icon: ICON_NAMES.CATEGORY_ICONS.PERSONAL_CARE,
         category_color: '#8BB1E6',
@@ -165,6 +181,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Pets',
         category_icon: ICON_NAMES.CATEGORY_ICONS.PETS,
         category_color: '#E3C3F3',
@@ -175,6 +192,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Home Services',
         category_icon: ICON_NAMES.CATEGORY_ICONS.CLEANING,
         category_color: '#C6B294',
@@ -185,6 +203,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Other Expenses',
         category_icon: ICON_NAMES.CATEGORY_ICONS.OTHER_QUESTION,
         category_color: '#96C3B3',
@@ -196,6 +215,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Fitness',
         category_icon: ICON_NAMES.CATEGORY_ICONS.FITNESS,
         category_color: '#E6B7D2',
@@ -206,6 +226,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Makeup',
         category_icon: ICON_NAMES.CATEGORY_ICONS.JEWELRY,
         category_color: '#F7D1D1',
@@ -216,6 +237,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Gifts',
         category_icon: ICON_NAMES.CATEGORY_ICONS.GIFT,
         category_color: '#B2D2B2',
@@ -226,6 +248,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Streaming Service',
         category_icon: ICON_NAMES.CATEGORY_ICONS.SUBSCRIPTIONS,
         category_color: '#E6D2B7',
@@ -236,6 +259,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Fun Money',
         category_icon: ICON_NAMES.CATEGORY_ICONS.CASINO,
         category_color: '#C7B1B1',
@@ -247,6 +271,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Debt',
         category_icon: ICON_NAMES.ACCOUNT_ICONS.RECEIPT,
         category_color: '#B294C7',
@@ -257,6 +282,7 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Repayment',
         category_icon: ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD,
         category_color: '#C7B294',
@@ -267,12 +293,57 @@ const premadeCategories = [
     {
         user_id: '1',
         category_type: 'expense',
+        expense_type: 'wants',
         category_name: 'Pay Interest',
         category_icon: ICON_NAMES.ACCOUNT_ICONS.PAPER_MONEY,
         category_color: '#D2A8D2',
         created_at: '',
         updatedAt: '',
         id: '27'
+    },
+    {
+        user_id: '1',
+        category_type: 'expense',
+        expense_type: 'savings',
+        category_name: 'Savings Account',
+        category_icon: ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD,
+        category_color: '#003366',
+        created_at: '',
+        updatedAt: '',
+        id: '28'
+    },
+    {
+        user_id: '1',
+        category_type: 'expense',
+        expense_type: 'savings',
+        category_name: 'Stocks',
+        category_icon: ICON_NAMES.ACCOUNT_ICONS.PERCENTAGE,
+        category_color: '#50C878',
+        created_at: '',
+        updatedAt: '',
+        id: '29'
+    },
+    {
+        user_id: '1',
+        category_type: 'expense',
+        expense_type: 'savings',
+        category_name: 'Investments',
+        category_icon: ICON_NAMES.ACCOUNT_ICONS.BANK,
+        category_color: '#FF7F50',
+        created_at: '',
+        updatedAt: '',
+        id: '30'
+    },
+    {
+        user_id: '1',
+        category_type: 'expense',
+        expense_type: 'savings',
+        category_name: 'Bonds',
+        category_icon: ICON_NAMES.ACCOUNT_ICONS.RECEIPT,
+        category_color: '#6A0DAD',
+        created_at: '',
+        updatedAt: '',
+        id: '31'
     },
 
     {

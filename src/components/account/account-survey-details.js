@@ -131,20 +131,27 @@ export const AccountSurveyDetails = (props) => {
         {
             id: 3,
             source: '/static/images/svg/survey-3.svg',
-            question: 'Are you the breadwinner in your family ?',
+            question:
+                'How you divide your money? \n (Paano ang pagkakahati-hati ng iyong pera?)',
             choices: [
                 {
                     id: 1,
                     choice: 'A',
                     value: '1',
-                    text: 'Yes'
+                    text: '50% Needs, 30% Wants, 20% Savings'
                 },
                 {
-                    id: 1,
+                    id: 2,
                     choice: 'B',
                     value: '2',
-                    text: 'No'
-                }
+                    text: '40% Needs, 30% Wants, 30% Savings'
+                },
+                {
+                    id: 3,
+                    choice: 'C',
+                    value: '3',
+                    text: '60% Needs, 30% Wants, 10% Savings'
+                },
             ],
             count: 3
         },
@@ -182,7 +189,7 @@ export const AccountSurveyDetails = (props) => {
         console.log(userSurvey);
         setQuestionOne(userSurvey.salary.id);
         setQuestionTwo(userSurvey.priorities.map((item) => item.category_name));
-        setQuestionThree(userSurvey.isBreadwinner.value);
+        setQuestionThree(userSurvey.financeRule.value);
     }, []);
 
     return (
@@ -259,7 +266,7 @@ export const AccountSurveyDetails = (props) => {
                         </Grid>
                         <Grid item md={12} xs={12}>
                             <FormControl sx={{ width: '80%' }}>
-                                <InputLabel id='demo-simple-select-label'>Breadwinner Status</InputLabel>
+                                <InputLabel id='demo-simple-select-label'>Rule in Handling Finances</InputLabel>
                                 <Select
                                     labelId='demo-simple-select-label'
                                     id='demo-simple-select'

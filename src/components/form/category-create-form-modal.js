@@ -31,6 +31,7 @@ export default function CategoryCreateModal({ open, setOpen }) {
     const [selectedColor, setSelectedColor] = useState('');
     const [selectedIcon, setSelectedIcon] = useState('');
     const [showColorWheel, setShowColorWheel] = useState(false);
+    const [expenseType, setExpenseType] = useState('');
 
     const user = useAuthStore((state) => state.authState?.user);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
@@ -60,6 +61,11 @@ export default function CategoryCreateModal({ open, setOpen }) {
         formik.setFieldValue('categoryIcon', icon);
     };
 
+    const handleExpenseType = (e) => {
+        // console.log(e.target.value);
+        setExpenseType(e.target.value);
+    };
+
     const handleSubmit = (values) => {
         console.log(values);
         const loader = toast.loading('Creating Category');
@@ -69,7 +75,8 @@ export default function CategoryCreateModal({ open, setOpen }) {
             category_color: selectedColor,
             category_icon: values.categoryIcon,
             category_type: currentType,
-            user_id: user?.uid
+            user_id: user?.uid,
+            expense_type: expenseType
         });
         formik.resetForm();
         setSelectedIcon('');
@@ -127,6 +134,22 @@ export default function CategoryCreateModal({ open, setOpen }) {
                                 inputProps={{ 'aria-label': 'controlled' }}
                             />
                             <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id='demo-simple-select-label'>Expense Type</InputLabel>
+                                <Select
+                                    labelId='demo-simple-select-label'
+                                    id='demo-simple-select'
+                                    value={expenseType}
+                                    label='Expense Type'
+                                    onChange={handleExpenseType}
+                                >
+                                    <MenuItem value='needs'>Needs</MenuItem>
+                                    <MenuItem value='wants'>Wants</MenuItem>
+                                    <MenuItem value='savings'>Savings</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <ColorPickerPanel
