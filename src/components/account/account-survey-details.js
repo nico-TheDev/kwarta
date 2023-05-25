@@ -61,6 +61,14 @@ export const AccountSurveyDetails = (props) => {
             question: 'What is your socioeconomic standing?',
             choices: [
                 {
+                    id: 8,
+                    choice: 'H',
+                    value: '8',
+                    text: `I don't earn money / currently a student`,
+                    min: 0,
+                    max: 0
+                },
+                {
                     id: 1,
                     choice: 'A',
                     value: '1',
@@ -131,8 +139,7 @@ export const AccountSurveyDetails = (props) => {
         {
             id: 3,
             source: '/static/images/svg/survey-3.svg',
-            question:
-                'How you divide your money? \n (Paano ang pagkakahati-hati ng iyong pera?)',
+            question: 'How you divide your money? \n (Paano ang pagkakahati-hati ng iyong pera?)',
             choices: [
                 {
                     id: 1,
@@ -151,7 +158,7 @@ export const AccountSurveyDetails = (props) => {
                     choice: 'C',
                     value: '3',
                     text: '60% Needs, 30% Wants, 10% Savings'
-                },
+                }
             ],
             count: 3
         },
