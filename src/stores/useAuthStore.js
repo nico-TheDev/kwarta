@@ -168,7 +168,7 @@ const AuthStore = (set, get) => ({
                     },
                     userSurvey: {
                         priorities: userData.priorities || null,
-                        isBreadwinner: userData.isBreadwinner || null,
+                        financeRule: userData.financeRule || null,
                         salary: userData.salary || null
                     },
                     isAuthenticated: true,
@@ -189,7 +189,7 @@ const AuthStore = (set, get) => ({
             toast.dismiss(loader);
         }
     },
-    updateUser: async (editUser) => {
+    updateUser: async function (editUser) {
         try {
             console.log(editUser);
             await updateProfile(auth.currentUser, {
@@ -198,22 +198,34 @@ const AuthStore = (set, get) => ({
             await updateEmail(auth.currentUser, editUser.new_email);
 
             const getUser = auth.currentUser;
-            const displayName = getUser.displayName;
+            const displayName = editUser.new_displayName;
             const email = getUser.email;
             const photoURL = getUser.photoURL;
             const nameArray = displayName.split(' ', 2);
 
+            const userRef = doc(db, 'users', auth.currentUser.uid);
+            const userSnap = await getDoc(userRef);
+            const userData = userSnap.data();
+            await updateDoc(userRef, {
+                first_name: nameArray[0],
+                last_name: nameArray[1],
+                email: editUser.new_email
+            });
             set({
                 authState: {
+                    ...get().authState,
                     user: {
-                        name: displayName,
+                        ...get().authState.user,
+                        name: editUser.new_displayName,
                         firstName: nameArray[0],
                         lastName: nameArray[1],
-                        email: email,
-                        photo: photoURL
+                        email: editUser.new_email,
+                        photo: get().authState.user.photo
                     }
                 }
             });
+
+            toast.success('Profile Updated.');
         } catch (err) {
             console.log(err.message);
         }
@@ -241,6 +253,7 @@ const AuthStore = (set, get) => ({
 
             set({
                 authState: {
+                    ...get().authState,
                     user: {
                         name: displayName,
                         firstName: nameArray[0],
@@ -302,7 +315,7 @@ const AuthStore = (set, get) => ({
                     isLoading: false,
                     userSurvey: {
                         priorities: userData.priorities || null,
-                        isBreadwinner: userData.isBreadwinner || null,
+                        financeRule: userData.financeRule || null,
                         salary: userData.salary || null
                     },
                     tourProgress: userData.tourProgress || tourProgress
@@ -392,7 +405,7 @@ const AuthStore = (set, get) => ({
                 hasAnswered: true,
                 priorities: answers.questionTwo,
                 salary: answers.questionOne,
-                isBreadwinner: answers.questionThree
+                financeRule: answers.questionThree
             });
 
             toast.success('Survey answers updated!');
