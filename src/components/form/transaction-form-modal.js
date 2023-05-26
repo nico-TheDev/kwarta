@@ -214,7 +214,6 @@ export default function TransactionFormModal({ open, setOpen }) {
                             name='amount'
                             value={formik.values.amount}
                             onChange={formik.handleChange}
-                            type='number'
                         />
                     </Box>
 

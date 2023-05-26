@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Icon } from 'components/shared/Icon';
 
 const IconOnlySelector = ({ iconData, selectedIcon, onIconClick }) => {
+    console.log(selectedIcon)
     return (
         <Box>
             <Typography variant='h6' component='h2' mb={2}>
