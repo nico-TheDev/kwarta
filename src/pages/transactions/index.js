@@ -87,7 +87,7 @@ const Page = () => {
         {
             target: '.transactions_step_three',
             title: 'Type',
-            content: 'used for sorting the transactions into expense or category',
+            content: 'used for sorting the transactions into expense or income',
             disableBeacon: true,
             placement: 'bottom'
         },

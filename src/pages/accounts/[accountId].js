@@ -56,6 +56,7 @@ const Page = () => {
             account_name: values.accountName,
             account_amount: values.accountAmount,
             account_color: selectedColor,
+            account_icon: selectedIcon,
             user_id
         }).then((success) => {
             if (success) {
@@ -87,7 +88,6 @@ const Page = () => {
     const initialValues = {
         accountName: '',
         accountAmount: '',
-        accountIcon: ''
     };
 
     const formik = useFormik({

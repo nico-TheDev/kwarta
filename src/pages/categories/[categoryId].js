@@ -70,6 +70,7 @@ const Page = () => {
         updateCategory(categoryId, {
             category_name: values.categoryName,
             category_color: selectedColor,
+            category_icon: selectedIcon,
             category_type: currentType,
             user_id,
             expense_type: expenseType
@@ -107,7 +108,6 @@ const Page = () => {
 
     const initialValues = {
         categoryName: '',
-        categoryIcon: ''
     };
 
     const formik = useFormik({

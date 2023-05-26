@@ -7,6 +7,7 @@ import { green, red } from '@mui/material/colors';
 import { useEffect, useState } from 'react';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import Link from 'next/link';
 
 export const Cashflow = (props) => {
     const theme = useTheme();
@@ -205,8 +206,12 @@ export const Cashflow = (props) => {
                     p: 2
                 }}
             >
-                <Button color='primary' endIcon={<ArrowRightIcon fontSize='small' />} size='small'>
-                    {getLanguage(currentLanguage).overview}
+                <Button 
+                    color='primary' 
+                    endIcon={<ArrowRightIcon fontSize='small' />} 
+                    size='small'
+                >
+                    <Link href="/cashflow">{getLanguage(currentLanguage).overview}</Link>
                 </Button>
             </Box>
         </Card>
