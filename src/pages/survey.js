@@ -39,8 +39,18 @@ const MenuProps = {
     PaperProps: {
         style: {
             maxHeight: 150,
-            width: 250
+            width: {
+                xs: '100%',
+                md: 250
+            }
         }
+    }
+};
+
+const formControlStyle = {
+    width: {
+        xs: '100%',
+        md: '80%'
     }
 };
 
@@ -138,8 +148,7 @@ const Page = () => {
         {
             id: 3,
             source: '/static/images/svg/survey-3.svg',
-            question:
-                'How you divide your finances? \n (Paano ang pagkakahati-hati ng iyong pera?)',
+            question: 'How you divide your finances? \n (Paano ang pagkakahati-hati ng iyong pera?)',
             choices: [
                 {
                     id: 1,
@@ -158,7 +167,7 @@ const Page = () => {
                     choice: 'C',
                     value: '3',
                     text: '60% Needs, 30% Wants, 10% Savings'
-                },
+                }
             ],
             count: 3
         },
@@ -230,7 +239,7 @@ const Page = () => {
                                     <Typography variant='h6' mb={4}>
                                         {surveyList[0].question}
                                     </Typography>
-                                    <FormControl sx={{ width: '80%' }}>
+                                    <FormControl sx={formControlStyle}>
                                         <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
                                         <Select
                                             labelId='demo-simple-select-label'
@@ -243,6 +252,7 @@ const Page = () => {
                                             }}
                                             sx={{ display: 'flex', alignItems: 'center' }}
                                             MenuProps={MenuProps}
+                                            inputProps={{ width: '100%', background: 'red' }}
                                         >
                                             {surveyList[0].choices.map((choice, i) => {
                                                 return (
@@ -262,7 +272,7 @@ const Page = () => {
                                     <Typography variant='h6' mb={4}>
                                         {surveyList[1].question}
                                     </Typography>
-                                    <FormControl sx={{ width: '80%' }}>
+                                    <FormControl sx={formControlStyle}>
                                         <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
                                         <Select
                                             labelId='demo-simple-select-label'
@@ -304,7 +314,7 @@ const Page = () => {
                                     <Typography variant='h6' mb={4}>
                                         {surveyList[2].question}
                                     </Typography>
-                                    <FormControl sx={{ width: '80%' }}>
+                                    <FormControl sx={formControlStyle}>
                                         <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
                                         <Select
                                             labelId='demo-simple-select-label'

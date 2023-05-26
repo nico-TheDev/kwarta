@@ -27,6 +27,7 @@ import { useRouter } from 'next/router';
 import useAccountsListener from 'stores/useAccountsListener';
 import useGetUserCategories from 'hooks/useGetUserCategories';
 import articles from '../data/articles';
+import '../theme/global.css';
 
 registerChartJs();
 
