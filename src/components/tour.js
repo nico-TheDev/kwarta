@@ -140,6 +140,7 @@ export default function tour({ open, handleClose, setShowTour }) {
             <Joyride
                 callback={handleJoyrideCallback}
                 continuous
+                hideCloseButton
                 run={run}
                 scrollToFirstStep
                 showSkipButton
