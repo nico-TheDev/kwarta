@@ -65,6 +65,8 @@ const App = (props) => {
                 <meta name='description' content='Description' />
                 <meta name='keywords' content='Keywords' />
                 <title>CASH: Financial Monitoring System</title>
+                <link rel='manifest' href='/manifest.json' />
+                <link rel='icon' href='/static/icons/favicon.ico' />
                 <meta name='viewport' content='initial-scale=1, width=device-width' />
             </Head>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
