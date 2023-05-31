@@ -11,6 +11,8 @@ import { useAccountStore } from 'stores/useAccountStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 const Tour = dynamic(() => import('../components/tour'), { ssr: false });
 import articles from 'data/articles';
+import { useAuthStore } from 'stores/useAuthStore';
+import useGetUserTransactions from 'hooks/useGetUserTransactions';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -33,6 +35,9 @@ export const DashboardLayout = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
     const [showSuggestion, setShowSuggestion] = useState(true);
     const [article, setArticle] = useState(articles[0]);
+    const user = useAuthStore((state) => state.authState?.user);
+
+    useGetUserTransactions(user?.uid);
     let popupToast;
 
     useEffect(() => {

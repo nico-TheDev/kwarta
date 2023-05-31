@@ -59,6 +59,7 @@ const Page = () => {
     const [questionOne, setQuestionOne] = useState('');
     const [questionTwo, setQuestionTwo] = useState([]);
     const [questionThree, setQuestionThree] = useState('');
+    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
     const user = useAuthStore((state) => state.authState.user);
     const manageSurvey = useAuthStore((state) => state.manageSurvey);
 
@@ -184,6 +185,7 @@ const Page = () => {
     ];
 
     const handleSubmit = () => {
+        setIsBtnDisabled(true);
         const firstAnswer = surveyList[0].choices.find((item) => questionOne === item.value);
         const thirdAnswer = surveyList[2].choices.find((item) => questionThree === item.value);
         const secondAnswer = [];
@@ -201,7 +203,8 @@ const Page = () => {
             },
             user.uid
         ).then((_) => {
-            router.push('/');
+            setIsBtnDisabled(false);
+            router.push('/accounts');
         });
     };
 
@@ -346,7 +349,7 @@ const Page = () => {
                                 variant='contained'
                                 size='large'
                                 sx={{ display: 'block', width: '80%', marginX: 'auto', mt: 4 }}
-                                disabled={!questionOne || questionTwo.length !== 3 || !questionThree}
+                                disabled={!questionOne || questionTwo.length !== 3 || !questionThree || isBtnDisabled}
                                 onClick={handleSubmit}
                             >
                                 Submit

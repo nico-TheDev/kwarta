@@ -8,12 +8,14 @@ import { useEffect, useState } from 'react';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useLanguageStore } from 'stores/useLanguageStore';
 import Link from 'next/link';
+import { useAuthStore } from 'stores/useAuthStore';
 
 export const Cashflow = (props) => {
     const theme = useTheme();
     const getExpenseList = useTransactionStore((state) => state.getExpenseList);
     const transactions = useTransactionStore((state) => state.transactions);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const user = useAuthStore((state) => state.authState?.user);
 
     const [expenseData, setExpenseData] = useState([]);
     const [incomeData, setIncomeData] = useState([]);
@@ -94,97 +96,98 @@ export const Cashflow = (props) => {
     };
 
     useEffect(() => {
-        const allExpenses = transactions.filter((transaction) => transaction.type === 'expense');
-        const allIncome = transactions.filter((transaction) => transaction.type === 'income');
-        // console.log('ALL', allExpenses);
-        if (allExpenses.length !== 0) {
-            const sortedExpenses = allExpenses.sort((a, b) => {
-                const currentDateA = new Date(a.date);
-                const currentDateB = new Date(b.date);
-                const resultInSecondsA = currentDateA.getTime() / 1000;
-                const resultInSecondsB = currentDateB.getTime() / 1000;
-                return resultInSecondsA > resultInSecondsB;
-            });
-            const sortedIncome = allIncome.sort((a, b) => {
-                const currentDateA = new Date(a.date);
-                const currentDateB = new Date(b.date);
-                const resultInSecondsA = currentDateA.getTime() / 1000;
-                const resultInSecondsB = currentDateB.getTime() / 1000;
-                return resultInSecondsA > resultInSecondsB;
-            });
+        if (!user) return;
+        else {
+            const allExpenses = transactions.filter((transaction) => transaction.type === 'expense');
+            const allIncome = transactions.filter((transaction) => transaction.type === 'income');
+            // console.log('ALL', allExpenses);
+            if (allExpenses.length !== 0 || allIncome.length !== 0) {
+                const sortedExpenses = allExpenses.sort((a, b) => {
+                    const currentDateA = new Date(a.date);
+                    const currentDateB = new Date(b.date);
+                    const resultInSecondsA = currentDateA.getTime() / 1000;
+                    const resultInSecondsB = currentDateB.getTime() / 1000;
+                    return resultInSecondsA > resultInSecondsB;
+                });
+                const sortedIncome = allIncome.sort((a, b) => {
+                    const currentDateA = new Date(a.date);
+                    const currentDateB = new Date(b.date);
+                    const resultInSecondsA = currentDateA.getTime() / 1000;
+                    const resultInSecondsB = currentDateB.getTime() / 1000;
+                    return resultInSecondsA > resultInSecondsB;
+                });
 
-            const finalMonthDataExpense = [];
-            const finalMonthDataIncome = [];
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const finalMonthDataExpense = [];
+                const finalMonthDataIncome = [];
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-            // ADD THE MONTHS TO THE FINAL DATA
-            monthNames.forEach((month) => {
-                finalMonthDataExpense.push({ title: month, data: [] });
-                finalMonthDataIncome.push({ title: month, data: [] });
-            });
+                // ADD THE MONTHS TO THE FINAL DATA
+                monthNames.forEach((month) => {
+                    finalMonthDataExpense.push({ title: month, data: [] });
+                    finalMonthDataIncome.push({ title: month, data: [] });
+                });
 
-            sortedExpenses.forEach((transaction) => {
-                const currentDate = transaction.date;
-                const currentMonth = monthNames[currentDate.split('/')[0] - 1];
-                const targetIndex = finalMonthDataExpense.findIndex((item) => item.title === currentMonth);
+                sortedExpenses.forEach((transaction) => {
+                    const currentDate = transaction.date;
+                    const currentMonth = monthNames[currentDate.split('/')[0] - 1];
+                    const targetIndex = finalMonthDataExpense.findIndex((item) => item.title === currentMonth);
 
-                finalMonthDataExpense[targetIndex].data.push(transaction);
-            });
-            sortedIncome.forEach((transaction) => {
-                const currentDate = transaction.date;
-                const currentMonth = monthNames[currentDate.split('/')[0] - 1];
-                const targetIndex = finalMonthDataIncome.findIndex((item) => item.title === currentMonth);
+                    finalMonthDataExpense[targetIndex].data.push(transaction);
+                });
+                sortedIncome.forEach((transaction) => {
+                    const currentDate = transaction.date;
+                    const currentMonth = monthNames[currentDate.split('/')[0] - 1];
+                    const targetIndex = finalMonthDataIncome.findIndex((item) => item.title === currentMonth);
 
-                finalMonthDataIncome[targetIndex].data.push(transaction);
-            });
+                    finalMonthDataIncome[targetIndex].data.push(transaction);
+                });
 
-            const monthDataListExpense = finalMonthDataExpense.map((currentMonth) => {
-                if (currentMonth.data.length !== 0) {
-                    const sum = currentMonth.data.reduce((acc, currentTransaction) => {
-                        const currentDate = currentTransaction.date;
-                        const currentTransactionMonth = monthNames[currentDate.split('/')[0] - 1];
+                const monthDataListExpense = finalMonthDataExpense.map((currentMonth) => {
+                    if (currentMonth.data.length !== 0) {
+                        const sum = currentMonth.data.reduce((acc, currentTransaction) => {
+                            const currentDate = currentTransaction.date;
+                            const currentTransactionMonth = monthNames[currentDate.split('/')[0] - 1];
 
-                        if (currentTransactionMonth === currentMonth.title) {
-                            acc += currentTransaction.amount;
-                        }
+                            if (currentTransactionMonth === currentMonth.title) {
+                                acc += currentTransaction.amount;
+                            }
 
-                        return acc;
-                    }, 0);
+                            return acc;
+                        }, 0);
 
-                    return sum;
-                } else {
-                    return 0;
-                }
-            });
-            const monthDataListIncome = finalMonthDataIncome.map((currentMonth) => {
-                if (currentMonth.data.length !== 0) {
-                    const sum = currentMonth.data.reduce((acc, currentTransaction) => {
-                        const currentDate = currentTransaction.date;
-                        const currentTransactionMonth = monthNames[currentDate.split('/')[0] - 1];
+                        return sum;
+                    } else {
+                        return 0;
+                    }
+                });
+                const monthDataListIncome = finalMonthDataIncome.map((currentMonth) => {
+                    if (currentMonth.data.length !== 0) {
+                        const sum = currentMonth.data.reduce((acc, currentTransaction) => {
+                            const currentDate = currentTransaction.date;
+                            const currentTransactionMonth = monthNames[currentDate.split('/')[0] - 1];
 
-                        if (currentTransactionMonth === currentMonth.title) {
-                            acc += currentTransaction.amount;
-                        }
+                            if (currentTransactionMonth === currentMonth.title) {
+                                acc += currentTransaction.amount;
+                            }
 
-                        return acc;
-                    }, 0);
+                            return acc;
+                        }, 0);
 
-                    return sum;
-                } else {
-                    return 0;
-                }
-            });
+                        return sum;
+                    } else {
+                        return 0;
+                    }
+                });
 
-            setExpenseData(monthDataListExpense);
-            setIncomeData(monthDataListIncome);
+                setExpenseData(monthDataListExpense);
+                setIncomeData(monthDataListIncome);
+            }
         }
     }, [transactions]);
 
     return (
         <Card {...props}>
-            <Tooltip title={getLanguage(currentLanguage).tooltipCashflowGraph}>
-                <CardHeader title={getLanguage(currentLanguage).cashflow} />
-            </Tooltip>
+            <CardHeader title={getLanguage(currentLanguage).cashflow} />
             <Divider />
             <CardContent>
                 <Tooltip title={getLanguage(currentLanguage).tooltipCashflowGraph}>
@@ -206,12 +209,8 @@ export const Cashflow = (props) => {
                     p: 2
                 }}
             >
-                <Button 
-                    color='primary' 
-                    endIcon={<ArrowRightIcon fontSize='small' />} 
-                    size='small'
-                >
-                    <Link href="/cashflow">{getLanguage(currentLanguage).overview}</Link>
+                <Button color='primary' endIcon={<ArrowRightIcon fontSize='small' />} size='small'>
+                    <Link href='/cashflow'>{getLanguage(currentLanguage).overview}</Link>
                 </Button>
             </Box>
         </Card>

@@ -60,7 +60,7 @@ const Page = () => {
             user_id
         }).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/accounts');
             }
         });
 
@@ -68,7 +68,6 @@ const Page = () => {
         formik.resetForm();
         setSelectedIcon('');
         setSelectedColor('');
-        setOpen(false);
     };
 
     const handleColorClick = (color) => {
@@ -87,7 +86,7 @@ const Page = () => {
 
     const initialValues = {
         accountName: '',
-        accountAmount: '',
+        accountAmount: ''
     };
 
     const formik = useFormik({
@@ -149,7 +148,7 @@ const Page = () => {
                         component='form'
                     >
                         <Typography id='modal-modal-title' variant='h6' component='h2'>
-                                {getLanguage(currentLanguage).accountDetails}
+                            {getLanguage(currentLanguage).accountDetails}
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -202,6 +201,7 @@ const Page = () => {
                                 onIconClick={handleIconClick}
                                 selectedIcon={selectedIcon}
                                 setSelectedIcon={setSelectedIcon}
+                                isEditing={isEditing}
                             />
                         </Box>
 

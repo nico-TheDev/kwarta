@@ -12,6 +12,7 @@ import { blue, green, red, yellow } from '@mui/material/colors';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { validateYupSchema } from 'formik';
+import PlaceholderEmpty from './shared/PlaceholderEmpty';
 
 export const ExpenseTypeChart = (props) => {
     const theme = useTheme();
@@ -21,10 +22,12 @@ export const ExpenseTypeChart = (props) => {
     const [graphData, setGraphData] = useState('');
     const [categoryList, setCategoryList] = useState('');
     const [prompt, setPrompt] = useState('');
+    const [expenseList, setExpenseList] = useState([]);
     const [isPositive, setIsPositive] = useState('');
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const getExpenseTypeList = useTransactionStore((state) => state.getExpenseTypeList);
+    const getExpenseList = useTransactionStore((state) => state.getExpenseList);
 
     const options = {
         animation: false,
@@ -52,7 +55,8 @@ export const ExpenseTypeChart = (props) => {
         if (!user) return;
         else {
             const expenseData = getExpenseTypeList(user?.uid);
-
+            const expenseDataList = getExpenseList(user?.uid);
+            setExpenseList(expenseDataList);
             const data = {
                 datasets: [
                     {
@@ -133,18 +137,22 @@ export const ExpenseTypeChart = (props) => {
                         position: 'relative'
                     }}
                 >
-                    {graphData && <Doughnut data={graphData} options={options} />}
+                    {expenseList.length !== 0 ? (
+                        <Doughnut data={graphData} options={options} />
+                    ) : (
+                        <PlaceholderEmpty message='No Expenses at the moment' />
+                    )}
                 </Box>
                 <Box
                     sx={{
                         display: 'flex',
                         justifyContent: 'start',
                         flexWrap: 'wrap',
-                        p: 2,
+                        p: 4,
                         gap: 1
                     }}
                 >
-                    {categoryList.length !== 0 &&
+                    {expenseList.length !== 0 &&
                         categoryList.map(({ color, title, value, icon }) => (
                             <Box
                                 key={title}
@@ -170,18 +178,26 @@ export const ExpenseTypeChart = (props) => {
                         ))}
                 </Box>
                 <Divider />
-                <Box
-                    sx={{ mt: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}
-                >
-                    {isPositive ? (
-                        <SentimentVerySatisfiedIcon color='success' fontSize='large' />
-                    ) : (
-                        <SentimentVeryDissatisfiedIcon color='error' fontSize='large' />
-                    )}
-                    <Typography color='textPrimary' variant='caption'>
-                        {prompt}
-                    </Typography>
-                </Box>
+                {expenseList.length !== 0 && (
+                    <Box
+                        sx={{
+                            mt: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            textAlign: 'center'
+                        }}
+                    >
+                        {isPositive ? (
+                            <SentimentVerySatisfiedIcon color='success' fontSize='large' />
+                        ) : (
+                            <SentimentVeryDissatisfiedIcon color='error' fontSize='large' />
+                        )}
+                        <Typography color='textPrimary' variant='caption'>
+                            {prompt}
+                        </Typography>
+                    </Box>
+                )}
             </CardContent>
         </Card>
     );
