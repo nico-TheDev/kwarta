@@ -3,19 +3,7 @@ import Head from 'next/head';
 import { CacheProvider } from '@emotion/react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import {
-    Button,
-    CssBaseline,
-    Paper,
-    Typography,
-    Box,
-    Link,
-    CardMedia,
-    Card,
-    CardContent,
-    Stack,
-    Chip
-} from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -26,7 +14,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useRouter } from 'next/router';
 import useAccountsListener from 'stores/useAccountsListener';
 import useGetUserCategories from 'hooks/useGetUserCategories';
-import articles from '../data/articles';
+import '../theme/global.css';
 
 registerChartJs();
 
@@ -39,9 +27,6 @@ const App = (props) => {
     const getLayout = Component.getLayout ?? ((page) => page);
 
     const { user, isAuthenticated } = useAuthStore((state) => state.authState);
-
-    const [disablePopup, setDisablePopup] = useState(false);
-    const [article, setArticle] = useState('');
 
     // ACCOUNTS LISTENER
     useAccountsListener(user?.uid);
@@ -68,73 +53,6 @@ const App = (props) => {
             }
         }
     }, [user, isAuthenticated]);
-
-    const getRandomObject = () => {
-        const randomIndex = Math.floor(Math.random() * articles.length);
-        const randomObject = articles[randomIndex];
-        setArticle(randomObject);
-    };
-
-    useEffect(() => {
-        const disablePopupValue = localStorage.getItem('disablePopup');
-        if (disablePopupValue) {
-            setDisablePopup(true);
-        }
-    }, []);
-
-    const handleClick = (e) => {
-        const isChecked = true;
-        setDisablePopup(isChecked);
-
-        if (isChecked) {
-            localStorage.setItem('disablePopup', true);
-        } else {
-            localStorage.removeItem('disablePopup');
-        }
-    };
-
-    useEffect(() => {
-        const popupInterval = setInterval(() => {
-            getRandomObject();
-            if (!disablePopup) {
-                toast.custom(
-                    <Paper sx={{ p: 2, gap: 2, alignItems: 'center' }}>
-                        <Box sx={{ mb: 1, width: 300 }}>
-                            <Typography
-                                variant='subtitle1'
-                                color='textSecondary'
-                                sx={{ mb: 2, display: 'inline-block' }}
-                            >
-                                So you may want to read about:
-                            </Typography>
-                            <Link href={article.articleLink} underline='none' target='_blank'>
-                                <Box>
-                                    <Typography color='textPrimary' variant='body1' mb={2}>
-                                        {article.articleTitle}
-                                    </Typography>
-
-                                    <Typography color='textSecondary' variant='subtitle1'>
-                                        {article.articleAuthor}
-                                    </Typography>
-                                </Box>
-                            </Link>
-                        </Box>
-                        <Button sx={{ mt: 1 }} variant='outlined' onClick={handleClick} fullWidth>
-                            Turn off reminders
-                        </Button>
-                    </Paper>,
-                    {
-                        duration: 7000, // Automatically close after 5 seconds
-                        position: 'top-right',
-                        id: 'popup'
-                    }
-                );
-            }
-        }, 1000 * 60 * 5); // 5 minutes in milliseconds
-
-        return () => clearInterval(popupInterval);
-    }, [toast, disablePopup, article]);
-
     return (
         <CacheProvider value={emotionCache}>
             <Head>
@@ -147,11 +65,9 @@ const App = (props) => {
                 <meta name='description' content='Description' />
                 <meta name='keywords' content='Keywords' />
                 <title>CASH: Financial Monitoring System</title>
-                <meta name='viewport' content='initial-scale=1, width=device-width' />
-
                 <link rel='manifest' href='/manifest.json' />
-                <link rel='icon' href='/static/icons/favicon.ico' type='image/png' />
-                <meta name='theme-color' content='#317EFB' />
+                <link rel='icon' href='/static/icons/favicon.ico' />
+                <meta name='viewport' content='initial-scale=1, width=device-width' />
             </Head>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Toaster

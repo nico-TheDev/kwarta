@@ -39,8 +39,18 @@ const MenuProps = {
     PaperProps: {
         style: {
             maxHeight: 150,
-            width: 250
+            width: {
+                xs: '100%',
+                md: 250
+            }
         }
+    }
+};
+
+const formControlStyle = {
+    width: {
+        xs: '100%',
+        md: '80%'
     }
 };
 
@@ -49,6 +59,7 @@ const Page = () => {
     const [questionOne, setQuestionOne] = useState('');
     const [questionTwo, setQuestionTwo] = useState([]);
     const [questionThree, setQuestionThree] = useState('');
+    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
     const user = useAuthStore((state) => state.authState.user);
     const manageSurvey = useAuthStore((state) => state.manageSurvey);
 
@@ -138,8 +149,7 @@ const Page = () => {
         {
             id: 3,
             source: '/static/images/svg/survey-3.svg',
-            question:
-                'How you divide your finances? \n (Paano ang pagkakahati-hati ng iyong pera?)',
+            question: 'How you divide your finances? \n (Paano ang pagkakahati-hati ng iyong pera?)',
             choices: [
                 {
                     id: 1,
@@ -158,7 +168,7 @@ const Page = () => {
                     choice: 'C',
                     value: '3',
                     text: '60% Needs, 30% Wants, 10% Savings'
-                },
+                }
             ],
             count: 3
         },
@@ -175,6 +185,7 @@ const Page = () => {
     ];
 
     const handleSubmit = () => {
+        setIsBtnDisabled(true);
         const firstAnswer = surveyList[0].choices.find((item) => questionOne === item.value);
         const thirdAnswer = surveyList[2].choices.find((item) => questionThree === item.value);
         const secondAnswer = [];
@@ -192,7 +203,8 @@ const Page = () => {
             },
             user.uid
         ).then((_) => {
-            router.push('/');
+            setIsBtnDisabled(false);
+            router.push('/accounts');
         });
     };
 
@@ -230,7 +242,7 @@ const Page = () => {
                                     <Typography variant='h6' mb={4}>
                                         {surveyList[0].question}
                                     </Typography>
-                                    <FormControl sx={{ width: '80%' }}>
+                                    <FormControl sx={formControlStyle}>
                                         <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
                                         <Select
                                             labelId='demo-simple-select-label'
@@ -243,6 +255,7 @@ const Page = () => {
                                             }}
                                             sx={{ display: 'flex', alignItems: 'center' }}
                                             MenuProps={MenuProps}
+                                            inputProps={{ width: '100%', background: 'red' }}
                                         >
                                             {surveyList[0].choices.map((choice, i) => {
                                                 return (
@@ -262,7 +275,7 @@ const Page = () => {
                                     <Typography variant='h6' mb={4}>
                                         {surveyList[1].question}
                                     </Typography>
-                                    <FormControl sx={{ width: '80%' }}>
+                                    <FormControl sx={formControlStyle}>
                                         <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
                                         <Select
                                             labelId='demo-simple-select-label'
@@ -304,7 +317,7 @@ const Page = () => {
                                     <Typography variant='h6' mb={4}>
                                         {surveyList[2].question}
                                     </Typography>
-                                    <FormControl sx={{ width: '80%' }}>
+                                    <FormControl sx={formControlStyle}>
                                         <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
                                         <Select
                                             labelId='demo-simple-select-label'
@@ -336,7 +349,7 @@ const Page = () => {
                                 variant='contained'
                                 size='large'
                                 sx={{ display: 'block', width: '80%', marginX: 'auto', mt: 4 }}
-                                disabled={!questionOne || questionTwo.length !== 3 || !questionThree}
+                                disabled={!questionOne || questionTwo.length !== 3 || !questionThree || isBtnDisabled}
                                 onClick={handleSubmit}
                             >
                                 Submit

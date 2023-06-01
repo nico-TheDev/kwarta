@@ -139,7 +139,7 @@ export default function TransferFormModal({ open, setOpen }) {
                 <Box sx={modalStyle} component='form'>
                     <IconButton
                         color='primary'
-                        sx={{ position: 'absolute', top: 5, right: 5 }}
+                        sx={{ position: 'absolute', top: 20, right: 20 }}
                         onClick={() => setOpen(false)}
                     >
                         <CloseIcon />

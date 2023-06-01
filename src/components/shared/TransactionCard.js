@@ -40,6 +40,7 @@ export default function TransactionCard({ transaction }) {
                     <Icon name={transaction.category?.category_icon} />
                 </ListItemAvatar>
                 <ListItemText primary={transaction.category.category_name} secondary={`₱ ${transaction.amount}`} />
+                {/* <ListItemText primary={transaction.targetAccount.account_name} /> */}
                 <IconButton edge='end' size='small'>
                     {transaction.type === 'expense' ? (
                         <ArrowDownwardIcon color='error' />

@@ -7,6 +7,7 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { Icon } from '../../components/shared/Icon';
 import { formatPrice } from 'utils/format-price';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import PlaceholderEmpty from 'components/shared/PlaceholderEmpty';
 
 export const ExpensesChart = (props) => {
     const theme = useTheme();
@@ -14,6 +15,7 @@ export const ExpensesChart = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
     const [graphData, setGraphData] = useState('');
     const [categoryList, setCategoryList] = useState('');
+    const [expenseList, setExpenseList] = useState([]);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const getExpenseList = useTransactionStore((state) => state.getExpenseList);
@@ -44,7 +46,7 @@ export const ExpensesChart = (props) => {
         if (!user) return;
         else {
             const expenseData = getExpenseList(user?.uid);
-
+            setExpenseList(expenseData);
             const data = {
                 datasets: [
                     {
@@ -89,7 +91,11 @@ export const ExpensesChart = (props) => {
                         position: 'relative'
                     }}
                 >
-                    {graphData && <Doughnut data={graphData} options={options} />}
+                    {expenseList.length !== 0 ? (
+                        <Doughnut data={graphData} options={options} />
+                    ) : (
+                        <PlaceholderEmpty message='No expenses at the moment' />
+                    )}
                 </Box>
                 <Box
                     sx={{

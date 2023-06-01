@@ -5,7 +5,8 @@ import Typography from '@mui/material/Typography';
 
 import { Icon } from 'components/shared/Icon';
 
-const IconOnlySelector = ({ iconData, selectedIcon, onIconClick }) => {
+const IconOnlySelector = ({ iconData, selectedIcon, onIconClick, isEditing = true }) => {
+    // console.log(selectedIcon)
     return (
         <Box>
             <Typography variant='h6' component='h2' mb={2}>
@@ -23,18 +24,19 @@ const IconOnlySelector = ({ iconData, selectedIcon, onIconClick }) => {
                 }}
             >
                 {iconData.map((iconData) => (
-                    <Box onClick={() => onIconClick(iconData)} key={iconData}>
-                        <Button
-                            variant={selectedIcon === iconData ? 'contained' : 'outlined'}
-                            sx={{ justifyContent: 'center', color: 'white' }}
-                        >
-                            <Icon
-                                name={iconData}
-                                color={selectedIcon === iconData ? 'inherit' : 'primary'}
-                                sx={{ fontSize: '40px' }}
-                            />
-                        </Button>
-                    </Box>
+                    <Button
+                        variant={selectedIcon === iconData ? 'contained' : 'outlined'}
+                        sx={{ justifyContent: 'center', color: 'white' }}
+                        disabled={!isEditing}
+                        onClick={() => onIconClick(iconData)}
+                        key={iconData}
+                    >
+                        <Icon
+                            name={iconData}
+                            color={selectedIcon === iconData ? 'inherit' : 'primary'}
+                            sx={{ fontSize: '40px' }}
+                        />
+                    </Button>
                 ))}
             </Box>
         </Box>
