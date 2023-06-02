@@ -36,7 +36,8 @@ const Login = () => {
         setIsBtnDisabled(true);
         loginWithGoogle().then(() => {
             setIsBtnDisabled(false);
-            router.push('/accounts');
+
+            router.push('/');
             console.log('GO TO DASHBOARD');
         });
     };
