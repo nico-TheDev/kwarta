@@ -110,6 +110,8 @@ const Page = () => {
                             to change. For more information, you can go to the bank's website or go to the nearest branch
                             in your area.
                         </Typography>
+                    </Box>
+                    <Box sx={{ pt: 3 }}>
                         <Typography
                             sx={{ m: 1, textAlign: 'center' }}
                             color='textSecondary'

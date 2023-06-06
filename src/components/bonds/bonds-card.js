@@ -202,6 +202,17 @@ export const BondsCard = ({ ...rest }) => {
                                 <Typography align='center' color='textPrimary' gutterBottom variant='body2'>
                                     {getLanguage(currentLanguage).calculatedAmountBonds}
                                 </Typography>
+                                <Box sx={{ pt: 3 }}>
+                                    <Typography
+                                        sx={{ m: 1, textAlign: 'center' }}
+                                        color='textSecondary'
+                                        variant='caption'
+                                    >
+                                        DISCLAIMER: This computation is based on an investment in the RTB 29 Bond issued between 
+                                        February 7, 2023 to February 17, 2023 with an interest period of 5.5 years and an annual
+                                        interest of 6.25%
+                                    </Typography>
+                                </Box>
                             </CardContent>
                         </Card>
                     </Box>
