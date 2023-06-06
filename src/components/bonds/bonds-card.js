@@ -458,7 +458,7 @@ export const BondsCard = ({ ...rest }) => {
                                     </Grid>
                                 </Grid>
                             </Box>
-                            <Link href='https://www.treasury.gov.ph/rtb29/'>
+                            <Link href='https://www.treasury.gov.ph/rtb29/' target="_blank">
                                 <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
                                     For more information about Retail Treasury Bonds. Click here.
                                 </Typography>

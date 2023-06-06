@@ -1,6 +1,6 @@
 import { useState, forwardRef, useEffect } from 'react';
 import PropTypes from 'prop-types'
-import { Avatar, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material'
+import { Avatar, Box, Card, CardContent, Divider, Grid, Typography, Link } from '@mui/material'
 import Select from '@mui/material/Select';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -151,6 +151,11 @@ export const SavingsCard = ({ ...rest }) => {
                                 </Grid>
                             ))}
                         </Grid>
+                        <Link href='https://www.bdo.com.ph/personal' target="_blank">
+                            <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                                For more information about BDO Savings Accounts. Click here.
+                            </Typography>
+                        </Link>
                     </Box>
 
                     <Box sx={{ pt: 3, flexGrow: 1 }}>
@@ -164,6 +169,11 @@ export const SavingsCard = ({ ...rest }) => {
                                 </Grid>
                             ))}
                         </Grid>
+                        <Link href='https://www.metrobank.com.ph/save/savings' target="_blank">
+                            <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                                For more information about Metrobank Savings Accounts. Click here.
+                            </Typography>
+                        </Link>
                     </Box>
 
                     <Box sx={{ pt: 3, flexGrow: 1 }}>
@@ -177,6 +187,11 @@ export const SavingsCard = ({ ...rest }) => {
                                 </Grid>
                             ))}
                         </Grid>
+                        <Link href='https://www.bpi.com.ph/personal/bank/savings-accounts' target="_blank">
+                            <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                                For more information about BPI Savings Accounts. Click here.
+                            </Typography>
+                        </Link>
                     </Box>
 
                     <Box sx={{ pt: 3, flexGrow: 1 }}>
@@ -190,6 +205,11 @@ export const SavingsCard = ({ ...rest }) => {
                                 </Grid>
                             ))}
                         </Grid>
+                        <Link href='https://www.landbank.com/cards' target="_blank">
+                            <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                                For more information about Landbank Savings Accounts. Click here.
+                            </Typography>
+                        </Link>
                     </Box>
 
                     <Box sx={{ pt: 3, flexGrow: 1 }}>
@@ -203,6 +223,11 @@ export const SavingsCard = ({ ...rest }) => {
                                 </Grid>
                             ))}
                         </Grid>
+                        <Link href='https://www.securitybank.com/' target="_blank">
+                            <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                                For more information about Security Bank Savings Accounts. Click here.
+                            </Typography>
+                        </Link>
                     </Box>
                 </Box>
             ) : (
