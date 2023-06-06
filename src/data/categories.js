@@ -301,10 +301,10 @@ const premadeCategories = [
         updatedAt: '',
         id: '27'
     },
+
     {
         user_id: '1',
-        category_type: 'expense',
-        expense_type: 'savings',
+        category_type: 'savings',
         category_name: 'Savings Account',
         category_icon: ICON_NAMES.ACCOUNT_ICONS.CREDIT_CARD,
         category_color: '#003366',
@@ -314,8 +314,18 @@ const premadeCategories = [
     },
     {
         user_id: '1',
-        category_type: 'expense',
-        expense_type: 'savings',
+        category_type: 'savings',
+        category_name: 'Time-Deposit',
+        category_icon: ICON_NAMES.SYSTEM_ICONS.TIME,
+        category_color: '#680367',
+        created_at: '',
+        updatedAt: '',
+        id: '28'
+    },
+
+    {
+        user_id: '1',
+        category_type: 'investments',
         category_name: 'Stocks',
         category_icon: ICON_NAMES.ACCOUNT_ICONS.PERCENTAGE,
         category_color: '#50C878',
@@ -325,9 +335,8 @@ const premadeCategories = [
     },
     {
         user_id: '1',
-        category_type: 'expense',
-        expense_type: 'savings',
-        category_name: 'Investments',
+        category_type: 'investments',
+        category_name: 'Investment Funds',
         category_icon: ICON_NAMES.ACCOUNT_ICONS.BANK,
         category_color: '#FF7F50',
         created_at: '',
@@ -336,11 +345,20 @@ const premadeCategories = [
     },
     {
         user_id: '1',
-        category_type: 'expense',
-        expense_type: 'savings',
+        category_type: 'investments',
         category_name: 'Bonds',
         category_icon: ICON_NAMES.ACCOUNT_ICONS.RECEIPT,
         category_color: '#6A0DAD',
+        created_at: '',
+        updatedAt: '',
+        id: '31'
+    },
+    {
+        user_id: '1',
+        category_type: 'investments',
+        category_name: 'Real Estate',
+        category_icon: ICON_NAMES.CATEGORY_ICONS.HOUSE,
+        category_color: '#F156DF',
         created_at: '',
         updatedAt: '',
         id: '31'
