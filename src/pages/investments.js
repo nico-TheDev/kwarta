@@ -303,6 +303,17 @@ const Page = () => {
                     <Typography variant='h6'>{suggestionData.aggressiveRiskFund}</Typography>
                 </Paper>
             </Grid>
+            <Box sx={{ pt: 3 }}>
+                <Typography
+                    sx={{ m: 1, textAlign: 'center' }}
+                    color='textSecondary'
+                    variant='caption'
+                >
+                    DISCLAIMER: These are just indicative numbers. Performance of the
+                    fund is not assured and this is subject to fluctuating market
+                    conditions.
+                </Typography>
+            </Box>
         </>
     );
     return (
@@ -528,6 +539,15 @@ const Page = () => {
                         Average return of Sun Life Prosperity Balanced Fund (moderate risk) - 8% <br />
                         Average return of Sun Life Prosperity Index Fund (aggressive risk) - 10%{' '}
                     </Typography>
+                    <Box sx={{ pt: 3 }}>
+                        <Typography
+                            sx={{ m: 1, textAlign: 'center' }}
+                            color='textSecondary'
+                            variant='caption'
+                        >
+                            Source: https://online.sunlife.com.ph/cdt/eCalcAge/investmentCalculator
+                        </Typography>
+                    </Box>
                 </Container>
             </Box>
         </>

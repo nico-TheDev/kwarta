@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography, Tooltip } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Grid, Link, Typography, Tooltip } from '@mui/material';
 import InsertChartIcon from '@mui/icons-material/InsertChartOutlined';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -115,6 +115,11 @@ export const Savings = (props) => {
                         {getLanguage(currentLanguage).sinceLastMonth}
                     </Typography>
                 </Box>{' '}
+                <Link href='https://tradingeconomics.com/philippines/inflation-cpi' target="_blank">
+                    <Typography color='textSecondary' variant='caption'>
+                        Source: Trading Economics
+                    </Typography>
+                </Link>
             </CardContent>
         </Card>
     );

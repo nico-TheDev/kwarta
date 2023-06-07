@@ -26,6 +26,20 @@ export default function tour({ open, handleClose, setShowTour }) {
     const TOUR_STEPS = [
         {
             target: '.app__carousel',
+            content: <Typography variant='body2'>Welcome to CASH: Financial Monitoring Application Tutorial</Typography>,
+            disableBeacon: true,
+            source: '/static/images/steps/intro1.png',
+            placement: 'bottom'
+        },
+        {
+            target: '.app__carousel',
+            content: <Typography variant='body2'>Before we start, let's have a short tutorial about our application</Typography>,
+            disableBeacon: true,
+            source: '/static/images/steps/intro2.png',
+            placement: 'bottom'
+        },
+        {
+            target: '.app__carousel',
             content: <Typography variant='body2'>Welcome to CASH: Financial Monitoring Application</Typography>,
             disableBeacon: true,
             source: '/static/images/steps/step1.png',
@@ -101,7 +115,7 @@ export default function tour({ open, handleClose, setShowTour }) {
                     Congratulations! You just started your first step in using CASH.
                 </Typography>
             ),
-            source: '/static/images/steps/step1.png',
+            source: '/static/images/steps/outro1.png',
             placement: 'bottom'
         }
     ];

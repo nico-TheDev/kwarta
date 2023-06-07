@@ -232,6 +232,17 @@ const Page = () => {
                             </Paper>
                         </Grid>
                     </Grid>
+                    <Box sx={{ pt: 3 }}>
+                        <Typography
+                            sx={{ m: 1, textAlign: 'center' }}
+                            color='textSecondary'
+                            variant='caption'
+                        >
+                            DISCLAIMER: These are just indicative numbers. Performance of the
+                            fund is not assured and this is subject to fluctuating market
+                            conditions.
+                        </Typography>
+                    </Box>
                 </Container>
             </Box>
         </>

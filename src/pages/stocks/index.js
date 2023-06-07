@@ -241,6 +241,15 @@ const Page = ({ trendingStocksData, marketMoversData }) => {
                             </Box>
                         )}
                     </Grid>
+                    <Box sx={{ pt: 3 }}>
+                        <Typography
+                            sx={{ m: 1, textAlign: 'center' }}
+                            color='textSecondary'
+                            variant='caption'
+                        >
+                            Source: https://www.pseacademy.com.ph/investment-calculator/
+                        </Typography>
+                    </Box>
                 </Container>
             </Box>
         </>
