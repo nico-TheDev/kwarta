@@ -25,6 +25,8 @@ import Image from 'next/image';
 import { Icon } from 'components/shared/Icon';
 import premadeCategories from 'data/categories';
 import { useRouter } from 'next/router';
+import { useLanguageStore } from 'stores/useLanguageStore';
+import SurveyBlock from 'components/SurveyBlock';
 
 const categories = premadeCategories
     .filter((item) => item.category_type === 'expense')
@@ -55,309 +57,86 @@ const formControlStyle = {
 };
 
 const Page = () => {
-    const router = useRouter();
-    const [questionOne, setQuestionOne] = useState('');
-    const [questionTwo, setQuestionTwo] = useState([]);
-    const [questionThree, setQuestionThree] = useState('');
-    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
-    const user = useAuthStore((state) => state.authState.user);
-    const manageSurvey = useAuthStore((state) => state.manageSurvey);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const setLanguage = useLanguageStore((state) => state.setLanguage);
+    const [hasSelectedLanguage, setHasSelectedLanguage] = useState(false);
+    const [dataPrivacyAnswer, setDataPrivacyAnswer] = useState(false);
 
-    const surveyList = [
-        {
-            id: 1,
-            source: '/static/images/svg/survey-1.svg',
-            question: 'What is your socioeconomic standing? \n (Ito ang iyong buwanang sweldo.)',
-            choices: [
-                {
-                    id: 8,
-                    choice: 'H',
-                    value: '8',
-                    text: `I don't earn money / currently a student`,
-                    min: 0,
-                    max: 0
-                },
-                {
-                    id: 1,
-                    choice: 'A',
-                    value: '1',
-                    text: 'Less than ₱9,100',
-                    min: 0,
-                    max: 9100
-                },
-                {
-                    id: 2,
-                    choice: 'B',
-                    value: '2',
-                    text: 'Between ₱9,100 to ₱18,200',
-                    min: 9100,
-                    max: 18200
-                },
-                {
-                    id: 3,
-                    choice: 'C',
-                    value: '3',
-                    text: 'Between ₱18,200 to ₱36,400',
-                    min: 18200,
-                    max: 36400
-                },
-                {
-                    id: 4,
-                    choice: 'D',
-                    value: '4',
-                    text: 'Between ₱36,400 to ₱63,700',
-                    min: 36400,
-                    max: 63700
-                },
-                {
-                    id: 5,
-                    choice: 'E',
-                    value: '5',
-                    text: 'Between ₱63,700 to ₱109,200',
-                    min: 63700,
-                    max: 109200
-                },
-                {
-                    id: 6,
-                    choice: 'F',
-                    value: '6',
-                    text: 'Between ₱109,200 to ₱182,000',
-                    min: 109200,
-                    max: 182000
-                },
-                {
-                    id: 7,
-                    choice: 'G',
-                    value: '7',
-                    text: 'At least ₱182,000 and up',
-                    min: 182000,
-                    max: 0
-                }
-            ],
-            count: 1
-        },
+    const LanguageBlock = () => (
+        <Box sx={{ py: 8 }}>
+            <Container maxWidth='md'>
+                <Typography variant='h4' sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    What language do you want to view the website ? (Anong lenggwahe mo nais basahin ang website?)
+                </Typography>
+                <Box sx={{ display: 'grid', gap: 2 }}>
+                    <Button
+                        variant='outlined'
+                        onClick={() => {
+                            setLanguage('en');
+                            setHasSelectedLanguage(true);
+                        }}
+                    >
+                        English
+                    </Button>
+                    <Button
+                        variant='outlined'
+                        onClick={() => {
+                            setLanguage('en');
+                            setHasSelectedLanguage(true);
+                        }}
+                    >
+                        Filipino
+                    </Button>
+                </Box>
+            </Container>
+        </Box>
+    );
 
-        {
-            id: 2,
-            source: '/static/images/svg/survey-2.svg',
-            question:
-                'Choose categories you prioritize when spending money \n (Select 3) \n (Ito ang mga kategoryang binibigyan mong prayoridad sa paggastos ng pera.)',
-            choices: categories,
-            count: 1
-        },
+    const DataPrivacyBlock = () => (
+        <Box sx={{ py: 8 }}>
+            <Container maxWidth='md'>
+                <Typography variant='h3' sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    Welcome to CASH.
+                </Typography>
+                <Typography variant='body1' sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    Data Privacy Agreement
+                </Typography>
 
-        {
-            id: 3,
-            source: '/static/images/svg/survey-3.svg',
-            question: 'How you divide your finances? \n (Paano ang pagkakahati-hati ng iyong pera?)',
-            choices: [
-                {
-                    id: 1,
-                    choice: 'A',
-                    value: '1',
-                    text: '50% Needs, 30% Wants, 20% Savings'
-                },
-                {
-                    id: 2,
-                    choice: 'B',
-                    value: '2',
-                    text: '40% Needs, 30% Wants, 30% Savings'
-                },
-                {
-                    id: 3,
-                    choice: 'C',
-                    value: '3',
-                    text: '60% Needs, 30% Wants, 10% Savings'
-                }
-            ],
-            count: 3
-        },
+                <Box sx={{ display: 'grid', gap: 2, mb: 6 }}>
+                    <Typography variant='body1' sx={{ display: 'flex', alignItems: 'center' }}>
+                        We highly value your privacy and are committed to protecting the confidentiality of your
+                        personal information. The data collected in this survey form will be used solely for the
+                        application and analytical purposes, and will be handled with the utmost care and diligence.
+                    </Typography>
+                    <Typography variant='body1' sx={{ display: 'flex', alignItems: 'center' }}>
+                        By accessing and participating in this survey, you acknowledge and consent that the information
+                        you provide may be utilized and analyzed in accordance with legal and regulatory standards, as
+                        well as in compliance with the Data Privacy Act of 2012. Your responses will be aggregated and
+                        anonymized, ensuring that individual identities remain confidential.
+                    </Typography>
+                    <Typography variant='body1' sx={{ display: 'flex', alignItems: 'center' }}>
+                        We assure you that your data will be treated with the highest level of security and privacy. It
+                        will only be used for research purposes and will not be shared or disclosed to any third parties
+                        without your explicit consent. Thank you for your participation and trust in our survey process.
+                    </Typography>
+                </Box>
 
-        {
-            id: 4,
-            source: '/static/images/svg/survey-4.svg',
-            question: 'HELLO.',
-            choices: ['A', 'B', 'C', 'D'],
-            count: 4,
-            isMultiple: false,
-            value: ''
-        }
-    ];
-
-    const handleSubmit = () => {
-        setIsBtnDisabled(true);
-        const firstAnswer = surveyList[0].choices.find((item) => questionOne === item.value);
-        const thirdAnswer = surveyList[2].choices.find((item) => questionThree === item.value);
-        const secondAnswer = [];
-
-        questionTwo.forEach((item) => {
-            const found = premadeCategories.find((current) => current.category_name === item);
-            if (found) secondAnswer.push(found);
-        });
-
-        manageSurvey(
-            {
-                questionOne: firstAnswer,
-                questionTwo: secondAnswer,
-                questionThree: thirdAnswer
-            },
-            user.uid
-        ).then((_) => {
-            setIsBtnDisabled(false);
-            router.push('/accounts');
-        });
-    };
+                <Button variant='contained' onClick={() => setDataPrivacyAnswer(true)}>
+                    Agree, proceed to the survey
+                </Button>
+            </Container>
+        </Box>
+    );
 
     return (
         <>
             <Head>
                 <title>Initial Survey | CASH</title>
             </Head>
-            <Box
-                component='main'
-                sx={{
-                    flexGrow: 1,
-                    py: 8
-                }}
-            >
-                <Container maxWidth='md'>
-                    <Typography variant='h3' sx={{ display: 'flex', alignItems: 'center', mb: 6 }}>
-                        Initial Survey
-                    </Typography>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={4}>
-                            <Box sx={{ position: 'relative', width: '100%', height: { xs: 200, md: '100%' } }}>
-                                <Image src={surveyList[1].source} alt='Image' layout='fill' />
-                            </Box>
-                        </Grid>
 
-                        <Grid item xs={12} md={8}>
-                            <Carousel
-                                autoPlay={false}
-                                animation='slide'
-                                navButtonsAlwaysVisible
-                                cycleNavigation={false}
-                            >
-                                <Paper p={4} sx={{ height: '50vh', p: 4 }}>
-                                    <Typography variant='h6' mb={4}>
-                                        {surveyList[0].question}
-                                    </Typography>
-                                    <FormControl sx={formControlStyle}>
-                                        <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
-                                        <Select
-                                            labelId='demo-simple-select-label'
-                                            id='demo-simple-select'
-                                            value={questionOne}
-                                            label='Choose Answer'
-                                            onChange={(e) => {
-                                                const value = e.target.value;
-                                                setQuestionOne(value);
-                                            }}
-                                            sx={{ display: 'flex', alignItems: 'center' }}
-                                            MenuProps={MenuProps}
-                                            inputProps={{ width: '100%', background: 'red' }}
-                                        >
-                                            {surveyList[0].choices.map((choice, i) => {
-                                                return (
-                                                    <MenuItem key={choice.id + i} value={choice.value}>
-                                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                            <ListItemText>{choice.text}</ListItemText>
-                                                        </Box>
-                                                    </MenuItem>
-                                                );
-                                            })}
-                                        </Select>
-                                    </FormControl>
-                                </Paper>
+            {!hasSelectedLanguage ? <LanguageBlock /> : !dataPrivacyAnswer ? <DataPrivacyBlock /> : <SurveyBlock />}
 
-                                {/* QUESTION TWO */}
-                                <Paper p={4} sx={{ height: '50vh', p: 4 }}>
-                                    <Typography variant='h6' mb={4}>
-                                        {surveyList[1].question}
-                                    </Typography>
-                                    <FormControl sx={formControlStyle}>
-                                        <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
-                                        <Select
-                                            labelId='demo-simple-select-label'
-                                            id='demo-simple-select'
-                                            value={questionTwo}
-                                            label='Choose Answer'
-                                            onChange={(e) => {
-                                                const value = e.target.value;
-                                                setQuestionTwo(typeof value === 'string' ? value.split(',') : value);
-                                            }}
-                                            renderValue={(selected) => {
-                                                return (
-                                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                                        {selected.map((value) => (
-                                                            <Chip key={value} label={value} />
-                                                        ))}
-                                                    </Box>
-                                                );
-                                            }}
-                                            multiple
-                                            sx={{ display: 'flex', alignItems: 'center' }}
-                                            MenuProps={MenuProps}
-                                        >
-                                            {surveyList[1].choices.map((choice, i) => {
-                                                return (
-                                                    <MenuItem key={choice.id + i} value={choice.text}>
-                                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                            <ListItemText>{choice.text}</ListItemText>
-                                                        </Box>
-                                                    </MenuItem>
-                                                );
-                                            })}
-                                        </Select>
-                                    </FormControl>
-                                </Paper>
-
-                                {/* QUESTION 3 */}
-                                <Paper p={4} sx={{ height: '50vh', p: 4 }}>
-                                    <Typography variant='h6' mb={4}>
-                                        {surveyList[2].question}
-                                    </Typography>
-                                    <FormControl sx={formControlStyle}>
-                                        <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
-                                        <Select
-                                            labelId='demo-simple-select-label'
-                                            id='demo-simple-select'
-                                            value={questionThree}
-                                            label='Choose Answer'
-                                            onChange={(e) => {
-                                                const value = e.target.value;
-                                                setQuestionThree(value);
-                                            }}
-                                            sx={{ display: 'flex', alignItems: 'center' }}
-                                            MenuProps={MenuProps}
-                                        >
-                                            {surveyList[2].choices.map((choice, i) => {
-                                                return (
-                                                    <MenuItem key={choice.id + i} value={choice.value}>
-                                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                            <ListItemText>{choice.text}</ListItemText>
-                                                        </Box>
-                                                    </MenuItem>
-                                                );
-                                            })}
-                                        </Select>
-                                    </FormControl>
-                                </Paper>
-                            </Carousel>
-
-                            <Button
-                                variant='contained'
-                                size='large'
-                                sx={{ display: 'block', width: '80%', marginX: 'auto', mt: 4 }}
-                                disabled={!questionOne || questionTwo.length !== 3 || !questionThree || isBtnDisabled}
-                                onClick={handleSubmit}
-                            >
-                                Submit
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Box>
+            {}
         </>
     );
 };
