@@ -8,7 +8,6 @@ import {
     FormControl,
     Grid,
     InputLabel,
-    ListItemIcon,
     ListItemText,
     MenuItem,
     Paper,
@@ -26,6 +25,7 @@ import { Icon } from 'components/shared/Icon';
 import premadeCategories from 'data/categories';
 import { useRouter } from 'next/router';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import toast from 'react-hot-toast';
 
 const categories = premadeCategories
     .filter((item) => item.category_type === 'expense')
@@ -186,7 +186,8 @@ export default function SurveyBlock() {
     const [questionThree, setQuestionThree] = useState({
         needs: 0,
         wants: 0,
-        savings: 0
+        savings: 0,
+        total: 0
     });
     const [isBtnDisabled, setIsBtnDisabled] = useState(false);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
@@ -194,6 +195,7 @@ export default function SurveyBlock() {
     const [hasSelectedLanguage, setHasSelectedLanguage] = useState(false);
     const [dataPrivacyAnswer, setDataPrivacyAnswer] = useState(false);
     const user = useAuthStore((state) => state.authState.user);
+    const [isDone, setIsDone] = useState(false);
     const manageSurvey = useAuthStore((state) => state.manageSurvey);
 
     const handleSubmit = () => {
@@ -216,7 +218,11 @@ export default function SurveyBlock() {
             user.uid
         ).then((_) => {
             setIsBtnDisabled(false);
-            router.push('/accounts');
+            setIsDone(true);
+
+            setTimeout(() => {
+                router.push('/accounts');
+            }, 5000);
         });
     };
 
@@ -227,7 +233,14 @@ export default function SurveyBlock() {
 
         let total = updated.needs + updated.wants + updated.savings;
 
-        total = total > 100 ? 100 : updated.needs + updated.wants + updated.savings;
+        if (total > 100) {
+            // console.log({ total });
+            toast.error('Total is over 100. You might want to fix that.', { id: 'budget' });
+        }
+        if (total < 100) {
+            // console.log({ total });
+            toast.error('Total is less than 100. You might want to fix that.', { id: 'budget' });
+        }
         if (total !== 100) {
             console.log(Object.values(updated));
             const keysName = Object.keys(updated);
@@ -235,17 +248,19 @@ export default function SurveyBlock() {
 
             const targetIndex = Object.values(updated).findIndex((item) => item <= 0);
 
-            console.log(keysName[targetIndex]);
-            updated[keysName[targetIndex]] = remaining;
+            if (targetIndex !== -1) {
+                updated[keysName[targetIndex]] = remaining;
+            }
 
-            console.log({ remaining });
-        } else if (total > 100) {
-            console.log({ total });
+            updated.total = updated.needs + updated.savings + updated.wants;
+
+            // console.log({ remaining });
         } else {
             console.log('100%');
         }
 
-        setQuestionThree(updated);
+        // console.log(updated);
+        setQuestionThree({ ...updated, total });
     };
 
     return (
@@ -256,6 +271,35 @@ export default function SurveyBlock() {
                 py: 8
             }}
         >
+            {isDone && (
+                <Paper
+                    sx={{
+                        background: 'white',
+                        position: 'absolute',
+                        p: 3,
+                        textAlign: 'center',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%,-50%)',
+                        zIndex: 90999,
+                        height: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        width: {
+                            md: '50%',
+                            xs: '80%'
+                        }
+                    }}
+                    elevation={20}
+                >
+                    <Typography variant='h5'>
+                        <Typography sx={{ fontSize: 120 }}>😊</Typography>
+                        You finished the survey 🎉
+                        <br />
+                        You will now be redirected to the main dashboard.{' '}
+                    </Typography>
+                </Paper>
+            )}
             <Container maxWidth='md'>
                 <Typography variant='h3' sx={{ display: 'flex', alignItems: 'center', mb: 6 }}>
                     Initial Survey
@@ -432,7 +476,9 @@ export default function SurveyBlock() {
                             variant='contained'
                             size='large'
                             sx={{ display: 'block', width: '80%', marginX: 'auto', mt: 4 }}
-                            disabled={!questionOne || questionTwo.length !== 3 || !questionThree || isBtnDisabled}
+                            disabled={
+                                !questionOne || questionTwo.length !== 3 || questionThree.total !== 100 || isBtnDisabled
+                            }
                             onClick={handleSubmit}
                         >
                             Submit
