@@ -81,7 +81,7 @@ const Page = () => {
                     <Button
                         variant='outlined'
                         onClick={() => {
-                            setLanguage('en');
+                            setLanguage('ph');
                             setHasSelectedLanguage(true);
                         }}
                     >
