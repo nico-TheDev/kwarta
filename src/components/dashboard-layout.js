@@ -27,15 +27,19 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 export const DashboardLayout = (props) => {
     const { children } = props;
     const [open, setOpen] = useState(true);
+    const openTutorial = useAuthStore((state) => state.openTutorial);
+    const setOpenTutorial = useAuthStore((state) => state.setOpenTutorial);
     const [showTour, setShowTour] = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        setOpenTutorial(false);
+    }
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     const accounts = useAccountStore((state) => state.accounts);
     const transactions = useTransactionStore((state) => state.transactions);
     const [showSuggestion, setShowSuggestion] = useState(true);
     const [article, setArticle] = useState(articles[0]);
-    const openTutorial = useAuthStore((state) => state.openTutorial);
     let popupToast;
 
     useEffect(() => {

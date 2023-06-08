@@ -453,7 +453,7 @@ const AuthStore = (set, get) => ({
         }
     },
     openTutorial: false,
-    setOpenTutorial: (value) => set(() => ({ openTutorial: value })),
+    setOpenTutorial: (value) => set({ openTutorial: value }),
 });
 
 export const useAuthStore = create(
