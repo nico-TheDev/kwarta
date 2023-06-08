@@ -24,7 +24,7 @@ export const languages = {
         articles: 'Mga Artikulo',
         profile: 'Propayl',
         doingGreat: 'Maayos ang ginagawa mo',
-        investment: 'Pamumuhunan',
+        investment: 'Mga Pondo sa Pamumuhunan',
 
         //navbar
         addTransaction: 'Magdagdag ng Transaksiyon',
@@ -252,7 +252,7 @@ export const languages = {
         articles: 'Articles',
         profile: 'Profile',
         doingGreat: "You're doing great",
-        investment: 'Investment',
+        investment: 'Investment Funds',
         stocks: 'Stocks',
 
         //navbar

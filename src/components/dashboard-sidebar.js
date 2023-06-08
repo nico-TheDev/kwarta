@@ -53,14 +53,14 @@ export const DashboardSidebar = (props) => {
             title: getLanguage(currentLanguage).cashflow
         },
         {
+            href: '/categories',
+            icon: <CategoryIcon fontSize='small' />,
+            title: getLanguage(currentLanguage).categories
+        },
+        {
             href: '/savings',
             icon: <SavingsIcon fontSize='small' />,
             title: getLanguage(currentLanguage).savings
-        },
-        {
-            href: '/bonds',
-            icon: <RequestPageIcon fontSize='small' />,
-            title: 'Bonds'
         },
         {
             href: '/investments',
@@ -73,9 +73,9 @@ export const DashboardSidebar = (props) => {
             title: getLanguage(currentLanguage).stocks
         },
         {
-            href: '/categories',
-            icon: <CategoryIcon fontSize='small' />,
-            title: getLanguage(currentLanguage).categories
+            href: '/bonds',
+            icon: <RequestPageIcon fontSize='small' />,
+            title: 'Bonds'
         },
         {
             href: '/articles',

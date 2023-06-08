@@ -7,6 +7,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { AuthGuard } from './auth-guard';
 import { DashboardNavbar } from './dashboard-navbar';
 import { DashboardSidebar } from './dashboard-sidebar';
+import { useAuthStore } from 'stores/useAuthStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 const Tour = dynamic(() => import('../components/tour'), { ssr: false });
@@ -34,6 +35,7 @@ export const DashboardLayout = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
     const [showSuggestion, setShowSuggestion] = useState(true);
     const [article, setArticle] = useState(articles[0]);
+    const openTutorial = useAuthStore((state) => state.openTutorial);
     let popupToast;
 
     useEffect(() => {
@@ -43,7 +45,7 @@ export const DashboardLayout = (props) => {
         } else {
             setShowTour(false);
         }
-    }, [transactions.length, accounts.length]);
+    }, [transactions.length, accounts.length, openTutorial]);
 
     useEffect(() => {
         if (localStorage.getItem('showPopup')) {
@@ -107,9 +109,11 @@ export const DashboardLayout = (props) => {
         return () => clearInterval(popupInterval);
     }, [showSuggestion, toast, article]);
 
+    console.log(openTutorial);
+
     return (
         <AuthGuard>
-            {showTour && <Tour open={open} handleClose={handleClose} setShowTour={setShowTour} />}
+            {(showTour || openTutorial) && <Tour open={open} handleClose={handleClose} setShowTour={setShowTour} />}
             <DashboardLayoutRoot>
                 <Box
                     sx={{

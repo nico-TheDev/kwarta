@@ -451,7 +451,9 @@ const AuthStore = (set, get) => ({
             toast.error('Something Went Wrong', err.message, { id: 'tour' });
             console.error(err);
         }
-    }
+    },
+    openTutorial: false,
+    setOpenTutorial: (value) => set(() => ({ openTutorial: value })),
 });
 
 export const useAuthStore = create(
