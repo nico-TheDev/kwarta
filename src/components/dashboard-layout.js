@@ -7,12 +7,11 @@ import toast, { Toaster } from 'react-hot-toast';
 import { AuthGuard } from './auth-guard';
 import { DashboardNavbar } from './dashboard-navbar';
 import { DashboardSidebar } from './dashboard-sidebar';
-import { useAuthStore } from 'stores/useAuthStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 const Tour = dynamic(() => import('../components/tour'), { ssr: false });
 import articles from 'data/articles';
-
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -27,29 +26,28 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 export const DashboardLayout = (props) => {
     const { children } = props;
     const [open, setOpen] = useState(true);
-    const openTutorial = useAuthStore((state) => state.openTutorial);
-    const setOpenTutorial = useAuthStore((state) => state.setOpenTutorial);
     const [showTour, setShowTour] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
-        setOpenTutorial(false);
-    }
+        setIsTutorialOpen(false);
+    };
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     const accounts = useAccountStore((state) => state.accounts);
     const transactions = useTransactionStore((state) => state.transactions);
     const [showSuggestion, setShowSuggestion] = useState(true);
     const [article, setArticle] = useState(articles[0]);
-    let popupToast;
+    const isTutorialOpen = useLanguageStore((state) => state.isTutorialOpen);
+    const setIsTutorialOpen = useLanguageStore((state) => state.setIsTutorialOpen);
 
     useEffect(() => {
-        console.log({ showTour, transactions: transactions.length });
+        console.log({ isTutorialOpen });
         if (transactions.length === 0 || accounts.length === 0) {
             setShowTour(true);
         } else {
             setShowTour(false);
         }
-    }, [transactions.length, accounts.length, openTutorial]);
+    }, [transactions.length, accounts.length]);
 
     useEffect(() => {
         if (localStorage.getItem('showPopup')) {
@@ -113,11 +111,8 @@ export const DashboardLayout = (props) => {
         return () => clearInterval(popupInterval);
     }, [showSuggestion, toast, article]);
 
-    console.log(openTutorial);
-
     return (
         <AuthGuard>
-            {(showTour || openTutorial) && <Tour open={open} handleClose={handleClose} setShowTour={setShowTour} />}
             <DashboardLayoutRoot>
                 <Box
                     sx={{
@@ -127,6 +122,7 @@ export const DashboardLayout = (props) => {
                         width: '100%'
                     }}
                 >
+                    <Tour open={open} handleClose={handleClose} setShowTour={setShowTour} handleOpen={handleOpen} />
                     {children}
                 </Box>
             </DashboardLayoutRoot>

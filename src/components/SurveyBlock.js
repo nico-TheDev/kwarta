@@ -201,7 +201,6 @@ export default function SurveyBlock() {
     const handleSubmit = () => {
         setIsBtnDisabled(true);
         const firstAnswer = surveyList[0].choices.find((item) => questionOne === item.value);
-        const thirdAnswer = surveyList[2].choices.find((item) => questionThree === item.value);
         const secondAnswer = [];
 
         questionTwo.forEach((item) => {
@@ -213,7 +212,7 @@ export default function SurveyBlock() {
             {
                 questionOne: firstAnswer,
                 questionTwo: secondAnswer,
-                questionThree: thirdAnswer
+                questionThree
             },
             user.uid
         ).then((_) => {
