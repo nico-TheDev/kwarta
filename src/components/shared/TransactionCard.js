@@ -15,7 +15,7 @@ export default function TransactionCard({ transaction }) {
         } else if (transaction.type === 'income') {
             return (
                 <Typography color={green[500]}>
-                    <ArrowUpwardIcon color='inherit' />;
+                    <ArrowUpwardIcon color='inherit' />
                 </Typography>
             );
         } else if (transaction.type === 'savings') {
@@ -27,7 +27,7 @@ export default function TransactionCard({ transaction }) {
         } else if (transaction.type === 'investments') {
             return (
                 <Typography color={teal[500]}>
-                    <InvestmentIcon color='inherit' />;
+                    <InvestmentIcon color='inherit' />
                 </Typography>
             );
         }

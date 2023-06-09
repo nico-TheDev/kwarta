@@ -3,7 +3,7 @@ import { useCategoryStore } from 'stores/useCategoryStore';
 
 export default function useSortCategories(setSelectedCategory = () => {}) {
     const [categoryData, setCategoryData] = useState([]);
-    const [transactionType, setTransactionType] = useState('');
+    const [transactionType, setTransactionType] = useState('expense');
 
     const categories = useCategoryStore((state) => state.categories);
     const getIncomeList = useCategoryStore((state) => state.incomeList);
