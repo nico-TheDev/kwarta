@@ -10,7 +10,7 @@ import { useLanguageStore } from 'stores/useLanguageStore';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export const Savings = (props) => {
+export const Inflation = (props) => {
     const [inflationData, setInflationData] = useState('');
     const [percentage, setPercentage] = useState('');
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
@@ -115,7 +115,7 @@ export const Savings = (props) => {
                         {getLanguage(currentLanguage).sinceLastMonth}
                     </Typography>
                 </Box>{' '}
-                <Link href='https://tradingeconomics.com/philippines/inflation-cpi' target="_blank">
+                <Link href='https://tradingeconomics.com/philippines/inflation-cpi' target='_blank'>
                     <Typography color='textSecondary' variant='caption'>
                         Source: Trading Economics
                     </Typography>

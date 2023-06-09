@@ -1,7 +1,7 @@
 export const languages = {
     ph: {
         //main screen
-        balance: 'Balanse',
+        balance: 'Kabuuang Balanse',
         expenses: 'Gastusin',
         income: 'Kita',
         savings: 'Ipon',
@@ -229,7 +229,7 @@ export const languages = {
     },
     en: {
         //main screen
-        balance: 'Balance',
+        balance: 'Total Balance',
         expenses: 'Expenses',
         income: 'Income',
         savings: 'Savings',

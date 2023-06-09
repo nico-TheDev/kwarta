@@ -76,7 +76,7 @@ const Page = () => {
             expense_type: expenseType
         }).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/dashboard');
             }
         });
 
@@ -107,7 +107,7 @@ const Page = () => {
     };
 
     const initialValues = {
-        categoryName: '',
+        categoryName: ''
     };
 
     const formik = useFormik({
@@ -118,7 +118,7 @@ const Page = () => {
     const handleDelete = () => {
         deleteCategory(categoryId).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/dashboard');
             }
         });
     };

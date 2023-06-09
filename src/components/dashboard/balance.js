@@ -32,7 +32,7 @@ export const Balance = (props) => {
                             {getLanguage(currentLanguage).balance}
                         </Typography>
                         <Typography color='textPrimary' variant='h4' sx={{ whiteSpace: 'nowrap' }}>
-                            {formatPrice(total)}
+                            {formatPrice(total, true)}
                         </Typography>
                     </Grid>
                     <Grid item>
@@ -49,27 +49,6 @@ export const Balance = (props) => {
                         </Tooltip>
                     </Grid>
                 </Grid>
-                {/* <Box
-                    sx={{
-                        pt: 2,
-                        display: 'flex',
-                        alignItems: 'center'
-                    }}
-                >
-                    <ArrowUpwardIcon color='success' />
-                    <Typography
-                        color='success'
-                        sx={{
-                            mr: 1
-                        }}
-                        variant='body2'
-                    >
-                        12%
-                    </Typography>
-                    <Typography color='textSecondary' variant='caption'>
-                        {getLanguage(currentLanguage).sinceLastMonth}
-                    </Typography>
-                </Box> */}
             </CardContent>
         </Card>
     );
