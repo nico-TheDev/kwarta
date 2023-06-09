@@ -5,6 +5,7 @@ import { getLanguage } from '../../utils/getLanguage';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { formatPrice } from 'utils/format-price';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { red } from '@mui/material/colors';
 
 export const Expenses = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
@@ -38,7 +39,7 @@ export const Expenses = (props) => {
                         <Tooltip title={getLanguage(currentLanguage).tooltipTotalExpense}>
                             <Avatar
                                 sx={{
-                                    backgroundColor: 'primary.main',
+                                    backgroundColor: red[400],
                                     height: 56,
                                     width: 56
                                 }}

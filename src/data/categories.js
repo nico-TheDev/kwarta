@@ -320,7 +320,7 @@ const premadeCategories = [
         category_color: '#680367',
         created_at: '',
         updatedAt: '',
-        id: '28'
+        id: '288'
     },
 
     {

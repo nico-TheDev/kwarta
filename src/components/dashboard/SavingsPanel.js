@@ -5,6 +5,7 @@ import { getLanguage } from '../../utils/getLanguage';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { formatPrice } from 'utils/format-price';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { deepPurple, yellow } from '@mui/material/colors';
 
 export const SavingsPanel = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
@@ -12,14 +13,14 @@ export const SavingsPanel = (props) => {
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     useEffect(() => {
-        const totalExpenses = transactions.reduce((acc, current) => {
-            if (current.type === 'expense') {
+        const totalSavings = transactions.reduce((acc, current) => {
+            if (current.type === 'savings') {
                 acc += current.amount;
             }
             return acc;
         }, 0);
 
-        setTotal(totalExpenses);
+        setTotal(totalSavings);
     }, [transactions]);
 
     return (
@@ -38,7 +39,7 @@ export const SavingsPanel = (props) => {
                         <Tooltip title={getLanguage(currentLanguage).tooltipTotalExpense}>
                             <Avatar
                                 sx={{
-                                    backgroundColor: 'primary.main',
+                                    backgroundColor: deepPurple[400],
                                     height: 56,
                                     width: 56
                                 }}

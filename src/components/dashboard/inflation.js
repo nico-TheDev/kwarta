@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { orange } from '@mui/material/colors';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -77,7 +78,7 @@ export const Inflation = (props) => {
                         <Tooltip title={getLanguage(currentLanguage).tooltipInflationRate}>
                             <Avatar
                                 sx={{
-                                    backgroundColor: 'warning.main',
+                                    backgroundColor: orange[500],
                                     height: 56,
                                     width: 56
                                 }}

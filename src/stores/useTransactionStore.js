@@ -42,7 +42,11 @@ const transactionStore = (set, get) => ({
             }
 
             // SUBTRACT
-            if (newTransaction.type === 'expense') {
+            if (
+                newTransaction.type === 'expense' ||
+                newTransaction.type === 'savings' ||
+                newTransaction.type === 'investments'
+            ) {
                 if (currentAccount.data().account_amount > newTransaction.amount) {
                     await updateDoc(accountRef, {
                         account_amount: currentAccount.data().account_amount - newTransaction.amount
@@ -87,13 +91,21 @@ const transactionStore = (set, get) => ({
                 currentAccountResponse = await getDoc(accountRef);
                 currentAccount = currentAccountResponse.data();
                 // RETURN THE ORIGINAL AMOUNT
-                if (currentTransaction.type === 'expense') {
+                if (
+                    currentTransaction.type === 'expense' ||
+                    currentTransaction.type === 'savings' ||
+                    currentTransaction.type === 'investments'
+                ) {
                     originalAmount = currentAccount.account_amount + currentTransaction.amount;
                 } else {
                     originalAmount = currentAccount.account_amount - currentTransaction.amount;
                 }
                 // UPDATE THE ACCOUNT AMOUNT
-                if (updatedTransaction.type === 'expense') {
+                if (
+                    updatedTransaction.type === 'expense' ||
+                    updatedTransaction.type === 'savings' ||
+                    updatedTransaction.type === 'investments'
+                ) {
                     updatedAmount = originalAmount - updatedTransaction.amount;
                 } else {
                     updatedAmount = originalAmount + updatedTransaction.amount;

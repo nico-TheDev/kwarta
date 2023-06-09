@@ -5,6 +5,7 @@ import { getLanguage } from '../../utils/getLanguage';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { formatPrice } from 'utils/format-price';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { teal } from '@mui/material/colors';
 
 export const InvestmentPanel = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
@@ -12,14 +13,14 @@ export const InvestmentPanel = (props) => {
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     useEffect(() => {
-        const totalExpenses = transactions.reduce((acc, current) => {
-            if (current.type === 'expense') {
+        const totalInvestments = transactions.reduce((acc, current) => {
+            if (current.type === 'investments') {
                 acc += current.amount;
             }
             return acc;
         }, 0);
 
-        setTotal(totalExpenses);
+        setTotal(totalInvestments);
     }, [transactions]);
 
     return (
@@ -38,7 +39,7 @@ export const InvestmentPanel = (props) => {
                         <Tooltip title={getLanguage(currentLanguage).tooltipTotalExpense}>
                             <Avatar
                                 sx={{
-                                    backgroundColor: 'primary.main',
+                                    backgroundColor: teal[500],
                                     height: 56,
                                     width: 56
                                 }}

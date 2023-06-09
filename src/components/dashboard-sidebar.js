@@ -33,7 +33,7 @@ export const DashboardSidebar = (props) => {
 
     const items = [
         {
-            href: '/',
+            href: '/dashboard',
             icon: <BarChartIcon fontSize='small' />,
             title: getLanguage(currentLanguage).dashboard
         },
