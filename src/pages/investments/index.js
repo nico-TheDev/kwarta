@@ -21,7 +21,7 @@ import SavingsIcon from '@mui/icons-material/Savings';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { getLanguage } from 'utils/getLanguage';
-import { DashboardLayout } from '../components/dashboard-layout';
+import { DashboardLayout } from '../../components/dashboard-layout';
 import { toast } from 'react-hot-toast';
 import { useAccountStore } from 'stores/useAccountStore';
 import { formatPrice } from 'utils/format-price';
@@ -31,6 +31,7 @@ import { useAuthStore } from 'stores/useAuthStore';
 import DashboardTour from 'components/tours/DashboardTour';
 import calculateTable from 'utils/create-table';
 import InvestmentTable from 'components/investment-table';
+import Link from 'next/link';
 
 const MenuProps = {
     PaperProps: {
@@ -145,6 +146,8 @@ const Page = () => {
             );
             toast.success('Successfully Analyzed');
             setTableData({
+                savingsAccount: calculateTable(initialDeposit, subsequentDeposit, year, 0.3, '₱', '', Number(period)),
+                timeDeposit: calculateTable(initialDeposit, subsequentDeposit, year, 0.7, '₱', '', Number(period)),
                 lowRiskFund: calculateTable(initialDeposit, subsequentDeposit, year, 4, '₱', '', Number(period)),
                 medRiskFund: calculateTable(initialDeposit, subsequentDeposit, year, 8, '₱', '', Number(period)),
                 highRiskFund: calculateTable(initialDeposit, subsequentDeposit, year, 10, '₱', '', Number(period))
@@ -304,14 +307,9 @@ const Page = () => {
                 </Paper>
             </Grid>
             <Box sx={{ pt: 3 }}>
-                <Typography
-                    sx={{ m: 1, textAlign: 'center' }}
-                    color='textSecondary'
-                    variant='caption'
-                >
-                    DISCLAIMER: These are just indicative numbers. Performance of the
-                    fund is not assured and this is subject to fluctuating market
-                    conditions.
+                <Typography sx={{ m: 1, textAlign: 'center' }} color='textSecondary' variant='caption'>
+                    DISCLAIMER: These are just indicative numbers. Performance of the fund is not assured and this is
+                    subject to fluctuating market conditions.
                 </Typography>
             </Box>
         </>
@@ -472,7 +470,14 @@ const Page = () => {
                                         <SavingsIcon fontSize='inherit' color='secondary' />
                                     </Box>
                                     <Typography variant='body2'>Savings Account</Typography>
-                                    <Typography variant='h5'>{projectedData.savingsAccount}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.savingsAccount}
+                                    </Typography>
+                                    <Link href='/investments/details'>
+                                        <Button variant='outlined' component='a'>
+                                            See Details
+                                        </Button>
+                                    </Link>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
@@ -507,7 +512,19 @@ const Page = () => {
                     )}
 
                     {tableData.length !== 0 && (
-                        <Grid container mt={4} p={4}>
+                        <Grid container mt={4} p={4} rowSpacing={4}>
+                            <Grid item>
+                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
+                                    Savings Account{' '}
+                                </Typography>
+                            </Grid>
+                            <InvestmentTable dataset={tableData.savingsAccount} />
+                            <Grid item>
+                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
+                                    Time Deposit{' '}
+                                </Typography>
+                            </Grid>
+                            <InvestmentTable dataset={tableData.timeDeposit} />
                             <Grid item>
                                 <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
                                     Low Risk Fund{' '}
@@ -540,11 +557,7 @@ const Page = () => {
                         Average return of Sun Life Prosperity Index Fund (aggressive risk) - 10%{' '}
                     </Typography>
                     <Box sx={{ pt: 3 }}>
-                        <Typography
-                            sx={{ m: 1, textAlign: 'center' }}
-                            color='textSecondary'
-                            variant='caption'
-                        >
+                        <Typography sx={{ m: 1, textAlign: 'center' }} color='textSecondary' variant='caption'>
                             Source: https://online.sunlife.com.ph/cdt/eCalcAge/investmentCalculator
                         </Typography>
                     </Box>

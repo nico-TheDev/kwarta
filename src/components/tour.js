@@ -19,7 +19,7 @@ function logGroup(type, data) {
     console.groupEnd();
 }
 
-export default function Tour({ open, handleClose, setShowTour, handleOpen }) {
+export default function Tour({ open, handleClose, handleOpen }) {
     const [ref, { width }] = useMeasure();
     // accounts_step_one
     const TOUR_STEPS = [
@@ -159,7 +159,6 @@ export default function Tour({ open, handleClose, setShowTour, handleOpen }) {
             // Need to set our running state to false, so we can restart if we click start again.
             setState({ run: false });
             handleClose();
-            setShowTour(false);
             setIsTutorialOpen(false);
         }
 

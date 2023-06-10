@@ -241,19 +241,15 @@ export default function SurveyBlock() {
             toast.error('Total is less than 100. You might want to fix that.', { id: 'budget' });
         }
         if (total !== 100) {
-            console.log(Object.values(updated));
-            const keysName = Object.keys(updated);
-            let remaining = 100 - total;
-
-            const targetIndex = Object.values(updated).findIndex((item) => item <= 0);
-
-            if (targetIndex !== -1) {
-                updated[keysName[targetIndex]] = remaining;
-            }
-
-            updated.total = updated.needs + updated.savings + updated.wants;
-
-            // console.log({ remaining });
+            // console.log(Object.values(updated));
+            // const keysName = Object.keys(updated);
+            // let remaining = 100 - total;
+            // const targetIndex = Object.values(updated).findIndex((item) => item <= 0);
+            // if (targetIndex !== -1) {
+            //     updated[keysName[targetIndex]] = remaining;
+            // }
+            // updated.total = updated.needs + updated.savings + updated.wants;
+            // // console.log({ remaining });
         } else {
             console.log('100%');
         }

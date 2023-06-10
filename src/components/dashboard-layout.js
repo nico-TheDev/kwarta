@@ -27,9 +27,13 @@ export const DashboardLayout = (props) => {
     const { children } = props;
     const [open, setOpen] = useState(true);
     const [showTour, setShowTour] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        localStorage.setItem('isTourOpen', true);
+        setOpen(true);
+    };
     const handleClose = () => {
         setOpen(false);
+        localStorage.setItem('isTourOpen', false);
         setIsTutorialOpen(false);
     };
     const [isSidebarOpen, setSidebarOpen] = useState(true);
@@ -43,9 +47,13 @@ export const DashboardLayout = (props) => {
     useEffect(() => {
         console.log({ isTutorialOpen });
         if (transactions.length === 0 || accounts.length === 0) {
-            setShowTour(true);
+            setOpen(true);
         } else {
-            setShowTour(false);
+            if (localStorage.getItem('isTourOpen')) {
+                setOpen(JSON.parse(localStorage.getItem('isTourOpen')));
+            } else {
+                setOpen(false);
+            }
         }
     }, [transactions.length, accounts.length]);
 
@@ -122,7 +130,7 @@ export const DashboardLayout = (props) => {
                         width: '100%'
                     }}
                 >
-                    <Tour open={open} handleClose={handleClose} setShowTour={setShowTour} handleOpen={handleOpen} />
+                    <Tour open={open} handleClose={handleClose} handleOpen={handleOpen} />
                     {children}
                 </Box>
             </DashboardLayoutRoot>

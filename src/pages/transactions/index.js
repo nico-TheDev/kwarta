@@ -318,7 +318,7 @@ const Page = () => {
                         </Typography>
                     </Tooltip>
 
-                    <Grid spacing={2} container>
+                    <Grid spacing={2} container mb={6}>
                         <Grid item className='transactions_step_three' xs={12} md={6}>
                             <DropdownType handleChange={handleTransactionType} transactionType={transactionType} />
                         </Grid>
