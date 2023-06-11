@@ -130,7 +130,7 @@ export const ExpenseTypeChart = (props) => {
 
     return (
         <Card {...props}>
-            <CardHeader title='Expenses Type' sx={{ width: 'max-content' }} />
+            <CardHeader title='Budget Distribution' sx={{ width: 'max-content' }} />
             <Divider />
             <CardContent>
                 <Box
