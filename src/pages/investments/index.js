@@ -321,7 +321,7 @@ const Page = () => {
                 </Paper>
             </Grid>
             <Box sx={{ pt: 3 }}>
-                <Typography sx={{ m: 1, textAlign: 'center' }} color='textSecondary' variant='caption'>
+                <Typography sx={{ m: 1, textAlign: 'center' }} color='primary.main' variant='body1'>
                     DISCLAIMER: These are just indicative numbers. Performance of the fund is not assured and this is
                     subject to fluctuating market conditions.
                 </Typography>
@@ -606,7 +606,7 @@ const Page = () => {
                         </Paper>
                     )}
 
-                    <Typography variant='caption' sx={{ color: grey[400] }}>
+                    <Typography variant='body1' m={4} color='black'>
                         Based on SunLife Calculations.
                         <br />
                         The computations assume the following:
@@ -614,13 +614,38 @@ const Page = () => {
                         Average return of Sun Life Prosperity Bond Fund (low risk) - 4%
                         <br />
                         Average return of Sun Life Prosperity Balanced Fund (moderate risk) - 8% <br />
-                        Average return of Sun Life Prosperity Index Fund (aggressive risk) - 10%{' '}
-                    </Typography>
-                    <Box sx={{ pt: 3 }}>
-                        <Typography sx={{ m: 1, textAlign: 'center' }} color='textSecondary' variant='caption'>
-                            Source: https://online.sunlife.com.ph/cdt/eCalcAge/investmentCalculator
+                        Average return of Sun Life Prosperity Index Fund (aggressive risk) - 10%
+                        <br />
+                        Source:{' '}
+                        <Typography
+                            component='a'
+                            target='_blank'
+                            href='https://online.sunlife.com.ph/cdt/eCalcAge/investmentCalculator'
+                        >
+                            Sunlife Investment Calculator
+                        </Typography>{' '}
+                        and{' '}
+                        <Typography
+                            component='a'
+                            target='_blank'
+                            href='https://ph.thesimplesum.com/investment-calculator/'
+                        >
+                            Simple Sum Investment Calculator
                         </Typography>
-                    </Box>
+                    </Typography>
+
+                    <Typography variant='h6' mb={2} color='primary'>
+                        DISCLAIMERS
+                    </Typography>
+
+                    <Typography variant='body1' mb={4} color='primary'>
+                        This calculator is designed to be an informational and educational tool only, and when used
+                        alone, does not constitute financial advice. The CASH Team is not responsible for the
+                        consequences of any decisions or actions taken in reliance upon or as a result of the
+                        information provided by these tools. The CASH Team is not responsible for any human or
+                        mechanical errors or omissions that may occur too. Do consult a financial services professional
+                        before making any investments.
+                    </Typography>
                 </Container>
             </Box>
         </>
