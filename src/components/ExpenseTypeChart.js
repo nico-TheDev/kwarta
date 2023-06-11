@@ -72,7 +72,7 @@ export const ExpenseTypeChart = (props) => {
 
             const total = expenseData.map((item) => item.amount).reduce((acc, cur) => (acc += cur), 0);
 
-            const list = expenseData.map((item) => {
+            const percentageList = expenseData.map((item) => {
                 return {
                     title: item.name,
                     value: (item.amount / total).toLocaleString(undefined, {
@@ -83,6 +83,8 @@ export const ExpenseTypeChart = (props) => {
                     color: item.color
                 };
             });
+
+            console.log({ percentageList });
 
             // const savings = (expenseData[2].amount / total) * 100;
 
@@ -122,7 +124,7 @@ export const ExpenseTypeChart = (props) => {
             // }
 
             setGraphData(data);
-            setCategoryList(list);
+            setCategoryList(percentageList);
         }
     }, [transactions]);
 

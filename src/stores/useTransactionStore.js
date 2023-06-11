@@ -197,7 +197,11 @@ const transactionStore = (set, get) => ({
             const currentAccount = currentAccountResponse.data();
             if (currentAccount) {
                 // RETURN THE SUBTRACTED AMOUNT
-                if (currentTransaction.type === 'expense') {
+                if (
+                    currentTransaction.type === 'expense' ||
+                    currentTransaction.type === 'savings' ||
+                    currentTransaction.type === 'investments'
+                ) {
                     await updateDoc(accountRef, {
                         account_amount: currentAccount.account_amount + currentTransaction.amount
                     });
