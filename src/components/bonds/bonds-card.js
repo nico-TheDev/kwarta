@@ -205,8 +205,7 @@ export const BondsCard = ({ ...rest }) => {
                                 <Box sx={{ pt: 3 }}>
                                     <Typography
                                         sx={{ m: 1, textAlign: 'center' }}
-                                        color='textSecondary'
-                                        variant='caption'
+                                        color='primary.main' variant='body1'
                                     >
                                         DISCLAIMER: This computation is based on an investment in the RTB 29 Bond issued between 
                                         February 7, 2023 to February 17, 2023 with an interest period of 5.5 years and an annual
@@ -284,12 +283,13 @@ export const BondsCard = ({ ...rest }) => {
                                     </Grid>
                                 </Grid>
                                 <Box sx={{ pt: 3 }}>
+                                    <Typography variant='h6' mb={2} color='primary'>
+                                        DISCLAIMERS
+                                    </Typography>
                                     <Typography
-                                        sx={{ m: 1, textAlign: 'center' }}
-                                        color='textSecondary'
-                                        variant='caption'
+                                        variant='body1' mb={4} color='primary'
                                     >
-                                        DISCLAIMER: This calculation is for illustration purposes only and should not be
+                                        This calculation is for illustration purposes only and should not be
                                         able to taken as professional advice to invest in RTB 29. It should not be used
                                         as the sole basis to measure returns in said securities. Terms and conditions of
                                         the RTB 29 is governed by the applicable Program Mechanics and Notice of

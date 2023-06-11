@@ -232,6 +232,30 @@ export const SavingsCard = ({ ...rest }) => {
                             </Typography>
                         </Link>
                     </Box>
+                    <Box sx={{ pt: 3 }}>
+                        <Typography variant='h6' mb={2} color='primary'>
+                            DISCLAIMERS
+                        </Typography>
+                        <Typography variant='body1' mb={4} color='primary'>
+                            This calculation is for illustration purposes only and should not be able to
+                            taken as professional advice to invest in these saving accounts. It should not be used as
+                            the sole basis to measure returns in said securities. Interest rates and amounts are subject
+                            to change. For more information, you can go to the bank's website or go to the nearest
+                            branch in your area.
+                        </Typography>
+                    </Box>
+                    <Box sx={{ pt: 3 }}>
+                        <Typography variant='body1' m={4} color='black'>
+                            Source:{' '}
+                            <Typography 
+                                component='a'
+                                target='_blank'
+                                href='https://grit.ph/savings-account/'
+                            >
+                                Grit PH
+                            </Typography>
+                        </Typography>
+                    </Box>
                 </Box>
             ) : (
                 <Box sx={{ pt: 3 }}>
