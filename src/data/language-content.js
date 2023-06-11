@@ -366,7 +366,7 @@ export const languages = {
         amountSavingsPart1: 'You have ',
         amountSavingsPart2: ' in your selected Account. You may apply for savings accounts in the given banks.',
         insufficientAmountSavings:
-            'Your selected Account have insufficient maintaining balance. The minimum amount to invest in savings is PHP 2,000.',
+            'Your selected account have insufficient maintaining balance. The minimum amount to invest in savings is PHP 2,000.',
 
         //bonds
         bondsIntroPart1:

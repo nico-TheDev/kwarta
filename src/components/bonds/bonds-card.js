@@ -120,8 +120,278 @@ export const BondsCard = ({ ...rest }) => {
         setBonds(computedRTBs);
     }, [selectedAccount]);
 
-    console.log(selectedAccount);
-    console.log(amount);
+    // console.log(selectedAccount);
+    // console.log(amount);
+
+    const RetailBondsPanel = () => (
+        <Box sx={{ p: 1 }}>
+            <Typography align='center' sx={{ m: 1 }} variant='h6'>
+                {getLanguage(currentLanguage).amountBondsPart1}
+                {formatPrice(amount, true)}
+                {getLanguage(currentLanguage).amountBondsPart2}
+            </Typography>
+            <Box sx={{ p: 1, mx: 'auto' }}>
+                <Card
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                        position: 'relative'
+                    }}
+                    elevation={10}
+                >
+                    <CardContent>
+                        <Typography align='center' color='textPrimary' gutterBottom variant='h5'>
+                            {bonds.productName}
+                        </Typography>
+                        <Tooltip title={getLanguage(currentLanguage).tooltipRTBTotal}>
+                            <Typography align='center' color='primary' gutterBottom variant='h4'>
+                                {formatPrice(bonds.total, true)}
+                            </Typography>
+                        </Tooltip>
+                        <Typography align='center' color='textPrimary' gutterBottom variant='body2'>
+                            {getLanguage(currentLanguage).timeReturnBonds}
+                        </Typography>
+                        <Typography align='center' color='textPrimary' gutterBottom variant='body2'>
+                            {getLanguage(currentLanguage).calculatedAmountBonds}
+                        </Typography>
+                        <Box sx={{ pt: 3 }}>
+                            <Typography sx={{ m: 1, textAlign: 'center' }} color='primary.main' variant='body1'>
+                                DISCLAIMER: This computation is based on an investment in the RTB 29 Bond issued between
+                                February 7, 2023 to February 17, 2023 with an interest period of 5.5 years and an annual
+                                interest of 6.25%
+                            </Typography>
+                        </Box>
+                    </CardContent>
+                </Card>
+            </Box>
+
+            <Box
+                component='main'
+                sx={{
+                    flexGrow: 1,
+                    py: 6
+                }}
+            >
+                <Container maxWidth={false}>
+                    <Paper sx={{ py: 4, px: 4, mx: 'auto' }}>
+                        <Box sx={{ p: 1 }}>
+                            <Tooltip title={getLanguage(currentLanguage).tooltipRTBCalculator}>
+                                <Typography
+                                    sx={{ m: 1, textAlign: 'center' }}
+                                    color='textPrimary'
+                                    gutterBottom
+                                    variant='h5'
+                                >
+                                    Retail Treasury Bonds Calculator
+                                </Typography>
+                            </Tooltip>
+                        </Box>
+                        <Box
+                            sx={{
+                                alignItems: 'center',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                flexWrap: 'wrap',
+                                m: 1
+                            }}
+                        >
+                            <Grid container spacing={2} justifyContent='center' mb={4}>
+                                <Grid item xs={12} lg={8}>
+                                    <FormControl fullWidth>
+                                        <TextField
+                                            id='standard-basic'
+                                            label={getLanguage(currentLanguage).initialInvestment}
+                                            variant='outlined'
+                                            type='number'
+                                            value={initialDeposit}
+                                            onChange={(e) => setInitialDeposit(e.target.value)}
+                                            className='bonds_step_three'
+                                        />
+                                        <FormHelperText>
+                                            {getLanguage(currentLanguage).bondsCalculatorHelperText}
+                                        </FormHelperText>
+                                    </FormControl>
+                                </Grid>
+                                <Grid maxWidth item lg={4}>
+                                    <Button onClick={handleCalculate} variant='contained'>
+                                        Calculate Money Growth
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Grid container spacing={4} textAlign='center'>
+                            <Grid item xs={12}>
+                                <Box sx={{ fontSize: 70 }}>
+                                    <AccountBalanceIcon fontSize='inherit' color='primary' />
+                                </Box>
+                                <Typography variant='body1'>{getLanguage(currentLanguage).totalBonds}</Typography>
+                                <Typography variant='h4'>{formatPrice(bondReturn, true)}</Typography>
+                                <Typography variant='body1'>{getLanguage(currentLanguage).bondsTime}</Typography>
+                            </Grid>
+                        </Grid>
+                        <Box sx={{ pt: 3 }}>
+                            <Typography variant='h6' mb={2} color='primary'>
+                                DISCLAIMERS
+                            </Typography>
+                            <Typography variant='body1' mb={4} color='primary'>
+                                This calculation is for illustration purposes only and should not be able to taken as
+                                professional advice to invest in RTB 29. It should not be used as the sole basis to
+                                measure returns in said securities. Terms and conditions of the RTB 29 is governed by
+                                the applicable Program Mechanics and Notice of Offering issued for the purpose. Returns
+                                displayed assume an interest period of 5.5 years and are net of 20% final withholding
+                                tax. Investment amount in RTB 29 is for a minimum of PHP5,000 and in integral multiples
+                                thereof.
+                            </Typography>
+                        </Box>
+                    </Paper>
+                </Container>
+            </Box>
+
+            <Box sx={{ p: 3 }}>
+                <Paper sx={{ py: 8, px: 4 }}>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
+                        {getLanguage(currentLanguage).whyInvestBonds}
+                    </Typography>
+                    <Box sx={{ p: 3 }}>
+                        <Grid container spacing={4} textAlign='center'>
+                            <Grid item xs={12} lg={4}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon
+                                        name={ICON_NAMES.SYSTEM_ICONS.PRICE_CHECK}
+                                        color='primary'
+                                        fontSize='inherit'
+                                    />
+                                </Box>
+                                <Typography variant='h7'>Affordable</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={4}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon name={ICON_NAMES.SYSTEM_ICONS.CHECK} color='primary' fontSize='inherit' />
+                                </Box>
+                                <Typography variant='h7'>Convenient</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={4}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon
+                                        name={ICON_NAMES.SYSTEM_ICONS.TRENDING_DOWN}
+                                        color='primary'
+                                        fontSize='inherit'
+                                    />
+                                </Box>
+                                <Typography variant='h7'>Low-risk Investment</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={4}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon name={ICON_NAMES.SYSTEM_ICONS.TIME} color='primary' fontSize='inherit' />
+                                </Box>
+                                <Typography variant='h7'>Short-term Investment</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={4}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon name={ICON_NAMES.SYSTEM_ICONS.UP} color='primary' fontSize='inherit' />
+                                </Box>
+                                <Typography variant='h7'>High yielding than Time Deposits</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={4}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon
+                                        name={ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER}
+                                        color='primary'
+                                        fontSize='inherit'
+                                    />
+                                </Box>
+                                <Typography variant='h7'>Negotiable and Transferrable</Typography>
+                            </Grid>
+                            <Grid item lg={12}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon name={ICON_NAMES.SYSTEM_ICONS.CALENDAR} color='primary' fontSize='inherit' />
+                                </Box>
+                                <Typography variant='h7'>Quarterly Interest Payments</Typography>
+                            </Grid>
+                        </Grid>
+                    </Box>
+
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
+                        {getLanguage(currentLanguage).whereInvestBonds}
+                    </Typography>
+                    <Box sx={{ p: 3 }}>
+                        <Grid container spacing={4} textAlign='center'>
+                            <Grid item xs={12} lg={3}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon name={ICON_NAMES.ACCOUNT_ICONS.BDO} color='primary' fontSize='inherit' />
+                                </Box>
+                                <Typography variant='h7'>BDO</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={3}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon name={ICON_NAMES.ACCOUNT_ICONS.BPI} color='primary' fontSize='inherit' />
+                                </Box>
+                                <Typography variant='h7'>BPI</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={3}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon
+                                        name={ICON_NAMES.ACCOUNT_ICONS.CHINABANK}
+                                        color='primary'
+                                        fontSize='inherit'
+                                    />
+                                </Box>
+                                <Typography variant='h7'>Chinabank</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={3}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon name={ICON_NAMES.ACCOUNT_ICONS.BANK} color='primary' fontSize='inherit' />
+                                </Box>
+                                <Typography variant='h7'>Landbank</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={3}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon
+                                        name={ICON_NAMES.ACCOUNT_ICONS.METROBANK}
+                                        color='primary'
+                                        fontSize='inherit'
+                                    />
+                                </Box>
+                                <Typography variant='h7'>Metrobank</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={3}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon name={ICON_NAMES.ACCOUNT_ICONS.PNB} color='primary' fontSize='inherit' />
+                                </Box>
+                                <Typography variant='h7'>PNB</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={3}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon
+                                        name={ICON_NAMES.ACCOUNT_ICONS.SECURITYBANK}
+                                        color='primary'
+                                        fontSize='inherit'
+                                    />
+                                </Box>
+                                <Typography variant='h7'>Security Bank</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={3}>
+                                <Box sx={{ fontSize: 50 }}>
+                                    <Icon
+                                        name={ICON_NAMES.ACCOUNT_ICONS.UNIONBANK}
+                                        color='primary'
+                                        fontSize='inherit'
+                                    />
+                                </Box>
+                                <Typography variant='h7'>Unionbank</Typography>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    <Link href='https://www.treasury.gov.ph/rtb29/' target='_blank'>
+                        <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                            For more information about Retail Treasury Bonds. Click here.
+                        </Typography>
+                    </Link>
+                </Paper>
+            </Box>
+        </Box>
+    );
 
     return (
         <>
@@ -172,317 +442,18 @@ export const BondsCard = ({ ...rest }) => {
                 </Box>
             </Box>
 
-            {amount > 4999 ? (
-                <Box sx={{ p: 1 }}>
-                    <Typography align='center' sx={{ m: 1 }} variant='h6'>
-                        {getLanguage(currentLanguage).amountBondsPart1}{formatPrice(amount, true)}{getLanguage(currentLanguage).amountBondsPart2}
-                    </Typography>
-                    <Box sx={{ p: 1, mx: 'auto' }}>
-                        <Card
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                height: '100%',
-                                position: 'relative'
-                            }}
-                            elevation={10}
-                        >
-                            <CardContent>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='h5'>
-                                    {bonds.productName}
-                                </Typography>
-                                <Tooltip title={getLanguage(currentLanguage).tooltipRTBTotal}>
-                                    <Typography align='center' color='primary' gutterBottom variant='h4'>
-                                        {formatPrice(bonds.total, true)}
-                                    </Typography>
-                                </Tooltip>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='body2'>
-                                    {getLanguage(currentLanguage).timeReturnBonds}
-                                </Typography>
-                                <Typography align='center' color='textPrimary' gutterBottom variant='body2'>
-                                    {getLanguage(currentLanguage).calculatedAmountBonds}
-                                </Typography>
-                                <Box sx={{ pt: 3 }}>
-                                    <Typography
-                                        sx={{ m: 1, textAlign: 'center' }}
-                                        color='primary.main' variant='body1'
-                                    >
-                                        DISCLAIMER: This computation is based on an investment in the RTB 29 Bond issued between 
-                                        February 7, 2023 to February 17, 2023 with an interest period of 5.5 years and an annual
-                                        interest of 6.25%
-                                    </Typography>
-                                </Box>
-                            </CardContent>
-                        </Card>
-                    </Box>
-
-                    <Box
-                        component='main'
-                        sx={{
-                            flexGrow: 1,
-                            py: 6
-                        }}
-                    >
-                        <Container maxWidth={false}>
-                            <Paper sx={{ py: 4, px: 4, mx: 'auto' }}>
-                                <Box sx={{ p: 1 }}>
-                                    <Tooltip title={getLanguage(currentLanguage).tooltipRTBCalculator}>
-                                        <Typography
-                                            sx={{ m: 1, textAlign: 'center' }}
-                                            color='textPrimary'
-                                            gutterBottom
-                                            variant='h5'
-                                        >
-                                            Retail Treasury Bonds Calculator
-                                        </Typography>
-                                    </Tooltip>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        alignItems: 'center',
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        flexWrap: 'wrap',
-                                        m: 1
-                                    }}
-                                >
-                                    <Grid container spacing={2} justifyContent='center' mb={4}>
-                                        <Grid item xs={12} lg={8}>
-                                            <FormControl fullWidth>
-                                                <TextField
-                                                    id='standard-basic'
-                                                    label={getLanguage(currentLanguage).initialInvestment}
-                                                    variant='outlined'
-                                                    type='number'
-                                                    value={initialDeposit}
-                                                    onChange={(e) => setInitialDeposit(e.target.value)}
-                                                    className='bonds_step_three'
-                                                />
-                                                <FormHelperText>
-                                                    {getLanguage(currentLanguage).bondsCalculatorHelperText}
-                                                </FormHelperText>
-                                            </FormControl>
-                                        </Grid>
-                                        <Grid maxWidth item lg={4}>
-                                            <Button onClick={handleCalculate} variant='contained'>
-                                                Calculate Money Growth
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                                <Grid container spacing={4} textAlign='center'>
-                                    <Grid item xs={12}>
-                                        <Box sx={{ fontSize: 70 }}>
-                                            <AccountBalanceIcon fontSize='inherit' color='primary' />
-                                        </Box>
-                                        <Typography variant='body1'>{getLanguage(currentLanguage).totalBonds}</Typography>
-                                        <Typography variant='h4'>{formatPrice(bondReturn, true)}</Typography>
-                                        <Typography variant='body1'>
-                                            {getLanguage(currentLanguage).bondsTime}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                                <Box sx={{ pt: 3 }}>
-                                    <Typography variant='h6' mb={2} color='primary'>
-                                        DISCLAIMERS
-                                    </Typography>
-                                    <Typography
-                                        variant='body1' mb={4} color='primary'
-                                    >
-                                        This calculation is for illustration purposes only and should not be
-                                        able to taken as professional advice to invest in RTB 29. It should not be used
-                                        as the sole basis to measure returns in said securities. Terms and conditions of
-                                        the RTB 29 is governed by the applicable Program Mechanics and Notice of
-                                        Offering issued for the purpose. Returns displayed assume an interest period of
-                                        5.5 years and are net of 20% final withholding tax. Investment amount in RTB 29
-                                        is for a minimum of PHP5,000 and in integral multiples thereof.
-                                    </Typography>
-                                </Box>
-                            </Paper>
-                        </Container>
-                    </Box>
-
-                    <Box sx={{ p: 3 }}>
-                        <Paper sx={{ py: 8, px: 4 }}>
-                            <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
-                                {getLanguage(currentLanguage).whyInvestBonds}
-                            </Typography>
-                            <Box sx={{ p: 3 }}>
-                                <Grid container spacing={4} textAlign='center'>
-                                    <Grid item xs={12} lg={4}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.SYSTEM_ICONS.PRICE_CHECK}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Affordable</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={4}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.SYSTEM_ICONS.CHECK}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Convenient</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={4}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.SYSTEM_ICONS.TRENDING_DOWN}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Low-risk Investment</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={4}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.SYSTEM_ICONS.TIME}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Short-term Investment</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={4}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.SYSTEM_ICONS.UP}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>High yielding than Time Deposits</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={4}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.SYSTEM_ICONS.ADD_TRANSFER}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Negotiable and Transferrable</Typography>
-                                    </Grid>
-                                    <Grid item lg={12}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.SYSTEM_ICONS.CALENDAR}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Quarterly Interest Payments</Typography>
-                                    </Grid>
-                                </Grid>
-                            </Box>
-
-                            <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
-                                {getLanguage(currentLanguage).whereInvestBonds}
-                            </Typography>
-                            <Box sx={{ p: 3 }}>
-                                <Grid container spacing={4} textAlign='center'>
-                                    <Grid item xs={12} lg={3}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.ACCOUNT_ICONS.BDO}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>BDO</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={3}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.ACCOUNT_ICONS.BPI}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>BPI</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={3}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.ACCOUNT_ICONS.CHINABANK}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Chinabank</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={3}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.ACCOUNT_ICONS.BANK}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Landbank</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={3}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.ACCOUNT_ICONS.METROBANK}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Metrobank</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={3}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.ACCOUNT_ICONS.PNB}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>PNB</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={3}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.ACCOUNT_ICONS.SECURITYBANK}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Security Bank</Typography>
-                                    </Grid>
-                                    <Grid item xs={12} lg={3}>
-                                        <Box sx={{ fontSize: 50 }}>
-                                            <Icon
-                                                name={ICON_NAMES.ACCOUNT_ICONS.UNIONBANK}
-                                                color='primary'
-                                                fontSize='inherit'
-                                            />
-                                        </Box>
-                                        <Typography variant='h7'>Unionbank</Typography>
-                                    </Grid>
-                                </Grid>
-                            </Box>
-                            <Link href='https://www.treasury.gov.ph/rtb29/' target="_blank">
-                                <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
-                                    For more information about Retail Treasury Bonds. Click here.
-                                </Typography>
-                            </Link>
-                        </Paper>
-                    </Box>
-                </Box>
+            {selectedAccount === '' ? null : amount > 4999 ? (
+                <RetailBondsPanel />
             ) : (
-                <Box sx={{ p: 3 }}>
-                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
-                        {getLanguage(currentLanguage).insufficientAmountBonds}
+                <Paper sx={{ p: 3, textAlign: 'center' }}>
+                    <Typography sx={{ fontSize: 100 }}>😅</Typography>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='h6'>
+                        {getLanguage(currentLanguage).insufficientAmountBonds.split('.')[0]}
                     </Typography>
-                </Box>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
+                        {getLanguage(currentLanguage).insufficientAmountBonds.split('.')[1]}
+                    </Typography>
+                </Paper>
             )}
         </>
     );
