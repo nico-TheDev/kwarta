@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
 
 import { db, storage } from '../../firebase.config';
-import { blue, green, red, yellow } from '@mui/material/colors';
+import { blue, deepPurple, green, red, yellow } from '@mui/material/colors';
 import { ICON_NAMES } from 'constants/constant';
 
 const transactionStore = (set, get) => ({
@@ -386,7 +386,16 @@ const transactionStore = (set, get) => ({
     },
     getExpenseTypeList: (user_id) => {
         const expenseList = get().transactions.filter((transaction) => transaction.type === 'expense');
+
+        const totalSavings = get()
+            .transactions.filter((item) => item.type === 'savings')
+            .reduce((acc, cur) => {
+                acc += cur.amount;
+                return acc;
+            }, 0);
+
         // create an initial data holder
+
         const expenseTypeDataList = [
             {
                 name: 'Needs',
@@ -401,6 +410,13 @@ const transactionStore = (set, get) => ({
                 type: 'wants',
                 color: red[500],
                 icon: ICON_NAMES.SYSTEM_ICONS.NEEDS
+            },
+            {
+                name: 'Savings',
+                amount: totalSavings,
+                type: 'savings',
+                color: deepPurple[500],
+                icon: ICON_NAMES.CATEGORY_ICONS.SAVINGS
             }
         ];
 
