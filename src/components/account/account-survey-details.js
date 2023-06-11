@@ -32,7 +32,7 @@ const categories = premadeCategories
         choice: item.category_name,
         value: item.id,
         text: item.category_name
-    }));
+}));
 
     const MenuProps = {
         PaperProps: {
@@ -43,6 +43,8 @@ const categories = premadeCategories
         }
     };
 
+const multiplesOfTen = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
 export const AccountSurveyDetails = (props) => {
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const user = useAuthStore((state) => state.authState.user);
@@ -52,7 +54,12 @@ export const AccountSurveyDetails = (props) => {
 
     const [questionOne, setQuestionOne] = useState('');
     const [questionTwo, setQuestionTwo] = useState([]);
-    const [questionThree, setQuestionThree] = useState('');
+    const [questionThree, setQuestionThree] = useState({
+        needs: 0,
+        wants: 0,
+        savings: 0,
+        total: 0
+    });
 
     const surveyList = [
         {
@@ -176,7 +183,6 @@ export const AccountSurveyDetails = (props) => {
     // console.log(questionThree);
     const handleSubmit = () => {
         const firstAnswer = surveyList[0].choices.find((item) => questionOne === item.value);
-        const thirdAnswer = surveyList[2].choices.find((item) => questionThree === item.value);
         const secondAnswer = [];
 
         questionTwo.forEach((item) => {
@@ -187,8 +193,41 @@ export const AccountSurveyDetails = (props) => {
         updateSurvey({
             questionOne: firstAnswer,
             questionTwo: secondAnswer,
-            questionThree: thirdAnswer
+            questionThree
         });
+    };
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+        const updated = { ...questionThree };
+        updated[e.target.name] = value;
+
+        let total = updated.needs + updated.wants + updated.savings;
+
+        if (total > 100) {
+            // console.log({ total });
+            toast.error('Total is over 100. You might want to fix that.', { id: 'budget' });
+        }
+        if (total < 100) {
+            // console.log({ total });
+            toast.error('Total is less than 100. You might want to fix that.', { id: 'budget' });
+        }
+        if (total !== 100) {
+            // console.log(Object.values(updated));
+            // const keysName = Object.keys(updated);
+            // let remaining = 100 - total;
+            // const targetIndex = Object.values(updated).findIndex((item) => item <= 0);
+            // if (targetIndex !== -1) {
+            //     updated[keysName[targetIndex]] = remaining;
+            // }
+            // updated.total = updated.needs + updated.savings + updated.wants;
+            // // console.log({ remaining });
+        } else {
+            console.log('100%');
+        }
+
+        // console.log(updated);
+        setQuestionThree({ ...updated, total });
     };
 
     useEffect(() => {
@@ -196,7 +235,7 @@ export const AccountSurveyDetails = (props) => {
         console.log(userSurvey);
         setQuestionOne(userSurvey.salary.id);
         setQuestionTwo(userSurvey.priorities.map((item) => item.category_name));
-        setQuestionThree(userSurvey.financeRule.value);
+        // setQuestionThree(userSurvey.financeRule.value);
     }, []);
 
     return (
@@ -272,32 +311,80 @@ export const AccountSurveyDetails = (props) => {
                             </FormControl>
                         </Grid>
                         <Grid item md={12} xs={12}>
-                            <FormControl sx={{ width: '80%' }}>
-                                <InputLabel id='demo-simple-select-label'>Rule in Handling Finances</InputLabel>
-                                <Select
-                                    labelId='demo-simple-select-label'
-                                    id='demo-simple-select'
-                                    value={questionThree}
-                                    label='Answer'
-                                    defaultValue=''
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        setQuestionThree(value);
-                                    }}
-                                    sx={{ display: 'flex', alignItems: 'center' }}
-                                    MenuProps={MenuProps}
-                                >
-                                    {surveyList[2].choices.map((choice, i) => {
-                                        return (
-                                            <MenuItem key={choice.id + i} value={choice.value}>
-                                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                    <ListItemText>{choice.text}</ListItemText>
-                                                </Box>
-                                            </MenuItem>
-                                        );
-                                    })}
-                                </Select>
-                            </FormControl>
+                                <Typography variant='body1' mb={4}>
+                                    Budgeting Finances
+                                </Typography>
+                                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-start' }}>
+                                    <FormControl>
+                                        <InputLabel id='demo-simple-select-label'>Needs</InputLabel>
+                                        <Select
+                                            labelId='demo-simple-select-label'
+                                            id='demo-simple-select'
+                                            value={questionThree.needs}
+                                            label='Choose Answer'
+                                            onChange={handleChange}
+                                            sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
+                                            MenuProps={MenuProps}
+                                            name='needs'
+                                        >
+                                            {multiplesOfTen.map((choice, i) => {
+                                                return (
+                                                    <MenuItem key={choice} value={choice}>
+                                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                            <ListItemText>{choice} %</ListItemText>
+                                                        </Box>
+                                                    </MenuItem>
+                                                );
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl>
+                                        <InputLabel id='demo-simple-select-label'>Wants</InputLabel>
+                                        <Select
+                                            labelId='demo-simple-select-label'
+                                            id='demo-simple-select'
+                                            value={questionThree.wants}
+                                            label='Choose Answer'
+                                            onChange={handleChange}
+                                            sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
+                                            MenuProps={MenuProps}
+                                            name='wants'
+                                        >
+                                            {multiplesOfTen.map((choice, i) => {
+                                                return (
+                                                    <MenuItem key={choice} value={choice}>
+                                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                            <ListItemText>{choice} %</ListItemText>
+                                                        </Box>
+                                                    </MenuItem>
+                                                );
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl>
+                                        <InputLabel id='demo-simple-select-label'>Savings</InputLabel>
+                                        <Select
+                                            labelId='demo-simple-select-label'
+                                            id='demo-simple-select'
+                                            value={questionThree.savings}
+                                            label='Choose Answer'
+                                            onChange={handleChange}
+                                            sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
+                                            MenuProps={MenuProps}
+                                            name='savings'
+                                        >
+                                            {multiplesOfTen.map((choice, i) => {
+                                                return (
+                                                    <MenuItem key={choice} value={choice}>
+                                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                            <ListItemText>{choice} %</ListItemText>
+                                                        </Box>
+                                                    </MenuItem>
+                                                );
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                </Box>
                         </Grid>
                     </Grid>
                 </CardContent>
