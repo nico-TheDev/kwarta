@@ -1,12 +1,14 @@
 import Head from 'next/head';
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Button, Container, Grid, Paper, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Grid, Link, Paper, TextField, Typography } from '@mui/material';
 import { green, lightGreen, red } from '@mui/material/colors';
 import { DashboardLayout } from '../../components/dashboard-layout';
 import { formatPrice } from 'utils/format-price';
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import LotTable, { minimumLotTable } from './LotTable';
+import toast from 'react-hot-toast';
 
 const paperStyle = { p: 2, display: 'grid', gap: 2, height: '100%', alignItems: 'start' };
 const resultStyle = { fontWeight: 'bold', alignSelf: 'end', mb: 2 };
@@ -32,39 +34,63 @@ const Page = () => {
     });
 
     useEffect(() => {
-        let boughtAmount = input.sharesBought * input.buyPrice;
-        let soldAmount = input.sharesSold * input.sellPrice;
-        // BUYING TRANSACTION COST
-        let stockCommsBuy = boughtAmount * (0.25 / 100) * 1.12;
-        let clearFeeBuy = boughtAmount * 0.0001;
-        let transFeeBuy = boughtAmount * 0.00005;
-        let tradeCostBuy = boughtAmount + stockCommsBuy + clearFeeBuy + transFeeBuy;
-        // SELLING TRANSACTION COST
-        let stockCommsSell = soldAmount * (0.25 / 100) * 1.12;
-        let clearFeeSell = soldAmount * 0.0001;
-        let transFeeSell = soldAmount * 0.00005;
-        let stockTax = soldAmount * 0.006;
-        let tradeCostSell = soldAmount - stockCommsSell - clearFeeSell - transFeeSell - stockTax;
-
-        let finalTradeCost = soldAmount - boughtAmount - (tradeCostSell - tradeCostBuy);
-
-        setResult({
-            amountBought: boughtAmount,
-            amountSold: soldAmount,
-            grossGains: soldAmount - boughtAmount,
-            finalTradeCost: formatPrice(finalTradeCost, true),
-            netGains: tradeCostSell - tradeCostBuy,
-            stockCommsBuy: formatPrice(stockCommsBuy, true),
-            clearFeeBuy: formatPrice(clearFeeBuy, true),
-            transFeeBuy: formatPrice(transFeeBuy, true),
-            tradeCostBuy: formatPrice(tradeCostBuy, true),
-            stockCommsSell: formatPrice(stockCommsSell, true),
-            clearFeeSell: formatPrice(clearFeeSell, true),
-            transFeeSell: formatPrice(transFeeSell, true),
-            stockTax: formatPrice(stockTax, true),
-            tradeCostSell: formatPrice(tradeCostSell, true),
-            finalTradeCost
+        // CHECK THE SHARES BOUGHT BASED ON THE TABLE
+        const targetLot = minimumLotTable.find((currentLot) => {
+            if (currentLot.marketPriceMin <= input.buyPrice && currentLot.marketPriceMax >= input.buyPrice) {
+                return currentLot;
+            }
         });
+        console.log({ targetLot });
+        setInput({ ...input, sharesBought: targetLot.lotSize, sharesSold: targetLot.lotSize });
+    }, []);
+
+    useEffect(() => {
+        // CHECK THE SHARES BOUGHT BASED ON THE TABLE
+        const targetLot = minimumLotTable.find((currentLot) => {
+            if (currentLot.marketPriceMin <= input.buyPrice && currentLot.marketPriceMax >= input.buyPrice) {
+                return currentLot;
+            }
+        });
+
+        if (input.sharesBought < targetLot.lotSize || input.sharesSold < targetLot.lotSize) {
+            toast.error('You are not allowed to continue that computation', { id: 'stocks' });
+        } else {
+            toast.success('You are allowed to continue that transaction', { id: 'stocks' });
+
+            let boughtAmount = input.sharesBought * input.buyPrice;
+            let soldAmount = input.sharesSold * input.sellPrice;
+            // BUYING TRANSACTION COST
+            let stockCommsBuy = boughtAmount * (0.25 / 100) * 1.12;
+            let clearFeeBuy = boughtAmount * 0.0001;
+            let transFeeBuy = boughtAmount * 0.00005;
+            let tradeCostBuy = boughtAmount + stockCommsBuy + clearFeeBuy + transFeeBuy;
+            // SELLING TRANSACTION COST
+            let stockCommsSell = soldAmount * (0.25 / 100) * 1.12;
+            let clearFeeSell = soldAmount * 0.0001;
+            let transFeeSell = soldAmount * 0.00005;
+            let stockTax = soldAmount * 0.006;
+            let tradeCostSell = soldAmount - stockCommsSell - clearFeeSell - transFeeSell - stockTax;
+
+            let finalTradeCost = soldAmount - boughtAmount - (tradeCostSell - tradeCostBuy);
+
+            setResult({
+                amountBought: boughtAmount,
+                amountSold: soldAmount,
+                grossGains: soldAmount - boughtAmount,
+                finalTradeCost: formatPrice(finalTradeCost, true),
+                netGains: tradeCostSell - tradeCostBuy,
+                stockCommsBuy: formatPrice(stockCommsBuy, true),
+                clearFeeBuy: formatPrice(clearFeeBuy, true),
+                transFeeBuy: formatPrice(transFeeBuy, true),
+                tradeCostBuy: formatPrice(tradeCostBuy, true),
+                stockCommsSell: formatPrice(stockCommsSell, true),
+                clearFeeSell: formatPrice(clearFeeSell, true),
+                transFeeSell: formatPrice(transFeeSell, true),
+                stockTax: formatPrice(stockTax, true),
+                tradeCostSell: formatPrice(tradeCostSell, true),
+                finalTradeCost
+            });
+        }
     }, [input.sharesBought, input.buyPrice, input.sharesSold, input.sellPrice]);
 
     const current = router.query;
@@ -89,13 +115,19 @@ const Page = () => {
                     <Typography variant='h6' mb={1}>
                         Capital Gains & Transaction Costs{' '}
                     </Typography>
-                    <Typography variant='body2' mb={2}>
+                    <Typography variant='body1' mb={2}>
                         {getLanguage(currentLanguage).capitalGains}
                     </Typography>
-                    <Typography variant='body2' mb={4} color='gray'>
+                    <Typography variant='body1' mb={2}>
                         {getLanguage(currentLanguage).capitalGainsSub}
                     </Typography>
 
+                    <Typography variant='body1' color='primary' mb={4}>
+                        To invest in stocks, you need a minimum number of shares to buy depending on their market price.
+                    </Typography>
+
+                    <LotTable />
+                    <Box mb={8} />
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={3}>
                             <Paper sx={paperStyle}>
@@ -232,15 +264,27 @@ const Page = () => {
                             </Paper>
                         </Grid>
                     </Grid>
-                    <Box sx={{ pt: 3 }}>
-                        <Typography
-                            sx={{ m: 1, textAlign: 'center' }}
-                            color='textSecondary'
-                            variant='caption'
-                        >
-                            DISCLAIMER: These are just indicative numbers. Performance of the
-                            fund is not assured and this is subject to fluctuating market
-                            conditions.
+                    <Box sx={{ pt: 6 }}>
+                        <Typography variant='h6' mb={2} color='primary' textAlign='center'>
+                            {' '}
+                            DISCLAIMER
+                        </Typography>
+                        <Typography sx={{ m: 1, textAlign: 'center' }} color='primary' variant='body1'>
+                            These are just indicative numbers. Performance of the stock is not assured and this is
+                            subject to fluctuating market conditions.
+                            <br />
+                            This calculator is designed to be an informational and educational tool only, and when used
+                            alone, does not constitute financial advice. The CASH Team is not responsible for the
+                            consequences of any decisions or actions taken in reliance upon or as a result of the
+                            information provided by these tools. The CASH Team is not responsible for any human or
+                            mechanical errors or omissions that may occur too. Do consult a financial services
+                            professional before making any investments.
+                        </Typography>
+                        <Typography sx={{ m: 1, textAlign: 'center' }} color='primary' variant='body1'>
+                            Source:{' '}
+                            <Link href='https://www.pseacademy.com.ph/investment-calculator/' target='_blank'>
+                                PSE Academy Investment Calculator
+                            </Link>
                         </Typography>
                     </Box>
                 </Container>
