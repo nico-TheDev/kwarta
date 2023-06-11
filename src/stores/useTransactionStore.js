@@ -233,7 +233,7 @@ const transactionStore = (set, get) => ({
         });
     },
     getExpenseList: (user_id) => {
-        const expenseList = get().transactions.filter((transaction) => transaction.category_type === 'expense');
+        const expenseList = get().transactions.filter((transaction) => transaction.type === 'expense');
 
         const expenseCategoryList = expenseList.reduce((acc, currentExpense) => {
             if (!acc.includes(currentExpense.category.category_name)) {
@@ -271,7 +271,7 @@ const transactionStore = (set, get) => ({
         return expenseDataList;
     },
     getIncomeList: (user_id) => {
-        const incomeList = get().transactions.filter((transaction) => transaction.category_type === 'income');
+        const incomeList = get().transactions.filter((transaction) => transaction.type === 'income');
 
         const incomeCategoryList = incomeList.reduce((acc, currentIncome) => {
             if (!acc.includes(currentIncome.category.category_name)) {
@@ -309,7 +309,7 @@ const transactionStore = (set, get) => ({
         return incomeDataList;
     },
     getSavingsList: (user_id) => {
-        const savingsList = get().transactions.filter((transaction) => transaction.category_type === 'savings');
+        const savingsList = get().transactions.filter((transaction) => transaction.type === 'savings');
 
         const savingsCategoryList = savingsList.reduce((acc, currentIncome) => {
             if (!acc.includes(currentIncome.category.category_name)) {
@@ -347,7 +347,7 @@ const transactionStore = (set, get) => ({
         return savingsDataList;
     },
     getInvestmentsList: (user_id) => {
-        const investmentsList = get().transactions.filter((transaction) => transaction.category_type === 'investments');
+        const investmentsList = get().transactions.filter((transaction) => transaction.type === 'investments');
 
         const investmentsCategoryList = investmentsList.reduce((acc, currentIncome) => {
             if (!acc.includes(currentIncome.category.category_name)) {
