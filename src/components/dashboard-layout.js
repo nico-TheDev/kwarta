@@ -46,7 +46,7 @@ export const DashboardLayout = (props) => {
 
     useEffect(() => {
         console.log({ isTutorialOpen });
-        if (transactions.length === 0 || accounts.length === 0) {
+        if (transactions.length === 0 && accounts.length === 0) {
             setOpen(true);
         } else {
             if (localStorage.getItem('isTourOpen')) {

@@ -14,7 +14,8 @@ import {
     FormHelperText,
     Button,
     CircularProgress,
-    Tooltip
+    Tooltip,
+    Modal
 } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SavingsIcon from '@mui/icons-material/Savings';
@@ -42,6 +43,23 @@ const MenuProps = {
     }
 };
 
+const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: {
+        md: '80%',
+        xs: '100%'
+    },
+    height: '80vh',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    overflow: 'auto'
+};
+
 function generateYearsArray(startYear, endYear) {
     const years = [];
     for (let i = startYear; i <= endYear; i++) {
@@ -53,12 +71,6 @@ function generateYearsArray(startYear, endYear) {
 const currentYear = new Date().getFullYear();
 const yearArray = generateYearsArray(currentYear, 2080);
 
-//Calculates Future Value of a cash flow with constant payments and interest rate (annuities)
-//@param    float   rate    Interest rate per period
-//@param    int     nper    Number of periods
-//@param    float   pmt     Periodic payment (annuity)
-//@param    float   pv      Present Value
-//@param    int     type    Payment Type: 0 - end of period, 1 start of period
 function futureValue(rate = 0, nper = 0, pmt = 0, pv = 0, type = 0) {
     var result;
     if (rate != 0.0) {
@@ -68,7 +80,6 @@ function futureValue(rate = 0, nper = 0, pmt = 0, pv = 0, type = 0) {
     }
     return result;
 }
-// futureValue((rate_of_return / 100 / 12), (years_to_grow * 12), -(monthly_contribution), -(initial_investment), 0)
 
 const Page = () => {
     const [initialDeposit, setInitialDeposit] = useState('');
@@ -78,8 +89,11 @@ const Page = () => {
     const [projectedData, setProjectedData] = useState('');
     const [suggestionData, setSuggestionData] = useState('');
     const [tableData, setTableData] = useState('');
+    const [currentTableData, setCurrentTableData] = useState('');
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const accounts = useAccountStore((state) => state.accounts);
+
+    const [openModal, setOpenModal] = useState(false);
 
     const [accountAmounts, setAccountAmounts] = useState(accounts.map((item) => item.account_amount));
 
@@ -314,6 +328,23 @@ const Page = () => {
             </Box>
         </>
     );
+
+    const TableModal = () => (
+        <Modal
+            open={openModal}
+            onClose={() => setOpenModal(false)}
+            aria-labelledby='modal-modal-title'
+            aria-describedby='modal-modal-description'
+        >
+            <Paper sx={modalStyle}>
+                <Typography variant='h4' mb={6}>
+                    {currentTableData.name}
+                </Typography>
+                <InvestmentTable dataset={currentTableData.data} />
+            </Paper>
+        </Modal>
+    );
+
     return (
         <>
             {!showTour && (
@@ -326,6 +357,7 @@ const Page = () => {
             <Head>
                 <title>Investments | CASH</title>
             </Head>
+            <TableModal />
             <Box
                 component='main'
                 sx={{
@@ -473,77 +505,105 @@ const Page = () => {
                                     <Typography variant='h5' mb={2}>
                                         {projectedData.savingsAccount}
                                     </Typography>
-                                    <Link href='/investments/details'>
-                                        <Button variant='outlined' component='a'>
-                                            See Details
-                                        </Button>
-                                    </Link>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Savings Account',
+                                                data: tableData.savingsAccount
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
                                         <TimelapseIcon fontSize='inherit' color='action' />
                                     </Box>
                                     <Typography variant='body2'>Time Deposit</Typography>
-                                    <Typography variant='h5'>{projectedData.timeDeposit}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.timeDeposit}
+                                    </Typography>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Time Deposit',
+                                                data: tableData.timeDeposit
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
                                         <AttachMoneyIcon fontSize='inherit' color='info' />
                                     </Box>
                                     <Typography variant='body2'>Low Risk Fund</Typography>
-                                    <Typography variant='h5'>{projectedData.lowRiskFund}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.lowRiskFund}
+                                    </Typography>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Low Risk Fund',
+                                                data: tableData.lowRiskFund
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
                                         <AttachMoneyIcon fontSize='inherit' color='warning' />
                                     </Box>
                                     <Typography variant='body2'>Moderate Risk Fund</Typography>
-                                    <Typography variant='h5'>{projectedData.moderateRiskFund}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.moderateRiskFund}
+                                    </Typography>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Moderate Risk Fund',
+                                                data: tableData.medRiskFund
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
                                         <AttachMoneyIcon fontSize='inherit' color='error' />
                                     </Box>
                                     <Typography variant='body2'>Aggressive Risk Fund</Typography>
-                                    <Typography variant='h5'>{projectedData.aggressiveRiskFund}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.aggressiveRiskFund}
+                                    </Typography>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Aggressive Risk Fund',
+                                                data: tableData.highRiskFund
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Paper>
-                    )}
-
-                    {tableData.length !== 0 && (
-                        <Grid container mt={4} p={4} rowSpacing={4}>
-                            <Grid item>
-                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
-                                    Savings Account{' '}
-                                </Typography>
-                            </Grid>
-                            <InvestmentTable dataset={tableData.savingsAccount} />
-                            <Grid item>
-                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
-                                    Time Deposit{' '}
-                                </Typography>
-                            </Grid>
-                            <InvestmentTable dataset={tableData.timeDeposit} />
-                            <Grid item>
-                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
-                                    Low Risk Fund{' '}
-                                </Typography>
-                            </Grid>
-                            <InvestmentTable dataset={tableData.lowRiskFund} />
-                            <Grid item my={4}>
-                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
-                                    Moderate Risk Fund{' '}
-                                </Typography>
-                            </Grid>
-                            <InvestmentTable dataset={tableData.medRiskFund} />
-                            <Grid item my={4}>
-                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
-                                    High Risk Fund{' '}
-                                </Typography>
-                            </Grid>
-                            <InvestmentTable dataset={tableData.highRiskFund} />
-                        </Grid>
                     )}
 
                     <Typography variant='caption' sx={{ color: grey[400] }}>
