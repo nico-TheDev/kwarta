@@ -235,7 +235,7 @@ export const AccountSurveyDetails = (props) => {
         console.log(userSurvey);
         setQuestionOne(userSurvey.salary.id);
         setQuestionTwo(userSurvey.priorities.map((item) => item.category_name));
-        // setQuestionThree(userSurvey.financeRule.value);
+        setQuestionThree(userSurvey.financeRule);
     }, []);
 
     return (
@@ -311,7 +311,7 @@ export const AccountSurveyDetails = (props) => {
                             </FormControl>
                         </Grid>
                         <Grid item md={12} xs={12}>
-                                <Typography variant='body1' mb={4}>
+                                <Typography variant='body2' mb={4}>
                                     Budgeting Finances
                                 </Typography>
                                 <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-start' }}>
