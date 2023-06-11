@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { 
-    Card, 
-    CardContent, 
-    CardHeader, 
-    Divider, 
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    Divider,
     Box,
     Button,
     Chip,
@@ -16,11 +16,13 @@ import {
     MenuItem,
     Paper,
     Select,
-    Typography } from '@mui/material'
-import { getLanguage } from 'utils/getLanguage'
+    Typography
+} from '@mui/material';
 import { useFormik } from 'formik';
+import toast from 'react-hot-toast';
+import { getLanguage } from 'utils/getLanguage';
 
-import { useAuthStore } from 'stores/useAuthStore'
+import { useAuthStore } from 'stores/useAuthStore';
 import { useLanguageStore } from 'stores/useLanguageStore';
 
 import premadeCategories from '../../data/categories';
@@ -32,16 +34,16 @@ const categories = premadeCategories
         choice: item.category_name,
         value: item.id,
         text: item.category_name
-}));
+    }));
 
-    const MenuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: 150,
-                width: 250
-            }
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: 150,
+            width: 250
         }
-    };
+    }
+};
 
 const multiplesOfTen = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
@@ -51,6 +53,8 @@ export const AccountSurveyDetails = (props) => {
     const userSurvey = useAuthStore((state) => state.authState.userSurvey);
     const updateSurvey = useAuthStore((state) => state.updateSurvey);
     const getUser = useAuthStore((state) => state.getUser);
+
+    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
 
     const [questionOne, setQuestionOne] = useState('');
     const [questionTwo, setQuestionTwo] = useState([]);
@@ -182,7 +186,8 @@ export const AccountSurveyDetails = (props) => {
     ];
     // console.log(questionThree);
     const handleSubmit = () => {
-        const firstAnswer = surveyList[0].choices.find((item) => questionOne === item.value);
+        setIsBtnDisabled(true);
+        const firstAnswer = surveyList[0].choices.find((item) => item.value === questionOne);
         const secondAnswer = [];
 
         questionTwo.forEach((item) => {
@@ -194,7 +199,11 @@ export const AccountSurveyDetails = (props) => {
             questionOne: firstAnswer,
             questionTwo: secondAnswer,
             questionThree
-        });
+        })
+            .then(() => {
+                setIsBtnDisabled(false);
+            })
+            .catch((err) => console.error(err));
     };
 
     const handleChange = (e) => {
@@ -231,8 +240,8 @@ export const AccountSurveyDetails = (props) => {
     };
 
     useEffect(() => {
-        console.log('SURVEY');
-        console.log(userSurvey);
+        // console.log('SURVEY');
+        // console.log({ userSurvey });
         setQuestionOne(userSurvey.salary.id);
         setQuestionTwo(userSurvey.priorities.map((item) => item.category_name));
         setQuestionThree(userSurvey.financeRule);
@@ -241,7 +250,10 @@ export const AccountSurveyDetails = (props) => {
     return (
         <form autoComplete='off' noValidate {...props}>
             <Card>
-                <CardHeader subheader={getLanguage(currentLanguage).surveyDetailsHelper} title={getLanguage(currentLanguage).surveyDetails} />
+                <CardHeader
+                    subheader={getLanguage(currentLanguage).surveyDetailsHelper}
+                    title={getLanguage(currentLanguage).surveyDetails}
+                />
                 <Divider />
                 <CardContent>
                     <Grid container spacing={3}>
@@ -311,80 +323,80 @@ export const AccountSurveyDetails = (props) => {
                             </FormControl>
                         </Grid>
                         <Grid item md={12} xs={12}>
-                                <Typography variant='body2' mb={4}>
-                                    Budgeting Finances
-                                </Typography>
-                                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-start' }}>
-                                    <FormControl>
-                                        <InputLabel id='demo-simple-select-label'>Needs</InputLabel>
-                                        <Select
-                                            labelId='demo-simple-select-label'
-                                            id='demo-simple-select'
-                                            value={questionThree.needs}
-                                            label='Choose Answer'
-                                            onChange={handleChange}
-                                            sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
-                                            MenuProps={MenuProps}
-                                            name='needs'
-                                        >
-                                            {multiplesOfTen.map((choice, i) => {
-                                                return (
-                                                    <MenuItem key={choice} value={choice}>
-                                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                            <ListItemText>{choice} %</ListItemText>
-                                                        </Box>
-                                                    </MenuItem>
-                                                );
-                                            })}
-                                        </Select>
-                                    </FormControl>
-                                    <FormControl>
-                                        <InputLabel id='demo-simple-select-label'>Wants</InputLabel>
-                                        <Select
-                                            labelId='demo-simple-select-label'
-                                            id='demo-simple-select'
-                                            value={questionThree.wants}
-                                            label='Choose Answer'
-                                            onChange={handleChange}
-                                            sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
-                                            MenuProps={MenuProps}
-                                            name='wants'
-                                        >
-                                            {multiplesOfTen.map((choice, i) => {
-                                                return (
-                                                    <MenuItem key={choice} value={choice}>
-                                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                            <ListItemText>{choice} %</ListItemText>
-                                                        </Box>
-                                                    </MenuItem>
-                                                );
-                                            })}
-                                        </Select>
-                                    </FormControl>
-                                    <FormControl>
-                                        <InputLabel id='demo-simple-select-label'>Savings</InputLabel>
-                                        <Select
-                                            labelId='demo-simple-select-label'
-                                            id='demo-simple-select'
-                                            value={questionThree.savings}
-                                            label='Choose Answer'
-                                            onChange={handleChange}
-                                            sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
-                                            MenuProps={MenuProps}
-                                            name='savings'
-                                        >
-                                            {multiplesOfTen.map((choice, i) => {
-                                                return (
-                                                    <MenuItem key={choice} value={choice}>
-                                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                            <ListItemText>{choice} %</ListItemText>
-                                                        </Box>
-                                                    </MenuItem>
-                                                );
-                                            })}
-                                        </Select>
-                                    </FormControl>
-                                </Box>
+                            <Typography variant='body2' mb={4}>
+                                Budgeting Finances
+                            </Typography>
+                            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-start' }}>
+                                <FormControl>
+                                    <InputLabel id='demo-simple-select-label'>Needs</InputLabel>
+                                    <Select
+                                        labelId='demo-simple-select-label'
+                                        id='demo-simple-select'
+                                        value={questionThree.needs}
+                                        label='Choose Answer'
+                                        onChange={handleChange}
+                                        sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
+                                        MenuProps={MenuProps}
+                                        name='needs'
+                                    >
+                                        {multiplesOfTen.map((choice, i) => {
+                                            return (
+                                                <MenuItem key={choice} value={choice}>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                        <ListItemText>{choice} %</ListItemText>
+                                                    </Box>
+                                                </MenuItem>
+                                            );
+                                        })}
+                                    </Select>
+                                </FormControl>
+                                <FormControl>
+                                    <InputLabel id='demo-simple-select-label'>Wants</InputLabel>
+                                    <Select
+                                        labelId='demo-simple-select-label'
+                                        id='demo-simple-select'
+                                        value={questionThree.wants}
+                                        label='Choose Answer'
+                                        onChange={handleChange}
+                                        sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
+                                        MenuProps={MenuProps}
+                                        name='wants'
+                                    >
+                                        {multiplesOfTen.map((choice, i) => {
+                                            return (
+                                                <MenuItem key={choice} value={choice}>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                        <ListItemText>{choice} %</ListItemText>
+                                                    </Box>
+                                                </MenuItem>
+                                            );
+                                        })}
+                                    </Select>
+                                </FormControl>
+                                <FormControl>
+                                    <InputLabel id='demo-simple-select-label'>Savings</InputLabel>
+                                    <Select
+                                        labelId='demo-simple-select-label'
+                                        id='demo-simple-select'
+                                        value={questionThree.savings}
+                                        label='Choose Answer'
+                                        onChange={handleChange}
+                                        sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
+                                        MenuProps={MenuProps}
+                                        name='savings'
+                                    >
+                                        {multiplesOfTen.map((choice, i) => {
+                                            return (
+                                                <MenuItem key={choice} value={choice}>
+                                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                        <ListItemText>{choice} %</ListItemText>
+                                                    </Box>
+                                                </MenuItem>
+                                            );
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            </Box>
                         </Grid>
                     </Grid>
                 </CardContent>
@@ -400,7 +412,9 @@ export const AccountSurveyDetails = (props) => {
                         color='primary'
                         variant='contained'
                         onClick={handleSubmit}
-                        disabled={!questionOne || questionTwo.length !== 3 || !questionThree}
+                        disabled={
+                            !questionOne || questionTwo.length !== 3 || questionThree.total !== 100 || isBtnDisabled
+                        }
                     >
                         {getLanguage(currentLanguage).saveDetails}
                     </Button>

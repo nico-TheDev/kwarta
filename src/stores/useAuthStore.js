@@ -408,6 +408,20 @@ const AuthStore = (set, get) => ({
                 financeRule: answers.questionThree
             });
 
+            set({
+                authState: {
+                    ...get().authState,
+                    user: {
+                        ...get().authState.user,
+                        hasAnswered: true
+                    },
+                    userSurvey: {
+                        priorities: answers.questionTwo,
+                        salary: answers.questionOne,
+                        financeRule: answers.questionThree
+                    }
+                }
+            });
             toast.success('Survey answers updated!');
             // console.log(answers);
         } catch (err) {
