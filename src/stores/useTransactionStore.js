@@ -233,7 +233,7 @@ const transactionStore = (set, get) => ({
         });
     },
     getExpenseList: (user_id) => {
-        const expenseList = get().transactions.filter((transaction) => transaction.type === 'expense');
+        const expenseList = get().transactions.filter((transaction) => transaction.category_type === 'expense');
 
         const expenseCategoryList = expenseList.reduce((acc, currentExpense) => {
             if (!acc.includes(currentExpense.category.category_name)) {
@@ -271,7 +271,7 @@ const transactionStore = (set, get) => ({
         return expenseDataList;
     },
     getIncomeList: (user_id) => {
-        const incomeList = get().transactions.filter((transaction) => transaction.type === 'income');
+        const incomeList = get().transactions.filter((transaction) => transaction.category_type === 'income');
 
         const incomeCategoryList = incomeList.reduce((acc, currentIncome) => {
             if (!acc.includes(currentIncome.category.category_name)) {
@@ -308,6 +308,82 @@ const transactionStore = (set, get) => ({
 
         return incomeDataList;
     },
+    getSavingsList: (user_id) => {
+        const savingsList = get().transactions.filter((transaction) => transaction.category_type === 'savings');
+
+        const savingsCategoryList = savingsList.reduce((acc, currentIncome) => {
+            if (!acc.includes(currentIncome.category.category_name)) {
+                acc.push(currentIncome.category.category_name);
+            }
+            return acc;
+        }, []);
+
+        // create an initial data holder
+        const savingsDataList = savingsCategoryList.map((category) => {
+            const targetCategory = savingsList.find((item) => item.category.category_name === category);
+            return {
+                user_id,
+                amount: 0,
+                type: 'savings',
+                category_name: category,
+                transaction_icon: targetCategory.category.category_icon,
+                color: targetCategory.category.category_color,
+                transaction_color: targetCategory.category.category_color
+            };
+        });
+
+        // add the amount to the initial data
+        savingsList.forEach((item) => {
+            // find the data
+            const targetCategory = savingsDataList.find(
+                (currentData) => item.category.category_name === currentData.category_name
+            );
+
+            if (item.category.category_name === targetCategory.category_name) {
+                targetCategory.amount += item.amount;
+            }
+        });
+
+        return savingsDataList;
+    },
+    getInvestmentsList: (user_id) => {
+        const investmentsList = get().transactions.filter((transaction) => transaction.category_type === 'investments');
+
+        const investmentsCategoryList = investmentsList.reduce((acc, currentIncome) => {
+            if (!acc.includes(currentIncome.category.category_name)) {
+                acc.push(currentIncome.category.category_name);
+            }
+            return acc;
+        }, []);
+
+        // create an initial data holder
+        const investmentsDataList = investmentsCategoryList.map((category) => {
+            const targetCategory = investmentsList.find((item) => item.category.category_name === category);
+            return {
+                user_id,
+                amount: 0,
+                type: 'investments',
+                category_name: category,
+                transaction_icon: targetCategory.category.category_icon,
+                color: targetCategory.category.category_color,
+                transaction_color: targetCategory.category.category_color
+            };
+        });
+
+        // add the amount to the initial data
+        investmentsList.forEach((item) => {
+            // find the data
+            const targetCategory = investmentsDataList.find(
+                (currentData) => item.category.category_name === currentData.category_name
+            );
+
+            if (item.category.category_name === targetCategory.category_name) {
+                targetCategory.amount += item.amount;
+            }
+        });
+
+        return investmentsDataList;
+    },
     getExpenseTypeList: (user_id) => {
         const expenseList = get().transactions.filter((transaction) => transaction.type === 'expense');
         // create an initial data holder
@@ -325,13 +401,6 @@ const transactionStore = (set, get) => ({
                 type: 'wants',
                 color: red[500],
                 icon: ICON_NAMES.SYSTEM_ICONS.NEEDS
-            },
-            {
-                name: 'Savings',
-                amount: 0,
-                type: 'savings',
-                color: blue[500],
-                icon: ICON_NAMES.CATEGORY_ICONS.SAVINGS
             }
         ];
 

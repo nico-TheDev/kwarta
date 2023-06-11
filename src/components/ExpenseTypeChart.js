@@ -84,42 +84,42 @@ export const ExpenseTypeChart = (props) => {
                 };
             });
 
-            const savings = (expenseData[2].amount / total) * 100;
+            // const savings = (expenseData[2].amount / total) * 100;
 
-            if (userSurvey?.financeRule.value === '1') {
-                if (savings <= 17.99) {
-                    setPrompt("You're spending a lot for your account. You must save at least 20% for savings");
-                    setIsPositive(false);
-                } else if (savings <= 19.99 || savings >= 18) {
-                    setPrompt("You're making good progress. You need to save more");
-                    setIsPositive(true);
-                } else {
-                    setPrompt("You've made a good decision. Continue placing 20% of your income in savings");
-                    setIsPositive(true);
-                }
-            } else if (userSurvey?.financeRule.value === '2') {
-                if (savings <= 27.99) {
-                    setPrompt("You're spending a lot for your account. You must save at least 30% for savings");
-                    setIsPositive(false);
-                } else if (savings <= 29.99 || savings >= 28) {
-                    setPrompt("You're making good progress. You need to save more");
-                    setIsPositive(true);
-                } else {
-                    setPrompt("You've made a good decision. Continue placing 30% of your income in savings");
-                    setIsPositive(true);
-                }
-            } else if (userSurvey?.financeRule.value === '3') {
-                if (savings <= 7.99) {
-                    setPrompt("You're spending a lot for your account. You must save at least 10% for savings");
-                    setIsPositive(false);
-                } else if (savings <= 9.99 || savings >= 8) {
-                    setPrompt("You're making good progress. You need to save more");
-                    setIsPositive(true);
-                } else {
-                    setPrompt("You've made a good decision. Continue placing 10% of your income in savings");
-                    setIsPositive(true);
-                }
-            }
+            // if (userSurvey?.financeRule.value === '1') {
+            //     if (savings <= 17.99) {
+            //         setPrompt("You're spending a lot for your account. You must save at least 20% for savings");
+            //         setIsPositive(false);
+            //     } else if (savings <= 19.99 || savings >= 18) {
+            //         setPrompt("You're making good progress. You need to save more");
+            //         setIsPositive(true);
+            //     } else {
+            //         setPrompt("You've made a good decision. Continue placing 20% of your income in savings");
+            //         setIsPositive(true);
+            //     }
+            // } else if (userSurvey?.financeRule.value === '2') {
+            //     if (savings <= 27.99) {
+            //         setPrompt("You're spending a lot for your account. You must save at least 30% for savings");
+            //         setIsPositive(false);
+            //     } else if (savings <= 29.99 || savings >= 28) {
+            //         setPrompt("You're making good progress. You need to save more");
+            //         setIsPositive(true);
+            //     } else {
+            //         setPrompt("You've made a good decision. Continue placing 30% of your income in savings");
+            //         setIsPositive(true);
+            //     }
+            // } else if (userSurvey?.financeRule.value === '3') {
+            //     if (savings <= 7.99) {
+            //         setPrompt("You're spending a lot for your account. You must save at least 10% for savings");
+            //         setIsPositive(false);
+            //     } else if (savings <= 9.99 || savings >= 8) {
+            //         setPrompt("You're making good progress. You need to save more");
+            //         setIsPositive(true);
+            //     } else {
+            //         setPrompt("You've made a good decision. Continue placing 10% of your income in savings");
+            //         setIsPositive(true);
+            //     }
+            // }
 
             setGraphData(data);
             setCategoryList(list);
