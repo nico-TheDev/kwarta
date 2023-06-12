@@ -247,6 +247,8 @@ export const AccountSurveyDetails = (props) => {
         setQuestionThree(userSurvey.financeRule);
     }, []);
 
+    console.log(questionOne, questionTwo, questionThree);
+
     return (
         <form autoComplete='off' noValidate {...props}>
             <Card>
