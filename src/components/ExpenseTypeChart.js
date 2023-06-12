@@ -88,15 +88,15 @@ export const ExpenseTypeChart = (props) => {
 
             const savings = (expenseData[2].amount / total) * 100;
 
-            if(userSurvey.financeRule.needs === 100){
+            if(userSurvey.financeRule.needs <= 100 && userSurvey.financeRule.needs > 95){
                 setPrompt("Continue supporting your needs. If you have extra, you can save it for the future");
                 setIsPositive(true);
             }
-            else if(userSurvey.financeRule.wants === 100){
+            else if(userSurvey.financeRule.wants <= 100 && userSurvey.financeRule.wants > 95){
                 setPrompt("You spend too much on your wants. Try saving for your future");
                 setIsPositive(false);
             }
-            else if(userSurvey.financeRule.wants < 100 && userSurvey.financeRule.needs < 100){
+            else if(userSurvey.financeRule.wants < 95 && userSurvey.financeRule.needs < 95){
                 if (savings < (userSurvey.financeRule.savings - 2.01)) {
                     setPrompt("You're spending a lot for your account. You must save for your savings");
                     setIsPositive(false);
