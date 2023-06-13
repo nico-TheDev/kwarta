@@ -7,15 +7,17 @@ import { Logo } from '../../logo';
 const styles = {
     navContainer: {
         display: 'flex',
-        height: '12vh',
+        height: { xs: '10vh', md: '12vh' },
         alignItems: 'center',
-        px: 4,
-        justifyContent: 'space-between'
+        px: { xs: 1, md: 4 },
+        justifyContent: 'space-between',
+        position: 'relative',
+        zIndex: '2'
     },
     navList: {
         listStyleType: 'none',
         display: 'flex',
-        gap: 4,
+        gap: { xs: 1, md: 2 },
         '& a': {
             textTransform: 'uppercase'
         }
@@ -23,6 +25,9 @@ const styles = {
     logo: {
         display: 'flex',
         alignItems: 'center'
+    },
+    btn: {
+        px: { xs: 1, md: 4 }
     }
 };
 
@@ -42,14 +47,18 @@ export default function Nav() {
             </Box>
 
             <Box component='ul' sx={styles.navList}>
-                <Typography component='li'>
+                <Typography component='li' sx={{ color: 'white' }}>
                     <Link href='/login'>
-                        <Button variant='outlined'>LOGIN</Button>
+                        <Button variant='outlined' color='inherit' sx={styles.btn}>
+                            LOGIN
+                        </Button>
                     </Link>
                 </Typography>
                 <Typography component='li'>
                     <Link href='/register'>
-                        <Button variant='contained'>REGISTER</Button>
+                        <Button variant='contained' sx={styles.btn} color='primary'>
+                            REGISTER
+                        </Button>
                     </Link>
                 </Typography>
             </Box>
