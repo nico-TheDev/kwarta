@@ -53,7 +53,6 @@ export const Cashflow = (props) => {
     const transactions = useTransactionStore((state) => state.transactions);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const user = useAuthStore((state) => state.authState?.user);
-    const user = useAuthStore((state) => state.authState?.user);
 
     const [expenseData, setExpenseData] = useState([]);
     const [incomeData, setIncomeData] = useState([]);
@@ -209,7 +208,6 @@ export const Cashflow = (props) => {
     return (
         <Card {...props}>
             <CardHeader title={getLanguage(currentLanguage).cashflow} />
-            <CardHeader title={getLanguage(currentLanguage).cashflow} />
             <Divider />
             <CardContent>
                 <Tooltip title={getLanguage(currentLanguage).tooltipCashflowGraph}>
@@ -232,7 +230,6 @@ export const Cashflow = (props) => {
                 }}
             >
                 <Button color='primary' endIcon={<ArrowRightIcon fontSize='small' />} size='small'>
-                    <Link href='/cashflow'>{getLanguage(currentLanguage).overview}</Link>
                     <Link href='/cashflow'>{getLanguage(currentLanguage).overview}</Link>
                 </Button>
             </Box>

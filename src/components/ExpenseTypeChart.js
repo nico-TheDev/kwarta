@@ -13,7 +13,6 @@ import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfi
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { validateYupSchema } from 'formik';
 import PlaceholderEmpty from './shared/PlaceholderEmpty';
-import PlaceholderEmpty from './shared/PlaceholderEmpty';
 
 export const ExpenseTypeChart = (props) => {
     const theme = useTheme();
@@ -24,12 +23,10 @@ export const ExpenseTypeChart = (props) => {
     const [categoryList, setCategoryList] = useState('');
     const [prompt, setPrompt] = useState('');
     const [expenseList, setExpenseList] = useState([]);
-    const [expenseList, setExpenseList] = useState([]);
     const [isPositive, setIsPositive] = useState('');
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
     const getExpenseTypeList = useTransactionStore((state) => state.getExpenseTypeList);
-    const getExpenseList = useTransactionStore((state) => state.getExpenseList);
     const getExpenseList = useTransactionStore((state) => state.getExpenseList);
 
     const options = {
@@ -58,8 +55,6 @@ export const ExpenseTypeChart = (props) => {
         if (!user) return;
         else {
             const expenseData = getExpenseTypeList(user?.uid);
-            const expenseDataList = getExpenseList(user?.uid);
-            setExpenseList(expenseDataList);
             const expenseDataList = getExpenseList(user?.uid);
             setExpenseList(expenseDataList);
             const data = {
@@ -93,27 +88,27 @@ export const ExpenseTypeChart = (props) => {
 
             const savings = (expenseData[2].amount / total) * 100;
 
-            if(userSurvey.financeRule.needs <= 100 && userSurvey.financeRule.needs > 80){
-                setPrompt("Continue supporting your needs. If you have extra, you can save it for the future");
+            if (userSurvey.financeRule.needs <= 100 && userSurvey.financeRule.needs > 80) {
+                setPrompt('Continue supporting your needs. If you have extra, you can save it for the future');
                 setIsPositive(true);
-            }
-            else if(userSurvey.financeRule.wants <= 100 && userSurvey.financeRule.wants > 80){
-                setPrompt("You spend too much on your wants. Try saving for your future");
+            } else if (userSurvey.financeRule.wants <= 100 && userSurvey.financeRule.wants > 80) {
+                setPrompt('You spend too much on your wants. Try saving for your future');
                 setIsPositive(false);
-            }
-            else if(userSurvey.financeRule.wants < 80 && userSurvey.financeRule.needs < 80){
-                if (savings < (userSurvey.financeRule.savings - 2.01)) {
+            } else if (userSurvey.financeRule.wants < 80 && userSurvey.financeRule.needs < 80) {
+                if (savings < userSurvey.financeRule.savings - 2.01) {
                     setPrompt("You're spending a lot for your account. You must save for your savings");
                     setIsPositive(false);
-                } else if (savings <= (userSurvey.financeRule.savings - 0.01) && savings >= (userSurvey.financeRule.savings - 2)) {
+                } else if (
+                    savings <= userSurvey.financeRule.savings - 0.01 &&
+                    savings >= userSurvey.financeRule.savings - 2
+                ) {
                     setPrompt("You're making good progress. You need to save more");
                     setIsPositive(true);
-                } else if (savings > userSurvey.financeRule.savings){
-                    if(savings >= userSurvey.financeRule.savings + 20){
-                        setPrompt("You might want to diversify your savings");
+                } else if (savings > userSurvey.financeRule.savings) {
+                    if (savings >= userSurvey.financeRule.savings + 20) {
+                        setPrompt('You might want to diversify your savings');
                         setIsPositive(true);
-                    }
-                    else{
+                    } else {
                         setPrompt("You've made a good decision. Continue saving.");
                         setIsPositive(true);
                     }
@@ -140,11 +135,6 @@ export const ExpenseTypeChart = (props) => {
                     ) : (
                         <PlaceholderEmpty message='No Expenses at the moment' />
                     )}
-                    {expenseList.length !== 0 ? (
-                        <Doughnut data={graphData} options={options} />
-                    ) : (
-                        <PlaceholderEmpty message='No Expenses at the moment' />
-                    )}
                 </Box>
                 <Box
                     sx={{
@@ -156,7 +146,6 @@ export const ExpenseTypeChart = (props) => {
                         gap: 1
                     }}
                 >
-                    {expenseList.length !== 0 &&
                     {expenseList.length !== 0 &&
                         categoryList.map(({ color, title, value, icon }) => (
                             <Box
@@ -183,26 +172,6 @@ export const ExpenseTypeChart = (props) => {
                         ))}
                 </Box>
                 <Divider />
-                {expenseList.length !== 0 && (
-                    <Box
-                        sx={{
-                            mt: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            textAlign: 'center'
-                        }}
-                    >
-                        {isPositive ? (
-                            <SentimentVerySatisfiedIcon color='success' fontSize='large' />
-                        ) : (
-                            <SentimentVeryDissatisfiedIcon color='error' fontSize='large' />
-                        )}
-                        <Typography color='textPrimary' variant='caption'>
-                            {prompt}
-                        </Typography>
-                    </Box>
-                )}
                 {expenseList.length !== 0 && (
                     <Box
                         sx={{

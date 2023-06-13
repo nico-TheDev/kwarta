@@ -9,12 +9,10 @@ import { Box, Button, Container, Grid, Link, TextField, Typography, useTheme } f
 import { Google as GoogleIcon } from '../icons/google';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useState } from 'react';
-import { useState } from 'react';
 
 const Login = () => {
     const theme = useTheme();
     const router = useRouter();
-    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
     const [isBtnDisabled, setIsBtnDisabled] = useState(false);
     const loginWithGoogle = useAuthStore((state) => state.loginWithGoogle);
     const verifyUser = useAuthStore((state) => state.verifyUser);
@@ -30,11 +28,13 @@ const Login = () => {
         verifyUser({
             email: values.email,
             password: values.password
-        }).then(() => {
-            setIsBtnDisabled(false);
-        }).then(() => {
-            setIsBtnDisabled(false);
-        });
+        })
+            .then(() => {
+                setIsBtnDisabled(false);
+            })
+            .then(() => {
+                setIsBtnDisabled(false);
+            });
     };
 
     const handleLoginWithGoogle = () => {
@@ -87,7 +87,6 @@ const Login = () => {
                                     startIcon={<GoogleIcon />}
                                     variant='contained'
                                     disabled={isBtnDisabled}
-                                    disabled={isBtnDisabled}
                                 >
                                     Login with Google
                                 </Button>
@@ -133,7 +132,6 @@ const Login = () => {
                                 type='submit'
                                 variant='contained'
                                 onClick={formik.handleSubmit}
-                                disabled={isBtnDisabled}
                                 disabled={isBtnDisabled}
                             >
                                 Log In Now

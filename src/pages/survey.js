@@ -45,18 +45,7 @@ const MenuProps = {
                 xs: '100%',
                 md: 250
             }
-            width: {
-                xs: '100%',
-                md: 250
-            }
         }
-    }
-};
-
-const formControlStyle = {
-    width: {
-        xs: '100%',
-        md: '80%'
     }
 };
 

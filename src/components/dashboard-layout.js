@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box, Button, Paper, Typography, Link, CardMedia, Card, CardContent, Stack, Chip } from '@mui/material';
-import { Box, Button, Paper, Typography, Link, CardMedia, Card, CardContent, Stack, Chip } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { styled } from '@mui/material/styles';
-import toast, { Toaster } from 'react-hot-toast';
-
 import toast, { Toaster } from 'react-hot-toast';
 
 import { AuthGuard } from './auth-guard';
@@ -129,12 +126,6 @@ export const DashboardLayout = (props) => {
             localStorage.setItem('showPopup', true);
         }
     }, []);
-
-    const handleClick = (id) => {
-        toast.remove(id);
-        localStorage.setItem('showPopup', false);
-        setShowSuggestion(false);
-    };
 
     useEffect(() => {
         const popupInterval = setInterval(() => {
