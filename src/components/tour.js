@@ -95,7 +95,7 @@ export default function Tour({ open, handleClose, handleOpen }) {
             target: '.app__carousel',
             content: (
                 <Typography variant='body2'>
-                    Fill the Amount field (1). Select if Income or Expense (2). Select an Account (3). Select a Category
+                    Fill the Amount field (1). Select Transaction Type (2). Select an Account (3). Select a Category
                     (4).
                 </Typography>
             ),
