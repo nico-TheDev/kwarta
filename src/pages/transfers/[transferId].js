@@ -78,7 +78,7 @@ const Page = () => {
             selectedFile?.file
         ).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/dashboard');
             }
         });
 
@@ -141,7 +141,7 @@ const Page = () => {
     const handleDelete = () => {
         deleteTransfer(transferId, currentTransfer?.photoRef || '').then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/dashboard');
             }
         });
     };

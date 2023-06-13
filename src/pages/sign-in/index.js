@@ -26,7 +26,7 @@ const Page = () => {
             email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
         }),
         onSubmit: async (values, helpers) => {
-            Router.push('/').catch(console.error);
+            Router.push('/dashboard').catch(console.error);
         }
     });
 
@@ -46,7 +46,7 @@ const Page = () => {
         // globalThis.sessionStorage.setItem("skip-auth", "true");
 
         // Redirect to home page
-        Router.push('/').catch(console.error);
+        Router.push('/dashboard').catch(console.error);
     };
 
     return (

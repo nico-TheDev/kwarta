@@ -7,6 +7,7 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { Icon } from '../../components/shared/Icon';
 import { formatPrice } from 'utils/format-price';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import PlaceholderEmpty from 'components/shared/PlaceholderEmpty';
 
 export const IncomeChart = (props) => {
     const theme = useTheme();
@@ -14,6 +15,7 @@ export const IncomeChart = (props) => {
     const user = useAuthStore((state) => state.authState?.user);
     const transactions = useTransactionStore((state) => state.transactions);
     const [graphData, setGraphData] = useState('');
+    const [incomeList, setIncomeList] = useState([]);
     const [categoryList, setCategoryList] = useState('');
 
     const getIncomeList = useTransactionStore((state) => state.getIncomeList);
@@ -44,7 +46,7 @@ export const IncomeChart = (props) => {
         if (!user) return;
         else {
             const incomeData = getIncomeList(user?.uid);
-
+            setIncomeList(incomeData);
             const data = {
                 datasets: [
                     {
@@ -89,7 +91,11 @@ export const IncomeChart = (props) => {
                         position: 'relative'
                     }}
                 >
-                    {graphData && <Doughnut data={graphData} options={options} />}
+                    {incomeList.length !== 0 ? (
+                        <Doughnut data={graphData} options={options} />
+                    ) : (
+                        <PlaceholderEmpty message='No income data at the moment' />
+                    )}
                 </Box>
                 <Box
                     sx={{
@@ -97,7 +103,7 @@ export const IncomeChart = (props) => {
                         justifyContent: 'start',
                         flexWrap: 'wrap',
                         p: 2,
-                        gap: 1
+                        gap: 4
                     }}
                 >
                     {categoryList.length !== 0 &&

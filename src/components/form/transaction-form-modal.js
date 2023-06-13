@@ -32,6 +32,7 @@ import { useCategoryStore } from 'stores/useCategoryStore';
 import useSortCategories from 'hooks/useSortCategories';
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import DropdownType from 'components/shared/DropdownType';
 
 const MenuProps = {
     PaperProps: {
@@ -63,7 +64,8 @@ export default function TransactionFormModal({ open, setOpen }) {
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
     const userSurvey = useAuthStore((state) => state.authState.userSurvey);
     const categories = useCategoryStore((state) => state.categories);
-    const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories(setSelectedCategory);
+    const [transactionType, setTransactionType, handleTransactionType, categoryData] =
+        useSortCategories(setSelectedCategory);
 
     const initialValues = {
         amount: '',
@@ -75,9 +77,8 @@ export default function TransactionFormModal({ open, setOpen }) {
     const handleSubmit = async (values) => {
         // console.log(values);
         setOpen(false);
-        const currentType = isExpense ? 'expense' : 'income';
 
-        if (isExpense) {
+        if (transactionType === 'expense') {
             // WARNING FOR OVERSPENDING
             if (userSurvey.financeRule.value === '1') {
                 if (Number(values.amount) >= values.targetAccount.account_amount * 0.2) {
@@ -125,7 +126,7 @@ export default function TransactionFormModal({ open, setOpen }) {
         }
 
         await createTransaction(
-            { ...values, amount: Number(values.amount), type: currentType, date, user_id },
+            { ...values, amount: Number(values.amount), type: transactionType, date, user_id },
             selectedFile?.file
         );
         // RESET STATES
@@ -196,7 +197,7 @@ export default function TransactionFormModal({ open, setOpen }) {
                 <Box sx={modalStyle} component='form'>
                     <IconButton
                         color='primary'
-                        sx={{ position: 'absolute', top: 5, right: 5 }}
+                        sx={{ position: 'absolute', top: 20, right: 20 }}
                         onClick={() => setOpen(false)}
                     >
                         <CloseIcon />
@@ -214,18 +215,11 @@ export default function TransactionFormModal({ open, setOpen }) {
                             name='amount'
                             value={formik.values.amount}
                             onChange={formik.handleChange}
-                            type='number'
                         />
                     </Box>
 
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
-                        <Switch
-                            checked={isExpense}
-                            onChange={handleExpense}
-                            inputProps={{ 'aria-label': 'controlled' }}
-                        />
-                        <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
+                        <DropdownType handleChange={handleTransactionType} transactionType={transactionType} />
                     </Box>
 
                     {/* ACCOUNT DROPDOWN */}

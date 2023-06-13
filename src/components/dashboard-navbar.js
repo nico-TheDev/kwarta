@@ -62,7 +62,7 @@ export const DashboardNavbar = (props) => {
                     >
                         <MenuIcon fontSize='small' />
                     </IconButton>
-                    {router.pathname !== '/' && (
+                    {router.pathname !== '/dashboard' && (
                         <Tooltip title='Back Icon'>
                             <IconButton sx={{ ml: 1 }} onClick={() => router.back()}>
                                 <ArrowBackIcon fontSize='small' />

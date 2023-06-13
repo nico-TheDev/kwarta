@@ -1,104 +1,16 @@
 import Head from 'next/head';
-import { Box, Container, Grid, CircularProgress, Typography } from '@mui/material';
+import { Box, Container, Grid, CircularProgress, Typography, Button, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Nav from 'components/layout/nav';
+import MonitorIcon from '@mui/icons-material/Monitor';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import FeedIcon from '@mui/icons-material/Feed';
+import SmileIcon from '@mui/icons-material/InsertEmoticon';
 import CreateIcon from '@mui/icons-material/Create';
+import { blue, deepOrange, deepPurple, grey, pink, yellow } from '@mui/material/colors';
 
-import { Balance } from '../components/dashboard/balance';
-import { TransactionHistory } from '../components/dashboard/transaction-history';
-import { Cashflow } from '../components/dashboard/cashflow';
-import { Savings } from '../components/dashboard/inflation';
-import { Income } from '../components/dashboard/income';
-import { Expenses } from '../components/dashboard/expenses';
-import { ExpensesChart } from '../components/dashboard/expenses-chart';
-import { DashboardLayout } from '../components/dashboard-layout';
-import useGetUserTransactions from 'hooks/useGetUserTransactions';
-import useGetUserSurvey from 'hooks/useGetUserSurvey';
-import { useAuthStore } from 'stores/useAuthStore';
-import { useTransactionStore } from 'stores/useTransactionStore';
-import { useAccountStore } from 'stores/useAccountStore';
-import { getLanguage } from 'utils/getLanguage';
-import NewsPanel from 'components/news-panel';
-import DashboardTour from 'components/tours/DashboardTour';
-
-export async function getStaticProps(context) {
-    const res = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + `/news`);
-
-    const data = await res.json();
-
-    return {
-        props: {
-            newsdata: data
-        } // will be passed to the page component as props
-    };
-}
-
-const Page = ({ newsdata }) => {
-    const user = useAuthStore((state) => state.authState?.user);
-    const getTourProgress = useAuthStore((state) => state.getTourProgress);
-    const manageTourProgress = useAuthStore((state) => state.manageTourProgress);
-    const userID = user?.uid || '';
-    const [showTour, setShowTour] = useState(false);
-
-    const transactions = useTransactionStore((state) => state.transactions);
-    const isEmpty = useTransactionStore((state) => state.isEmpty);
-    // GET USER TRANSACTIONS
-    useGetUserTransactions(userID);
-    useGetUserSurvey(userID);
-
-    const tourSteps = [
-        {
-            target: '.dashboard_step_one',
-            title: 'Balance',
-            content: 'The amount of money present in all your accounts at any given moment',
-            disableBeacon: true,
-            placement: 'bottom'
-        },
-        {
-            target: '.dashboard_step_two',
-            title: 'Expenses',
-            content:
-                'are costs for items or resources that are used up or consumed in the course of daily living. Expenses recur (i.e., they happen over and over again) because food, housing, clothing, energy, and so on are used up on a daily basis',
-            placement: 'bottom'
-        },
-        {
-            target: '.dashboard_step_three',
-            title: 'Income',
-            content: 'is earned or received in a given period',
-            disableBeacon: true,
-            placement: 'bottom'
-        },
-        {
-            target: '.dashboard_step_four',
-            title: 'Inflation Rate',
-            content: 'is the rate of increase in prices over a given period of time',
-            placement: 'bottom'
-        },
-        {
-            target: '.dashboard_step_five',
-            title: 'Cashflow',
-            content: 'the rate at which money goes into, or into and out of,a person',
-            placement: 'bottom'
-        },
-        {
-            target: '.dashboard_step_six',
-            title: 'Expenses Chart',
-            content: 'Shows the distribution of your expenses by categories in a donut chart.',
-            placement: 'bottom'
-        },
-        {
-            target: '.dashboard_step_seven',
-            title: 'Transaction History',
-            content: 'Shows the history of all your transactions (expenses or income)',
-            placement: 'bottom'
-        },
-        {
-            target: '.dashboard_step_eight',
-            title: 'News',
-            content: 'Shows the latest news about the financial world',
-            placement: 'bottom'
-        }
-    ];
-
+const Page = () => {
     const styles = {
         container: {
             width: {
@@ -111,98 +23,235 @@ const Page = ({ newsdata }) => {
                 xs: 'center'
             },
             p: 2
+        },
+        main: {
+            background: '#1D976C' /* fallback for old browsers */,
+            background: ' -webkit-linear-gradient(to right, #93F9B9, #1D976C)' /* Chrome 10-25, Safari 5.1-6 */,
+            background:
+                'linear-gradient(to right, #93F9B9, #1D976C)' /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
+
+            fontSize: {
+                xs: 14,
+                md: 'initial'
+            }
+        },
+        bg: {
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            zIndex: 0,
+            width: '50%',
+            height: '100%',
+            display: {
+                xs: 'none',
+                md: 'initial'
+            }
+        },
+        header: {
+            display: 'grid',
+            gap: 2,
+            height: { xs: '60vh', md: '88vh' },
+            placeItems: 'center',
+            justifyContent: 'left'
+        },
+        headerTitle: {
+            width: { xs: '100%', md: '70%' },
+            fontSize: { xs: 40, md: 50 }
+        },
+        section: {
+            py: { xs: 4, md: 8 }
+        },
+        featureCard: {
+            p: 2,
+            elevation: 10,
+            textAlign: 'center',
+            py: 10,
+            mx: 'auto',
+            height: '100%'
+        },
+        cardIcon: (color) => ({
+            fontSize: 50,
+            color,
+            border: '5px solid red',
+            borderColor: color,
+            width: 100,
+            height: 100,
+            display: 'grid',
+            placeItems: 'center',
+            borderRadius: '50%',
+            mb: 4,
+            mx: 'auto'
+        }),
+        footer: {
+            position: 'relative',
+            background: '#1D976C',
+            color: 'white',
+            mt: 10
+        },
+        wave: {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            height: 'auto',
+            display: 'block'
         }
     };
 
-    useEffect(() => {
-        const currentTour = getTourProgress('dashboard');
-        setShowTour(currentTour.isDone);
-    }, []);
-
-    if (transactions.length === 0 && !isEmpty) {
-        return (
-            <Box sx={styles.container}>
-                <CircularProgress size={200} />
-            </Box>
-        );
-    }
-
-    if (isEmpty) {
-        return (
-            <Box sx={{ ...styles.container, alignContent: 'center' }}>
-                <Box sx={{ fontSize: 80 }}>
-                    <CreateIcon color='primary' fontSize='inherit' />
-                </Box>
-                <Typography variant='h5' mb={2}>
-                    Create your first financial transaction
-                </Typography>
-                <Typography variant='body1' color='gray'>
-                    Click the Add Transaction button to start monitoring your finances
-                </Typography>
-            </Box>
-        );
-    }
-
     return (
         <>
-            {transactions.length !== 0 && !showTour && (
-                <DashboardTour
-                    setShowTour={setShowTour}
-                    tourSteps={tourSteps}
-                    finishTour={() => manageTourProgress('dashboard')}
-                />
-            )}
             <Head>
                 <title>CASH: Financial Monitoring Application</title>
                 <link rel='manifest' href='/manifest.json' />
                 <link rel='icon' href='/favicon.ico' type='image/png' />
             </Head>
-            <Box
-                component='main'
-                sx={{
-                    flexGrow: 1,
-                    py: 8
-                }}
-            >
-                <Container maxWidth={false}>
-                    <Grid container spacing={3}>
-                        <Grid item lg={3} sm={6} xl={3} xs={12}>
-                            {/* BALANCE PANEL */}
-                            <Balance className='dashboard_step_one' />
+            <Box component='main' sx={styles.main}>
+                <Nav />
+                <Container maxWidth='lg' sx={styles.header}>
+                    <Box sx={{ display: 'grid', gap: 3, justifyItems: 'start' }}>
+                        <Typography variant='h1' sx={styles.headerTitle}>
+                            {' '}
+                            Start your financial literacy journey
+                        </Typography>
+                        <Typography variant='h6' fontWeight={300}>
+                            Take your first step in learning with our help
+                        </Typography>
+
+                        <Button variant='contained' sx={{ fontSize: 20, px: 4, mt: 4 }} component='a' href='#learn'>
+                            LEARN MORE
+                        </Button>
+                    </Box>
+
+                    <Box sx={styles.bg}>
+                        <img
+                            src='/static/images/landing-bg.jpg'
+                            style={{
+                                display: 'block',
+                                width: '100%',
+                                height: '100%',
+                                clipPath: 'circle(58% at 80% 40%)',
+                                filter: 'brightness(0.7)',
+                                objectFit: 'cover'
+                            }}
+                        />
+                    </Box>
+                </Container>
+                <Container maxWidth='lg' component='section' sx={{ ...styles.section }} id='learn'>
+                    <Typography variant='h2' mb={4}>
+                        What is CASH ?
+                    </Typography>
+                    <Typography variant='body1' sx={{ width: { md: '50%' } }}>
+                        CASH (Classify and Analyze Spending Habits) is a web application developed to help people
+                        improve their financial literacy through hands-on experience. It aims to develop financial
+                        awareness and literacy by exposing its users to different field of finance like cashflow
+                        monitoring, stocks, investments and literary articles.
+                    </Typography>
+                </Container>
+                <Container maxWidth='lg' component='section' sx={{ ...styles.section }}>
+                    <Typography variant='h2' mb={6}>
+                        What We Offer
+                    </Typography>
+
+                    <Grid container spacing={4}>
+                        <Grid item xs={12} md={3}>
+                            <Paper sx={styles.featureCard}>
+                                <Box sx={styles.cardIcon(deepPurple[500])}>
+                                    <MonitorIcon fontSize='inherit' color='inherit' />
+                                </Box>
+
+                                <Typography variant='h5' mb={2}>
+                                    Cashflow Monitoring
+                                </Typography>
+
+                                <Typography variant='body2' color={grey[600]}>
+                                    Start monitoring the flow of your finances and be aware of your spending habits
+                                </Typography>
+                            </Paper>
                         </Grid>
-                        <Grid item xl={3} lg={3} sm={6} xs={12}>
-                            {/* EXPENSE PANEL */}
-                            <Expenses sx={{ height: '100%' }} className='dashboard_step_two' />
+
+                        <Grid item xs={12} md={3}>
+                            <Paper sx={styles.featureCard}>
+                                <Box sx={styles.cardIcon(blue[500])}>
+                                    <BarChartIcon fontSize='inherit' color='inherit' />
+                                </Box>
+
+                                <Typography variant='h5' mb={2}>
+                                    Visual Analytics
+                                </Typography>
+
+                                <Typography variant='body2' color={grey[600]}>
+                                    Intelligent data presentations that simplify complexity effortlessly
+                                </Typography>
+                            </Paper>
                         </Grid>
-                        <Grid item xl={3} lg={3} sm={6} xs={12}>
-                            {/* INCOME PANEL */}
-                            <Income className='dashboard_step_three' />
+                        <Grid item xs={12} md={3}>
+                            <Paper sx={styles.featureCard}>
+                                <Box sx={styles.cardIcon(pink[500])}>
+                                    <FeedIcon fontSize='inherit' color='inherit' />
+                                </Box>
+
+                                <Typography variant='h5' mb={2}>
+                                    Finance Articles
+                                </Typography>
+
+                                <Typography variant='body2' color={grey[600]}>
+                                    Read about different articles related to financial literacy and other fields of
+                                    money
+                                </Typography>
+                            </Paper>
                         </Grid>
-                        <Grid item xl={3} lg={3} sm={6} xs={12}>
-                            <Savings className='dashboard_step_four' />
-                        </Grid>
-                        <Grid item lg={8} md={12} xl={9} xs={12}>
-                            {/* BAR CHART PANEl */}
-                            <Cashflow className='dashboard_step_five' />
-                        </Grid>
-                        <Grid item lg={4} md={6} xl={3} xs={12}>
-                            {/* EXPENSES GRAPH */}
-                            <ExpensesChart sx={{ height: '100%' }} className='dashboard_step_six' />
-                        </Grid>
-                        <Grid item lg={4} md={6} xl={3} xs={12}>
-                            {/* TRANSACTION HISTORY */}
-                            <TransactionHistory sx={{ height: '100%' }} className='dashboard_step_seven' />
-                        </Grid>
-                        <Grid item lg={8} md={12} xl={9} xs={12}>
-                            <NewsPanel className='dashboard_step_eight' newsData={newsdata} />
+                        <Grid item xs={12} md={3}>
+                            <Paper sx={styles.featureCard}>
+                                <Box sx={styles.cardIcon(deepOrange[500])}>
+                                    <SmileIcon fontSize='inherit' color='inherit' />
+                                </Box>
+
+                                <Typography variant='h5' mb={2}>
+                                    Decision Support System
+                                </Typography>
+
+                                <Typography variant='body2' color={grey[600]}>
+                                    Gives you insight about topics you're not familiar about.
+                                </Typography>
+                            </Paper>
                         </Grid>
                     </Grid>
+                </Container>
+                <Container
+                    maxWidth='lg'
+                    component='section'
+                    sx={{ ...styles.section, textAlign: { md: 'initial', xs: 'center' } }}
+                >
+                    <Typography variant='h2' mb={2}>
+                        Get Started
+                    </Typography>
+
+                    <Typography variant='h4' mb={4} fontWeight={300} color={grey[800]}>
+                        Start your journey by creating an account !
+                    </Typography>
+
+                    <Link href='/register'>
+                        <Button
+                            variant='contained'
+                            sx={{ fontSize: { xs: 15, md: 30 }, px: { md: 6, xs: 2 }, textTransform: 'uppercase' }}
+                        >
+                            Sign Up
+                        </Button>
+                    </Link>
+                </Container>
+                <Container maxWidth={false} component='footer' sx={{ ...styles.section, ...styles.footer }}>
+                    <Container maxWidth='lg'>
+                        <Typography variant='h6' align='center' gutterBottom>
+                            CASH : Financial Monitoring Application
+                        </Typography>
+                        <Typography variant='body2' color='white' align='center'>
+                            {'Copyright © '}
+                            CASH {new Date().getFullYear()}
+                        </Typography>
+                    </Container>
                 </Container>
             </Box>
         </>
     );
 };
-
-Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default Page;

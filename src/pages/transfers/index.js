@@ -148,14 +148,22 @@ const Page = () => {
                 <Container maxWidth={false}>
                     <TransferHead filterValue={filterValue} setFilterValue={setFilterValue} />
                     <Box sx={{ pt: 3 }}>
-                        {historyData.map((transfer) => (
+                        {historyData.length !== 0 ? (
+                            historyData.map((transfer) => (
+                                <>
+                                    <Typography variant='h5' mb={2}>
+                                        {transfer.title}
+                                    </Typography>
+                                    <TransferCardList transferList={transfer.data} />
+                                </>
+                            ))
+                        ) : (
                             <>
-                                <Typography variant='h5' mb={2}>
-                                    {transfer.title}
+                                <Typography variant='h5' textAlign='center'>
+                                    No transfers at the moment
                                 </Typography>
-                                <TransferCardList transferList={transfer.data} />
                             </>
-                        ))}
+                        )}
                     </Box>
                 </Container>
             </Box>

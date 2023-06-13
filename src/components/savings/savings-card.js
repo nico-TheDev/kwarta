@@ -1,6 +1,6 @@
 import { useState, forwardRef, useEffect } from 'react';
 import PropTypes from 'prop-types'
-import { Avatar, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material'
+import { Avatar, Box, Card, CardContent, Divider, Grid, Typography, Link, Paper } from '@mui/material';
 import Select from '@mui/material/Select';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -53,7 +53,7 @@ export const SavingsCard = ({ ...rest }) => {
         const sortedSecuritybankSavings = securitybankSavings.filter((item) => amount >= item.balanceInterest);
 
         function computeInterest(productName, interestRate, currentAmount) {
-            const total = (currentAmount * (Math.pow((1 + (interestRate / 100)), 5))).toFixed(2);
+            const total = (currentAmount * Math.pow(1 + interestRate / 100, 5)).toFixed(2);
             const percent = (((total - currentAmount) / currentAmount) * 100).toFixed(2);
             return { productName, total, percent };
         }
@@ -87,6 +87,124 @@ export const SavingsCard = ({ ...rest }) => {
         console.log(savings);
     }, [selectedAccount]);
 
+    const SuggestionBlock = () => (
+        <Box sx={{ pt: 3 }}>
+            <Typography align='center' sx={{ m: 1 }} variant='h6'>
+                {getLanguage(currentLanguage).amountSavingsPart1}
+                {formatPrice(amount, true)}
+                {getLanguage(currentLanguage).amountSavingsPart2}
+            </Typography>
+            <Box sx={{ pt: 3, flexGrow: 1 }}>
+                <Typography sx={{ m: 1 }} variant='h5'>
+                    BDO
+                </Typography>
+                <Grid container spacing={{ xs: 2, md: 3 }} mb={4} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {savings.computedBdoSavings?.map((savings) => (
+                        <Grid item key={savings.id} xs={12} sm={4} md={4}>
+                            <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.BDO} savings={savings} />
+                        </Grid>
+                    ))}
+                </Grid>
+                <Link href='https://www.bdo.com.ph/personal' target='_blank'>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                        For more information about BDO Savings Accounts. Click here.
+                    </Typography>
+                </Link>
+            </Box>
+
+            <Box sx={{ pt: 3, flexGrow: 1 }}>
+                <Typography sx={{ m: 1 }} variant='h5'>
+                    Metrobank
+                </Typography>
+                <Grid container spacing={{ xs: 2, md: 3 }} mb={4} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {savings.computedMetrobankSavings?.map((savings) => (
+                        <Grid item key={savings.id} xs={12} sm={4} md={4}>
+                            <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.METROBANK} savings={savings} />
+                        </Grid>
+                    ))}
+                </Grid>
+                <Link href='https://www.metrobank.com.ph/save/savings' target='_blank'>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                        For more information about Metrobank Savings Accounts. Click here.
+                    </Typography>
+                </Link>
+            </Box>
+
+            <Box sx={{ pt: 3, flexGrow: 1 }}>
+                <Typography sx={{ m: 1 }} variant='h5'>
+                    BPI
+                </Typography>
+                <Grid container spacing={{ xs: 2, md: 3 }} mb={4} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {savings.computedBpiSavings?.map((savings) => (
+                        <Grid item key={savings.id} xs={12} sm={4} md={4}>
+                            <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.BPI} savings={savings} />
+                        </Grid>
+                    ))}
+                </Grid>
+                <Link href='https://www.bpi.com.ph/personal/bank/savings-accounts' target='_blank'>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                        For more information about BPI Savings Accounts. Click here.
+                    </Typography>
+                </Link>
+            </Box>
+
+            <Box sx={{ pt: 3, flexGrow: 1 }}>
+                <Typography sx={{ m: 1 }} variant='h5'>
+                    Landbank
+                </Typography>
+                <Grid container spacing={{ xs: 2, md: 3 }} mb={4} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {savings.computedLandbankSavings?.map((savings) => (
+                        <Grid item key={savings.id} xs={12} sm={4} md={4}>
+                            <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.BANK} savings={savings} />
+                        </Grid>
+                    ))}
+                </Grid>
+                <Link href='https://www.landbank.com/cards' target='_blank'>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                        For more information about Landbank Savings Accounts. Click here.
+                    </Typography>
+                </Link>
+            </Box>
+
+            <Box sx={{ pt: 3, flexGrow: 1 }}>
+                <Typography sx={{ m: 1 }} variant='h5'>
+                    Security Bank
+                </Typography>
+                <Grid container spacing={{ xs: 2, md: 3 }} mb={4} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {savings.computedSecuritybankSavings?.map((savings) => (
+                        <Grid item key={savings.id} xs={12} sm={4} md={4}>
+                            <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.SECURITYBANK} savings={savings} />
+                        </Grid>
+                    ))}
+                </Grid>
+                <Link href='https://www.securitybank.com/' target='_blank'>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
+                        For more information about Security Bank Savings Accounts. Click here.
+                    </Typography>
+                </Link>
+            </Box>
+            <Box sx={{ pt: 3 }}>
+                <Typography variant='h6' mb={2} color='primary'>
+                    DISCLAIMERS
+                </Typography>
+                <Typography variant='body1' mb={4} color='primary'>
+                    This calculation is for illustration purposes only and should not be able to taken as professional
+                    advice to invest in these saving accounts. It should not be used as the sole basis to measure
+                    returns in said securities. Interest rates and amounts are subject to change. For more information,
+                    you can go to the bank's website or go to the nearest branch in your area.
+                </Typography>
+            </Box>
+            <Box sx={{ pt: 3 }}>
+                <Typography variant='body1' mt={4} color='black'>
+                    Source:{' '}
+                    <Typography component='a' target='_blank' href='https://grit.ph/savings-account/'>
+                        Grit PH
+                    </Typography>
+                </Typography>
+            </Box>
+        </Box>
+    );
+
     return (
         <>
             <Box
@@ -100,7 +218,8 @@ export const SavingsCard = ({ ...rest }) => {
                         <InfoIcon fontSize='inherit' />
                     </Box>
                     <Typography align='center' sx={{ m: 1, textAlign: 'center' }} variant='body1'>
-                        {getLanguage(currentLanguage).savingsIntroPart1} <br></br>{getLanguage(currentLanguage).savingsIntroPart2}
+                        {getLanguage(currentLanguage).savingsIntroPart1} <br></br>
+                        {getLanguage(currentLanguage).savingsIntroPart2}
                     </Typography>
                 </Box>
 
@@ -135,82 +254,18 @@ export const SavingsCard = ({ ...rest }) => {
                 </Box>
             </Box>
 
-            {amount > 1999 ? (
-                <Box sx={{ pt: 3 }}>
-                    <Typography align='center' sx={{ m: 1 }} variant='h6'>
-                        {getLanguage(currentLanguage).amountSavingsPart1}{formatPrice(amount, true)}{getLanguage(currentLanguage).amountSavingsPart2}
-                    </Typography>
-                    <Box sx={{ pt: 3, flexGrow: 1 }}>
-                        <Typography sx={{ m: 1 }} variant='h5'>
-                            BDO
-                        </Typography>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {savings.computedBdoSavings?.map((savings) => (
-                                <Grid item key={savings.id} xs={12} sm={4} md={4}>
-                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.BDO} savings={savings} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
-
-                    <Box sx={{ pt: 3, flexGrow: 1 }}>
-                        <Typography sx={{ m: 1 }} variant='h5'>
-                            Metrobank
-                        </Typography>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {savings.computedMetrobankSavings?.map((savings) => (
-                                <Grid item key={savings.id} xs={12} sm={4} md={4}>
-                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.METROBANK} savings={savings} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
-
-                    <Box sx={{ pt: 3, flexGrow: 1 }}>
-                        <Typography sx={{ m: 1 }} variant='h5'>
-                            BPI
-                        </Typography>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {savings.computedBpiSavings?.map((savings) => (
-                                <Grid item key={savings.id} xs={12} sm={4} md={4}>
-                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.BPI} savings={savings} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
-
-                    <Box sx={{ pt: 3, flexGrow: 1 }}>
-                        <Typography sx={{ m: 1 }} variant='h5'>
-                            Landbank
-                        </Typography>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {savings.computedLandbankSavings?.map((savings) => (
-                                <Grid item key={savings.id} xs={12} sm={4} md={4}>
-                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.BANK} savings={savings} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
-
-                    <Box sx={{ pt: 3, flexGrow: 1 }}>
-                        <Typography sx={{ m: 1 }} variant='h5'>
-                            Security Bank
-                        </Typography>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {savings.computedSecuritybankSavings?.map((savings) => (
-                                <Grid item key={savings.id} xs={12} sm={4} md={4}>
-                                    <DealsCard iconName={ICON_NAMES.ACCOUNT_ICONS.SECURITYBANK} savings={savings} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
-                </Box>
+            {selectedAccount === '' ? null : amount > 1999 ? (
+                <SuggestionBlock />
             ) : (
-                <Box sx={{ pt: 3 }}>
-                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='body1'>
-                        {getLanguage(currentLanguage).insufficientAmountSavings}
+                <Paper sx={{ p: 3, textAlign: 'center' }}>
+                    <Typography sx={{ fontSize: 100 }}>😅</Typography>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='h6'>
+                        {getLanguage(currentLanguage).insufficientAmountSavings.split('.')[0]}
                     </Typography>
-                </Box>
+                    <Typography sx={{ m: 1, textAlign: 'center' }} variant='h5'>
+                        {getLanguage(currentLanguage).insufficientAmountSavings.split('.')[1]}
+                    </Typography>
+                </Paper>
             )}
         </>
     );

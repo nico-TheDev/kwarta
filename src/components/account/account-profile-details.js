@@ -73,7 +73,7 @@ export const AccountProfileDetails = (props) => {
                                 variant='outlined'
                             />
                         </Grid>
-                        <Grid item md={6} xs={12}>
+                        {/* <Grid item md={6} xs={12}>
                             <TextField
                                 fullWidth
                                 label='Email Address'
@@ -83,7 +83,7 @@ export const AccountProfileDetails = (props) => {
                                 value={formik.values.email}
                                 variant='outlined'
                             />
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </CardContent>
                 <Divider />

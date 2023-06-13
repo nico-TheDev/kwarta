@@ -25,12 +25,15 @@ import { getLanguage } from 'utils/getLanguage'
 import { useCategoryStore } from 'stores/useCategoryStore';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import useSortCategories from 'hooks/useSortCategories';
+import DropdownType from 'components/shared/DropdownType';
 
 export default function CategoryCreateModal({ open, setOpen }) {
     const [isExpense, setIsExpense] = useState(true);
     const [selectedColor, setSelectedColor] = useState('');
     const [selectedIcon, setSelectedIcon] = useState('');
     const [showColorWheel, setShowColorWheel] = useState(false);
+    const [transactionType, setTransactionType, handleTransactionType, categoryData] = useSortCategories();
     const [expenseType, setExpenseType] = useState('');
 
     const user = useAuthStore((state) => state.authState?.user);
@@ -69,14 +72,13 @@ export default function CategoryCreateModal({ open, setOpen }) {
     const handleSubmit = (values) => {
         console.log(values);
         const loader = toast.loading('Creating Category');
-        const currentType = isExpense ? 'expense' : 'income';
         createCategory({
             category_name: values.categoryName,
             category_color: selectedColor,
             category_icon: values.categoryIcon,
-            category_type: currentType,
+            category_type: transactionType,
             user_id: user?.uid,
-            expense_type: expenseType
+            expense_type: expenseType || ''
         });
         formik.resetForm();
         setSelectedIcon('');
@@ -105,7 +107,7 @@ export default function CategoryCreateModal({ open, setOpen }) {
                 <Box sx={{ ...modalStyle, alignContent: 'start' }}>
                     <IconButton
                         color='primary'
-                        sx={{ position: 'absolute', top: 5, right: 5 }}
+                        sx={{ position: 'absolute', top: 20, right: 20 }}
                         onClick={() => setOpen(false)}
                     >
                         <CloseIcon />
@@ -127,30 +129,32 @@ export default function CategoryCreateModal({ open, setOpen }) {
                             />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
-                            <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
-                            <Switch
-                                checked={isExpense}
-                                onChange={handleExpense}
-                                inputProps={{ 'aria-label': 'controlled' }}
-                            />
-                            <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
+                            <DropdownType handleChange={handleTransactionType} transactionType={transactionType} />
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
-                            <FormControl fullWidth>
-                                <InputLabel id='demo-simple-select-label'>Expense Type</InputLabel>
-                                <Select
-                                    labelId='demo-simple-select-label'
-                                    id='demo-simple-select'
-                                    value={expenseType}
-                                    label='Expense Type'
-                                    onChange={handleExpenseType}
-                                >
-                                    <MenuItem value='needs'>Needs</MenuItem>
-                                    <MenuItem value='wants'>Wants</MenuItem>
-                                    <MenuItem value='savings'>Savings</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Box>
+                        {transactionType === 'expense' && (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginBottom: 2
+                                }}
+                            >
+                                <FormControl fullWidth>
+                                    <InputLabel id='demo-simple-select-label'>Expense Type</InputLabel>
+                                    <Select
+                                        labelId='demo-simple-select-label'
+                                        id='demo-simple-select'
+                                        value={expenseType}
+                                        label='Expense Type'
+                                        onChange={handleExpenseType}
+                                    >
+                                        <MenuItem value='needs'>Needs</MenuItem>
+                                        <MenuItem value='wants'>Wants</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        )}
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <ColorPickerPanel
                                 colorList={colorCollection}

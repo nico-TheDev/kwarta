@@ -32,6 +32,7 @@ import { useCategoryStore } from 'stores/useCategoryStore';
 import { useAuthStore } from 'stores/useAuthStore';
 import useSortCategories from 'hooks/useSortCategories';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import DropdownType from 'components/shared/DropdownType';
 
 const MenuProps = {
     PaperProps: {
@@ -61,21 +62,20 @@ const Page = () => {
     const deleteCategory = useCategoryStore((state) => state.deleteCategory);
     const categories = useCategoryStore((state) => state.categories);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
-    const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories(setSelectedCategory);
+    const [transactionType, setTransactionType, handleTransactionType, categoryData] = useSortCategories();
 
-    console.log(isEditing);
+    // console.log(isEditing);
     const handleSubmit = async (values) => {
-        const currentType = isExpense ? 'expense' : 'income';
-
         updateCategory(categoryId, {
             category_name: values.categoryName,
             category_color: selectedColor,
-            category_type: currentType,
+            category_icon: selectedIcon,
+            category_type: transactionType,
             user_id,
-            expense_type: expenseType
+            expense_type: expenseType || ''
         }).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/categories');
             }
         });
 
@@ -106,8 +106,7 @@ const Page = () => {
     };
 
     const initialValues = {
-        categoryName: '',
-        categoryIcon: ''
+        categoryName: ''
     };
 
     const formik = useFormik({
@@ -118,7 +117,7 @@ const Page = () => {
     const handleDelete = () => {
         deleteCategory(categoryId).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/categories');
             }
         });
     };
@@ -126,7 +125,7 @@ const Page = () => {
     useEffect(() => {
         const current = categories.find((item) => item.id === categoryId);
 
-        const currentType = current?.type === 'expense';
+        setTransactionType(current.category_type);
         setSelectedIcon(current.category_icon);
         setSelectedColor(current.category_color);
 
@@ -188,33 +187,38 @@ const Page = () => {
                         </Box>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
-                            <Switch
-                                checked={isExpense}
-                                onChange={handleExpense}
-                                inputProps={{ 'aria-label': 'controlled' }}
+                            <DropdownType
+                                handleChange={handleTransactionType}
+                                transactionType={transactionType}
                                 disabled={!isEditing}
                             />
-                            <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
                         </Box>
 
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
-                            <FormControl fullWidth>
-                                <InputLabel id='demo-simple-select-label'>Expense Type</InputLabel>
-                                <Select
-                                    labelId='demo-simple-select-label'
-                                    id='demo-simple-select'
-                                    value={expenseType}
-                                    label='Expense Type'
-                                    onChange={handleExpenseType}
-                                    disabled={!isEditing}
-                                >
-                                    <MenuItem value='needs'>Needs</MenuItem>
-                                    <MenuItem value='wants'>Wants</MenuItem>
-                                    <MenuItem value='savings'>Savings</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Box>
+                        {transactionType === 'expense' && (
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginBottom: 2
+                                }}
+                            >
+                                <FormControl fullWidth>
+                                    <InputLabel id='demo-simple-select-label'>Expense Type</InputLabel>
+                                    <Select
+                                        labelId='demo-simple-select-label'
+                                        id='demo-simple-select'
+                                        value={expenseType}
+                                        label='Expense Type'
+                                        onChange={handleExpenseType}
+                                        disabled={!isEditing}
+                                    >
+                                        <MenuItem value='needs'>Needs</MenuItem>
+                                        <MenuItem value='wants'>Wants</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                        )}
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 2 }}>
                             <ColorPickerPanel

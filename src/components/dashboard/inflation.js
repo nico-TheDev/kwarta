@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography, Tooltip } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Grid, Link, Typography, Tooltip } from '@mui/material';
 import InsertChartIcon from '@mui/icons-material/InsertChartOutlined';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -7,10 +7,11 @@ import { useEffect, useState } from 'react';
 
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { orange } from '@mui/material/colors';
 
 const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-export const Savings = (props) => {
+export const Inflation = (props) => {
     const [inflationData, setInflationData] = useState('');
     const [percentage, setPercentage] = useState('');
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
@@ -77,7 +78,7 @@ export const Savings = (props) => {
                         <Tooltip title={getLanguage(currentLanguage).tooltipInflationRate}>
                             <Avatar
                                 sx={{
-                                    backgroundColor: 'warning.main',
+                                    backgroundColor: orange[500],
                                     height: 56,
                                     width: 56
                                 }}
@@ -115,6 +116,11 @@ export const Savings = (props) => {
                         {getLanguage(currentLanguage).sinceLastMonth}
                     </Typography>
                 </Box>{' '}
+                <Link href='https://tradingeconomics.com/philippines/inflation-cpi' target='_blank'>
+                    <Typography color='textSecondary' variant='caption'>
+                        Source: Trading Economics
+                    </Typography>
+                </Link>
             </CardContent>
         </Card>
     );

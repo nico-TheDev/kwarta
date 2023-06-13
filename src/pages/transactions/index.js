@@ -27,6 +27,7 @@ import TransactionCardList from 'components/shared/TransactionCardList';
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
 import DashboardTour from 'components/tours/DashboardTour';
+import DropdownType from 'components/shared/DropdownType';
 
 const MenuProps = {
     PaperProps: {
@@ -63,7 +64,7 @@ const Page = () => {
     const [total, setTotal] = useState(0);
     const [historyData, setHistoryData] = useState([]);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
-    const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories();
+    const [transactionType, setTransactionType, handleTransactionType, categoryData] = useSortCategories();
     const [showTour, setShowTour] = useState(getTourProgress('accounts').isDone);
 
     useEffect(() => {
@@ -87,7 +88,7 @@ const Page = () => {
         {
             target: '.transactions_step_three',
             title: 'Type',
-            content: 'used for sorting the transactions into expense or category',
+            content: 'used for sorting the transactions into expense or income',
             disableBeacon: true,
             placement: 'bottom'
         },
@@ -141,14 +142,26 @@ const Page = () => {
 
     useEffect(() => {
         const sortedTransactions = allTransactions.filter((transaction) => {
-            const currentType = isExpense ? 'expense' : 'income';
+            const currentType = transactionType;
             if (selectedCategory === 'all' && filterAccount === 'all' && currentType === transaction.type) {
                 return transaction;
-            } else if (transaction.category.id === selectedCategory && filterAccount === 'all') {
+            } else if (
+                transaction.category.id === selectedCategory &&
+                filterAccount === 'all' &&
+                currentType === transaction.type
+            ) {
                 return transaction;
-            } else if (transaction.category.id === selectedCategory && filterAccount === transaction.targetAccount.id) {
+            } else if (
+                transaction.category.id === selectedCategory &&
+                filterAccount === transaction.targetAccount.id &&
+                currentType === transaction.type
+            ) {
                 return transaction;
-            } else if (selectedCategory === 'all' && filterAccount === transaction.targetAccount.id) {
+            } else if (
+                selectedCategory === 'all' &&
+                filterAccount === transaction.targetAccount.id &&
+                currentType === transaction.type
+            ) {
                 return transaction;
             }
         });
@@ -260,7 +273,7 @@ const Page = () => {
 
         // console.log(sum);
         setTotal(sum);
-    }, [filterAccount, selectedCategory, allTransactions, isExpense, filterType]);
+    }, [filterAccount, selectedCategory, allTransactions, transactionType, filterType]);
 
     return (
         <>
@@ -305,90 +318,87 @@ const Page = () => {
                         </Typography>
                     </Tooltip>
 
-                    <Box
-                        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}
-                        className='transactions_step_three'
-                    >
-                        <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
-                        <Switch
-                            checked={isExpense}
-                            onChange={handleExpense}
-                            inputProps={{ 'aria-label': 'controlled' }}
-                        />
-                        <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
-                    </Box>
-
-                    <Box sx={{ display: { xs: 'grid', lg: 'flex' }, gap: 2, mb: 6 }}>
-                        <FormControl fullWidth className='transactions_step_four'>
-                            <InputLabel id='demo-simple-select-label'>
-                                {getLanguage(currentLanguage).chooseCategory}
-                            </InputLabel>
-                            <Select
-                                labelId='demo-simple-select-label'
-                                id='demo-simple-select'
-                                value={selectedCategory.id}
-                                label={getLanguage(currentLanguage).chooseCategory}
-                                defaultValue='all'
-                                onChange={handleCategoryChange}
-                                MenuProps={MenuProps}
-                            >
-                                <MenuItem value='all'>{getLanguage(currentLanguage).all}</MenuItem>
-                                {categoryData?.map((tag) => {
-                                    return (
-                                        <MenuItem key={tag.id} value={tag.id}>
-                                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                <ListItemIcon>
-                                                    <Icon name={tag.category_icon} />
-                                                </ListItemIcon>
-                                                <ListItemText>{tag.category_name}</ListItemText>
-                                            </Box>
-                                        </MenuItem>
-                                    );
-                                })}
-                            </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth className='transactions_step_five'>
-                            <InputLabel id='demo-simple-select-label'>
-                                {getLanguage(currentLanguage).chooseAccount}
-                            </InputLabel>
-                            <Select
-                                labelId='demo-simple-select-label'
-                                id='demo-simple-select'
-                                value={filterAccount}
-                                label='filterAccount'
-                                onChange={handleAccountChange}
-                            >
-                                <MenuItem value='all'>{getLanguage(currentLanguage).all}</MenuItem>
-                                {accounts.map((account) => {
-                                    return (
-                                        <MenuItem key={account.id} value={account.id}>
-                                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                <ListItemIcon>
-                                                    <Icon name={account.account_icon} />
-                                                </ListItemIcon>
-                                                <ListItemText>{account.account_name}</ListItemText>
-                                            </Box>
-                                        </MenuItem>
-                                    );
-                                })}
-                            </Select>
-                        </FormControl>
-                        <FormControl fullWidth className='transactions_step_six'>
-                            <InputLabel id='demo-simple-select-label'>{getLanguage(currentLanguage).filter}</InputLabel>
-                            <Select
-                                labelId='demo-simple-select-label'
-                                id='demo-simple-select'
-                                value={filterType}
-                                label='filterType'
-                                onChange={handleTypeChange}
-                            >
-                                <MenuItem value={'year'}>{getLanguage(currentLanguage).year}</MenuItem>
-                                <MenuItem value={'month'}>{getLanguage(currentLanguage).month}</MenuItem>
-                                <MenuItem value={'day'}>{getLanguage(currentLanguage).day}</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
+                    <Grid spacing={2} container mb={6}>
+                        <Grid item className='transactions_step_three' xs={12} md={6}>
+                            <DropdownType handleChange={handleTransactionType} transactionType={transactionType} />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth className='transactions_step_four'>
+                                <InputLabel id='demo-simple-select-label'>
+                                    {getLanguage(currentLanguage).chooseCategory}
+                                </InputLabel>
+                                <Select
+                                    labelId='demo-simple-select-label'
+                                    id='demo-simple-select'
+                                    value={selectedCategory.id}
+                                    label={getLanguage(currentLanguage).chooseCategory}
+                                    defaultValue='all'
+                                    onChange={handleCategoryChange}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem value='all'>{getLanguage(currentLanguage).all}</MenuItem>
+                                    {categoryData?.map((tag) => {
+                                        return (
+                                            <MenuItem key={tag.id} value={tag.id}>
+                                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                    <ListItemIcon>
+                                                        <Icon name={tag.category_icon} />
+                                                    </ListItemIcon>
+                                                    <ListItemText>{tag.category_name}</ListItemText>
+                                                </Box>
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth className='transactions_step_five'>
+                                <InputLabel id='demo-simple-select-label'>
+                                    {getLanguage(currentLanguage).chooseAccount}
+                                </InputLabel>
+                                <Select
+                                    labelId='demo-simple-select-label'
+                                    id='demo-simple-select'
+                                    value={filterAccount}
+                                    label='filterAccount'
+                                    onChange={handleAccountChange}
+                                >
+                                    <MenuItem value='all'>{getLanguage(currentLanguage).all}</MenuItem>
+                                    {accounts.map((account) => {
+                                        return (
+                                            <MenuItem key={account.id} value={account.id}>
+                                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                    <ListItemIcon>
+                                                        <Icon name={account.account_icon} />
+                                                    </ListItemIcon>
+                                                    <ListItemText>{account.account_name}</ListItemText>
+                                                </Box>
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth className='transactions_step_six'>
+                                <InputLabel id='demo-simple-select-label'>
+                                    {getLanguage(currentLanguage).filter}
+                                </InputLabel>
+                                <Select
+                                    labelId='demo-simple-select-label'
+                                    id='demo-simple-select'
+                                    value={filterType}
+                                    label='filterType'
+                                    onChange={handleTypeChange}
+                                >
+                                    <MenuItem value={'year'}>{getLanguage(currentLanguage).year}</MenuItem>
+                                    <MenuItem value={'month'}>{getLanguage(currentLanguage).month}</MenuItem>
+                                    <MenuItem value={'day'}>{getLanguage(currentLanguage).day}</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
 
                     <Box sx={{ display: 'grid', gap: 2 }} className='transactions_step_seven'>
                         {historyData.map((item) => (

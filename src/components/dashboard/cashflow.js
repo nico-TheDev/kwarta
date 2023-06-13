@@ -3,22 +3,74 @@ import { Box, Button, Card, CardContent, CardHeader, Divider, Typography, useThe
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { getLanguage } from 'utils/getLanguage';
-import { green, red } from '@mui/material/colors';
+import { deepPurple, green, red, teal } from '@mui/material/colors';
 import { useEffect, useState } from 'react';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import Link from 'next/link';
+import { useAuthStore } from 'stores/useAuthStore';
+
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+const dateSorter = (a, b) => {
+    const currentDateA = new Date(a.date);
+    const currentDateB = new Date(b.date);
+    const resultInSecondsA = currentDateA.getTime() / 1000;
+    const resultInSecondsB = currentDateB.getTime() / 1000;
+    return resultInSecondsA > resultInSecondsB;
+};
+
+const monthSorter = (transaction, finalMonthData) => {
+    const currentDate = transaction.date;
+    const currentMonth = monthNames[currentDate.split('/')[0] - 1];
+    const targetIndex = finalMonthData.findIndex((item) => item.title === currentMonth);
+
+    finalMonthData[targetIndex].data.push(transaction);
+};
+
+const monthDataSorter = (currentMonth) => {
+    if (currentMonth.data.length !== 0) {
+        const sum = currentMonth.data.reduce((acc, currentTransaction) => {
+            const currentDate = currentTransaction.date;
+            const currentTransactionMonth = monthNames[currentDate.split('/')[0] - 1];
+
+            if (currentTransactionMonth === currentMonth.title) {
+                acc += currentTransaction.amount;
+            }
+
+            return acc;
+        }, 0);
+
+        return sum;
+    } else {
+        return 0;
+    }
+};
 
 export const Cashflow = (props) => {
     const theme = useTheme();
     const getExpenseList = useTransactionStore((state) => state.getExpenseList);
     const transactions = useTransactionStore((state) => state.transactions);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const user = useAuthStore((state) => state.authState?.user);
 
     const [expenseData, setExpenseData] = useState([]);
     const [incomeData, setIncomeData] = useState([]);
+    const [savingsData, setSavingsData] = useState([]);
+    const [investmentData, setInvestmentData] = useState([]);
 
     const data = {
         datasets: [
+            {
+                backgroundColor: red[500],
+                barPercentage: 0.5,
+                barThickness: 8,
+                borderRadius: 4,
+                categoryPercentage: 0.5,
+                data: expenseData,
+                label: 'Expense',
+                maxBarThickness: 10
+            },
             {
                 backgroundColor: green[500],
                 barPercentage: 0.5,
@@ -30,13 +82,23 @@ export const Cashflow = (props) => {
                 maxBarThickness: 10
             },
             {
-                backgroundColor: red[500],
+                backgroundColor: deepPurple[500],
                 barPercentage: 0.5,
                 barThickness: 8,
                 borderRadius: 4,
                 categoryPercentage: 0.5,
-                data: expenseData,
-                label: 'Expense',
+                data: savingsData,
+                label: 'Savings',
+                maxBarThickness: 10
+            },
+            {
+                backgroundColor: teal[500],
+                barPercentage: 0.5,
+                barThickness: 8,
+                borderRadius: 4,
+                categoryPercentage: 0.5,
+                data: investmentData,
+                label: 'Investments',
                 maxBarThickness: 10
             }
         ],
@@ -93,97 +155,59 @@ export const Cashflow = (props) => {
     };
 
     useEffect(() => {
-        const allExpenses = transactions.filter((transaction) => transaction.type === 'expense');
-        const allIncome = transactions.filter((transaction) => transaction.type === 'income');
-        // console.log('ALL', allExpenses);
-        if (allExpenses.length !== 0) {
-            const sortedExpenses = allExpenses.sort((a, b) => {
-                const currentDateA = new Date(a.date);
-                const currentDateB = new Date(b.date);
-                const resultInSecondsA = currentDateA.getTime() / 1000;
-                const resultInSecondsB = currentDateB.getTime() / 1000;
-                return resultInSecondsA > resultInSecondsB;
-            });
-            const sortedIncome = allIncome.sort((a, b) => {
-                const currentDateA = new Date(a.date);
-                const currentDateB = new Date(b.date);
-                const resultInSecondsA = currentDateA.getTime() / 1000;
-                const resultInSecondsB = currentDateB.getTime() / 1000;
-                return resultInSecondsA > resultInSecondsB;
-            });
+        if (!user) return;
+        else {
+            const allExpenses = transactions.filter((transaction) => transaction.type === 'expense');
+            const allIncome = transactions.filter((transaction) => transaction.type === 'income');
+            const allSavings = transactions.filter((transaction) => transaction.type === 'savings');
+            const allInvestments = transactions.filter((transaction) => transaction.type === 'investments');
 
-            const finalMonthDataExpense = [];
-            const finalMonthDataIncome = [];
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            // console.log('ALL', allExpenses);
+            if (
+                allExpenses.length !== 0 ||
+                allIncome.length !== 0 ||
+                allSavings.length !== 0 ||
+                allInvestments.length !== 0
+            ) {
+                const sortedExpenses = allExpenses.sort(dateSorter);
+                const sortedIncome = allIncome.sort(dateSorter);
+                const sortedSavings = allSavings.sort(dateSorter);
+                const sortedInvestments = allInvestments.sort(dateSorter);
 
-            // ADD THE MONTHS TO THE FINAL DATA
-            monthNames.forEach((month) => {
-                finalMonthDataExpense.push({ title: month, data: [] });
-                finalMonthDataIncome.push({ title: month, data: [] });
-            });
+                const finalMonthDataExpense = [],
+                    finalMonthDataIncome = [],
+                    finalMonthDataSavings = [],
+                    finalMonthDataInvestments = [];
 
-            sortedExpenses.forEach((transaction) => {
-                const currentDate = transaction.date;
-                const currentMonth = monthNames[currentDate.split('/')[0] - 1];
-                const targetIndex = finalMonthDataExpense.findIndex((item) => item.title === currentMonth);
+                // ADD THE MONTHS TO THE FINAL DATA
+                monthNames.forEach((month) => {
+                    finalMonthDataExpense.push({ title: month, data: [] });
+                    finalMonthDataIncome.push({ title: month, data: [] });
+                    finalMonthDataSavings.push({ title: month, data: [] });
+                    finalMonthDataInvestments.push({ title: month, data: [] });
+                });
 
-                finalMonthDataExpense[targetIndex].data.push(transaction);
-            });
-            sortedIncome.forEach((transaction) => {
-                const currentDate = transaction.date;
-                const currentMonth = monthNames[currentDate.split('/')[0] - 1];
-                const targetIndex = finalMonthDataIncome.findIndex((item) => item.title === currentMonth);
+                sortedExpenses.forEach((transaction) => monthSorter(transaction, finalMonthDataExpense));
+                sortedIncome.forEach((transaction) => monthSorter(transaction, finalMonthDataIncome));
+                sortedSavings.forEach((transaction) => monthSorter(transaction, finalMonthDataSavings));
+                sortedInvestments.forEach((transaction) => monthSorter(transaction, finalMonthDataInvestments));
 
-                finalMonthDataIncome[targetIndex].data.push(transaction);
-            });
+                const monthDataListExpense = finalMonthDataExpense.map(monthDataSorter);
+                const monthDataListIncome = finalMonthDataIncome.map(monthDataSorter);
+                const monthDataListSavings = finalMonthDataSavings.map(monthDataSorter);
+                const monthDataListInvestments = finalMonthDataInvestments.map(monthDataSorter);
 
-            const monthDataListExpense = finalMonthDataExpense.map((currentMonth) => {
-                if (currentMonth.data.length !== 0) {
-                    const sum = currentMonth.data.reduce((acc, currentTransaction) => {
-                        const currentDate = currentTransaction.date;
-                        const currentTransactionMonth = monthNames[currentDate.split('/')[0] - 1];
-
-                        if (currentTransactionMonth === currentMonth.title) {
-                            acc += currentTransaction.amount;
-                        }
-
-                        return acc;
-                    }, 0);
-
-                    return sum;
-                } else {
-                    return 0;
-                }
-            });
-            const monthDataListIncome = finalMonthDataIncome.map((currentMonth) => {
-                if (currentMonth.data.length !== 0) {
-                    const sum = currentMonth.data.reduce((acc, currentTransaction) => {
-                        const currentDate = currentTransaction.date;
-                        const currentTransactionMonth = monthNames[currentDate.split('/')[0] - 1];
-
-                        if (currentTransactionMonth === currentMonth.title) {
-                            acc += currentTransaction.amount;
-                        }
-
-                        return acc;
-                    }, 0);
-
-                    return sum;
-                } else {
-                    return 0;
-                }
-            });
-
-            setExpenseData(monthDataListExpense);
-            setIncomeData(monthDataListIncome);
+                setExpenseData(monthDataListExpense);
+                setIncomeData(monthDataListIncome);
+                setSavingsData(monthDataListSavings);
+                setInvestmentData(monthDataListInvestments);
+            }
         }
     }, [transactions]);
 
     return (
         <Card {...props}>
-            <Tooltip title={getLanguage(currentLanguage).tooltipCashflowGraph}>
-                <CardHeader title={getLanguage(currentLanguage).cashflow} />
-            </Tooltip>
+            <CardHeader title={getLanguage(currentLanguage).cashflow} />
             <Divider />
             <CardContent>
                 <Tooltip title={getLanguage(currentLanguage).tooltipCashflowGraph}>
@@ -206,7 +230,7 @@ export const Cashflow = (props) => {
                 }}
             >
                 <Button color='primary' endIcon={<ArrowRightIcon fontSize='small' />} size='small'>
-                    {getLanguage(currentLanguage).overview}
+                    <Link href='/cashflow'>{getLanguage(currentLanguage).overview}</Link>
                 </Button>
             </Box>
         </Card>

@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { v4 as uuidv4 } from 'uuid';
 
 import { db, storage } from '../../firebase.config';
-import { blue, green, red, yellow } from '@mui/material/colors';
+import { blue, deepPurple, green, red, yellow } from '@mui/material/colors';
 import { ICON_NAMES } from 'constants/constant';
 
 const transactionStore = (set, get) => ({
@@ -42,7 +42,11 @@ const transactionStore = (set, get) => ({
             }
 
             // SUBTRACT
-            if (newTransaction.type === 'expense') {
+            if (
+                newTransaction.type === 'expense' ||
+                newTransaction.type === 'savings' ||
+                newTransaction.type === 'investments'
+            ) {
                 if (currentAccount.data().account_amount > newTransaction.amount) {
                     await updateDoc(accountRef, {
                         account_amount: currentAccount.data().account_amount - newTransaction.amount
@@ -87,13 +91,21 @@ const transactionStore = (set, get) => ({
                 currentAccountResponse = await getDoc(accountRef);
                 currentAccount = currentAccountResponse.data();
                 // RETURN THE ORIGINAL AMOUNT
-                if (currentTransaction.type === 'expense') {
+                if (
+                    currentTransaction.type === 'expense' ||
+                    currentTransaction.type === 'savings' ||
+                    currentTransaction.type === 'investments'
+                ) {
                     originalAmount = currentAccount.account_amount + currentTransaction.amount;
                 } else {
                     originalAmount = currentAccount.account_amount - currentTransaction.amount;
                 }
                 // UPDATE THE ACCOUNT AMOUNT
-                if (updatedTransaction.type === 'expense') {
+                if (
+                    updatedTransaction.type === 'expense' ||
+                    updatedTransaction.type === 'savings' ||
+                    updatedTransaction.type === 'investments'
+                ) {
                     updatedAmount = originalAmount - updatedTransaction.amount;
                 } else {
                     updatedAmount = originalAmount + updatedTransaction.amount;
@@ -185,7 +197,11 @@ const transactionStore = (set, get) => ({
             const currentAccount = currentAccountResponse.data();
             if (currentAccount) {
                 // RETURN THE SUBTRACTED AMOUNT
-                if (currentTransaction.type === 'expense') {
+                if (
+                    currentTransaction.type === 'expense' ||
+                    currentTransaction.type === 'savings' ||
+                    currentTransaction.type === 'investments'
+                ) {
                     await updateDoc(accountRef, {
                         account_amount: currentAccount.account_amount + currentTransaction.amount
                     });
@@ -296,9 +312,94 @@ const transactionStore = (set, get) => ({
 
         return incomeDataList;
     },
+    getSavingsList: (user_id) => {
+        const savingsList = get().transactions.filter((transaction) => transaction.type === 'savings');
+
+        const savingsCategoryList = savingsList.reduce((acc, currentIncome) => {
+            if (!acc.includes(currentIncome.category.category_name)) {
+                acc.push(currentIncome.category.category_name);
+            }
+            return acc;
+        }, []);
+
+        // create an initial data holder
+        const savingsDataList = savingsCategoryList.map((category) => {
+            const targetCategory = savingsList.find((item) => item.category.category_name === category);
+            return {
+                user_id,
+                amount: 0,
+                type: 'savings',
+                category_name: category,
+                transaction_icon: targetCategory.category.category_icon,
+                color: targetCategory.category.category_color,
+                transaction_color: targetCategory.category.category_color
+            };
+        });
+
+        // add the amount to the initial data
+        savingsList.forEach((item) => {
+            // find the data
+            const targetCategory = savingsDataList.find(
+                (currentData) => item.category.category_name === currentData.category_name
+            );
+
+            if (item.category.category_name === targetCategory.category_name) {
+                targetCategory.amount += item.amount;
+            }
+        });
+
+        return savingsDataList;
+    },
+    getInvestmentsList: (user_id) => {
+        const investmentsList = get().transactions.filter((transaction) => transaction.type === 'investments');
+
+        const investmentsCategoryList = investmentsList.reduce((acc, currentIncome) => {
+            if (!acc.includes(currentIncome.category.category_name)) {
+                acc.push(currentIncome.category.category_name);
+            }
+            return acc;
+        }, []);
+
+        // create an initial data holder
+        const investmentsDataList = investmentsCategoryList.map((category) => {
+            const targetCategory = investmentsList.find((item) => item.category.category_name === category);
+            return {
+                user_id,
+                amount: 0,
+                type: 'investments',
+                category_name: category,
+                transaction_icon: targetCategory.category.category_icon,
+                color: targetCategory.category.category_color,
+                transaction_color: targetCategory.category.category_color
+            };
+        });
+
+        // add the amount to the initial data
+        investmentsList.forEach((item) => {
+            // find the data
+            const targetCategory = investmentsDataList.find(
+                (currentData) => item.category.category_name === currentData.category_name
+            );
+
+            if (item.category.category_name === targetCategory.category_name) {
+                targetCategory.amount += item.amount;
+            }
+        });
+
+        return investmentsDataList;
+    },
     getExpenseTypeList: (user_id) => {
         const expenseList = get().transactions.filter((transaction) => transaction.type === 'expense');
+
+        const totalSavings = get()
+            .transactions.filter((item) => item.type === 'savings')
+            .reduce((acc, cur) => {
+                acc += cur.amount;
+                return acc;
+            }, 0);
+
         // create an initial data holder
+
         const expenseTypeDataList = [
             {
                 name: 'Needs',
@@ -316,9 +417,9 @@ const transactionStore = (set, get) => ({
             },
             {
                 name: 'Savings',
-                amount: 0,
+                amount: totalSavings,
                 type: 'savings',
-                color: blue[500],
+                color: deepPurple[500],
                 icon: ICON_NAMES.CATEGORY_ICONS.SAVINGS
             }
         ];

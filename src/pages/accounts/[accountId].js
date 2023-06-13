@@ -56,10 +56,11 @@ const Page = () => {
             account_name: values.accountName,
             account_amount: values.accountAmount,
             account_color: selectedColor,
+            account_icon: selectedIcon,
             user_id
         }).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/accounts');
             }
         });
 
@@ -67,7 +68,6 @@ const Page = () => {
         formik.resetForm();
         setSelectedIcon('');
         setSelectedColor('');
-        setOpen(false);
     };
 
     const handleColorClick = (color) => {
@@ -86,8 +86,7 @@ const Page = () => {
 
     const initialValues = {
         accountName: '',
-        accountAmount: '',
-        accountIcon: ''
+        accountAmount: ''
     };
 
     const formik = useFormik({
@@ -98,7 +97,7 @@ const Page = () => {
     const handleDelete = () => {
         deleteAccount(accountId).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/dashboard');
             }
         });
     };
@@ -149,7 +148,7 @@ const Page = () => {
                         component='form'
                     >
                         <Typography id='modal-modal-title' variant='h6' component='h2'>
-                                {getLanguage(currentLanguage).accountDetails}
+                            {getLanguage(currentLanguage).accountDetails}
                         </Typography>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -202,6 +201,7 @@ const Page = () => {
                                 onIconClick={handleIconClick}
                                 selectedIcon={selectedIcon}
                                 setSelectedIcon={setSelectedIcon}
+                                isEditing={isEditing}
                             />
                         </Box>
 

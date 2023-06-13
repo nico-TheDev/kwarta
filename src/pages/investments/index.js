@@ -14,14 +14,15 @@ import {
     FormHelperText,
     Button,
     CircularProgress,
-    Tooltip
+    Tooltip,
+    Modal
 } from '@mui/material';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SavingsIcon from '@mui/icons-material/Savings';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { getLanguage } from 'utils/getLanguage';
-import { DashboardLayout } from '../components/dashboard-layout';
+import { DashboardLayout } from '../../components/dashboard-layout';
 import { toast } from 'react-hot-toast';
 import { useAccountStore } from 'stores/useAccountStore';
 import { formatPrice } from 'utils/format-price';
@@ -31,6 +32,7 @@ import { useAuthStore } from 'stores/useAuthStore';
 import DashboardTour from 'components/tours/DashboardTour';
 import calculateTable from 'utils/create-table';
 import InvestmentTable from 'components/investment-table';
+import Link from 'next/link';
 
 const MenuProps = {
     PaperProps: {
@@ -39,6 +41,23 @@ const MenuProps = {
             width: 250
         }
     }
+};
+
+const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: {
+        md: '80%',
+        xs: '100%'
+    },
+    height: '80vh',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    overflow: 'auto'
 };
 
 function generateYearsArray(startYear, endYear) {
@@ -52,12 +71,6 @@ function generateYearsArray(startYear, endYear) {
 const currentYear = new Date().getFullYear();
 const yearArray = generateYearsArray(currentYear, 2080);
 
-//Calculates Future Value of a cash flow with constant payments and interest rate (annuities)
-//@param    float   rate    Interest rate per period
-//@param    int     nper    Number of periods
-//@param    float   pmt     Periodic payment (annuity)
-//@param    float   pv      Present Value
-//@param    int     type    Payment Type: 0 - end of period, 1 start of period
 function futureValue(rate = 0, nper = 0, pmt = 0, pv = 0, type = 0) {
     var result;
     if (rate != 0.0) {
@@ -67,7 +80,6 @@ function futureValue(rate = 0, nper = 0, pmt = 0, pv = 0, type = 0) {
     }
     return result;
 }
-// futureValue((rate_of_return / 100 / 12), (years_to_grow * 12), -(monthly_contribution), -(initial_investment), 0)
 
 const Page = () => {
     const [initialDeposit, setInitialDeposit] = useState('');
@@ -77,8 +89,11 @@ const Page = () => {
     const [projectedData, setProjectedData] = useState('');
     const [suggestionData, setSuggestionData] = useState('');
     const [tableData, setTableData] = useState('');
+    const [currentTableData, setCurrentTableData] = useState('');
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const accounts = useAccountStore((state) => state.accounts);
+
+    const [openModal, setOpenModal] = useState(false);
 
     const [accountAmounts, setAccountAmounts] = useState(accounts.map((item) => item.account_amount));
 
@@ -145,6 +160,8 @@ const Page = () => {
             );
             toast.success('Successfully Analyzed');
             setTableData({
+                savingsAccount: calculateTable(initialDeposit, subsequentDeposit, year, 0.3, '₱', '', Number(period)),
+                timeDeposit: calculateTable(initialDeposit, subsequentDeposit, year, 0.7, '₱', '', Number(period)),
                 lowRiskFund: calculateTable(initialDeposit, subsequentDeposit, year, 4, '₱', '', Number(period)),
                 medRiskFund: calculateTable(initialDeposit, subsequentDeposit, year, 8, '₱', '', Number(period)),
                 highRiskFund: calculateTable(initialDeposit, subsequentDeposit, year, 10, '₱', '', Number(period))
@@ -303,8 +320,31 @@ const Page = () => {
                     <Typography variant='h6'>{suggestionData.aggressiveRiskFund}</Typography>
                 </Paper>
             </Grid>
+            <Box sx={{ pt: 3 }}>
+                <Typography sx={{ m: 1, textAlign: 'center' }} color='primary.main' variant='body1'>
+                    DISCLAIMER: These are just indicative numbers. Performance of the fund is not assured and this is
+                    subject to fluctuating market conditions.
+                </Typography>
+            </Box>
         </>
     );
+
+    const TableModal = () => (
+        <Modal
+            open={openModal}
+            onClose={() => setOpenModal(false)}
+            aria-labelledby='modal-modal-title'
+            aria-describedby='modal-modal-description'
+        >
+            <Paper sx={modalStyle}>
+                <Typography variant='h4' mb={6}>
+                    {currentTableData.name}
+                </Typography>
+                <InvestmentTable dataset={currentTableData.data} />
+            </Paper>
+        </Modal>
+    );
+
     return (
         <>
             {!showTour && (
@@ -317,6 +357,7 @@ const Page = () => {
             <Head>
                 <title>Investments | CASH</title>
             </Head>
+            <TableModal />
             <Box
                 component='main'
                 sx={{
@@ -461,64 +502,111 @@ const Page = () => {
                                         <SavingsIcon fontSize='inherit' color='secondary' />
                                     </Box>
                                     <Typography variant='body2'>Savings Account</Typography>
-                                    <Typography variant='h5'>{projectedData.savingsAccount}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.savingsAccount}
+                                    </Typography>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Savings Account',
+                                                data: tableData.savingsAccount
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
                                         <TimelapseIcon fontSize='inherit' color='action' />
                                     </Box>
                                     <Typography variant='body2'>Time Deposit</Typography>
-                                    <Typography variant='h5'>{projectedData.timeDeposit}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.timeDeposit}
+                                    </Typography>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Time Deposit',
+                                                data: tableData.timeDeposit
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
                                         <AttachMoneyIcon fontSize='inherit' color='info' />
                                     </Box>
                                     <Typography variant='body2'>Low Risk Fund</Typography>
-                                    <Typography variant='h5'>{projectedData.lowRiskFund}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.lowRiskFund}
+                                    </Typography>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Low Risk Fund',
+                                                data: tableData.lowRiskFund
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
                                         <AttachMoneyIcon fontSize='inherit' color='warning' />
                                     </Box>
                                     <Typography variant='body2'>Moderate Risk Fund</Typography>
-                                    <Typography variant='h5'>{projectedData.moderateRiskFund}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.moderateRiskFund}
+                                    </Typography>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Moderate Risk Fund',
+                                                data: tableData.medRiskFund
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={12} lg={4}>
                                     <Box sx={{ fontSize: 50 }}>
                                         <AttachMoneyIcon fontSize='inherit' color='error' />
                                     </Box>
                                     <Typography variant='body2'>Aggressive Risk Fund</Typography>
-                                    <Typography variant='h5'>{projectedData.aggressiveRiskFund}</Typography>
+                                    <Typography variant='h5' mb={2}>
+                                        {projectedData.aggressiveRiskFund}
+                                    </Typography>
+                                    <Button
+                                        variant='outlined'
+                                        onClick={() => {
+                                            setCurrentTableData({
+                                                name: 'Aggressive Risk Fund',
+                                                data: tableData.highRiskFund
+                                            });
+                                            setOpenModal(true);
+                                        }}
+                                    >
+                                        See Details
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Paper>
                     )}
 
-                    {tableData.length !== 0 && (
-                        <Grid container mt={4} p={4}>
-                            <Grid item>
-                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
-                                    Low Risk Fund{' '}
-                                </Typography>
-                            </Grid>
-                            <InvestmentTable dataset={tableData.lowRiskFund} />
-                            <Grid item my={4}>
-                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
-                                    Moderate Risk Fund{' '}
-                                </Typography>
-                            </Grid>
-                            <InvestmentTable dataset={tableData.medRiskFund} />
-                            <Grid item my={4}>
-                                <Typography variant='h5' mb={4} sx={{ textAlign: 'center' }}>
-                                    High Risk Fund{' '}
-                                </Typography>
-                            </Grid>
-                            <InvestmentTable dataset={tableData.highRiskFund} />
-                        </Grid>
-                    )}
-
-                    <Typography variant='caption' sx={{ color: grey[400] }}>
+                    <Typography variant='body1' m={4} color='black'>
                         Based on SunLife Calculations.
                         <br />
                         The computations assume the following:
@@ -526,7 +614,37 @@ const Page = () => {
                         Average return of Sun Life Prosperity Bond Fund (low risk) - 4%
                         <br />
                         Average return of Sun Life Prosperity Balanced Fund (moderate risk) - 8% <br />
-                        Average return of Sun Life Prosperity Index Fund (aggressive risk) - 10%{' '}
+                        Average return of Sun Life Prosperity Index Fund (aggressive risk) - 10%
+                        <br />
+                        Source:{' '}
+                        <Typography
+                            component='a'
+                            target='_blank'
+                            href='https://online.sunlife.com.ph/cdt/eCalcAge/investmentCalculator'
+                        >
+                            Sunlife Investment Calculator
+                        </Typography>{' '}
+                        and{' '}
+                        <Typography
+                            component='a'
+                            target='_blank'
+                            href='https://ph.thesimplesum.com/investment-calculator/'
+                        >
+                            Simple Sum Investment Calculator
+                        </Typography>
+                    </Typography>
+
+                    <Typography variant='h6' mb={2} color='primary'>
+                        DISCLAIMERS
+                    </Typography>
+
+                    <Typography variant='body1' mb={4} color='primary'>
+                        This calculator is designed to be an informational and educational tool only, and when used
+                        alone, does not constitute financial advice. The CASH Team is not responsible for the
+                        consequences of any decisions or actions taken in reliance upon or as a result of the
+                        information provided by these tools. The CASH Team is not responsible for any human or
+                        mechanical errors or omissions that may occur too. Do consult a financial services professional
+                        before making any investments.
                     </Typography>
                 </Container>
             </Box>
