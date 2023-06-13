@@ -8,11 +8,13 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import { useCategoryStore } from 'stores/useCategoryStore';
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 export const AccountPopover = (props) => {
     const { anchorEl, onClose, open, name, ...other } = props;
     const authContext = useContext(AuthContext);
     const logout = useAuthStore((state) => state.logout);
+    const setIsTutorialOpen = useLanguageStore((state) => state.setIsTutorialOpen);
     const resetTransactions = useTransactionStore((state) => state.resetTransactions);
     const resetAccounts = useAccountStore((state) => state.resetAccounts);
     const resetCategories = useCategoryStore((state) => state.resetCategories);
@@ -59,6 +61,10 @@ export const AccountPopover = (props) => {
         }
     };
 
+    const handleOpenTutorial = () => {
+        setIsTutorialOpen(true);
+    };
+
     return (
         <Popover
             anchorEl={anchorEl}
@@ -97,6 +103,7 @@ export const AccountPopover = (props) => {
                     }
                 }}
             >
+                <MenuItem onClick={handleOpenTutorial}>Show Tutorial</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
             </MenuList>
         </Popover>

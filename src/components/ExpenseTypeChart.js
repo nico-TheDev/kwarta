@@ -72,7 +72,7 @@ export const ExpenseTypeChart = (props) => {
 
             const total = expenseData.map((item) => item.amount).reduce((acc, cur) => (acc += cur), 0);
 
-            const list = expenseData.map((item) => {
+            const percentageList = expenseData.map((item) => {
                 return {
                     title: item.name,
                     value: (item.amount / total).toLocaleString(undefined, {
@@ -84,51 +84,44 @@ export const ExpenseTypeChart = (props) => {
                 };
             });
 
+            console.log({ percentageList });
+
             const savings = (expenseData[2].amount / total) * 100;
 
-            if (userSurvey?.financeRule.value === '1') {
-                if (savings <= 17.99) {
-                    setPrompt("You're spending a lot for your account. You must save at least 20% for savings");
+            if(userSurvey.financeRule.needs <= 100 && userSurvey.financeRule.needs > 80){
+                setPrompt("Continue supporting your needs. If you have extra, you can save it for the future");
+                setIsPositive(true);
+            }
+            else if(userSurvey.financeRule.wants <= 100 && userSurvey.financeRule.wants > 80){
+                setPrompt("You spend too much on your wants. Try saving for your future");
+                setIsPositive(false);
+            }
+            else if(userSurvey.financeRule.wants < 80 && userSurvey.financeRule.needs < 80){
+                if (savings < (userSurvey.financeRule.savings - 2.01)) {
+                    setPrompt("You're spending a lot for your account. You must save for your savings");
                     setIsPositive(false);
-                } else if (savings <= 19.99 || savings >= 18) {
+                } else if (savings <= (userSurvey.financeRule.savings - 0.01) && savings >= (userSurvey.financeRule.savings - 2)) {
                     setPrompt("You're making good progress. You need to save more");
                     setIsPositive(true);
-                } else {
-                    setPrompt("You've made a good decision. Continue placing 20% of your income in savings");
-                    setIsPositive(true);
-                }
-            } else if (userSurvey?.financeRule.value === '2') {
-                if (savings <= 27.99) {
-                    setPrompt("You're spending a lot for your account. You must save at least 30% for savings");
-                    setIsPositive(false);
-                } else if (savings <= 29.99 || savings >= 28) {
-                    setPrompt("You're making good progress. You need to save more");
-                    setIsPositive(true);
-                } else {
-                    setPrompt("You've made a good decision. Continue placing 30% of your income in savings");
-                    setIsPositive(true);
-                }
-            } else if (userSurvey?.financeRule.value === '3') {
-                if (savings <= 7.99) {
-                    setPrompt("You're spending a lot for your account. You must save at least 10% for savings");
-                    setIsPositive(false);
-                } else if (savings <= 9.99 || savings >= 8) {
-                    setPrompt("You're making good progress. You need to save more");
-                    setIsPositive(true);
-                } else {
-                    setPrompt("You've made a good decision. Continue placing 10% of your income in savings");
-                    setIsPositive(true);
+                } else if (savings > userSurvey.financeRule.savings){
+                    if(savings >= userSurvey.financeRule.savings + 20){
+                        setPrompt("You might want to diversify your savings");
+                        setIsPositive(true);
+                    }
+                    else{
+                        setPrompt("You've made a good decision. Continue saving.");
+                        setIsPositive(true);
+                    }
                 }
             }
-
             setGraphData(data);
-            setCategoryList(list);
+            setCategoryList(percentageList);
         }
     }, [transactions]);
 
     return (
         <Card {...props}>
-            <CardHeader title='Expenses Type' sx={{ width: 'max-content' }} />
+            <CardHeader title='Budget Distribution' sx={{ width: 'max-content' }} />
             <Divider />
             <CardContent>
                 <Box

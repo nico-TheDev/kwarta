@@ -36,17 +36,17 @@ const App = (props) => {
     // HANDLE USER AUTH IF THERE IS AN EXISTING USER , REDIRECT TO DASHBOARD
     useEffect(() => {
         console.log(router.pathname);
-        // console.log(router.query);
-        // console.log(user);
+
         if (user) {
             if (user?.hasAnswered) {
                 if (router.pathname === '/editSurvey') {
                     router.push('/editSurvey');
                 } else if (
-                    (router.pathname !== '/' && ['/login', '/sign-in', '/register'].includes(router.pathname)) ||
+                    (router.pathname !== '/dashboard' &&
+                        ['/login', '/sign-in', '/register'].includes(router.pathname)) ||
                     user.hasAnswered
                 ) {
-                    router.push('/');
+                    router.push('/dashboard');
                 }
             } else if (!user?.hasAnswered) {
                 router.push('/survey');
@@ -65,7 +65,6 @@ const App = (props) => {
                 <meta name='description' content='Description' />
                 <meta name='keywords' content='Keywords' />
                 <title>CASH: Financial Monitoring System</title>
-                <link rel='manifest' href='/manifest.json' />
                 <link rel='icon' href='/static/icons/favicon.ico' />
                 <meta name='viewport' content='initial-scale=1, width=device-width' />
             </Head>
@@ -80,7 +79,7 @@ const App = (props) => {
                 />
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
-                    {isLoading ? <Fragment /> : getLayout(<Component {...pageProps} />)}
+                    {getLayout(<Component {...pageProps} />)}
                 </ThemeProvider>
             </LocalizationProvider>
         </CacheProvider>

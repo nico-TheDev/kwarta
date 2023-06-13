@@ -1,7 +1,7 @@
 export const languages = {
     ph: {
         //main screen
-        balance: 'Balanse',
+        balance: 'Kabuuang Balanse',
         expenses: 'Gastusin',
         income: 'Kita',
         savings: 'Ipon',
@@ -24,7 +24,7 @@ export const languages = {
         articles: 'Mga Artikulo',
         profile: 'Propayl',
         doingGreat: 'Maayos ang ginagawa mo',
-        investment: 'Pamumuhunan',
+        investment: 'Mga Pondo sa Pamumuhunan',
 
         //navbar
         addTransaction: 'Magdagdag ng Transaksiyon',
@@ -229,7 +229,7 @@ export const languages = {
     },
     en: {
         //main screen
-        balance: 'Balance',
+        balance: 'Total Balance',
         expenses: 'Expenses',
         income: 'Income',
         savings: 'Savings',
@@ -252,7 +252,7 @@ export const languages = {
         articles: 'Articles',
         profile: 'Profile',
         doingGreat: "You're doing great",
-        investment: 'Investment',
+        investment: 'Investment Funds',
         stocks: 'Stocks',
 
         //navbar
@@ -341,7 +341,7 @@ export const languages = {
         //category edit
         categoryDetails: 'Category Details',
         capitalGains: `Capital gain or appreciation is an increase in the market price of your stock. It is the difference between the amount you paid when buying shares and the current market price of the stock. However, if the company doesn’t perform as expected, the stock’s price may go down below your buying price.`,
-        capitalGainsSub: `The number of shares are set to 1000 because it is the baseline when buying stocks in a realistic setting.`,
+        capitalGainsSub: `Trading of stocks is done by board lot or round lot system. The Board Lot Table determines the minimum number of shares one can purchase or sell at a specific price range. Therefore, the minimum amount needed to invest in stocks varies and will depend on the market price of the security as well as its corresponding board lot.`,
         //settings
         language: 'Language',
         changeLanguage: 'Change the language',
@@ -366,7 +366,7 @@ export const languages = {
         amountSavingsPart1: 'You have ',
         amountSavingsPart2: ' in your selected Account. You may apply for savings accounts in the given banks.',
         insufficientAmountSavings:
-            'Your selected Account have insufficient maintaining balance. The minimum amount to invest in savings is PHP 2,000.',
+            'Your selected account have insufficient maintaining balance. The minimum amount to invest in savings is PHP 2,000.',
 
         //bonds
         bondsIntroPart1:

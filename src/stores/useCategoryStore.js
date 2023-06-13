@@ -73,6 +73,12 @@ const categoryStore = (set, get) => ({
     },
     expenseList: () => {
         return get().categories.filter((category) => category.category_type === 'expense');
+    },
+    savingsList: () => {
+        return get().categories.filter((category) => category.category_type === 'savings');
+    },
+    investmentList: () => {
+        return get().categories.filter((category) => category.category_type === 'investments');
     }
 });
 

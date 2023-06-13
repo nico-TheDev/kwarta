@@ -37,6 +37,7 @@ import useSortCategories from 'hooks/useSortCategories';
 import { useEffect } from 'react';
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import DropdownType from 'components/shared/DropdownType';
 
 const MenuProps = {
     PaperProps: {
@@ -67,25 +68,24 @@ const Page = () => {
     const accounts = useAccountStore((state) => state.accounts);
     const user_id = useAuthStore((state) => state.authState?.user?.uid);
     const categories = useCategoryStore((state) => state.categories);
-    const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories(setSelectedCategory);
+    const [transactionType, setTransactionType, handleTransactionType, categoryData] =
+        useSortCategories(setSelectedCategory);
     const transactions = useTransactionStore((state) => state.transactions);
 
     const handleSubmit = async (values) => {
-        const currentType = isExpense ? 'expense' : 'income';
-
         updateTransaction(
             transactionId,
             {
                 ...values,
                 amount: Number(values.amount),
-                type: currentType,
+                type: transactionType,
                 date,
                 user_id
             },
             selectedFile
         ).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/dashboard');
             }
         });
 
@@ -148,7 +148,7 @@ const Page = () => {
     const handleDelete = () => {
         deleteTransaction(transactionId, currentTransaction?.photoRef || '').then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/dashboard');
             }
         });
     };
@@ -156,12 +156,10 @@ const Page = () => {
     useEffect(() => {
         // GET THEN VALUES OF THE TRANSACTION
 
-        console.log(router.pathname);
         const current = transactions.find((item) => item.id === transactionId);
 
         // SET THE VALUE OF THE FIELDS
-        const currentType = current?.type === 'expense';
-        setIsExpense(currentType);
+        setTransactionType(current.type);
         setSelectedAccount(current?.targetAccount.id);
         setDate(current?.date);
         setSelectedFile({
@@ -231,13 +229,11 @@ const Page = () => {
                         </Box>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
-                            <Switch
-                                checked={isExpense}
-                                onChange={handleExpense}
-                                inputProps={{ 'aria-label': 'controlled' }}
+                            <DropdownType
+                                handleChange={handleTransactionType}
+                                transactionType={transactionType}
+                                disabled={!isEditing}
                             />
-                            <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
                         </Box>
 
                         {/* ACCOUNT DROPDOWN */}

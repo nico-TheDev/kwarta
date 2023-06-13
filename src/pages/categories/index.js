@@ -12,9 +12,10 @@ import { useLanguageStore } from 'stores/useLanguageStore';
 import DashboardTour from 'components/tours/DashboardTour';
 import { useAuthStore } from 'stores/useAuthStore';
 import CategoryCardList from 'components/shared/CategoryCardList';
+import DropdownType from 'components/shared/DropdownType';
 
 const Page = () => {
-    const [isExpense, setIsExpense, handleExpense, categoryData] = useSortCategories();
+    const [transactionType, setTransactionType, handleTransactionType, categoryData] = useSortCategories();
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
     const [currentCategoriesList, setCurrentCategoriesList] = useState([]);
     const [showTour, setShowTour] = useState(false);
@@ -28,12 +29,10 @@ const Page = () => {
 
     useEffect(() => {
         const expenseList = categoryData.filter((item) => item.category_type === 'expense');
-        console.log({ expenseList });
-        if (isExpense) {
+        if (transactionType === 'expense') {
             const updatedArr = [
                 { name: 'Needs', data: [], type: 'needs' },
-                { name: 'Wants', data: [], type: 'wants' },
-                { name: 'Savings', data: [], type: 'savings' }
+                { name: 'Wants', data: [], type: 'wants' }
             ];
             expenseList.forEach((category) => {
                 const targetArr = updatedArr.find((item) => item.type === category.expense_type);
@@ -42,7 +41,7 @@ const Page = () => {
 
             setCurrentCategoriesList(updatedArr);
         }
-    }, [isExpense, categoryData]);
+    }, [transactionType, categoryData]);
 
     const tourSteps = [
         {
@@ -89,18 +88,11 @@ const Page = () => {
             >
                 <Container maxWidth={false}>
                     <CategoriesHead />
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
-                        <Typography variant='body1'>{getLanguage(currentLanguage).income}</Typography>
-                        <Switch
-                            checked={isExpense}
-                            onChange={handleExpense}
-                            inputProps={{ 'aria-label': 'controlled' }}
-                            className='categories_step_three'
-                        />
-                        <Typography variant='body1'>{getLanguage(currentLanguage).expense}</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', my: 4 }}>
+                        <DropdownType handleChange={handleTransactionType} transactionType={transactionType} />
                     </Box>
                     <Box sx={{ pt: 3 }}>
-                        {isExpense ? (
+                        {transactionType === 'expense' ? (
                             currentCategoriesList.map((item) => (
                                 <>
                                     <Typography variant='h6' mb={2}>

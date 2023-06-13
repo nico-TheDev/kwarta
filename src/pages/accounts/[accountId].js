@@ -97,7 +97,7 @@ const Page = () => {
     const handleDelete = () => {
         deleteAccount(accountId).then((success) => {
             if (success) {
-                router.push('/');
+                router.push('/dashboard');
             }
         });
     };

@@ -11,7 +11,7 @@ import { useAccountStore } from 'stores/useAccountStore';
 import { useTransactionStore } from 'stores/useTransactionStore';
 const Tour = dynamic(() => import('../components/tour'), { ssr: false });
 import articles from 'data/articles';
-
+import { useLanguageStore } from 'stores/useLanguageStore';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -27,21 +27,33 @@ export const DashboardLayout = (props) => {
     const { children } = props;
     const [open, setOpen] = useState(true);
     const [showTour, setShowTour] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpen = () => {
+        localStorage.setItem('isTourOpen', true);
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+        localStorage.setItem('isTourOpen', false);
+        setIsTutorialOpen(false);
+    };
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     const accounts = useAccountStore((state) => state.accounts);
     const transactions = useTransactionStore((state) => state.transactions);
     const [showSuggestion, setShowSuggestion] = useState(true);
     const [article, setArticle] = useState(articles[0]);
-    let popupToast;
+    const isTutorialOpen = useLanguageStore((state) => state.isTutorialOpen);
+    const setIsTutorialOpen = useLanguageStore((state) => state.setIsTutorialOpen);
 
     useEffect(() => {
-        console.log({ showTour, transactions: transactions.length });
-        if (transactions.length === 0 || accounts.length === 0) {
-            setShowTour(true);
+        console.log({ isTutorialOpen });
+        if (transactions.length === 0 && accounts.length === 0) {
+            setOpen(true);
         } else {
-            setShowTour(false);
+            if (localStorage.getItem('isTourOpen')) {
+                setOpen(JSON.parse(localStorage.getItem('isTourOpen')));
+            } else {
+                setOpen(false);
+            }
         }
     }, [transactions.length, accounts.length]);
 
@@ -109,7 +121,6 @@ export const DashboardLayout = (props) => {
 
     return (
         <AuthGuard>
-            {showTour && <Tour open={open} handleClose={handleClose} setShowTour={setShowTour} />}
             <DashboardLayoutRoot>
                 <Box
                     sx={{
@@ -119,6 +130,7 @@ export const DashboardLayout = (props) => {
                         width: '100%'
                     }}
                 >
+                    <Tour open={open} handleClose={handleClose} handleOpen={handleOpen} />
                     {children}
                 </Box>
             </DashboardLayoutRoot>
