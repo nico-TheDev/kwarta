@@ -22,7 +22,16 @@ export default function NewsPanel(props) {
 
             <Grid container spacing={2}>
                 {isLoading ? (
-                    <CircularProgress />
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            width: '100%',
+                            p: 2
+                        }}
+                    >
+                        <CircularProgress size={50} />
+                    </Box>
                 ) : (
                     data.newsList?.map((news) => (
                         <Grid item xs={12} md={6} key={news.title}>
