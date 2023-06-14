@@ -111,7 +111,7 @@ const Page = () => {
                     </Box>
 
                     {/* SUGGESTIONS */}
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3} mb={4}>
                         <Grid item xs={12} className='stocks_step_four'>
                             <Tooltip title={getLanguage(currentLanguage).tooltipStocksSuggestion}>
                                 <Typography variant='h4' sx={{ width: 'max-content' }}>
