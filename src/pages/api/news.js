@@ -8,8 +8,9 @@ async function scrapeLogic(res) {
     try {
         const browser = await puppeteer.launch({
             executablePath,
-            args: edgeChromium.args,
-            headless: true
+            args: [...edgeChromium.args, '--no-sandbox'],
+            headless: true,
+            ignoreHTTPSErrors: true
         });
         // Create a page
         const page = await browser.newPage();
