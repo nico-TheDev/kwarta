@@ -2,46 +2,29 @@ import { Button, CircularProgress, Grid, Paper, Typography, Tooltip } from '@mui
 import { Box } from '@mui/system';
 import { useNews } from 'hooks/swr/useNews';
 import { useState, useEffect } from 'react';
+import useSWR from 'swr';
 
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
 
 export default function NewsPanel(props) {
-    const [newsData, setNewsData] = useState(() => {
-        if (localStorage.getItem('newsData')) {
-            return JSON.parse(localStorage.getItem('newsData'));
-        } else {
-            return props.newsData;
-        }
-    });
+    const { data, isLoading, isError } = useNews();
 
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
-
-    useEffect(() => {
-        if (newsData) {
-            localStorage.setItem('newsData', JSON.stringify(newsData));
-        }
-    }, []);
-
-    // if (isLoadingNews)
-    //     return (
-    //         <Box sx={{ display: 'grid', justifyItems: 'center', height: '40vh', alignItems: 'center' }}>
-    //             <Typography variant='h6'>Fetching Latest News...</Typography>
-    //             <CircularProgress size={100} />
-    //         </Box>
-    //     );
 
     return (
         <>
             <Tooltip title={getLanguage(currentLanguage).tooltipLatestNews}>
-            <Typography variant='h6' mb={4} className={props.className}>
-                Latest News
-            </Typography>
+                <Typography variant='h6' mb={4} className={props.className}>
+                    Latest News
+                </Typography>
             </Tooltip>
 
             <Grid container spacing={2}>
-                {newsData &&
-                    newsData.newsList?.map((news) => (
+                {isLoading ? (
+                    <CircularProgress />
+                ) : (
+                    data.newsList?.map((news) => (
                         <Grid item xs={12} md={6} key={news.title}>
                             <Paper sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                                 <Box sx={{ height: '100%' }}>
@@ -62,7 +45,8 @@ export default function NewsPanel(props) {
                                 </Box>
                             </Paper>
                         </Grid>
-                    ))}
+                    ))
+                )}
             </Grid>
         </>
     );
