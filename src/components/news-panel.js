@@ -12,6 +12,22 @@ export default function NewsPanel(props) {
 
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
 
+    if (isError) {
+        return (
+            <>
+                <Tooltip title={getLanguage(currentLanguage).tooltipLatestNews}>
+                    <Typography variant='h6' mb={4} className={props.className}>
+                        Latest News
+                    </Typography>
+                </Tooltip>
+
+                <Typography variant='body1' mb={4}>
+                    Error fetching News 🥲
+                </Typography>
+            </>
+        );
+    }
+
     return (
         <>
             <Tooltip title={getLanguage(currentLanguage).tooltipLatestNews}>

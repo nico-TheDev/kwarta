@@ -120,7 +120,7 @@ const Page = () => {
                             </Tooltip>
                         </Grid>
 
-                        {!isLoading ? (
+                        {!isLoading && !isError ? (
                             stockData.trendingStocks.map((item, i) => (
                                 <Grid item xs={12} md={4} key={item.company + '-' + i}>
                                     <Link href={{ pathname: `/stocks/calculate`, query: { ...item } }}>
@@ -157,7 +157,13 @@ const Page = () => {
                                     p: 2
                                 }}
                             >
-                                <CircularProgress size={50} />
+                                {!isError ? (
+                                    <CircularProgress size={50} />
+                                ) : (
+                                    <Typography variant='h6' my={4}>
+                                        Error fetching stocks 🥲
+                                    </Typography>
+                                )}
                             </Box>
                         )}
                     </Grid>
