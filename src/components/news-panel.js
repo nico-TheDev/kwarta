@@ -47,10 +47,6 @@ export default function NewsPanel(props) {
                                     <Button sx={{ p: 0, fontSize: 12 }} variant='text' href={news.link} target='_blank'>
                                         {news.title}
                                     </Button>
-
-                                    {/* <Typography variant='caption' color='grey'>
-                                        {news.summary}
-                                    </Typography> */}
                                 </Box>
                             </Paper>
                         </Grid>
