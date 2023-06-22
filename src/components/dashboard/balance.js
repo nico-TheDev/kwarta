@@ -21,7 +21,7 @@ export const Balance = (props) => {
 
     const [total, setTotal] = useState(0);
     const [accountAllocation, setAccountAllocation] = useState([]);
-    const [showDetails, setShowDetails] = useState(true);
+    const [showDetails, setShowDetails] = useState(false);
 
     useEffect(() => {
         const totalBalance = accounts.reduce((acc, current) => {
@@ -88,7 +88,6 @@ export const Balance = (props) => {
                     <Grid item xs={12}>
                         <Box
                             sx={{
-                                borderRadius: 100,
                                 overflow: 'hidden',
                                 display: 'flex',
                                 alignItems: 'center'
@@ -128,7 +127,7 @@ export const Balance = (props) => {
                     </Button>
 
                     {showDetails && (
-                        <Grid item container sx={{ height: 100, overflowY: 'auto' }}>
+                        <Grid item container sx={{ height: 125, overflowY: 'auto' }}>
                             {accountAllocation.map((account) => (
                                 <Grid item sx={{ display: 'flex', alignItems: 'center', width: '100%', mb: 2 }}>
                                     <Box sx={{ color: account.color, display: 'flex', alignItems: 'center', mr: 1 }}>

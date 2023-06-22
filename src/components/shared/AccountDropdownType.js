@@ -19,7 +19,9 @@ export default function AccountDropdownType({ handleChange, accountType, disable
             >
                 <MenuItem value='cash-on-hand'>Cash on Hand</MenuItem>
                 <MenuItem value='e-wallet'>E-Wallet</MenuItem>
-                <MenuItem value='savings-account'>Savings Account</MenuItem>
+                <MenuItem value='savings'>Personal Savings Account</MenuItem>
+                <MenuItem value='savings'>Business Savings Account</MenuItem>
+                <MenuItem value='investments'>Investment Account</MenuItem>
             </Select>
         </FormControl>
     );

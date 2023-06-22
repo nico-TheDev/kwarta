@@ -127,54 +127,6 @@ export const DashboardLayout = (props) => {
         }
     }, []);
 
-    useEffect(() => {
-        const popupInterval = setInterval(() => {
-            // get random article
-            const randomIndex = Math.floor(Math.random() * articles.length);
-            const randomObject = articles[randomIndex];
-            setArticle(randomObject);
-
-            if (showSuggestion) {
-                toast.custom(
-                    (t) => (
-                        <Paper sx={{ p: 2, gap: 2, alignItems: 'center', zIndex: 999999 }}>
-                            <Box sx={{ mb: 1, width: 300 }}>
-                                <Typography
-                                    variant='subtitle1'
-                                    color='textSecondary'
-                                    sx={{ mb: 2, display: 'inline-block' }}
-                                >
-                                    So you may want to read about:
-                                </Typography>
-                                <Link href={article.articleLink} underline='none' target='_blank'>
-                                    <Box>
-                                        <Typography color='textPrimary' variant='body1' mb={2}>
-                                            {article.articleTitle}
-                                        </Typography>
-
-                                        <Typography color='textSecondary' variant='subtitle1'>
-                                            {article.articleAuthor}
-                                        </Typography>
-                                    </Box>
-                                </Link>
-                            </Box>
-                            <Button sx={{ mt: 1 }} variant='outlined' onClick={() => handleClick(t.id)} fullWidth>
-                                Turn off reminders
-                            </Button>
-                        </Paper>
-                    ),
-                    {
-                        duration: 7000, // Automatically close after 5 seconds
-                        position: 'top-right',
-                        id: 'popup'
-                    }
-                );
-            }
-        }, 1000 * 5 * 60); // 5 minutes in milliseconds
-
-        return () => clearInterval(popupInterval);
-    }, [showSuggestion, toast, article]);
-
     return (
         <AuthGuard>
             <DashboardLayoutRoot>
