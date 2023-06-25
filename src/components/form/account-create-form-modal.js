@@ -108,7 +108,6 @@ export default function AccountCreateFormModal({ open, setOpen }) {
         setSelectedIcon('');
         setSelectedColor('');
         toast.dismiss(loader);
-        toast.success('Account successfully created!');
         setOpen(false);
     };
 
