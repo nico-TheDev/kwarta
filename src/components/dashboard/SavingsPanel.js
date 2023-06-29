@@ -22,7 +22,7 @@ export const SavingsPanel = (props) => {
             return acc;
         }, 0);
         const totalAccountSavings = accounts.reduce((acc, current) => {
-            if (current.account_type === 'savings') {
+            if (current.account_type === 'savings' || current.account_type.toLowerCase().includes('savings')) {
                 acc += current.account_amount;
             }
             return acc;
