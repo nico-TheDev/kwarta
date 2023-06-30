@@ -134,7 +134,9 @@ export default function Tour({ open, handleClose, handleOpen }) {
     const setIsTutorialOpen = useLanguageStore((state) => state.setIsTutorialOpen);
 
     useMount(() => {
-        setState({ run: true });
+        if (open) {
+            setState({ run: true });
+        }
     });
 
     const handleClickReset = () => {

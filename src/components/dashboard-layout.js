@@ -25,7 +25,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
 
 export const DashboardLayout = (props) => {
     const { children } = props;
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const [showTour, setShowTour] = useState(false);
     const handleOpen = () => {
         localStorage.setItem('isTourOpen', true);
@@ -45,7 +45,7 @@ export const DashboardLayout = (props) => {
     const setIsTutorialOpen = useLanguageStore((state) => state.setIsTutorialOpen);
 
     useEffect(() => {
-        console.log({ isTutorialOpen });
+        // console.log({ isTutorialOpen });
         if (transactions.length === 0 && accounts.length === 0) {
             setOpen(true);
         } else {
