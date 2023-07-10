@@ -166,6 +166,21 @@ const Page = () => {
                                 )}
                             </Box>
                         )}
+
+                        <Grid item>
+                            <Typography variant='body1'>
+                                This data is originally from{' '}
+                                <Typography
+                                    variant='body1'
+                                    component='a'
+                                    href='https://ph.investing.com/equities/trending-stocks'
+                                    target='_blank'
+                                >
+                                    ph.investing.com
+                                </Typography>
+                                . Visit their website for more information.
+                            </Typography>
+                        </Grid>
                     </Grid>
                     {/* MARKET MOVERS */}
                     <Grid container spacing={3}>
@@ -212,12 +227,22 @@ const Page = () => {
                                 <CircularProgress size={50} />
                             </Box>
                         )}
+
+                        <Grid item xs={12}>
+                            <Typography variant='body1'>
+                                This data is originally from{' '}
+                                <Typography
+                                    variant='body1'
+                                    component='a'
+                                    href='https://ph.investing.com/equities/trending-stocks'
+                                    target='_blank'
+                                >
+                                    ph.investing.com
+                                </Typography>
+                                . Visit their website for more information.
+                            </Typography>
+                        </Grid>
                     </Grid>
-                    <Box sx={{ pt: 3 }}>
-                        <Typography sx={{ m: 1, textAlign: 'center' }} color='textSecondary' variant='caption'>
-                            Source: https://www.pseacademy.com.ph/investment-calculator/
-                        </Typography>
-                    </Box>
                 </Container>
             </Box>
         </>
