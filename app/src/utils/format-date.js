@@ -1,8 +1,5 @@
-export default function formatDate(date) {
-    const month = Number(date.$M) + 1;
-    const year = date.$y;
-    const day = date.$D;
-    const dateFormat = `${month}/${day}/${year}`;
+import { format } from 'date-fns';
 
-    return dateFormat;
+export default function formatDate(date) {
+    return format(new Date(date), 'M/d/yyyy');
 }

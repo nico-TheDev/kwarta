@@ -1,0 +1,105 @@
+'use client';
+
+import { useState } from 'react';
+import NextLink from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useFormik } from 'formik';
+import { Box, Button, Container, Grid, Link, TextField, Typography, useTheme } from '@mui/material';
+import Image from 'next/image';
+import { Google as GoogleIcon } from '../../../icons/google';
+import { useAuthStore } from '../../../stores/useAuthStore';
+
+export default function LoginPage() {
+    const theme = useTheme();
+    const router = useRouter();
+    const [isBtnDisabled, setIsBtnDisabled] = useState(false);
+    const loginWithGoogle = useAuthStore((state) => state.loginWithGoogle);
+    const verifyUser = useAuthStore((state) => state.verifyUser);
+
+    const handleLoginDefault = (values: { email: string; password: string }) => {
+        setIsBtnDisabled(true);
+        verifyUser({ email: values.email, password: values.password }).then(() => {
+            setIsBtnDisabled(false);
+        });
+    };
+
+    const handleLoginWithGoogle = () => {
+        setIsBtnDisabled(true);
+        loginWithGoogle().then(() => {
+            setIsBtnDisabled(false);
+            router.replace('/dashboard');
+        });
+    };
+
+    const formik = useFormik({
+        initialValues: { email: '', password: '' },
+        onSubmit: handleLoginDefault,
+    });
+
+    return (
+        <Box
+            component="main"
+            sx={{ alignItems: 'center', justifyContent: 'space-around', display: 'flex', flexGrow: 1, minHeight: '100%' }}
+        >
+            <Container maxWidth="sm">
+                <form onSubmit={formik.handleSubmit}>
+                    <Box sx={{ my: 3, textAlign: { xs: 'center', lg: 'initial' } }}>
+                        <Typography color="textPrimary" variant="h4">Log in</Typography>
+                        <Typography color="textSecondary" gutterBottom variant="body2">
+                            Start monitoring your finances.
+                        </Typography>
+                    </Box>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Button
+                                color="error"
+                                fullWidth
+                                onClick={handleLoginWithGoogle}
+                                size="large"
+                                startIcon={<GoogleIcon />}
+                                variant="contained"
+                                disabled={isBtnDisabled}
+                            >
+                                Login with Google
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Box sx={{ pb: 1, pt: 3 }}>
+                        <Typography align="center" color="textSecondary" variant="body1">
+                            or login with email address
+                        </Typography>
+                    </Box>
+                    <TextField
+                        fullWidth label="Email Address" margin="normal" name="email"
+                        onBlur={formik.handleBlur} onChange={formik.handleChange}
+                        type="email" value={formik.values.email} variant="outlined"
+                    />
+                    <TextField
+                        fullWidth label="Password" margin="normal" name="password"
+                        onBlur={formik.handleBlur} onChange={formik.handleChange}
+                        type="password" value={formik.values.password} variant="outlined"
+                    />
+                    <Box sx={{ py: 2 }}>
+                        <Button color="primary" fullWidth size="large" type="submit" variant="contained" disabled={isBtnDisabled}>
+                            Log In Now
+                        </Button>
+                    </Box>
+                    <Typography color="textSecondary" variant="body2">
+                        Don&apos;t have an account?{' '}
+                        <NextLink href="/register">
+                            <Link variant="subtitle2" underline="hover" sx={{ cursor: 'pointer' }}>
+                                Sign Up
+                            </Link>
+                        </NextLink>
+                    </Typography>
+                </form>
+            </Container>
+            <Box sx={{ width: '50%', height: '100vh', overflow: 'hidden', display: { xs: 'none', md: 'flex' }, alignItems: 'center', position: 'relative', justifyContent: 'center' }}>
+                <Typography variant="h2" position="absolute" sx={{ zIndex: 10, color: 'white', textAlign: 'center', width: '80%' }}>
+                    <span style={{ color: theme.palette.primary.main }}>Learn</span> about Financial Literacy
+                </Typography>
+                <Image src="/static/images/login-bg.jpg" alt="Login background" fill style={{ filter: 'brightness(0.4) blur(2px)', objectFit: 'cover' }} />
+            </Box>
+        </Box>
+    );
+}

@@ -24,9 +24,8 @@ import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { Stack } from '@mui/system';
 import CommentInput from 'components/shared/CommentInput';
 import { useFormik } from 'formik';
-import dayjs from 'dayjs';
 import toast from 'react-hot-toast';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import formatDate from 'utils/format-date';
 import { useTransactionStore } from 'stores/useTransactionStore';
@@ -53,7 +52,7 @@ const Page = () => {
 
     const { transactionId } = router.query;
     // FORM STATES
-    const [date, setDate] = useState(formatDate(dayjs(new Date())));
+    const [date, setDate] = useState(formatDate(new Date()));
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedAccount, setSelectedAccount] = useState('');
     const [selectedFile, setSelectedFile] = useState('');
@@ -296,7 +295,7 @@ const Page = () => {
                             </FormControl>
                         </Box>
                         {/* DATE PICKER */}
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <Stack spacing={3}>
                                 <DesktopDatePicker
                                     name='date'

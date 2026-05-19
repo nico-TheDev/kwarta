@@ -13,11 +13,10 @@ import Select from '@mui/material/Select';
 import { useFormik } from 'formik';
 import * as React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import dayjs from 'dayjs';
 import Stack from '@mui/material/Stack';
 import toast from 'react-hot-toast';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
 import InfoIcon from '@mui/icons-material/Info';
@@ -52,7 +51,7 @@ export default function TransactionFormModal({ open, setOpen }) {
     const [openAlert, setOpenAlert] = React.useState(false);
 
     // FORM STATES
-    const [date, setDate] = useState(formatDate(dayjs(new Date())));
+    const [date, setDate] = useState(formatDate(new Date()));
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedAccount, setSelectedAccount] = useState('');
     const [selectedFile, setSelectedFile] = useState('');
@@ -282,7 +281,7 @@ export default function TransactionFormModal({ open, setOpen }) {
                         </FormControl>
                     </Box>
                     {/* DATE PICKER */}
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 name='date'
