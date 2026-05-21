@@ -1,7 +1,7 @@
 'use client';
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { Toaster } from 'react-hot-toast';
 import { useEffect } from 'react';
 import { registerChartJs } from '../utils/register-chart-js';

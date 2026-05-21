@@ -16,7 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
 import toast from 'react-hot-toast';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
 import InfoIcon from '@mui/icons-material/Info';
