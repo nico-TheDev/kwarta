@@ -8,12 +8,13 @@ The product title shown in the app shell is **CASH: Financial Monitoring System*
 
 | Directory | Purpose |
 |-----------|---------|
-| [`app/`](app/) | Next.js 12 front end and API routes |
+| [`app/`](app/) | Next.js 14 front end (App + Pages Router) and API routes |
+| [`docs/migration.md`](docs/migration.md) | Next.js 14 → 16 migration checklist and phase status |
 | [`scraping-service/`](scraping-service/) | Express API that exposes `/inflation`, `/stocks`, `/news`, and `/investment` |
 
 ## Prerequisites
 
-- **Node.js** (LTS recommended; compatible with Next.js 12 and React 18)
+- **Node.js 20.9+** (LTS recommended; required for Next.js 16 target — see [docs/migration.md](docs/migration.md))
 - A **Firebase** project with Authentication, Firestore, and Storage enabled (for the web app)
 - For scraping features called from the browser, the scraping service must be reachable from the client (see environment variables below). **Puppeteer** needs a working Chrome/Chromium install (the `app` package runs a `postinstall` script for Puppeteer).
 
@@ -56,8 +57,6 @@ Open [http://localhost:3000](http://localhost:3000). Use `npm run build` and `np
 ### Other scripts
 
 - `npm run lint` — ESLint (Next.js config)
-- `npm run export` — static export (if configured for your deployment)
-
 ## Scraping service (`scraping-service/`)
 
 Express server (default port **5000**) that returns scraped JSON for:
