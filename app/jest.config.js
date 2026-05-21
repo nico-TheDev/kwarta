@@ -6,6 +6,7 @@ const config = {
     coverageProvider: 'v8',
     testEnvironment: 'jsdom',
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
     moduleNameMapper: {
         '^stores/(.*)$': '<rootDir>/src/stores/$1',
         '^hooks/(.*)$': '<rootDir>/src/hooks/$1',

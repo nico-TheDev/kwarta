@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import AddPhotoIcon from '@mui/icons-material/AddPhotoAlternate';
+import Image from 'next/image';
 
 export default function CommentInput({ formik, selectedFile, setSelectedFile, isEditing = true, comments }) {
     const inputRef = useRef(null);
@@ -91,13 +92,12 @@ export default function CommentInput({ formik, selectedFile, setSelectedFile, is
             >
                 {selectedFile?.source ? (
                     <Box sx={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0 }}>
-                        <img
+                        <Image
                             src={selectedFile.source}
                             alt=''
+                            fill
+                            unoptimized
                             style={{
-                                display: 'block',
-                                width: '100%',
-                                height: '100%',
                                 objectFit: 'fill'
                             }}
                         />

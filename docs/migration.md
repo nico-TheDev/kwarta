@@ -15,8 +15,8 @@ Track progress for the Kwarta web app (`app/`). Each phase is committed separate
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| 0 | Baseline + docs | In review |
-| 1 | Pre-upgrade cleanup (deps, js/ts dedupe) | Pending |
+| 0 | Baseline + docs | **Done** — commit `0442cf8` |
+| 1 | Pre-upgrade cleanup (deps, js/ts dedupe) | **Done** |
 | 2 | Next 15 + React 19 | Pending |
 | 3 | Next 16 | Pending |
 | 4 | Companion libraries (Firebase, Puppeteer, etc.) | Pending |

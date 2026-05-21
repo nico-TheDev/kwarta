@@ -1,5 +1,7 @@
 import { languages } from '../data/language-content';
 
-export const getLanguage = (currentLanguage: string) => {
-    return (languages as Record<string, unknown>)[currentLanguage];
+export type LanguageStrings = Record<string, string>;
+
+export const getLanguage = (currentLanguage: string): LanguageStrings => {
+    return (languages as Record<string, LanguageStrings>)[currentLanguage] ?? (languages as Record<string, LanguageStrings>).en;
 };

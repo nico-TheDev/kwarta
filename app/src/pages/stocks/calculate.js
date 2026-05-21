@@ -152,7 +152,7 @@ const Page = () => {
                                 </Typography>
 
                                 <Typography variant='caption' color='textSecondary'>
-                                    Stockbroker's Commission = {result.stockCommsBuy} <br />
+                                    Stockbroker&apos;s Commission = {result.stockCommsBuy} <br />
                                     Clearing Fee = {result.clearFeeBuy} <br />
                                     PSE Transaction Fee = {result.transFeeBuy} <br />
                                     Total Trading Costs = {result.tradeCostBuy} <br />
@@ -182,7 +182,7 @@ const Page = () => {
                                 </Typography>
 
                                 <Typography variant='caption' color='textSecondary'>
-                                    Stockbroker's Commission = {result.stockCommsSell} <br />
+                                    Stockbroker&apos;s Commission = {result.stockCommsSell} <br />
                                     Clearing Fee = {result.clearFeeSell} <br />
                                     PSE Transaction Fee = {result.transFeeSell} <br />
                                     Stock Transaction Tax = {result.stockTax} <br />

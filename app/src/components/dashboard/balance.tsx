@@ -95,7 +95,7 @@ export const Balance = (props) => {
                         >
                             {accountAllocation.length !== 0 &&
                                 accountAllocation.map((account) => (
-                                    <Tooltip title={`${account.name}: ${formatPrice(account.amount, true)}`}>
+                                    <Tooltip key={account.name} title={`${account.name}: ${formatPrice(account.amount, true)}`}>
                                         <Box
                                             sx={{
                                                 width: `${account.width}%`,
@@ -129,7 +129,7 @@ export const Balance = (props) => {
                     {showDetails && (
                         <Grid item container sx={{ height: 125, overflowY: 'auto' }}>
                             {accountAllocation.map((account) => (
-                                <Grid item sx={{ display: 'flex', alignItems: 'center', width: '100%', mb: 2 }}>
+                                <Grid key={account.name} item sx={{ display: 'flex', alignItems: 'center', width: '100%', mb: 2 }}>
                                     <Box sx={{ color: account.color, display: 'flex', alignItems: 'center', mr: 1 }}>
                                         <Icon name={account.icon} color='inherit' />
                                     </Box>

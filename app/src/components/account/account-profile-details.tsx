@@ -20,8 +20,6 @@ export const AccountProfileDetails = (props) => {
     const handleSubmit = (values) => {
         console.log(values);
         updateUser({
-            firstName: values.firstName,
-            lastName: values.lastName,
             new_displayName: values.firstName + ' ' + values.lastName,
             new_email: values.email
         });
@@ -94,7 +92,7 @@ export const AccountProfileDetails = (props) => {
                         p: 2
                     }}
                 >
-                    <Button color='primary' variant='contained' onClick={formik.handleSubmit}>
+                    <Button type='submit' color='primary' variant='contained'>
                         {getLanguage(currentLanguage).saveDetails}
                     </Button>
                 </Box>

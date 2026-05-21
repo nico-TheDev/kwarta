@@ -105,6 +105,7 @@ const Page = () => {
                         <Stack direction='row' spacing={1}>
                             {filters.map((item) => (
                                 <Chip
+                                    key={item}
                                     label={item}
                                     onClick={() => handleClick(item)}
                                     variant={filterValue.includes(item) ? 'filled' : 'outlined'}

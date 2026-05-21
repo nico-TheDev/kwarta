@@ -31,7 +31,7 @@ export const ArticlesCard = ({ articles, ...rest }) => {
                         </Typography>
                         <Stack direction='row' spacing={1} mb={2}>
                             {articles.articleTags.map((item) => (
-                                <Chip label={item} variant='outlined' color='secondary' />
+                                <Chip key={item} label={item} variant='outlined' color='secondary' />
                             ))}
                         </Stack>
                         <Typography color='textSecondary' variant='subtitle1'>

@@ -4,6 +4,7 @@ import { Carousel } from 'react-responsive-carousel';
 import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS, Step } from 'react-joyride';
 import { useMeasure, useMount, useSetState } from 'react-use';
 import { Box, Button, Modal, Typography } from '@mui/material';
+import Image from 'next/image';
 
 import { theme } from 'theme';
 import { useLanguageStore } from 'stores/useLanguageStore';
@@ -36,7 +37,7 @@ export default function Tour({ open, handleClose, handleOpen }) {
             target: '.app__carousel',
             content: (
                 <Typography variant='body2'>
-                    Before we start, let's have a short tutorial about our application
+                    Before we start, let&apos;s have a short tutorial about our application
                 </Typography>
             ),
             disableBeacon: true,
@@ -228,9 +229,11 @@ export default function Tour({ open, handleClose, handleOpen }) {
                                         justifyContent: 'center'
                                     }}
                                 >
-                                    <img
+                                    <Image
                                         alt='1'
                                         src={item.source}
+                                        width={800}
+                                        height={600}
                                         style={{
                                             width: '100%',
                                             height: '100%',

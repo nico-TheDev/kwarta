@@ -3,6 +3,7 @@ import { Box } from '@mui/system';
 import { useNews } from 'hooks/swr/useNews';
 import { useState, useEffect } from 'react';
 import useSWR from 'swr';
+import Image from 'next/image';
 
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
@@ -53,9 +54,12 @@ export default function NewsPanel(props) {
                         <Grid item xs={12} md={6} key={news.title}>
                             <Paper sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                                 <Box sx={{ height: '100%' }}>
-                                    <img
+                                    <Image
                                         src={news?.image || '/static/images/articles/general.jpg'}
                                         alt=''
+                                        width={150}
+                                        height={100}
+                                        unoptimized
                                         style={{ height: 100, display: 'block', width: 150 }}
                                     />
                                 </Box>

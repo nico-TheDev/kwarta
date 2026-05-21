@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import NextLink from 'next/link';
 import { Box, Button, Container, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -43,9 +44,11 @@ const Page = () => (
             Whichever it is, try using the navigation
           </Typography>
           <Box sx={{ textAlign: 'center' }}>
-            <img
+            <Image
               alt="Under development"
               src="/static/images/undraw_page_not_found_su7k.svg"
+              width={560}
+              height={400}
               style={{
                 marginTop: 50,
                 display: 'inline-block',

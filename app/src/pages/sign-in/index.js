@@ -8,7 +8,7 @@ import { auth, ENABLE_AUTH } from '../../lib/auth'
 import { Logo } from '../../components/logo'
 import Router from 'next/router'
 import { useAuthStore } from '../../stores/useAuthStore'
-import Image from 'next/image'
+import Image from 'next/image';
 
 import { useTheme } from '@mui/material/styles';
 
@@ -230,9 +230,10 @@ const Page = () => {
                                 </Box>{' '}
                                 journey here.
                             </Typography>
-                            <img
+                            <Image
                                 alt=''
                                 src='/static/images/signin-bg.jpg'
+                                fill
                                 style={{ filter: 'brightness(0.5)', objectFit: 'cover' }}
                             />
                         </Box>

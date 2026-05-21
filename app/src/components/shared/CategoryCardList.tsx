@@ -6,8 +6,8 @@ export default function CategoryCardList({ categoryList }) {
     return (
         <Grid container spacing={2} mb={4}>
             {categoryList.map((category) => (
-                <Grid item lg={3} md={6} xs={12}>
-                    <CategoriesCard categories={category} key={category.id} />
+                <Grid key={category.id} item lg={3} md={6} xs={12}>
+                    <CategoriesCard categories={category} />
                 </Grid>
             ))}
         </Grid>

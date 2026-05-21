@@ -1,6 +1,7 @@
 import { Grid, Box, Typography, Paper } from '@mui/material';
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function RecommendedList({ dataList }) {
     // const dataList = ['1', '2', '3', '4'];
@@ -16,9 +17,11 @@ export default function RecommendedList({ dataList }) {
                         <Link href='#'>
                             <Paper elevation={4}>
                                 <Box sx={{ width: '100%' }}>
-                                    <img
+                                    <Image
                                         src='/static/images/articles/general.jpg'
                                         alt=''
+                                        width={400}
+                                        height={120}
                                         style={{ display: 'block', width: '100%', height: '120px', objectFit: 'cover' }}
                                     />
                                 </Box>

@@ -46,8 +46,8 @@ export default function DashboardPage() {
 
     useEffect(() => {
         const currentTour = getTourProgress('dashboard');
-        setShowTour(currentTour.isDone);
-    }, []);
+        setShowTour(currentTour?.isDone ?? false);
+    }, [getTourProgress]);
 
     if (transactions.length === 0 && !isEmpty) {
         return (
