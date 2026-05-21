@@ -101,9 +101,9 @@ export default function RegisterPage() {
                     </Box>
                     <Typography color="textSecondary" variant="body2">
                         Have an account?{' '}
-                        <NextLink href="/login">
-                            <Link variant="subtitle2" underline="hover">Sign In</Link>
-                        </NextLink>
+                        <Link component={NextLink} href="/login" variant="subtitle2" underline="hover">
+                            Sign In
+                        </Link>
                     </Typography>
                 </form>
             </Container>

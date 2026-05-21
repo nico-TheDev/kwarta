@@ -1,9 +1,11 @@
-import Head from 'next/head';
+'use client';
+
 import { useEffect, useState } from 'react';
 import {
     Box,
     Button,
     Chip,
+    CircularProgress,
     Container,
     FormControl,
     Grid,
@@ -11,21 +13,21 @@ import {
     Link,
     ListItemText,
     MenuItem,
+    MobileStepper,
     Paper,
     Select,
     Typography
 } from '@mui/material';
-import PollIcon from '@mui/icons-material/PollOutlined';
-import Carousel from 'react-material-ui-carousel';
+import { onAuthStateChanged } from 'firebase/auth';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import { useAuthStore } from 'stores/useAuthStore';
+import { auth } from '../../firebase.config';
 
-import { DashboardLayout } from '../components/dashboard-layout';
 import Image from 'next/image';
-import { Icon } from 'components/shared/Icon';
 import premadeCategories from 'data/categories';
 import { useRouter } from 'next/navigation';
-import { useLanguageStore } from 'stores/useLanguageStore';
 import toast from 'react-hot-toast';
 
 const categories = premadeCategories
@@ -39,15 +41,13 @@ const categories = premadeCategories
 
 const MenuProps = {
     PaperProps: {
-        style: {
-            maxHeight: 150,
-            width: {
-                xs: '100%',
-                md: 250
-            }
+        sx: {
+            maxHeight: 280
         }
     }
 };
+
+const questionTypographySx = { whiteSpace: 'pre-line' };
 
 const formControlStyle = {
     width: {
@@ -191,15 +191,53 @@ export default function SurveyBlock() {
         total: 0
     });
     const [isBtnDisabled, setIsBtnDisabled] = useState(false);
-    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
-    const setLanguage = useLanguageStore((state) => state.setLanguage);
-    const [hasSelectedLanguage, setHasSelectedLanguage] = useState(false);
-    const [dataPrivacyAnswer, setDataPrivacyAnswer] = useState(false);
     const user = useAuthStore((state) => state.authState.user);
     const [isDone, setIsDone] = useState(false);
+    const [activeStep, setActiveStep] = useState(0);
+    const [authReady, setAuthReady] = useState(false);
+    const [firebaseUid, setFirebaseUid] = useState<string | undefined>();
+    const [authChecked, setAuthChecked] = useState(false);
     const manageSurvey = useAuthStore((state) => state.manageSurvey);
+    const skipSurvey = useAuthStore((state) => state.skipSurvey);
+    const stepCount = 3;
 
-    const handleSubmit = () => {
+    const uid = user?.uid ?? firebaseUid ?? auth?.currentUser?.uid;
+
+    useEffect(() => {
+        const finishHydration = () => setAuthReady(true);
+        if (useAuthStore.persist.hasHydrated()) {
+            finishHydration();
+        }
+        return useAuthStore.persist.onFinishHydration(finishHydration);
+    }, []);
+
+    useEffect(() => {
+        if (!authReady) return;
+        if (!auth) {
+            setAuthChecked(true);
+            return;
+        }
+        return onAuthStateChanged(auth, (firebaseUser) => {
+            setFirebaseUid(firebaseUser?.uid);
+            setAuthChecked(true);
+        });
+    }, [authReady]);
+
+    useEffect(() => {
+        if (!authReady || !authChecked) return;
+        if (!uid) {
+            toast.error('Please log in to complete the survey.');
+            router.replace('/login');
+        }
+    }, [authReady, authChecked, uid, router]);
+
+    const handleSubmit = async () => {
+        if (!uid) {
+            toast.error('Please log in to complete the survey.');
+            router.replace('/login');
+            return;
+        }
+
         setIsBtnDisabled(true);
         const firstAnswer = surveyList[0].choices.find((item) => questionOne === item.value);
         const secondAnswer = [];
@@ -209,29 +247,47 @@ export default function SurveyBlock() {
             if (found) secondAnswer.push(found);
         });
 
-        manageSurvey(
-            {
-                questionOne: firstAnswer,
-                questionTwo: secondAnswer,
-                questionThree
-            },
-            user.uid
-        ).then((_) => {
-            setIsBtnDisabled(false);
+        try {
+            await manageSurvey(
+                {
+                    questionOne: firstAnswer,
+                    questionTwo: secondAnswer,
+                    questionThree
+                },
+                uid
+            );
             setIsDone(true);
 
             setTimeout(() => {
                 router.push('/accounts');
             }, 5000);
-        });
+        } catch {
+            setIsBtnDisabled(false);
+        }
+    };
+
+    const handleSkip = async () => {
+        if (!uid) {
+            toast.error('Please log in to continue.');
+            router.replace('/login');
+            return;
+        }
+
+        setIsBtnDisabled(true);
+        try {
+            await skipSurvey(uid);
+            router.push('/dashboard');
+        } catch {
+            setIsBtnDisabled(false);
+        }
     };
 
     const handleChange = (e) => {
-        const value = e.target.value;
+        const value = Number(e.target.value);
         const updated = { ...questionThree };
         updated[e.target.name] = value;
 
-        let total = updated.needs + updated.wants + updated.savings;
+        const total = updated.needs + updated.wants + updated.savings;
 
         if (total > 100) {
             // console.log({ total });
@@ -258,6 +314,14 @@ export default function SurveyBlock() {
         // console.log(updated);
         setQuestionThree({ ...updated, total });
     };
+
+    if (!authReady || (!authChecked && !uid)) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 12 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <Box
@@ -302,18 +366,24 @@ export default function SurveyBlock() {
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={4}>
-                        <Box sx={{ position: 'relative', width: '100%', height: { xs: 200, md: '100%' } }}>
-                            <Image src={surveyList[1].source} alt='Image' layout='fill' />
+                        <Box sx={{ position: 'relative', width: '100%', minHeight: { xs: 200, md: 360 } }}>
+                            <Image
+                                src={surveyList[activeStep].source}
+                                alt='Survey illustration'
+                                fill
+                                style={{ objectFit: 'contain' }}
+                                sizes='(max-width: 900px) 100vw, 33vw'
+                            />
                         </Box>
                     </Grid>
 
                     <Grid item xs={12} md={8}>
-                        <Carousel autoPlay={false} animation='slide' navButtonsAlwaysVisible cycleNavigation={false}>
-                            <Paper p={4} sx={{ height: '50vh', p: 4 }}>
+                        {activeStep === 0 && (
+                            <Paper sx={{ minHeight: { xs: 'auto', md: '50vh' }, p: 4 }}>
                                 <Typography variant='h6' mb={2}>
                                     Socio-economic Standing
                                 </Typography>
-                                <Typography variant='h6' mb={4}>
+                                <Typography variant='h6' mb={4} sx={questionTypographySx}>
                                     {surveyList[0].question}
                                 </Typography>
                                 <Box mb={2}>
@@ -327,10 +397,10 @@ export default function SurveyBlock() {
                                     </Link>
                                 </Box>
                                 <FormControl sx={formControlStyle}>
-                                    <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
+                                    <InputLabel id='survey-salary-label'>Choose Answer</InputLabel>
                                     <Select
-                                        labelId='demo-simple-select-label'
-                                        id='demo-simple-select'
+                                        labelId='survey-salary-label'
+                                        id='survey-salary-select'
                                         value={questionOne}
                                         label='Choose Answer'
                                         onChange={(e) => {
@@ -339,11 +409,10 @@ export default function SurveyBlock() {
                                         }}
                                         sx={{ display: 'flex', alignItems: 'center' }}
                                         MenuProps={MenuProps}
-                                        inputProps={{ width: '100%', background: 'red' }}
                                     >
                                         {surveyList[0].choices.map((choice, i) => {
                                             return (
-                                                <MenuItem key={choice.id + i} value={choice.value}>
+                                                <MenuItem key={`salary-${choice.value}`} value={choice.value}>
                                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                         <ListItemText>{choice.text}</ListItemText>
                                                     </Box>
@@ -353,17 +422,18 @@ export default function SurveyBlock() {
                                     </Select>
                                 </FormControl>
                             </Paper>
+                        )}
 
-                            {/* QUESTION TWO */}
-                            <Paper p={4} sx={{ height: '50vh', p: 4 }}>
-                                <Typography variant='h6' mb={4}>
+                        {activeStep === 1 && (
+                            <Paper sx={{ minHeight: { xs: 'auto', md: '50vh' }, p: 4 }}>
+                                <Typography variant='h6' mb={4} sx={questionTypographySx}>
                                     {surveyList[1].question}
                                 </Typography>
                                 <FormControl sx={formControlStyle}>
-                                    <InputLabel id='demo-simple-select-label'>Choose Answer</InputLabel>
+                                    <InputLabel id='survey-priority-label'>Choose Answer</InputLabel>
                                     <Select
-                                        labelId='demo-simple-select-label'
-                                        id='demo-simple-select'
+                                        labelId='survey-priority-label'
+                                        id='survey-priority-select'
                                         value={questionTwo}
                                         label='Choose Answer'
                                         onChange={(e) => {
@@ -385,7 +455,7 @@ export default function SurveyBlock() {
                                     >
                                         {surveyList[1].choices.map((choice, i) => {
                                             return (
-                                                <MenuItem key={choice.id + i} value={choice.text}>
+                                                <MenuItem key={`priority-${choice.id}-${i}`} value={choice.text}>
                                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                         <ListItemText>{choice.text}</ListItemText>
                                                     </Box>
@@ -395,25 +465,26 @@ export default function SurveyBlock() {
                                     </Select>
                                 </FormControl>
                             </Paper>
+                        )}
 
-                            {/* QUESTION 3 */}
-                            <Paper p={4} sx={{ height: '50vh', p: 4 }}>
-                                <Typography variant='h6' mb={4}>
+                        {activeStep === 2 && (
+                            <Paper sx={{ minHeight: { xs: 'auto', md: '50vh' }, p: 4 }}>
+                                <Typography variant='h6' mb={4} sx={questionTypographySx}>
                                     {surveyList[2].question}
                                 </Typography>
-                                <Typography variant='h6' mb={4}>
-                                    Example: 50% Needs, 30% Wants, 20% Savings
+                                <Typography variant='body1' color='text.secondary' mb={4}>
+                                    Example: 50% Needs, 30% Wants, 20% Savings (total must equal 100%)
                                 </Typography>
-                                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-start' }}>
-                                    <FormControl>
-                                        <InputLabel id='demo-simple-select-label'>Needs</InputLabel>
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-start' }}>
+                                    <FormControl sx={{ minWidth: 120 }}>
+                                        <InputLabel id='survey-needs-label'>Needs</InputLabel>
                                         <Select
-                                            labelId='demo-simple-select-label'
-                                            id='demo-simple-select'
+                                            labelId='survey-needs-label'
+                                            id='survey-needs-select'
                                             value={questionThree.needs}
-                                            label='Choose Answer'
+                                            label='Needs'
                                             onChange={handleChange}
-                                            sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
+                                            sx={{ display: 'flex', alignItems: 'center' }}
                                             MenuProps={MenuProps}
                                             name='needs'
                                         >
@@ -428,15 +499,15 @@ export default function SurveyBlock() {
                                             })}
                                         </Select>
                                     </FormControl>
-                                    <FormControl>
-                                        <InputLabel id='demo-simple-select-label'>Wants</InputLabel>
+                                    <FormControl sx={{ minWidth: 120 }}>
+                                        <InputLabel id='survey-wants-label'>Wants</InputLabel>
                                         <Select
-                                            labelId='demo-simple-select-label'
-                                            id='demo-simple-select'
+                                            labelId='survey-wants-label'
+                                            id='survey-wants-select'
                                             value={questionThree.wants}
-                                            label='Choose Answer'
+                                            label='Wants'
                                             onChange={handleChange}
-                                            sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
+                                            sx={{ display: 'flex', alignItems: 'center' }}
                                             MenuProps={MenuProps}
                                             name='wants'
                                         >
@@ -451,15 +522,15 @@ export default function SurveyBlock() {
                                             })}
                                         </Select>
                                     </FormControl>
-                                    <FormControl>
-                                        <InputLabel id='demo-simple-select-label'>Savings</InputLabel>
+                                    <FormControl sx={{ minWidth: 120 }}>
+                                        <InputLabel id='survey-savings-label'>Savings</InputLabel>
                                         <Select
-                                            labelId='demo-simple-select-label'
-                                            id='demo-simple-select'
+                                            labelId='survey-savings-label'
+                                            id='survey-savings-select'
                                             value={questionThree.savings}
-                                            label='Choose Answer'
+                                            label='Savings'
                                             onChange={handleChange}
-                                            sx={{ display: 'flex', alignItems: 'center', width: 'max-content' }}
+                                            sx={{ display: 'flex', alignItems: 'center' }}
                                             MenuProps={MenuProps}
                                             name='savings'
                                         >
@@ -475,20 +546,68 @@ export default function SurveyBlock() {
                                         </Select>
                                     </FormControl>
                                 </Box>
+                                <Typography variant='body2' sx={{ mt: 2 }} color='text.secondary'>
+                                    Total: {questionThree.total}%
+                                </Typography>
                             </Paper>
-                        </Carousel>
+                        )}
 
-                        <Button
-                            variant='contained'
-                            size='large'
-                            sx={{ display: 'block', width: '80%', marginX: 'auto', mt: 4 }}
-                            disabled={
-                                !questionOne || questionTwo.length !== 3 || questionThree.total !== 100 || isBtnDisabled
+                        <MobileStepper
+                            variant='dots'
+                            steps={stepCount}
+                            position='static'
+                            activeStep={activeStep}
+                            sx={{ mt: 3, background: 'transparent', flexGrow: 1 }}
+                            nextButton={
+                                <Button
+                                    size='small'
+                                    onClick={() => setActiveStep((s) => Math.min(s + 1, stepCount - 1))}
+                                    disabled={activeStep === stepCount - 1}
+                                >
+                                    Next
+                                    <KeyboardArrowRight />
+                                </Button>
                             }
-                            onClick={handleSubmit}
-                        >
-                            Submit
-                        </Button>
+                            backButton={
+                                <Button
+                                    size='small'
+                                    onClick={() => setActiveStep((s) => Math.max(s - 1, 0))}
+                                    disabled={activeStep === 0}
+                                >
+                                    <KeyboardArrowLeft />
+                                    Back
+                                </Button>
+                            }
+                        />
+
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, mt: 4 }}>
+                            <Button
+                                variant='contained'
+                                size='large'
+                                sx={{ width: '80%' }}
+                                disabled={
+                                    !uid ||
+                                    !questionOne ||
+                                    questionTwo.length !== 3 ||
+                                    questionThree.total !== 100 ||
+                                    isBtnDisabled
+                                }
+                                onClick={handleSubmit}
+                            >
+                                Submit
+                            </Button>
+                            <Button
+                                variant='text'
+                                color='inherit'
+                                disabled={!uid || isBtnDisabled}
+                                onClick={handleSkip}
+                            >
+                                Skip for now
+                            </Button>
+                            <Typography variant='caption' color='text.secondary' sx={{ textAlign: 'center', maxWidth: 360 }}>
+                                You can complete the survey later from your profile settings.
+                            </Typography>
+                        </Box>
                     </Grid>
                 </Grid>
             </Container>

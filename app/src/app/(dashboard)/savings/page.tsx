@@ -79,18 +79,18 @@ export default function Page() {
                                 Savings
                             </Typography>
                         </Tooltip>
-                        <Link href='/offers' passHref>
-                            <Button
-                                variant='outlined'
-                                startIcon={
-                                    <Icon name={ICON_NAMES.SYSTEM_ICONS.SEARCH} color='#FFFFFF' fontSize='small' />
-                                }
-                                sx={{ mr: 1 }}
-                                className='savings_step_two'
-                            >
-                                More Offers
-                            </Button>
-                        </Link>
+                        <Button
+                            component={Link}
+                            href='/offers'
+                            variant='outlined'
+                            startIcon={
+                                <Icon name={ICON_NAMES.SYSTEM_ICONS.SEARCH} color='#FFFFFF' fontSize='small' />
+                            }
+                            sx={{ mr: 1 }}
+                            className='savings_step_two'
+                        >
+                            More Offers
+                        </Button>
                     </Box>
                     <Box sx={{ pt: 3 }}>
                         <SavingsCard />

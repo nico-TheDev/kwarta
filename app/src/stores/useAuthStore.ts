@@ -73,6 +73,7 @@ interface AuthStore {
     loginWithGoogle: () => Promise<void>;
     logout: () => void;
     manageSurvey: (answers: SurveyAnswers, uid: string) => Promise<void>;
+    skipSurvey: (uid: string) => Promise<void>;
     getUser: (id: string) => Promise<Record<string, unknown> | undefined>;
     updateSurvey: (answers: SurveyAnswers) => Promise<void>;
     getTourProgress: (tour: string) => TourProgress | undefined;
@@ -326,16 +327,71 @@ const AuthStore = (set: any, get: any): AuthStore => ({
                 salary: answers.questionOne,
                 financeRule: answers.questionThree,
             });
+            const existingUser = get().authState.user;
             set({
                 authState: {
                     ...get().authState,
-                    user: { ...get().authState.user, hasAnswered: true },
-                    userSurvey: { priorities: answers.questionTwo, salary: answers.questionOne, financeRule: answers.questionThree },
+                    isAuthenticated: true,
+                    user: existingUser
+                        ? { ...existingUser, hasAnswered: true }
+                        : {
+                              uid,
+                              name: '',
+                              firstName: '',
+                              lastName: '',
+                              email: auth.currentUser?.email ?? '',
+                              photo: auth.currentUser?.photoURL ?? null,
+                              hasAnswered: true,
+                          },
+                },
+                userSurvey: {
+                    priorities: answers.questionTwo,
+                    salary: answers.questionOne,
+                    financeRule: answers.questionThree,
                 },
             });
             toast.success('Survey completed!');
         } catch (err: any) {
             toast.error('Something Went Wrong');
+            throw err;
+        }
+    },
+    skipSurvey: async (uid) => {
+        const userRef = doc(db, 'users', uid);
+        try {
+            await updateDoc(userRef, {
+                hasAnswered: true,
+                priorities: null,
+                salary: null,
+                financeRule: null,
+            });
+            const existingUser = get().authState.user;
+            set({
+                authState: {
+                    ...get().authState,
+                    isAuthenticated: true,
+                    user: existingUser
+                        ? { ...existingUser, hasAnswered: true }
+                        : {
+                              uid,
+                              name: '',
+                              firstName: '',
+                              lastName: '',
+                              email: auth.currentUser?.email ?? '',
+                              photo: auth.currentUser?.photoURL ?? null,
+                              hasAnswered: true,
+                          },
+                },
+                userSurvey: {
+                    priorities: null,
+                    financeRule: null,
+                    salary: null,
+                },
+            });
+            toast.success('Survey skipped. You can complete it later from your profile.');
+        } catch (err: any) {
+            toast.error('Something Went Wrong');
+            throw err;
         }
     },
     getUser: async (id) => {

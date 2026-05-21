@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Box, Button, CircularProgress, Container, Grid, Paper, Tooltip, Typography } from '@mui/material';
+import { Box, CircularProgress, Container, Grid, Paper, Tooltip, Typography } from '@mui/material';
 import { green } from '@mui/material/colors';
 import { formatPrice } from 'utils/format-price';
 import Link from 'next/link';
@@ -120,12 +120,28 @@ export default function Page() {
                         {!isLoading && !isError ? (
                             stockData.trendingStocks.map((item, i) => (
                                 <Grid item xs={12} md={4} key={item.company + '-' + i}>
-                                    <Link href={{ pathname: `/stocks/calculate`, query: { ...item } }}>
-                                        <Paper sx={{ p: 2, display: 'grid', gap: 2, justifyItems: 'start' }}>
-                                            <Button sx={{ p: 0 }} variant='text' href={item.link} target='_blank'>
-                                                {item.company}
-                                            </Button>
-
+                                    <Paper sx={{ p: 2, display: 'grid', gap: 2, justifyItems: 'start' }}>
+                                        <Typography
+                                            component='a'
+                                            href={item.link}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            variant='body1'
+                                            sx={{ fontWeight: 600, color: 'primary.main', textDecoration: 'none' }}
+                                        >
+                                            {item.company}
+                                        </Typography>
+                                        <Box
+                                            component={Link}
+                                            href={{ pathname: `/stocks/calculate`, query: { ...item } }}
+                                            sx={{
+                                                display: 'grid',
+                                                gap: 2,
+                                                justifyItems: 'start',
+                                                textDecoration: 'none',
+                                                color: 'inherit',
+                                            }}
+                                        >
                                             <Typography variant='h6'>{formatPrice(item.price, true)}</Typography>
                                             <Typography variant='body2' sx={{ display: 'flex', gap: 4 }}>
                                                 <Typography
@@ -141,8 +157,8 @@ export default function Page() {
                                                     {item.pricePercentage}
                                                 </Typography>
                                             </Typography>
-                                        </Paper>
-                                    </Link>
+                                        </Box>
+                                    </Paper>
                                 </Grid>
                             ))
                         ) : (
@@ -192,12 +208,28 @@ export default function Page() {
                         {!isLoading ? (
                             stockData.marketMovers.map((item, i) => (
                                 <Grid item xs={12} md={4} key={item.company + '-' + i}>
-                                    <Link href={{ pathname: `/stocks/calculate`, query: { ...item } }}>
-                                        <Paper sx={{ p: 2, display: 'grid', gap: 2, justifyItems: 'start' }}>
-                                            <Button sx={{ p: 0 }} variant='text' href={item.link} target='_blank'>
-                                                {item.company}
-                                            </Button>
-
+                                    <Paper sx={{ p: 2, display: 'grid', gap: 2, justifyItems: 'start' }}>
+                                        <Typography
+                                            component='a'
+                                            href={item.link}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            variant='body1'
+                                            sx={{ fontWeight: 600, color: 'primary.main', textDecoration: 'none' }}
+                                        >
+                                            {item.company}
+                                        </Typography>
+                                        <Box
+                                            component={Link}
+                                            href={{ pathname: `/stocks/calculate`, query: { ...item } }}
+                                            sx={{
+                                                display: 'grid',
+                                                gap: 2,
+                                                justifyItems: 'start',
+                                                textDecoration: 'none',
+                                                color: 'inherit',
+                                            }}
+                                        >
                                             <Typography variant='h6'>{formatPrice(item.price, true)}</Typography>
                                             <Typography variant='body2' sx={{ display: 'flex', gap: 4 }}>
                                                 <Typography
@@ -208,8 +240,8 @@ export default function Page() {
                                                 </Typography>
                                             </Typography>
                                             <Typography variant='body2'>{item.volume}</Typography>
-                                        </Paper>
-                                    </Link>
+                                        </Box>
+                                    </Paper>
                                 </Grid>
                             ))
                         ) : (

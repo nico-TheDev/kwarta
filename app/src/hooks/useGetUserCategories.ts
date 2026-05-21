@@ -8,24 +8,30 @@ export default function useGetUserCategories(userID: string | undefined) {
     const setCategories = useCategoryStore((state) => state.setCategories);
 
     useEffect(() => {
-        if (!userID) return;
+        if (!userID || !db) return;
 
         const categoryColRef = collection(db, 'categories');
         const categoryQuery = query(categoryColRef, where('user_id', '==', userID));
 
-        const unsubscribe = onSnapshot(categoryQuery, (snapshotData) => {
-            const prepCategories = premadeCategories.map((category: any) => ({ ...category, user_id: userID }));
-            const userList: any[] = [];
+        const unsubscribe = onSnapshot(
+            categoryQuery,
+            (snapshotData) => {
+                const prepCategories = premadeCategories.map((category: any) => ({ ...category, user_id: userID }));
+                const userList: any[] = [];
 
-            snapshotData.forEach((doc) => {
-                const idx = prepCategories.findIndex((item: any) => item.id === doc.id);
-                if (idx !== -1) prepCategories.splice(idx, 1);
-                userList.push({ ...doc.data(), type: doc.data().category_type, id: doc.id });
-            });
+                snapshotData.forEach((docSnap) => {
+                    const idx = prepCategories.findIndex((item: any) => item.id === docSnap.id);
+                    if (idx !== -1) prepCategories.splice(idx, 1);
+                    userList.push({ ...docSnap.data(), type: docSnap.data().category_type, id: docSnap.id });
+                });
 
-            setCategories([...prepCategories, ...userList]);
-        });
+                setCategories([...prepCategories, ...userList]);
+            },
+            (error) => {
+                console.error('[useGetUserCategories] listener error:', error);
+            }
+        );
 
         return unsubscribe;
-    }, [userID]);
+    }, [userID, setCategories]);
 }

@@ -86,11 +86,9 @@ export default function LoginPage() {
                     </Box>
                     <Typography color="textSecondary" variant="body2">
                         Don&apos;t have an account?{' '}
-                        <NextLink href="/register">
-                            <Link variant="subtitle2" underline="hover" sx={{ cursor: 'pointer' }}>
-                                Sign Up
-                            </Link>
-                        </NextLink>
+                        <Link component={NextLink} href="/register" variant="subtitle2" underline="hover">
+                            Sign Up
+                        </Link>
                     </Typography>
                 </form>
             </Container>

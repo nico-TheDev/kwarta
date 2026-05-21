@@ -254,7 +254,7 @@ export default function Page() {
                                         >
                                             {surveyList[0].choices.map((choice, i) => {
                                                 return (
-                                                    <MenuItem key={choice.id + i} value={choice.value}>
+                                                    <MenuItem key={`salary-${choice.value}`} value={choice.value}>
                                                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                             <ListItemText>{choice.text}</ListItemText>
                                                         </Box>
@@ -296,7 +296,7 @@ export default function Page() {
                                         >
                                             {surveyList[1].choices.map((choice, i) => {
                                                 return (
-                                                    <MenuItem key={choice.id + i} value={choice.text}>
+                                                    <MenuItem key={`priority-${choice.id}-${i}`} value={choice.text}>
                                                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                             <ListItemText>{choice.text}</ListItemText>
                                                         </Box>
@@ -328,7 +328,7 @@ export default function Page() {
                                         >
                                             {surveyList[2].choices.map((choice, i) => {
                                                 return (
-                                                    <MenuItem key={choice.id + i} value={choice.value}>
+                                                    <MenuItem key={`breadwinner-${choice.value}`} value={choice.value}>
                                                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                             <ListItemText>{choice.text}</ListItemText>
                                                         </Box>

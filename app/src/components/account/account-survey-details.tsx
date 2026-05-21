@@ -277,7 +277,7 @@ export const AccountSurveyDetails = (props) => {
                                 >
                                     {surveyList[0].choices.map((choice, i) => {
                                         return (
-                                            <MenuItem key={choice.id + i} value={choice.value}>
+                                            <MenuItem key={`salary-${choice.value}`} value={choice.value}>
                                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                     <ListItemText>{choice.text}</ListItemText>
                                                 </Box>
@@ -314,7 +314,7 @@ export const AccountSurveyDetails = (props) => {
                                 >
                                     {surveyList[1].choices.map((choice, i) => {
                                         return (
-                                            <MenuItem key={choice.id + i} value={choice.text}>
+                                            <MenuItem key={`priority-${choice.id}-${i}`} value={choice.text}>
                                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                                     <ListItemText>{choice.text}</ListItemText>
                                                 </Box>

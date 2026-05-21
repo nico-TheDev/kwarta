@@ -114,11 +114,14 @@ export default function LandingPage() {
                 <Typography variant="h4" mb={4} fontWeight={300} color={grey[800]}>
                     Start your journey by creating an account!
                 </Typography>
-                <Link href="/register">
-                    <Button variant="contained" sx={{ fontSize: { xs: 15, md: 30 }, px: { md: 6, xs: 2 }, textTransform: 'uppercase' }}>
-                        Sign Up
-                    </Button>
-                </Link>
+                <Button
+                    component={Link}
+                    href="/register"
+                    variant="contained"
+                    sx={{ fontSize: { xs: 15, md: 30 }, px: { md: 6, xs: 2 }, textTransform: 'uppercase' }}
+                >
+                    Sign Up
+                </Button>
             </Container>
 
             <Container maxWidth={false} component="footer" sx={{ ...styles.section, ...styles.footer }}>

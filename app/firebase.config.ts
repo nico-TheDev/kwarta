@@ -1,7 +1,7 @@
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { initializeFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
+import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
+import { getFirestore, type Firestore } from 'firebase/firestore';
+import { getAuth, type Auth } from 'firebase/auth';
+import { getStorage, type FirebaseStorage } from 'firebase/storage';
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -12,21 +12,48 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_APP_ID,
 };
 
-// Prevent double-init in hot reload; suppress errors when .env.local is absent
-let app: ReturnType<typeof initializeApp>;
-let db: ReturnType<typeof initializeFirestore>;
-let storage: ReturnType<typeof getStorage>;
-let auth: ReturnType<typeof getAuth>;
+type FirebaseServices = {
+    app: FirebaseApp;
+    db: Firestore;
+    auth: Auth;
+    storage: FirebaseStorage;
+};
+
+declare global {
+    // Survives Next.js dev HMR without re-initializing Firestore
+    var __kwartaFirebase: FirebaseServices | undefined;
+}
+
+function initFirebase(): FirebaseServices {
+    if (globalThis.__kwartaFirebase) {
+        return globalThis.__kwartaFirebase;
+    }
+
+    const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+    // Use getFirestore only — do not call initializeFirestore on an existing app (breaks listeners on HMR)
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    globalThis.__kwartaFirebase = { app, db, auth, storage };
+    return globalThis.__kwartaFirebase;
+}
+
+let app: FirebaseApp | undefined;
+let db: Firestore | undefined;
+let auth: Auth | undefined;
+let storage: FirebaseStorage | undefined;
 
 try {
-    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-    db = initializeFirestore(app, {});
-    storage = getStorage(app);
-    auth = getAuth(app);
+    const services = initFirebase();
+    app = services.app;
+    db = services.db;
+    auth = services.auth;
+    storage = services.storage;
 } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
         console.warn('[Firebase] Initialization skipped — set NEXT_PUBLIC_* vars in .env.local');
     }
 }
 
-export { app, db, storage, auth };
+export { app, db, auth, storage };

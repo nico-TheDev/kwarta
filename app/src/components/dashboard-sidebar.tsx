@@ -140,15 +140,13 @@ export const DashboardSidebar = (props) => {
                                 gap: '20px'
                             }}
                         >
-                            <NextLink href='/' passHref>
-                                <a>
-                                    <Logo
-                                        sx={{
-                                            height: 42,
-                                            width: 42
-                                        }}
-                                    />
-                                </a>
+                            <NextLink href='/' style={{ display: 'flex', lineHeight: 0 }}>
+                                <Logo
+                                    sx={{
+                                        height: 42,
+                                        width: 42
+                                    }}
+                                />
                             </NextLink>
                             <div>
                                 <Typography color='inherit' variant='subtitle1'>
