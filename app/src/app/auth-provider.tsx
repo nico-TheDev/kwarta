@@ -17,8 +17,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         if (user) {
             if (user?.hasAnswered) {
                 const path = window.location.pathname;
-                if (path === '/editSurvey') return;
-                if (['/login', '/sign-in', '/register'].includes(path) || user.hasAnswered) {
+                if (path === '/edit-survey') return;
+                if (['/login', '/register'].includes(path) || user.hasAnswered) {
                     router.push('/dashboard');
                 }
             } else {

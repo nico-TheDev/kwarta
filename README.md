@@ -1,6 +1,6 @@
 # Kwarta
 
-Kwarta is a personal finance web app for tracking accounts, transactions, cash flow, savings, bonds, investments, and stocks. The UI is built with **Next.js** and **Material UI**; data and authentication use **Firebase** (Auth, Firestore, Storage). A small **Express** service scrapes public market and news data with **Puppeteer** for dashboard widgets (inflation, stocks, news).
+Kwarta is a personal finance web app for tracking accounts, transactions, cash flow, savings, bonds, investments, and stocks. The UI is built with **Next.js 16** and **Material UI**; data and authentication use **Firebase** (Auth, Firestore, Storage). Market and news widgets are scraped via **Puppeteer** in Next.js Route Handlers (`/api/*`).
 
 The product title shown in the app shell is **CASH: Financial Monitoring System**.
 
@@ -8,23 +8,21 @@ The product title shown in the app shell is **CASH: Financial Monitoring System*
 
 | Directory | Purpose |
 |-----------|---------|
-| [`app/`](app/) | Next.js 14 front end (App + Pages Router) and API routes |
-| [`docs/migration.md`](docs/migration.md) | Next.js 14 → 16 migration checklist and phase status |
-| [`scraping-service/`](scraping-service/) | Express API that exposes `/inflation`, `/stocks`, `/news`, and `/investment` |
+| [`app/`](app/) | Next.js 16 App Router front end and `/api` scraping routes |
+| [`docs/migration.md`](docs/migration.md) | Migration checklist and phase status |
+| [`scraping-service/`](scraping-service/) | **Deprecated** — legacy Express scraper; use in-app `/api/*` instead |
 
 ## Prerequisites
 
-- **Node.js 20.9+** (LTS recommended; required for Next.js 16 target — see [docs/migration.md](docs/migration.md))
-- A **Firebase** project with Authentication, Firestore, and Storage enabled (for the web app)
-- For scraping features called from the browser, the scraping service must be reachable from the client (see environment variables below). **Puppeteer** needs a working Chrome/Chromium install (the `app` package runs a `postinstall` script for Puppeteer).
+- **Node.js 20.9+** (required for Next.js 16)
+- A **Firebase** project with Authentication, Firestore, and Storage enabled
+- **Chromium** for Puppeteer (installed automatically with `npm install` in `app/`)
 
 ## Web app (`app/`)
 
 ### Environment variables
 
-Create `app/.env.local` (Next.js loads this automatically) with:
-
-**Firebase (required for auth and data)**
+Create `app/.env.local` with Firebase web app config:
 
 - `NEXT_PUBLIC_API_KEY`
 - `NEXT_PUBLIC_AUTH_DOMAIN`
@@ -33,11 +31,7 @@ Create `app/.env.local` (Next.js loads this automatically) with:
 - `NEXT_PUBLIC_MESSAGING_SENDER_ID`
 - `NEXT_PUBLIC_APP_ID`
 
-Values come from the Firebase console → Project settings → Your apps → Web app config.
-
-**Scraping API base URL (required for inflation / stocks / news panels that call the Express service from the browser)**
-
-- `NEXT_PUBLIC_ENDPOINT` — e.g. `http://localhost:5000` in development (no trailing slash)
+Values come from Firebase console → Project settings → Your apps → Web app config.
 
 **Optional — Zalter Identity**
 
@@ -52,46 +46,26 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Use `npm run build` and `npm start` for a production build.
+Open [http://localhost:3000](http://localhost:3000). Production: `npm run build` && `npm start`.
 
-### Other scripts
+### Scripts
 
-- `npm run lint` — ESLint (Next.js config)
-## Scraping service (`scraping-service/`)
+- `npm run lint` — ESLint
+- `npm test` — Jest unit tests
 
-Express server (default port **5000**) that returns scraped JSON for:
+### Scraping API (in-app)
 
-- `GET /` — health-style message
-- `GET /inflation`
-- `GET /investment`
-- `GET /stocks`
-- `GET /news`
+The app exposes server-side routes (no separate service required):
 
-CORS is enabled for browser access from the Next.js origin.
-
-### Environment
-
-Copy `scraping-service/.env.sample` to `.env` if you add variables; the sample only sets `NODE_ENV`. Override the port with `PORT` if needed.
-
-### Install and run
-
-```bash
-cd scraping-service
-npm install
-npm run dev
-```
-
-For production: `npm start`.
-
-### Docker
-
-A [`Dockerfile`](scraping-service/Dockerfile) is provided using the official Puppeteer base image for environments where installing Chrome is awkward.
+- `GET /api/inflation`
+- `GET /api/investment`
+- `GET /api/stocks`
+- `GET /api/news`
 
 ## Typical local setup
 
-1. Start the scraping API: `cd scraping-service && npm run dev` (listening on port 5000).
-2. In `app/.env.local`, set `NEXT_PUBLIC_ENDPOINT=http://localhost:5000` and all Firebase `NEXT_PUBLIC_*` variables.
-3. Start the app: `cd app && npm run dev`.
+1. In `app/.env.local`, set all Firebase `NEXT_PUBLIC_*` variables.
+2. `cd app && npm run dev`.
 
 ## License
 
