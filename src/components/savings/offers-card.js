@@ -119,7 +119,7 @@ export const OffersCard = ({ ...rest }) => {
                 DISCLAIMER: This calculation is for illustration purposes only and should not be
                 able to taken as professional advice to invest in these saving accounts. It should not be used
                 as the sole basis to measure returns in said securities. Interest rates and amounts are subject
-                to change. For more information, you can go to the bank's website or go to the nearest branch
+                to change. For more information, you can go to the bank&apos;s website or go to the nearest branch
                 in your area.
                 </Typography>
                 <Typography

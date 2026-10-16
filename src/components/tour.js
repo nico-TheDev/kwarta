@@ -36,7 +36,7 @@ export default function Tour({ open, handleClose, handleOpen }) {
             target: '.app__carousel',
             content: (
                 <Typography variant='body2'>
-                    Before we start, let's have a short tutorial about our application
+                    Before we start, let&apos;s have a short tutorial about our application
                 </Typography>
             ),
             disableBeacon: true,

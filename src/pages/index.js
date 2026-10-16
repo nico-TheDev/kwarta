@@ -210,7 +210,7 @@ const Page = () => {
                                 </Typography>
 
                                 <Typography variant='body2' color={grey[600]}>
-                                    Gives you insight about topics you're not familiar about.
+                                    Gives you insight about topics you&apos;re not familiar about.
                                 </Typography>
                             </Paper>
                         </Grid>
