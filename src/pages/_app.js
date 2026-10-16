@@ -21,6 +21,8 @@ registerChartJs();
 
 const clientSideEmotionCache = createEmotionCache();
 
+const AUTH_PAGES = ['/login', '/sign-in', '/register'];
+
 const App = (props) => {
     const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
     const { isLoading } = useAuthStore((state) => state.authState);
@@ -34,26 +36,18 @@ const App = (props) => {
     // CATEGORIES LISTENER
     useGetUserCategories(user?.uid);
 
-    // HANDLE USER AUTH IF THERE IS AN EXISTING USER , REDIRECT TO DASHBOARD
+    // THE ONLY POST LOGIN REDIRECT: UNANSWERED USERS GO TO THE SURVEY, SIGNED IN USERS LEAVE THE AUTH PAGES
     useEffect(() => {
-        console.log(router.pathname);
+        if (!router.isReady || !user) return;
 
-        if (user) {
-            if (user?.hasAnswered) {
-                if (router.pathname === '/editSurvey') {
-                    router.push('/editSurvey');
-                } else if (
-                    (router.pathname !== '/dashboard' &&
-                        ['/login', '/sign-in', '/register'].includes(router.pathname)) ||
-                    user.hasAnswered
-                ) {
-                    router.push('/dashboard');
-                }
-            } else if (!user?.hasAnswered) {
-                router.push('/survey');
+        if (!user.hasAnswered) {
+            if (router.pathname !== '/survey') {
+                router.replace('/survey');
             }
+        } else if (AUTH_PAGES.includes(router.pathname)) {
+            router.replace('/dashboard');
         }
-    }, [user, isAuthenticated]);
+    }, [user?.uid, user?.hasAnswered, router.isReady, router.pathname]);
     return (
         <CacheProvider value={emotionCache}>
             <Head>

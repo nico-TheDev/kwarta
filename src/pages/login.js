@@ -39,11 +39,9 @@ const Login = () => {
 
     const handleLoginWithGoogle = () => {
         setIsBtnDisabled(true);
+        // _app.js REDIRECTS ONCE THE USER IS SET
         loginWithGoogle().then(() => {
             setIsBtnDisabled(false);
-
-            router.replace('/dashboard');
-            console.log('GO TO DASHBOARD');
         });
     };
 

@@ -65,8 +65,8 @@ const Register = () => {
             },
             selectedFile?.file
         ).then((data) => {
+            // _app.js REDIRECTS ONCE THE USER IS SET
             formik.resetForm();
-            router.push('/survey');
             setSelectedFile(null);
         });
     };
