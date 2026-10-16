@@ -1,13 +1,10 @@
-import useSWR from 'swr';
+import { marketSnapshot } from 'data/market-snapshot';
 
-const fetcher = () => fetch(process.env.NEXT_PUBLIC_ENDPOINT + `/news`).then((r) => r.json());
-
+// READS THE SAVED SNAPSHOT IN PLACE OF THE SCRAPER ROUTE, SO THE NEWS PANEL NEEDS NO SERVER (FEATURE 32)
 export function useNews() {
-    const { data, error, isLoading } = useSWR(`/api/news/`, fetcher);
-
     return {
-        data,
-        isLoading,
-        isError: error
+        data: marketSnapshot.news,
+        isLoading: false,
+        isError: false
     };
 }

@@ -1,13 +1,10 @@
-import useSWR from 'swr';
+import { marketSnapshot } from 'data/market-snapshot';
 
-const fetcher = () => fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/stocks').then((r) => r.json());
-
+// READS THE SAVED SNAPSHOT IN PLACE OF THE SCRAPER ROUTE, SO THE STOCKS PAGE NEEDS NO SERVER (FEATURE 32)
 export function useStocks() {
-    const { data, error, isLoading } = useSWR(`/api/stocks/`, fetcher);
-
     return {
-        data,
-        isLoading,
-        isError: error
+        data: marketSnapshot.stocks,
+        isLoading: false,
+        isError: false
     };
 }

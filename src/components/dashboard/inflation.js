@@ -3,60 +3,24 @@ import InsertChartIcon from '@mui/icons-material/InsertChartOutlined';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useEffect, useState } from 'react';
+import { marketSnapshot } from 'data/market-snapshot';
 
 import { getLanguage } from 'utils/getLanguage';
 import { useLanguageStore } from 'stores/useLanguageStore';
 import { orange } from '@mui/material/colors';
 
-const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// SAVED SNAPSHOT IN PLACE OF THE SCRAPER ROUTE (FEATURE 32)
+const { current: currentRate, previous: previousRate } = marketSnapshot.inflation;
+const rateDifference = parseFloat(currentRate.rate) - parseFloat(previousRate.rate);
 
 export const Inflation = (props) => {
-    const [inflationData, setInflationData] = useState('');
-    const [percentage, setPercentage] = useState('');
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
-
-    useEffect(() => {
-        async function getInflationData() {
-            const date = new Date();
-            const currentMonth = monthNames[date.getMonth() - 1];
-            const prevMonth = monthNames[date.getMonth() - 2];
-
-            if (localStorage.getItem('inflation')) {
-                setInflationData(JSON.parse(localStorage.getItem('inflation')));
-                setPercentage(JSON.parse(localStorage.getItem('percentage')));
-            } else {
-                try {
-                    const res = await fetch(process.env.NEXT_PUBLIC_ENDPOINT + '/inflation');
-                    const data = await res.json();
-
-                    const rate = data.data;
-
-                    const prevRate = rate.find((item) => item.month === prevMonth);
-                    const currentRate = rate.find((item) => item.month === currentMonth);
-                    const diff = currentRate.rate.replace('%', '') - prevRate.rate.replace('%', '');
-                    const roundedDiff = Math.round((diff + Number.EPSILON) * 100) / 100;
-                    // 3 - 2 =  1
-                    const hasIncreased = diff < 0;
-
-                    const currentPercentage = {
-                        difference: Math.abs(roundedDiff),
-                        hasIncreased
-                    };
-                    localStorage.setItem('inflation', JSON.stringify(currentRate));
-                    localStorage.setItem('percentage', JSON.stringify(currentPercentage));
-
-                    console.log({ currentRate, currentPercentage });
-
-                    setInflationData(currentRate);
-                    setPercentage(currentPercentage);
-                } catch (err) {
-                    console.log(err);
-                }
-            }
-        }
-        getInflationData();
-    }, [localStorage.getItem('inflation')]);
+    const inflationData = currentRate;
+    // hasIncreased IS TRUE WHEN THE RATE WENT DOWN; THE ARROWS BELOW READ IT THAT WAY
+    const percentage = {
+        difference: Math.abs(Math.round((rateDifference + Number.EPSILON) * 100) / 100),
+        hasIncreased: rateDifference < 0
+    };
 
     return (
         <Card sx={{ height: '100%' }} {...props}>
@@ -116,9 +80,12 @@ export const Inflation = (props) => {
                         {getLanguage(currentLanguage).sinceLastMonth}
                     </Typography>
                 </Box>{' '}
+                <Typography color='textSecondary' variant='caption' component='p'>
+                    {getLanguage(currentLanguage).sampleMarketData}
+                </Typography>
                 <Link href='https://tradingeconomics.com/philippines/inflation-cpi' target='_blank'>
                     <Typography color='textSecondary' variant='caption'>
-                        Source: Trading Economics
+                        Live rates: Trading Economics
                     </Typography>
                 </Link>
             </CardContent>

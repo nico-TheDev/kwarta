@@ -69,6 +69,9 @@ export default function NewsPanel(props) {
                     ))
                 )}
             </Grid>
+            <Typography variant='body2' color='textSecondary' mt={2}>
+                {getLanguage(currentLanguage).sampleMarketData}
+            </Typography>
         </>
     );
 }

@@ -33,16 +33,19 @@ const Page = () => {
         sellPrice: parseFloat(String(router.query.price).replace(/,/g, '')) + 2
     });
 
+    // ON A DIRECT LOAD OR REFRESH router.query IS EMPTY UNTIL THE ROUTER IS READY, SO READ THE PRICE THEN
     useEffect(() => {
+        if (!router.isReady) return;
+        const price = parseFloat(String(router.query.price).replace(/,/g, ''));
         // CHECK THE SHARES BOUGHT BASED ON THE TABLE
         const targetLot = minimumLotTable.find((currentLot) => {
-            if (currentLot.marketPriceMin <= input.buyPrice && currentLot.marketPriceMax >= input.buyPrice) {
+            if (currentLot.marketPriceMin <= price && currentLot.marketPriceMax >= price) {
                 return currentLot;
             }
         });
-        console.log({ targetLot });
-        setInput({ ...input, sharesBought: targetLot.lotSize, sharesSold: targetLot.lotSize });
-    }, []);
+        if (!targetLot) return;
+        setInput({ buyPrice: price, sellPrice: price + 2, sharesBought: targetLot.lotSize, sharesSold: targetLot.lotSize });
+    }, [router.isReady]);
 
     useEffect(() => {
         // CHECK THE SHARES BOUGHT BASED ON THE TABLE
@@ -51,6 +54,8 @@ const Page = () => {
                 return currentLot;
             }
         });
+        // NO LOT BAND MATCHES A MISSING PRICE OR ONE THAT FALLS BETWEEN BANDS
+        if (!targetLot) return;
 
         if (input.sharesBought < targetLot.lotSize || input.sharesSold < targetLot.lotSize) {
             toast.error('You are not allowed to continue that computation', { id: 'stocks' });
@@ -152,7 +157,7 @@ const Page = () => {
                                 </Typography>
 
                                 <Typography variant='caption' color='textSecondary'>
-                                    Stockbroker's Commission = {result.stockCommsBuy} <br />
+                                    Stockbroker&apos;s Commission = {result.stockCommsBuy} <br />
                                     Clearing Fee = {result.clearFeeBuy} <br />
                                     PSE Transaction Fee = {result.transFeeBuy} <br />
                                     Total Trading Costs = {result.tradeCostBuy} <br />
@@ -182,7 +187,7 @@ const Page = () => {
                                 </Typography>
 
                                 <Typography variant='caption' color='textSecondary'>
-                                    Stockbroker's Commission = {result.stockCommsSell} <br />
+                                    Stockbroker&apos;s Commission = {result.stockCommsSell} <br />
                                     Clearing Fee = {result.clearFeeSell} <br />
                                     PSE Transaction Fee = {result.transFeeSell} <br />
                                     Stock Transaction Tax = {result.stockTax} <br />

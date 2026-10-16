@@ -1,7 +1,22 @@
 import Head from 'next/head';
 import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Button, CircularProgress, Container, Grid, Paper, Tooltip, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Container,
+    Grid,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Tooltip,
+    Typography
+} from '@mui/material';
 import { green } from '@mui/material/colors';
 import { DashboardLayout } from '../../components/dashboard-layout';
 import { formatPrice } from 'utils/format-price';
@@ -97,12 +112,58 @@ const Page = () => {
                     </Typography>
                     <Grid container spacing={3} mb={4}>
                         <Grid item xs={12} className='stocks_step_two'>
-                            <iframe
-                                src='https://www.pesobility.com/stock?sort=prevYrCashDivPerc'
-                                frameborder='1'
-                                width='100%'
-                                height='400'
-                            ></iframe>
+                            <Typography variant='h6' mb={2}>
+                                {getLanguage(currentLanguage).stocksList}
+                            </Typography>
+                            {/* THE PESOBILITY EMBED REFUSES IFRAMES (X-Frame-Options: SAMEORIGIN), SO LIST THE SNAPSHOT HERE */}
+                            <TableContainer component={Paper} sx={{ maxHeight: 400 }}>
+                                <Table stickyHeader size='small'>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>{getLanguage(currentLanguage).stockTicker}</TableCell>
+                                            <TableCell>{getLanguage(currentLanguage).stockCompany}</TableCell>
+                                            <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
+                                                {getLanguage(currentLanguage).stockSector}
+                                            </TableCell>
+                                            <TableCell align='right'>{getLanguage(currentLanguage).stockPrice}</TableCell>
+                                            <TableCell align='right'>{getLanguage(currentLanguage).stockChange}</TableCell>
+                                            <TableCell align='right'>
+                                                {getLanguage(currentLanguage).stockDividendYield}
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {(stockData?.stockList || []).map((stock) => (
+                                            <TableRow key={stock.ticker} hover>
+                                                <TableCell>
+                                                    <Link
+                                                        href={{
+                                                            pathname: `/stocks/calculate`,
+                                                            query: { company: stock.company, price: stock.price }
+                                                        }}
+                                                    >
+                                                        <Button sx={{ p: 0, minWidth: 0 }} variant='text'>
+                                                            {stock.ticker}
+                                                        </Button>
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell>{stock.company}</TableCell>
+                                                <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
+                                                    {stock.sector}
+                                                </TableCell>
+                                                <TableCell align='right'>{formatPrice(stock.price, true)}</TableCell>
+                                                <TableCell
+                                                    align='right'
+                                                    sx={{ color: stock.change.includes('-') ? 'error.main' : green[500] }}
+                                                >
+                                                    {stock.change}
+                                                </TableCell>
+                                                <TableCell align='right'>{stock.dividendYield}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </Grid>
                     </Grid>
 
@@ -120,7 +181,7 @@ const Page = () => {
                             </Tooltip>
                         </Grid>
 
-                        {!isLoading && !isError ? (
+                        {!isLoading && !isError && stockData?.trendingStocks ? (
                             stockData.trendingStocks.map((item, i) => (
                                 <Grid item xs={12} md={4} key={item.company + '-' + i}>
                                     <Link href={{ pathname: `/stocks/calculate`, query: { ...item } }}>
@@ -168,17 +229,8 @@ const Page = () => {
                         )}
 
                         <Grid item>
-                            <Typography variant='body1'>
-                                This data is originally from{' '}
-                                <Typography
-                                    variant='body1'
-                                    component='a'
-                                    href='https://ph.investing.com/equities/trending-stocks'
-                                    target='_blank'
-                                >
-                                    ph.investing.com
-                                </Typography>
-                                . Visit their website for more information.
+                            <Typography variant='body2' color='textSecondary'>
+                                {getLanguage(currentLanguage).sampleMarketData}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -192,7 +244,7 @@ const Page = () => {
                             </Tooltip>
                         </Grid>
 
-                        {!isLoading ? (
+                        {!isLoading && !isError && stockData?.marketMovers ? (
                             stockData.marketMovers.map((item, i) => (
                                 <Grid item xs={12} md={4} key={item.company + '-' + i}>
                                     <Link href={{ pathname: `/stocks/calculate`, query: { ...item } }}>
@@ -229,17 +281,8 @@ const Page = () => {
                         )}
 
                         <Grid item xs={12}>
-                            <Typography variant='body1'>
-                                This data is originally from{' '}
-                                <Typography
-                                    variant='body1'
-                                    component='a'
-                                    href='https://ph.investing.com/equities/trending-stocks'
-                                    target='_blank'
-                                >
-                                    ph.investing.com
-                                </Typography>
-                                . Visit their website for more information.
+                            <Typography variant='body2' color='textSecondary'>
+                                {getLanguage(currentLanguage).sampleMarketData}
                             </Typography>
                         </Grid>
                     </Grid>

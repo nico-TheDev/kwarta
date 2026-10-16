@@ -248,7 +248,17 @@ export const languages = {
             'Papalitan nito ang iyong mga account, sariling kategorya, transaksiyon at transfer ng sample data. Mananatili ang iyong propayl at mga sagot sa survey.',
         sampleClearTitle: 'Burahin ang lahat ng data?',
         sampleClearBody:
-            'Buburahin nito ang lahat ng iyong account, sariling kategorya, transaksiyon at transfer. Mananatili ang iyong propayl at mga sagot sa survey. Maaari mong i-load muli ang sample data anumang oras.'
+            'Buburahin nito ang lahat ng iyong account, sariling kategorya, transaksiyon at transfer. Mananatili ang iyong propayl at mga sagot sa survey. Maaari mong i-load muli ang sample data anumang oras.',
+
+        // market data snapshot
+        sampleMarketData: 'Sample na datos para sa demo, hindi live na presyo.',
+        stocksList: 'Listahan ng Stocks',
+        stockTicker: 'Simbolo',
+        stockCompany: 'Kumpanya',
+        stockSector: 'Sektor',
+        stockPrice: 'Presyo',
+        stockChange: 'Pagbabago',
+        stockDividendYield: 'Dividend Yield'
     },
     en: {
         //main screen
@@ -487,6 +497,16 @@ export const languages = {
             'This replaces your accounts, custom categories, transactions and transfers with sample data. Your profile and survey answers stay.',
         sampleClearTitle: 'Clear all data?',
         sampleClearBody:
-            'This deletes all your accounts, custom categories, transactions and transfers. Your profile and survey answers stay. You can load the sample data again anytime.'
+            'This deletes all your accounts, custom categories, transactions and transfers. Your profile and survey answers stay. You can load the sample data again anytime.',
+
+        // market data snapshot
+        sampleMarketData: 'Sample data for the demo, not live prices.',
+        stocksList: 'Stocks List',
+        stockTicker: 'Ticker',
+        stockCompany: 'Company',
+        stockSector: 'Sector',
+        stockPrice: 'Price',
+        stockChange: 'Change',
+        stockDividendYield: 'Dividend Yield'
     }
 };
