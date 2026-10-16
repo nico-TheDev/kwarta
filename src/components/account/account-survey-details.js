@@ -242,7 +242,8 @@ export const AccountSurveyDetails = (props) => {
     useEffect(() => {
         // console.log('SURVEY');
         // console.log({ userSurvey });
-        setQuestionOne(userSurvey.salary.id);
+        // THE SELECT OPTIONS USE THE STRING value ('8'), NOT THE NUMERIC id
+        setQuestionOne(userSurvey.salary.value);
         setQuestionTwo(userSurvey.priorities.map((item) => item.category_name));
         setQuestionThree(userSurvey.financeRule);
     }, []);

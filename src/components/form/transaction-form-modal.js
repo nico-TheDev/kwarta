@@ -79,49 +79,20 @@ export default function TransactionFormModal({ open, setOpen }) {
         setOpen(false);
 
         if (transactionType === 'expense') {
-            // WARNING FOR OVERSPENDING
-            if (userSurvey.financeRule.value === '1') {
-                if (Number(values.amount) >= values.targetAccount.account_amount * 0.2) {
-                    toast(`You're spending a lot for your account. You must save at least 20% for savings`, {
-                        style: {
-                            width: 'max-content'
-                        },
-                        icon: (
-                            <Box sx={{ color: '#ffa726' }}>
-                                <InfoIcon color='inherit' />
-                            </Box>
-                        ),
-                        duration: 5000
-                    });
-                }
-            } else if (userSurvey.financeRule.value === '2') {
-                if (Number(values.amount) >= values.targetAccount.account_amount * 0.3) {
-                    toast(`You're spending a lot for your account. You must save at least 30% for savings.`, {
-                        style: {
-                            width: 'max-content'
-                        },
-                        icon: (
-                            <Box sx={{ color: '#ffa726' }}>
-                                <InfoIcon color='inherit' />
-                            </Box>
-                        ),
-                        duration: 5000
-                    });
-                }
-            } else if (userSurvey.financeRule.value === '3') {
-                if (Number(values.amount) >= values.targetAccount.account_amount * 0.1) {
-                    toast(`You're spending a lot for your account. You must save at least 10% for savings`, {
-                        style: {
-                            width: 'max-content'
-                        },
-                        icon: (
-                            <Box sx={{ color: '#ffa726' }}>
-                                <InfoIcon color='inherit' />
-                            </Box>
-                        ),
-                        duration: 5000
-                    });
-                }
+            // WARNING FOR OVERSPENDING: THE SURVEY SAVES financeRule AS { needs, wants, savings } PERCENTAGES
+            const savingsRate = userSurvey?.financeRule?.savings;
+            if (savingsRate && Number(values.amount) >= values.targetAccount.account_amount * (savingsRate / 100)) {
+                toast(`You're spending a lot for your account. You must save at least ${savingsRate}% for savings.`, {
+                    style: {
+                        width: 'max-content'
+                    },
+                    icon: (
+                        <Box sx={{ color: '#ffa726' }}>
+                            <InfoIcon color='inherit' />
+                        </Box>
+                    ),
+                    duration: 5000
+                });
             }
         }
 
