@@ -1,21 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { v4 as uuidv4 } from 'uuid';
-
-import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-    GoogleAuthProvider,
-    getAdditionalUserInfo,
-    updateProfile,
-    updateEmail
-} from 'firebase/auth';
-import { setDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { auth } from '../../firebase.config';
-import { db, storage } from '../../firebase.config';
-import { deleteObject, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import toast from 'react-hot-toast';
+
+import localDb from 'lib/localDb';
+import { DEMO_USER } from 'constants/constant';
 
 function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -72,6 +60,48 @@ const tourProgress = [
     }
 ];
 
+// BUILD THE SESSION USER FROM THE USERS DOC (REPLACES auth.currentUser)
+const buildAuthUser = (userData) => ({
+    name: userData.first_name + ' ' + userData.last_name,
+    firstName: userData.first_name,
+    lastName: userData.last_name,
+    email: userData.email,
+    photo: userData.profile_img,
+    uid: userData.uid,
+    hasAnswered: userData.hasAnswered
+});
+
+// EVERY SIGN IN METHOD LOGS IN THE DEMO USER, CREATING ITS USERS DOC ON THE FIRST VISIT
+const signInDemoUser = async (set, get) => {
+    const userData = await localDb.batch((tx) => {
+        const existingUser = tx.get('users', DEMO_USER.uid);
+        if (existingUser) return existingUser;
+
+        return tx.set('users', DEMO_USER.uid, {
+            ...DEMO_USER,
+            profile_img_ref: '',
+            profile_img: '',
+            hasAnswered: false,
+            tourProgress
+        });
+    });
+
+    set({
+        authState: {
+            ...get().authState,
+            user: buildAuthUser(userData),
+            userSurvey: {
+                priorities: userData.priorities || null,
+                financeRule: userData.financeRule || null,
+                salary: userData.salary || null
+            },
+            isAuthenticated: true,
+            isLoading: false,
+            tourProgress: userData.tourProgress || tourProgress
+        }
+    });
+};
+
 const AuthStore = (set, get) => ({
     authState: {
         user: null,
@@ -81,110 +111,29 @@ const AuthStore = (set, get) => ({
     },
     userSurvey: [],
     setUserSurvey: (data) => set({ userSurvey: data }),
+    // THE PASSWORD AND PHOTO ARE IGNORED: NO CREDENTIALS ARE STORED AND PHOTOS WAIT FOR FEATURE 31
     addUser: async (newUser, currentFile) => {
         const loader = toast.loading('Registering User...');
         try {
-            let fileUrl, fileRefName;
-            if (currentFile) {
-                fileRefName = `users/${uuidv4()}-${currentFile.name}`;
-                const imageRef = ref(storage, fileRefName);
-
-                const fileUpload = await uploadBytes(imageRef, currentFile);
-                fileUrl = await getDownloadURL(fileUpload.ref);
-                console.log('UPLOADED');
-            }
-
-            const createdUserResponse = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password); //creates user
-            // console.log(newUser);
-
-            await updateProfile(auth.currentUser, {
-                displayName: newUser.firstName + ' ' + newUser.lastName, //updates displayName
-                photoURL: fileUrl //updates photoURL
-            });
-
-            await setDoc(doc(db, 'users', createdUserResponse.user.uid), {
-                uid: createdUserResponse.user.uid,
-                first_name: newUser.firstName,
-                last_name: newUser.lastName,
-                email: newUser.email,
-                profile_img_ref: fileRefName || '',
-                profile_img: fileUrl || '',
-                hasAnswered: false,
-                tourProgress
-            });
-
-            const getUser = auth.currentUser;
-            const displayName = getUser.displayName;
-            const email = getUser.email;
-            const photoURL = getUser.photoURL;
-            const uid = getUser.uid;
-            const nameArray = displayName.split(' ', 2);
-
-            set({
-                authState: {
-                    user: {
-                        name: displayName,
-                        firstName: nameArray[0],
-                        lastName: nameArray[1],
-                        email: email,
-                        photo: photoURL,
-                        uid: uid,
-                        hasAnswered: false
-                    },
-                    isAuthenticated: true,
-                    isLoading: false,
-                    tourProgress
-                }
-            });
+            await signInDemoUser(set, get);
 
             toast.success('User Successfully Registered.');
-            toast.dismiss(loader);
         } catch (err) {
             console.log(err);
             toast.error('Something Went Wrong', err.message);
+        } finally {
+            toast.dismiss(loader);
         }
     },
     verifyUser: async (login_user) => {
         const loader = toast.loading('Logging in ...');
         try {
-            const verifiedResponse = await signInWithEmailAndPassword(auth, login_user.email, login_user.password); //checks if user is registered, email and password correct
-            const verifiedUser = verifiedResponse.user;
-            const nameArray = verifiedUser.displayName.split(' ', 2);
-
-            const userSnap = await getDoc(doc(db, 'users', verifiedUser.uid));
-            const userData = userSnap.data();
-
-            set({
-                authState: {
-                    ...get().authState,
-                    user: {
-                        name: verifiedUser.displayName,
-                        firstName: nameArray[0],
-                        lastName: nameArray[1],
-                        email: verifiedUser.email,
-                        photo: verifiedUser.photoURL,
-                        uid: verifiedUser.uid,
-                        hasAnswered: userData.hasAnswered
-                    },
-                    userSurvey: {
-                        priorities: userData.priorities || null,
-                        financeRule: userData.financeRule || null,
-                        salary: userData.salary || null
-                    },
-                    isAuthenticated: true,
-                    isLoading: false,
-                    tourProgress: userData.tourProgress || tourProgress
-                }
-            });
+            await signInDemoUser(set, get);
 
             toast.success('Logged in successfully.');
         } catch (err) {
-            if (err.code === 'auth/user-not-found') {
-                toast.error('User not found.');
-            } else {
-                toast.error('Error:', err.code);
-            }
-            console.log(err.code);
+            toast.error(err.message);
+            console.log(err);
         } finally {
             toast.dismiss(loader);
         }
@@ -192,21 +141,11 @@ const AuthStore = (set, get) => ({
     updateUser: async function (editUser) {
         try {
             console.log(editUser);
-            await updateProfile(auth.currentUser, {
-                displayName: editUser.new_displayName
-            });
-            await updateEmail(auth.currentUser, editUser.new_email);
-
-            const getUser = auth.currentUser;
+            const user = get().authState.user;
             const displayName = editUser.new_displayName;
-            const email = getUser.email;
-            const photoURL = getUser.photoURL;
             const nameArray = displayName.split(' ', 2);
 
-            const userRef = doc(db, 'users', auth.currentUser.uid);
-            const userSnap = await getDoc(userRef);
-            const userData = userSnap.data();
-            await updateDoc(userRef, {
+            await localDb.update('users', user?.uid, {
                 first_name: nameArray[0],
                 last_name: nameArray[1],
                 email: editUser.new_email
@@ -230,129 +169,40 @@ const AuthStore = (set, get) => ({
             console.log(err.message);
         }
     },
-    updateUserPhoto: async (editUserPhoto, userPhotoName) => {
-        try {
-            let fileUrl, fileRefName;
-            if (editUserPhoto) {
-                fileRefName = `users/${uuidv4()}-${userPhotoName}`;
-                const imageRef = ref(storage, fileRefName);
-
-                const fileUpload = await uploadBytes(imageRef, editUserPhoto);
-                fileUrl = await getDownloadURL(fileUpload.ref);
-                console.log('UPLOADED');
-            }
-            await updateProfile(auth.currentUser, {
-                photoURL: fileUrl //updates photoURL
-            });
-
-            const getUser = auth.currentUser;
-            const displayName = getUser.displayName;
-            const email = getUser.email;
-            const photoURL = getUser.photoURL;
-            const nameArray = displayName.split(' ', 2);
-
-            set({
-                authState: {
-                    ...get().authState,
-                    user: {
-                        name: displayName,
-                        firstName: nameArray[0],
-                        lastName: nameArray[1],
-                        email: email,
-                        photo: photoURL
-                    }
-                }
-            });
-        } catch (err) {
-            console.log(err.message);
-        }
-    },
+    // PHOTO FILES ARE SKIPPED UNTIL FEATURE 31, SO THE PROFILE KEEPS ITS CURRENT profile_img
+    updateUserPhoto: async (editUserPhoto, userPhotoName) => {},
     loginWithGoogle: async () => {
         const loader = toast.loading('Logging in...');
         try {
-            const provider = new GoogleAuthProvider();
-            const result = await signInWithPopup(auth, provider);
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential.accessToken;
-            const user = result.user;
-            // console.log(user)
-            const { uid } = user;
-            const { name, email, picture, family_name, given_name } = getAdditionalUserInfo(result).profile;
-
-            const docSnap = await getDoc(doc(db, 'users', uid));
-
-            if (!docSnap.exists()) {
-                // CREATE NEW USER
-                await setDoc(doc(db, 'users', uid), {
-                    uid,
-                    first_name: given_name,
-                    last_name: family_name,
-                    email,
-                    profile_img_ref: '',
-                    profile_img: picture,
-                    hasAnswered: false,
-                    tourProgress
-                });
-            }
-
-            // console.log(getAdditionalUserInfo(result))
-            const userSnap = await getDoc(doc(db, 'users', uid));
-            const userData = userSnap.data();
-            set({
-                authState: {
-                    ...get().authState,
-                    user: {
-                        name,
-                        firstName: given_name,
-                        lastName: family_name,
-                        email,
-                        photo: picture,
-                        uid,
-                        token,
-                        hasAnswered: userData.hasAnswered
-                    },
-                    isAuthenticated: true,
-                    isLoading: false,
-                    userSurvey: {
-                        priorities: userData.priorities || null,
-                        financeRule: userData.financeRule || null,
-                        salary: userData.salary || null
-                    },
-                    tourProgress: userData.tourProgress || tourProgress
-                }
-            });
+            await signInDemoUser(set, get);
 
             toast.success('Logged in successfully.');
         } catch (error) {
-            // const errorCode = error.code;
-            // const errorMessage = error.message;
-            // // The email of the user's account used.
-            // const email = error.customData.email;
-            // // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
             console.error(error);
-            // console.error(credential);
             toast.error('Error: Something Went Wrong', error.message);
         } finally {
             toast.dismiss(loader);
         }
     },
+    // ONLY THE SESSION KEY GOES, SO EVERY RECORD IS STILL THERE ON THE NEXT SIGN IN
     logout: () => {
-        localStorage.clear();
+        try {
+            localStorage.removeItem('auth');
+        } catch (err) {
+            console.warn(err);
+        }
         set({
             authState: {
                 user: null,
                 isAuthenticated: false,
                 isLoading: false,
-                user: null,
                 tourProgress
             }
         });
     },
     manageSurvey: async (answers, uid) => {
-        const userRef = doc(db, 'users', uid);
         try {
-            await updateDoc(userRef, {
+            await localDb.update('users', uid, {
                 hasAnswered: true,
                 priorities: answers.questionTwo,
                 salary: answers.questionOne,
@@ -383,11 +233,10 @@ const AuthStore = (set, get) => ({
     },
     getUser: async (id) => {
         try {
-            const userRef = doc(db, 'users', id);
-            const userSnapshot = await getDoc(userRef);
+            const userData = await localDb.get('users', id);
 
-            if (userSnapshot.exists()) {
-                return userSnapshot.data();
+            if (userData) {
+                return userData;
             } else {
                 throw new Error('User does not exist.');
             }
@@ -399,9 +248,8 @@ const AuthStore = (set, get) => ({
     updateSurvey: async (answers) => {
         const user = get().authState.user;
         console.log(user?.uid);
-        const userRef = doc(db, 'users', user?.uid);
         try {
-            await updateDoc(userRef, {
+            await localDb.update('users', user?.uid, {
                 hasAnswered: true,
                 priorities: answers.questionTwo,
                 salary: answers.questionOne,
@@ -435,7 +283,6 @@ const AuthStore = (set, get) => ({
     },
     manageTourProgress: async (tour) => {
         const user = get().authState.user;
-        const userRef = doc(db, 'users', user?.uid);
         try {
             const editedTour = get().authState.tourProgress.map((item) => {
                 if (item.page === tour) {
@@ -445,7 +292,7 @@ const AuthStore = (set, get) => ({
                 }
             });
 
-            await updateDoc(userRef, {
+            await localDb.update('users', user?.uid, {
                 tourProgress: editedTour
             });
 
@@ -470,6 +317,13 @@ const AuthStore = (set, get) => ({
 
 export const useAuthStore = create(
     persist(AuthStore, {
-        name: 'auth'
+        name: 'auth',
+        // A SESSION LEFT OVER FROM THE FIREBASE APP BELONGS TO ANOTHER USER, SO TREAT IT AS LOGGED OUT
+        onRehydrateStorage: () => (state) => {
+            const uid = state?.authState?.user?.uid;
+            if (uid && uid !== DEMO_USER.uid) {
+                state.logout();
+            }
+        }
     })
 );

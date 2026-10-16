@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import { onSnapshot, collection, orderBy, query, where } from 'firebase/firestore';
-import { db } from '../../firebase.config';
+import { useEffect } from 'react';
+import localDb from 'lib/localDb';
 
 import { useTransferStore } from 'stores/useTransferStore'
 
@@ -12,17 +11,8 @@ export default function useGetUserTransfers(userID){
         if (!userID) {
             return;
         }
-        const transferColRef = collection(db, 'transfers');
-        const transferQuery = query(transferColRef, where('user_id', '==', userID));
 
-        const unsubscribe = onSnapshot(transferQuery , (snapshotData) => {
-            const userTransfers = [];
-            snapshotData.forEach((doc) => {
-                userTransfers.push({
-                    ...doc.data(),
-                    id: doc.id
-                });
-            });
+        const unsubscribe = localDb.subscribe('transfers', { where: { user_id: userID } }, (userTransfers) => {
             setTransfers(userTransfers);
         });
         return unsubscribe;

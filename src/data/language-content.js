@@ -225,7 +225,11 @@ export const languages = {
             'Nakatuon ka sa potensyal na paglago ng iyong mga investment sa pangmatagalang panahon na may mataas na kakayahang tiisin ang panganib.',
         tooltipMarketMovers: 'Ipinapakita ang mga nangungunang stocks sa stock market',
         tooltipStocksSuggestion:
-            'Ipinapakita ang mga nangungunang stocks na maaari mong pag tuunan ng pansin kung nais mong mag-laan ng pera sa stocks'
+            'Ipinapakita ang mga nangungunang stocks na maaari mong pag tuunan ng pansin kung nais mong mag-laan ng pera sa stocks',
+
+        // local storage
+        storageUnavailable:
+            'Hindi ma-save ng browser na ito ang iyong data. Gumagana pa rin ang app, pero mawawala ang mga pagbabago kapag nag-reload ka.'
     },
     en: {
         //main screen
@@ -441,6 +445,10 @@ export const languages = {
         tooltipIncome: 'the money that a person or entity receives in exchange for their labor or products',
         tooltipMarketMovers: 'Displays the top market movers of the stock market',
         tooltipStocksSuggestion:
-            'Displays the top stocks that you can consider if you want to start investing in stocks'
+            'Displays the top stocks that you can consider if you want to start investing in stocks',
+
+        // local storage
+        storageUnavailable:
+            "This browser can't save your data. The app still works, but your changes will be lost when you reload."
     }
 };

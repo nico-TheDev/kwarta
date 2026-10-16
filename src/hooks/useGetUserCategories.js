@@ -1,35 +1,31 @@
-import { useEffect, useState } from 'react';
-import { onSnapshot, collection, orderBy, query, where } from 'firebase/firestore';
-import { db } from '../../firebase.config';
+import { useEffect } from 'react';
+import localDb from 'lib/localDb';
 
 import premadeCategories from 'data/categories';
 
 import { useCategoryStore } from 'stores/useCategoryStore';
-import { useAuthStore } from 'stores/useAuthStore';
 
 export default function useGetUserCategories(userID) {
     const setCategories = useCategoryStore((state) => state.setCategories);
 
     useEffect(() => {
         if (!userID) return;
-        const categoryColRef = collection(db, 'categories');
-        const categoryQuery = query(categoryColRef, where('user_id', '==', userID));
 
-        const unsubscribe = onSnapshot(categoryQuery, (snapshotData) => {
+        const unsubscribe = localDb.subscribe('categories', { where: { user_id: userID } }, (docs) => {
             const prepCategories = premadeCategories.map((category) => ({
                 ...category,
                 user_id: userID
             }));
             const userList = [];
 
-            snapshotData.forEach((doc) => {
+            docs.forEach((doc) => {
                 if (prepCategories.some((item) => item.id === doc.id)) {
                     const objIndex = prepCategories.findIndex((item) => item.id === doc.id);
                     prepCategories.splice(objIndex, 1);
                 }
                 userList.push({
-                    ...doc.data(),
-                    type: doc.data().category_type,
+                    ...doc,
+                    type: doc.category_type,
                     id: doc.id
                 });
             });

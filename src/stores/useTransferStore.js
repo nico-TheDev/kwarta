@@ -1,50 +1,36 @@
 import { create } from 'zustand';
 
-import { addDoc, collection, serverTimestamp, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
-import { deleteObject, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import toast from 'react-hot-toast';
-import { v4 as uuidv4 } from 'uuid';
 
-import { db, storage } from '../../firebase.config';
+import localDb from 'lib/localDb';
 
 const transferStore = (set,get) => ({
     transfers: [],
     getTransfer: () => {},
     setTransfers: (data) => set({ transfers: data }),
+    // PHOTO FILES ARE SKIPPED UNTIL FEATURE 31, SO currentFile AND newFile ARE IGNORED
     createTransfer: async (newTransfer, currentFile) => {
         const loader = toast.loading('Creating Transfer');
         try {
-            const receiverAccountRef = doc(db, "accounts", newTransfer.targetReceiverAccount.id);
-            const senderAccountRef = doc(db, "accounts", newTransfer.targetSenderAccount.id);
-            const receiverAccountResponse = await getDoc(receiverAccountRef);
-            const senderAccountResponse = await getDoc(senderAccountRef);
+            // BOTH BALANCE UPDATES AND THE RECORD COMMIT TOGETHER OR NOT AT ALL
+            await localDb.batch((tx) => {
+                const receiverAccountId = newTransfer.targetReceiverAccount.id;
+                const senderAccountId = newTransfer.targetSenderAccount.id;
+                const receiverAccount = tx.get('accounts', receiverAccountId);
+                const senderAccount = tx.get('accounts', senderAccountId);
 
-            const receiverAccount = receiverAccountResponse.data();
-            const senderAccount = senderAccountResponse.data();
+                tx.update('accounts', senderAccountId, {
+                    account_amount: senderAccount.account_amount - newTransfer.amount
+                });
+                tx.update('accounts', receiverAccountId, {
+                    account_amount: receiverAccount.account_amount + newTransfer.amount
+                });
 
-            // UPLOAD IMAGE
-            let fileUrl, fileRefName;
-            if (currentFile) {
-                fileRefName = `transfers/${uuidv4()}-${currentFile.name}`;
-                const imageRef = ref(storage, fileRefName);
-
-                const fileUpload = await uploadBytes(imageRef, currentFile);
-                fileUrl = await getDownloadURL(fileUpload.ref);
-                console.log('UPLOADED');
-            }
-
-            await updateDoc(senderAccountRef, {
-                account_amount: senderAccount.account_amount - newTransfer.amount
-            });
-            await updateDoc(receiverAccountRef, {
-                account_amount: receiverAccount.account_amount + newTransfer.amount
-            });
-
-            await addDoc(collection(db, 'transfers'), {
-                ...newTransfer,
-                photoRef: fileRefName || '',
-                photoUrl: fileUrl || '',
-                timestamp: serverTimestamp()
+                tx.add('transfers', {
+                    ...newTransfer,
+                    photoRef: '',
+                    photoUrl: ''
+                });
             });
             console.log('NEW DOCUMENT CREATED');
             // HANDLE TOAST
@@ -59,70 +45,41 @@ const transferStore = (set,get) => ({
     updateTransfer: async (documentId, updatedTransfer, newFile) => {
         const editLoader = toast.loading('Updating Transfer');
         try {
-            const docRef = doc(db, 'transfers', documentId);
-            const currentTransferResponse = await getDoc(docRef);
-            const currentTransfer = currentTransferResponse.data();
+            await localDb.batch((tx) => {
+                const currentTransfer = tx.get('transfers', documentId);
 
-            // UPDATE THE FILES
-            // UPLOAD IMAGE
-            const fileRef = ref(storage, currentTransfer.photoRef);
-            let fileUrl, fileRefName;
-            if (currentTransfer.photoUrl !== newFile?.source) {
-                if (currentTransfer.photoUrl !== '') {
-                    // DELETE THE OBJECT
-                    await deleteObject(fileRef);
-                }
+                // GET ACCOUNT DATA
+                const prevReceiverAccountId = currentTransfer.targetReceiverAccount.id;
+                const prevSenderAccountId = currentTransfer.targetSenderAccount.id;
+                const prevReceiverAccount = tx.get('accounts', prevReceiverAccountId);
+                const prevSenderAccount = tx.get('accounts', prevSenderAccountId);
 
-                if (newFile) {
-                    {
-                        fileRefName = `transfers/${uuidv4()}-${newFile.file.name}`;
-                        const imageRef = ref(storage, fileRefName);
+                // RETURN THE PREVIOUS TRANSFER
+                tx.update('accounts', prevSenderAccountId, {
+                    account_amount: prevSenderAccount.account_amount + currentTransfer.amount
+                });
+                tx.update('accounts', prevReceiverAccountId, {
+                    account_amount: prevReceiverAccount.account_amount - currentTransfer.amount
+                });
 
-                        const fileUpload = await uploadBytes(imageRef, newFile.file);
-                        fileUrl = await getDownloadURL(fileUpload.ref);
-                        console.log('UPLOADED');
-                    }
-                }
-            }
+                // ADD CURRENT TRANSFER (THESE READS SEE THE RETURNED BALANCES ABOVE)
+                const receiverAccountId = updatedTransfer.targetReceiverAccount.id;
+                const senderAccountId = updatedTransfer.targetSenderAccount.id;
+                const receiverAccount = tx.get('accounts', receiverAccountId);
+                const senderAccount = tx.get('accounts', senderAccountId);
 
-            // GET ACCOUNT DATA
-            const prevReceiverAccountRef = doc(db, "accounts", currentTransfer.targetReceiverAccount.id);
-            const prevSenderAccountRef = doc(db, "accounts", currentTransfer.targetSenderAccount.id);
-            const prevReceiverAccountResponse = await getDoc(prevReceiverAccountRef);
-            const prevSenderAccountResponse = await getDoc(prevSenderAccountRef);
+                tx.update('accounts', senderAccountId, {
+                    account_amount: senderAccount.account_amount - updatedTransfer.amount
+                });
+                tx.update('accounts', receiverAccountId, {
+                    account_amount: receiverAccount.account_amount + updatedTransfer.amount
+                });
 
-            const prevReceiverAccount = prevReceiverAccountResponse.data();
-            const prevSenderAccount = prevSenderAccountResponse.data();
-
-            // RETURN THE PREVIOUS TRANSFER
-            await updateDoc(prevSenderAccountRef, {
-                account_amount: prevSenderAccount.account_amount + currentTransfer.amount
-            });
-            await updateDoc(prevReceiverAccountRef, {
-                account_amount: prevReceiverAccount.account_amount - currentTransfer.amount
-            });
-
-            // ADD CURRENT TRANSFER
-            const receiverAccountRef = doc(db, "accounts", updatedTransfer.targetReceiverAccount.id);
-            const senderAccountRef = doc(db, "accounts", updatedTransfer.targetSenderAccount.id);
-            const receiverAccountResponse = await getDoc(receiverAccountRef);
-            const senderAccountResponse = await getDoc(senderAccountRef);
-
-            const receiverAccount = receiverAccountResponse.data();
-            const senderAccount = senderAccountResponse.data();
-
-            await updateDoc(senderAccountRef, {
-                account_amount: senderAccount.account_amount - updatedTransfer.amount
-            });
-            await updateDoc(receiverAccountRef, {
-                account_amount: receiverAccount.account_amount + updatedTransfer.amount
-            });
-            
-            // CREATE A REFERENCE TO THE DOCUMENT AND THE FILE
-            await updateDoc(docRef, {
-                ...updatedTransfer,
-                photoRef: fileRefName || currentTransfer.photoRef,
-                photoUrl: fileUrl || currentTransfer.photoUrl
+                tx.update('transfers', documentId, {
+                    ...updatedTransfer,
+                    photoRef: '',
+                    photoUrl: ''
+                });
             });
 
             toast.success('Updated Successfully.');
@@ -140,40 +97,31 @@ const transferStore = (set,get) => ({
     deleteTransfer: async (documentId, fileReference) => {
         console.log('Delete', documentId);
         const deleteLoader = toast.loading('Deleting Transfer');
-        // CREATE A REFERENCE FOR THE DOCUMENT AND THE FILE
-        const docRef = doc(db, 'transfers', documentId);
-        const fileRef = ref(storage, fileReference);
         try {
-            // GET TRANSFER DATA
-            const targetTransfer = await getDoc(docRef);
-            const currentTransfer = targetTransfer.data();
-            console.log(currentTransfer)
+            await localDb.batch((tx) => {
+                // GET TRANSFER DATA
+                const currentTransfer = tx.get('transfers', documentId);
+                console.log(currentTransfer);
 
-            // GET ACCOUNT DATA
-            const receiverAccountRef = doc(db, "accounts", currentTransfer.targetReceiverAccount.id);
-            const senderAccountRef = doc(db, "accounts", currentTransfer.targetSenderAccount.id);
-            const receiverAccountResponse = await getDoc(receiverAccountRef);
-            const senderAccountResponse = await getDoc(senderAccountRef);
+                // GET ACCOUNT DATA
+                const receiverAccountId = currentTransfer.targetReceiverAccount.id;
+                const senderAccountId = currentTransfer.targetSenderAccount.id;
+                const receiverAccount = tx.get('accounts', receiverAccountId);
+                const senderAccount = tx.get('accounts', senderAccountId);
 
-            const receiverAccount = receiverAccountResponse.data();
-            const senderAccount = senderAccountResponse.data();
-            
-            if (senderAccount && receiverAccount) {
-                // UPDATE ACCOUNTS
-                await updateDoc(senderAccountRef, {
-                    account_amount: senderAccount.account_amount + currentTransfer.amount
-                });
-                await updateDoc(receiverAccountRef, {
-                    account_amount: receiverAccount.account_amount - currentTransfer.amount
-                });
-            }
+                if (senderAccount && receiverAccount) {
+                    // UPDATE ACCOUNTS
+                    tx.update('accounts', senderAccountId, {
+                        account_amount: senderAccount.account_amount + currentTransfer.amount
+                    });
+                    tx.update('accounts', receiverAccountId, {
+                        account_amount: receiverAccount.account_amount - currentTransfer.amount
+                    });
+                }
 
-
-            // DELETE THE DOCUMENT AND OBJECT
-            await deleteDoc(docRef);
-            if (fileReference) {
-                await deleteObject(fileRef);
-            }
+                // DELETE THE DOCUMENT
+                tx.remove('transfers', documentId);
+            });
             // ALERT A MESSAGE
 
             toast.success('Deleted Successfully!');

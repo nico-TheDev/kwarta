@@ -237,3 +237,10 @@ export const modalStyle = {
     display: 'grid',
     gap: 4
 };
+// THE ONE LOCAL USER EVERY SIGN IN BUTTON LOGS IN AS (SPEC 0001)
+export const DEMO_USER = {
+    uid: 'demo-user',
+    first_name: 'Demo',
+    last_name: 'User',
+    email: 'demo@kwarta.local'
+};

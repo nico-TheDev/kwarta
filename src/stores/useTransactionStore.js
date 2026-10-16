@@ -1,11 +1,8 @@
 import { create } from 'zustand';
 
-import { addDoc, collection, serverTimestamp, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
-import { deleteObject, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import toast from 'react-hot-toast';
-import { v4 as uuidv4 } from 'uuid';
 
-import { db, storage } from '../../firebase.config';
+import localDb from 'lib/localDb';
 import { blue, deepPurple, green, red, yellow } from '@mui/material/colors';
 import { ICON_NAMES } from 'constants/constant';
 
@@ -16,6 +13,7 @@ const transactionStore = (set, get) => ({
     resetTransactions: () => {
         set({ transactions: [] });
     },
+    // PHOTO FILES ARE SKIPPED UNTIL FEATURE 31, SO currentFile AND newFile ARE IGNORED
     createTransaction: async (newTransaction, currentFile) => {
         const loader = toast.loading('Creating Transaction');
         try {
@@ -26,46 +24,37 @@ const transactionStore = (set, get) => ({
             if (newTransaction.amount === 0 || newTransaction.amount === '') {
                 throw new Error('Please enter a valid amount');
             }
-            // console.log('CURRENT FILE: ', currentFile);
-            const accountRef = doc(db, 'accounts', newTransaction.targetAccount.id);
-            const currentAccount = await getDoc(accountRef);
 
-            // UPLOAD IMAGE
-            let fileUrl, fileRefName;
-            if (currentFile) {
-                fileRefName = `transactions/${uuidv4()}-${currentFile.name}`;
-                const imageRef = ref(storage, fileRefName);
+            // THE BALANCE UPDATE AND THE RECORD COMMIT TOGETHER OR NOT AT ALL
+            await localDb.batch((tx) => {
+                const accountId = newTransaction.targetAccount.id;
+                const currentAccount = tx.get('accounts', accountId);
 
-                const fileUpload = await uploadBytes(imageRef, currentFile);
-                fileUrl = await getDownloadURL(fileUpload.ref);
-                console.log('UPLOADED');
-            }
-
-            // SUBTRACT
-            if (
-                newTransaction.type === 'expense' ||
-                newTransaction.type === 'savings' ||
-                newTransaction.type === 'investments'
-            ) {
-                if (currentAccount.data().account_amount > newTransaction.amount) {
-                    await updateDoc(accountRef, {
-                        account_amount: currentAccount.data().account_amount - newTransaction.amount
-                    });
+                // SUBTRACT
+                if (
+                    newTransaction.type === 'expense' ||
+                    newTransaction.type === 'savings' ||
+                    newTransaction.type === 'investments'
+                ) {
+                    if (currentAccount.account_amount > newTransaction.amount) {
+                        tx.update('accounts', accountId, {
+                            account_amount: currentAccount.account_amount - newTransaction.amount
+                        });
+                    } else {
+                        throw new Error("You don't have enough money!");
+                    }
                 } else {
-                    throw new Error("You don't have enough money!");
+                    // INCOME
+                    tx.update('accounts', accountId, {
+                        account_amount: currentAccount.account_amount + newTransaction.amount
+                    });
                 }
-            } else {
-                // INCOME
-                await updateDoc(accountRef, {
-                    account_amount: currentAccount.data().account_amount + newTransaction.amount
-                });
-            }
 
-            await addDoc(collection(db, 'transactions'), {
-                ...newTransaction,
-                photoRef: fileRefName || '',
-                photoUrl: fileUrl || '',
-                timestamp: serverTimestamp()
+                tx.add('transactions', {
+                    ...newTransaction,
+                    photoRef: '',
+                    photoUrl: ''
+                });
             });
             console.log('NEW DOCUMENT CREATED');
             // HANDLE TOAST
@@ -80,95 +69,69 @@ const transactionStore = (set, get) => ({
     updateTransaction: async (documentId, updatedTransaction, newFile) => {
         const editLoader = toast.loading('Updating Transaction');
         try {
-            const docRef = doc(db, 'transactions', documentId);
-            const currentTransactionResponse = await getDoc(docRef);
-            const currentTransaction = currentTransactionResponse.data();
-            let accountRef, originalAmount, updatedAmount, currentAccountResponse, currentAccount;
-            // SAME ACCOUNTS
-            console.log(currentTransaction);
-            if (currentTransaction.targetAccount.id === updatedTransaction.targetAccount.id) {
-                accountRef = doc(db, 'accounts', updatedTransaction.targetAccount.id);
-                currentAccountResponse = await getDoc(accountRef);
-                currentAccount = currentAccountResponse.data();
-                // RETURN THE ORIGINAL AMOUNT
-                if (
-                    currentTransaction.type === 'expense' ||
-                    currentTransaction.type === 'savings' ||
-                    currentTransaction.type === 'investments'
-                ) {
-                    originalAmount = currentAccount.account_amount + currentTransaction.amount;
-                } else {
-                    originalAmount = currentAccount.account_amount - currentTransaction.amount;
-                }
-                // UPDATE THE ACCOUNT AMOUNT
-                if (
-                    updatedTransaction.type === 'expense' ||
-                    updatedTransaction.type === 'savings' ||
-                    updatedTransaction.type === 'investments'
-                ) {
-                    updatedAmount = originalAmount - updatedTransaction.amount;
-                } else {
-                    updatedAmount = originalAmount + updatedTransaction.amount;
-                }
-
-                // UPDATE THE ACCOUNT DOCUMENT IN THE FIRESTORE
-                await updateDoc(accountRef, {
-                    account_amount: updatedAmount
-                });
-            } else {
-                const oldAccountRef = doc(db, 'accounts', currentTransaction.targetAccount.id);
-                const oldAccountResponse = await getDoc(oldAccountRef);
-                const oldAccount = oldAccountResponse.data();
-                // RESTORE MONEY TO THE OLD ACCOUNT
-                if (currentTransaction.type === 'expense') {
-                    originalAmount = oldAccount.account_amount + currentTransaction.amount;
-                } else {
-                    originalAmount = oldAccount.account_amount - currentTransaction.amount;
-                }
-                const newAccountRef = doc(db, 'accounts', updatedTransaction.target_account);
-                const newAccountResponse = await getDoc(newAccountRef);
-                const newAccount = newAccountResponse.data();
-                // SUBTRACT MONEY TO THE NEW ACCOUNT
-                if (updatedTransaction.type === 'expense') {
-                    updatedAmount = newAccount.account_amount - updatedTransaction.amount;
-                } else {
-                    updatedAmount = newAccount.account_amount + updatedTransaction.amount;
-                }
-                // UPDATE THE ACCOUNT DOCUMENT IN THE FIRESTORE
-                await updateDoc(oldAccountRef, {
-                    account_amount: originalAmount
-                });
-                await updateDoc(newAccountRef, {
-                    account_amount: updatedAmount
-                });
-            }
-
-            // UPDATE THE FILES
-            // UPLOAD IMAGE
-            const fileRef = ref(storage, currentTransaction.photoRef);
-            let fileUrl, fileRefName;
-            if (currentTransaction.photoUrl !== newFile?.source) {
-                if (currentTransaction.photoUrl !== '') {
-                    // DELETE THE OBJECT
-                    await deleteObject(fileRef);
-                }
-
-                if (newFile) {
-                    {
-                        fileRefName = `transactions/${uuidv4()}-${newFile.file.name}`;
-                        const imageRef = ref(storage, fileRefName);
-
-                        const fileUpload = await uploadBytes(imageRef, newFile.file);
-                        fileUrl = await getDownloadURL(fileUpload.ref);
-                        console.log('UPLOADED');
+            await localDb.batch((tx) => {
+                const currentTransaction = tx.get('transactions', documentId);
+                let originalAmount, updatedAmount, currentAccount;
+                // SAME ACCOUNTS
+                console.log(currentTransaction);
+                if (currentTransaction.targetAccount.id === updatedTransaction.targetAccount.id) {
+                    currentAccount = tx.get('accounts', updatedTransaction.targetAccount.id);
+                    // RETURN THE ORIGINAL AMOUNT
+                    if (
+                        currentTransaction.type === 'expense' ||
+                        currentTransaction.type === 'savings' ||
+                        currentTransaction.type === 'investments'
+                    ) {
+                        originalAmount = currentAccount.account_amount + currentTransaction.amount;
+                    } else {
+                        originalAmount = currentAccount.account_amount - currentTransaction.amount;
                     }
+                    // UPDATE THE ACCOUNT AMOUNT
+                    if (
+                        updatedTransaction.type === 'expense' ||
+                        updatedTransaction.type === 'savings' ||
+                        updatedTransaction.type === 'investments'
+                    ) {
+                        updatedAmount = originalAmount - updatedTransaction.amount;
+                    } else {
+                        updatedAmount = originalAmount + updatedTransaction.amount;
+                    }
+
+                    // UPDATE THE ACCOUNT DOCUMENT
+                    tx.update('accounts', updatedTransaction.targetAccount.id, {
+                        account_amount: updatedAmount
+                    });
+                } else {
+                    // KNOWN QUIRK, KEPT ON PURPOSE UNTIL FEATURE 29: ONLY expense SUBTRACTS AND THE
+                    // NEW ACCOUNT IS READ FROM updatedTransaction.target_account
+                    const oldAccount = tx.get('accounts', currentTransaction.targetAccount.id);
+                    // RESTORE MONEY TO THE OLD ACCOUNT
+                    if (currentTransaction.type === 'expense') {
+                        originalAmount = oldAccount.account_amount + currentTransaction.amount;
+                    } else {
+                        originalAmount = oldAccount.account_amount - currentTransaction.amount;
+                    }
+                    const newAccount = tx.get('accounts', updatedTransaction.target_account);
+                    // SUBTRACT MONEY TO THE NEW ACCOUNT
+                    if (updatedTransaction.type === 'expense') {
+                        updatedAmount = newAccount.account_amount - updatedTransaction.amount;
+                    } else {
+                        updatedAmount = newAccount.account_amount + updatedTransaction.amount;
+                    }
+                    // UPDATE THE ACCOUNT DOCUMENTS
+                    tx.update('accounts', currentTransaction.targetAccount.id, {
+                        account_amount: originalAmount
+                    });
+                    tx.update('accounts', updatedTransaction.target_account, {
+                        account_amount: updatedAmount
+                    });
                 }
-            }
-            // CREATE A REFERENCE TO THE DOCUMENT AND THE FILE
-            await updateDoc(docRef, {
-                ...updatedTransaction,
-                photoRef: fileRefName || currentTransaction.photoRef,
-                photoUrl: fileUrl || currentTransaction.photoUrl
+
+                tx.update('transactions', documentId, {
+                    ...updatedTransaction,
+                    photoRef: '',
+                    photoUrl: ''
+                });
             });
 
             toast.success('Updated Successfully.');
@@ -186,38 +149,32 @@ const transactionStore = (set, get) => ({
     deleteTransaction: async (documentId, fileReference) => {
         console.log('Delete', documentId);
         const deleteLoader = toast.loading('Deleting Transaction');
-        // CREATE A REFERENCE FOR THE DOCUMENT AND THE FILE
-        const docRef = doc(db, 'transactions', documentId);
-        const fileRef = ref(storage, fileReference);
         try {
-            const currentTransactionResponse = await getDoc(docRef);
-            const currentTransaction = currentTransactionResponse.data();
-            const accountRef = doc(db, 'accounts', currentTransaction.targetAccount.id);
-            const currentAccountResponse = await getDoc(accountRef);
-            const currentAccount = currentAccountResponse.data();
-            if (currentAccount) {
-                // RETURN THE SUBTRACTED AMOUNT
-                if (
-                    currentTransaction.type === 'expense' ||
-                    currentTransaction.type === 'savings' ||
-                    currentTransaction.type === 'investments'
-                ) {
-                    await updateDoc(accountRef, {
-                        account_amount: currentAccount.account_amount + currentTransaction.amount
-                    });
-                } else {
-                    // INCOME
-                    await updateDoc(accountRef, {
-                        account_amount: currentAccount.account_amount - currentTransaction.amount
-                    });
+            await localDb.batch((tx) => {
+                const currentTransaction = tx.get('transactions', documentId);
+                const accountId = currentTransaction.targetAccount.id;
+                const currentAccount = tx.get('accounts', accountId);
+                if (currentAccount) {
+                    // RETURN THE SUBTRACTED AMOUNT
+                    if (
+                        currentTransaction.type === 'expense' ||
+                        currentTransaction.type === 'savings' ||
+                        currentTransaction.type === 'investments'
+                    ) {
+                        tx.update('accounts', accountId, {
+                            account_amount: currentAccount.account_amount + currentTransaction.amount
+                        });
+                    } else {
+                        // INCOME
+                        tx.update('accounts', accountId, {
+                            account_amount: currentAccount.account_amount - currentTransaction.amount
+                        });
+                    }
                 }
-            }
 
-            // DELETE THE DOCUMENT AND OBJECT
-            await deleteDoc(docRef);
-            if (fileReference) {
-                await deleteObject(fileRef);
-            }
+                // DELETE THE DOCUMENT
+                tx.remove('transactions', documentId);
+            });
             // ALERT A MESSAGE
 
             toast.success('Deleted Successfully!');

@@ -1,9 +1,7 @@
 import { create } from 'zustand';
 import toast from 'react-hot-toast';
 
-import { addDoc, collection, serverTimestamp, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
-
-import { db, storage } from '../../firebase.config';
+import localDb from 'lib/localDb';
 
 const categoryStore = (set, get) => ({
     categories: [],
@@ -13,10 +11,7 @@ const categoryStore = (set, get) => ({
         try {
             console.log(newCategory);
 
-            await addDoc(collection(db, 'categories'), {
-                ...newCategory,
-                timestamp: serverTimestamp()
-            });
+            await localDb.add('categories', newCategory);
 
             console.log('NEW DOCUMENT CREATED');
         } catch (err) {
@@ -26,15 +21,7 @@ const categoryStore = (set, get) => ({
     updateCategory: async (documentId, updatedCategory) => {
         const editLoader = toast.loading('Updating Category');
         try {
-            const docRef = doc(db, 'categories', documentId);
-            const currentCategoryResponse = await getDoc(docRef);
-            const currentCategory = currentCategoryResponse.data();
-            // SAME ACCOUNTS
-            console.log(currentCategory);
-            // CREATE A REFERENCE TO THE DOCUMENT AND THE FILE
-            await updateDoc(docRef, {
-                ...updatedCategory
-            });
+            await localDb.update('categories', documentId, updatedCategory);
 
             toast.success('Updated Successfully.');
 
@@ -51,11 +38,9 @@ const categoryStore = (set, get) => ({
     deleteCategory: async (documentId) => {
         console.log('Delete', documentId);
         const deleteLoader = toast.loading('Deleting Account');
-        // CREATE A REFERENCE FOR THE DOCUMENT AND THE FILE
-        const docRef = doc(db, 'categories', documentId);
         try {
-            // DELETE THE DOCUMENT AND OBJECT
-            await deleteDoc(docRef);
+            // DELETE THE DOCUMENT
+            await localDb.remove('categories', documentId);
             // ALERT A MESSAGE
 
             toast.success('Deleted Successfully!');
