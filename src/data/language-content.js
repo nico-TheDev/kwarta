@@ -234,7 +234,21 @@ export const languages = {
 
         // local storage
         storageUnavailable:
-            'Hindi ma-save ng browser na ito ang iyong data. Gumagana pa rin ang app, pero mawawala ang mga pagbabago kapag nag-reload ka.'
+            'Hindi ma-save ng browser na ito ang iyong data. Gumagana pa rin ang app, pero mawawala ang mga pagbabago kapag nag-reload ka.',
+
+        // sample data
+        loadSampleData: 'I-load ang sample data',
+        clearAllData: 'Burahin ang lahat ng data',
+        startEmpty: 'Magsimula nang walang laman',
+        sampleWelcomeTitle: 'Gusto mo bang subukan gamit ang sample data?',
+        sampleWelcomeBody:
+            'Pupunuin namin ang app ng anim na buwan ng sample na accounts, transaksiyon at transfer para may maipakita ang bawat chart at mungkahi. Maaari mo itong burahin anumang oras mula sa menu ng iyong account sa kanang itaas.',
+        sampleLoadTitle: 'I-load ang sample data?',
+        sampleLoadBody:
+            'Papalitan nito ang iyong mga account, sariling kategorya, transaksiyon at transfer ng sample data. Mananatili ang iyong propayl at mga sagot sa survey.',
+        sampleClearTitle: 'Burahin ang lahat ng data?',
+        sampleClearBody:
+            'Buburahin nito ang lahat ng iyong account, sariling kategorya, transaksiyon at transfer. Mananatili ang iyong propayl at mga sagot sa survey. Maaari mong i-load muli ang sample data anumang oras.'
     },
     en: {
         //main screen
@@ -459,6 +473,20 @@ export const languages = {
 
         // local storage
         storageUnavailable:
-            "This browser can't save your data. The app still works, but your changes will be lost when you reload."
+            "This browser can't save your data. The app still works, but your changes will be lost when you reload.",
+
+        // sample data
+        loadSampleData: 'Load sample data',
+        clearAllData: 'Clear all data',
+        startEmpty: 'Start empty',
+        sampleWelcomeTitle: 'Want to explore with sample data?',
+        sampleWelcomeBody:
+            'We can fill the app with six months of sample accounts, transactions and transfers so every chart and suggestion has something to show. You can clear it anytime from your account menu at the top right.',
+        sampleLoadTitle: 'Load sample data?',
+        sampleLoadBody:
+            'This replaces your accounts, custom categories, transactions and transfers with sample data. Your profile and survey answers stay.',
+        sampleClearTitle: 'Clear all data?',
+        sampleClearBody:
+            'This deletes all your accounts, custom categories, transactions and transfers. Your profile and survey answers stay. You can load the sample data again anytime.'
     }
 };

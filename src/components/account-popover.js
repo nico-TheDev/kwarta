@@ -9,6 +9,8 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 import { useAccountStore } from 'stores/useAccountStore';
 import { useCategoryStore } from 'stores/useCategoryStore';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { useSampleDataStore } from 'stores/useSampleDataStore';
+import { getLanguage } from 'utils/getLanguage';
 
 export const AccountPopover = (props) => {
     const { anchorEl, onClose, open, name, ...other } = props;
@@ -18,6 +20,13 @@ export const AccountPopover = (props) => {
     const resetTransactions = useTransactionStore((state) => state.resetTransactions);
     const resetAccounts = useAccountStore((state) => state.resetAccounts);
     const resetCategories = useCategoryStore((state) => state.resetCategories);
+    const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    const openSampleDataDialog = useSampleDataStore((state) => state.openDialog);
+
+    const handleSampleData = (mode) => {
+        onClose?.();
+        openSampleDataDialog(mode);
+    };
 
     const handleSignOut = async () => {
         onClose?.();
@@ -104,6 +113,12 @@ export const AccountPopover = (props) => {
                 }}
             >
                 <MenuItem onClick={handleOpenTutorial}>Show Tutorial</MenuItem>
+                <MenuItem onClick={() => handleSampleData('load')}>
+                    {getLanguage(currentLanguage || 'en').loadSampleData}
+                </MenuItem>
+                <MenuItem onClick={() => handleSampleData('clear')} sx={{ color: 'error.main' }}>
+                    {getLanguage(currentLanguage || 'en').clearAllData}
+                </MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
             </MenuList>
         </Popover>

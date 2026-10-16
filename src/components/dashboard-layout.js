@@ -12,6 +12,9 @@ import { useTransactionStore } from 'stores/useTransactionStore';
 const Tour = dynamic(() => import('../components/tour'), { ssr: false });
 import articles from 'data/articles';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { useAuthStore } from 'stores/useAuthStore';
+import { useSampleDataStore } from 'stores/useSampleDataStore';
+import SampleDataDialog from './sample-data-dialog';
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -43,10 +46,17 @@ export const DashboardLayout = (props) => {
     const [article, setArticle] = useState(articles[0]);
     const isTutorialOpen = useLanguageStore((state) => state.isTutorialOpen);
     const setIsTutorialOpen = useLanguageStore((state) => state.setIsTutorialOpen);
+    const user = useAuthStore((state) => state.authState.user);
+    const offerSampleData = useSampleDataStore((state) => state.offerSampleData);
+
+    // FIRST SIGN IN WITH NO DATA: OFFER THE SAMPLE DATA BEFORE THE GETTING STARTED TUTORIAL
+    useEffect(() => {
+        offerSampleData(user);
+    }, [user?.uid, user?.hasAnswered, user?.sampleDataPrompted]);
 
     useEffect(() => {
         // console.log({ isTutorialOpen });
-        if (transactions.length === 0 && accounts.length === 0) {
+        if (transactions.length === 0 && accounts.length === 0 && user?.sampleDataPrompted) {
             setOpen(true);
         } else {
             if (localStorage.getItem('isTourOpen')) {
@@ -55,7 +65,7 @@ export const DashboardLayout = (props) => {
                 setOpen(false);
             }
         }
-    }, [transactions.length, accounts.length]);
+    }, [transactions.length, accounts.length, user?.sampleDataPrompted]);
 
     useEffect(() => {
         if (localStorage.getItem('showPopup')) {
@@ -139,6 +149,7 @@ export const DashboardLayout = (props) => {
                     }}
                 >
                     <Tour open={open} handleClose={handleClose} handleOpen={handleOpen} />
+                    <SampleDataDialog />
                     {children}
                 </Box>
             </DashboardLayoutRoot>

@@ -160,6 +160,7 @@ const runBatch = async (callback) => {
             const doc = (staged[col] || load(col)).find((item) => item.id === id);
             return doc ? clone(doc) : null;
         },
+        query: (col, { where } = {}) => clone((staged[col] || load(col)).filter((doc) => matches(doc, where))),
         add: (col, data) => {
             const doc = { ...clone(data), id: uuidv4(), timestamp: new Date().toISOString() };
             stage(col).push(doc);

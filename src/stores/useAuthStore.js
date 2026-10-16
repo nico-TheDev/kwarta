@@ -68,7 +68,8 @@ const buildAuthUser = (userData) => ({
     email: userData.email,
     photo: userData.profile_img,
     uid: userData.uid,
-    hasAnswered: userData.hasAnswered
+    hasAnswered: userData.hasAnswered,
+    sampleDataPrompted: userData.sample_data_prompted || false
 });
 
 // EVERY SIGN IN METHOD LOGS IN THE DEMO USER, CREATING ITS USERS DOC ON THE FIRST VISIT
@@ -111,6 +112,14 @@ const AuthStore = (set, get) => ({
     },
     userSurvey: [],
     setUserSurvey: (data) => set({ userSurvey: data }),
+    // THE USERS DOC WRITE HAPPENS IN useSampleDataStore; THIS KEEPS THE SESSION USER IN STEP
+    setSampleDataPrompted: () =>
+        set({
+            authState: {
+                ...get().authState,
+                user: get().authState.user && { ...get().authState.user, sampleDataPrompted: true }
+            }
+        }),
     // THE PASSWORD AND PHOTO ARE IGNORED: NO CREDENTIALS ARE STORED AND PHOTOS WAIT FOR FEATURE 31
     addUser: async (newUser, currentFile) => {
         const loader = toast.loading('Registering User...');
