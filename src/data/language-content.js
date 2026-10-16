@@ -227,6 +227,11 @@ export const languages = {
         tooltipStocksSuggestion:
             'Ipinapakita ang mga nangungunang stocks na maaari mong pag tuunan ng pansin kung nais mong mag-laan ng pera sa stocks',
 
+        // survey
+        skipSurvey: 'Laktawan muna',
+        skipSurveyHint:
+            'Lalagyan ka namin ng 50/30/20 na budget. Maaari mong palitan ang iyong mga sagot anumang oras sa iyong Profile.',
+
         // local storage
         storageUnavailable:
             'Hindi ma-save ng browser na ito ang iyong data. Gumagana pa rin ang app, pero mawawala ang mga pagbabago kapag nag-reload ka.'
@@ -446,6 +451,11 @@ export const languages = {
         tooltipMarketMovers: 'Displays the top market movers of the stock market',
         tooltipStocksSuggestion:
             'Displays the top stocks that you can consider if you want to start investing in stocks',
+
+        // survey
+        skipSurvey: 'Skip for now',
+        skipSurveyHint:
+            "We'll set you up with a 50/30/20 budget. You can change your answers anytime on your Profile.",
 
         // local storage
         storageUnavailable:

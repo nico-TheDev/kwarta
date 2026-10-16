@@ -26,6 +26,7 @@ import { Icon } from 'components/shared/Icon';
 import premadeCategories from 'data/categories';
 import { useRouter } from 'next/router';
 import { useLanguageStore } from 'stores/useLanguageStore';
+import { getLanguage } from 'utils/getLanguage';
 import toast from 'react-hot-toast';
 
 const categories = premadeCategories
@@ -180,6 +181,13 @@ const surveyList = [
     }
 ];
 
+// ANSWERS SAVED WHEN THE SURVEY IS SKIPPED, SHAPED LIKE A REAL SUBMISSION SO EVERY READER KEEPS WORKING
+const SKIPPED_SURVEY_ANSWERS = {
+    questionOne: surveyList[0].choices.find((item) => item.value === '8'),
+    questionTwo: [],
+    questionThree: { needs: 50, wants: 30, savings: 20, total: 100 }
+};
+
 export default function SurveyBlock() {
     const router = useRouter();
     const [questionOne, setQuestionOne] = useState('');
@@ -223,6 +231,14 @@ export default function SurveyBlock() {
             setTimeout(() => {
                 router.push('/accounts');
             }, 5000);
+        });
+    };
+
+    const handleSkip = () => {
+        setIsBtnDisabled(true);
+        manageSurvey(SKIPPED_SURVEY_ANSWERS, user.uid, 'Survey skipped. You can answer it anytime on your Profile.').then((_) => {
+            setIsBtnDisabled(false);
+            router.push('/dashboard');
         });
     };
 
@@ -489,6 +505,22 @@ export default function SurveyBlock() {
                         >
                             Submit
                         </Button>
+                        <Button
+                            variant='text'
+                            size='large'
+                            sx={{ display: 'block', width: '80%', marginX: 'auto', mt: 1 }}
+                            disabled={isBtnDisabled}
+                            onClick={handleSkip}
+                        >
+                            {getLanguage(currentLanguage).skipSurvey}
+                        </Button>
+                        <Typography
+                            variant='caption'
+                            color='textSecondary'
+                            sx={{ display: 'block', textAlign: 'center', mt: 1 }}
+                        >
+                            {getLanguage(currentLanguage).skipSurveyHint}
+                        </Typography>
                     </Grid>
                 </Grid>
             </Container>

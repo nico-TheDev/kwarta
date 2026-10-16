@@ -200,7 +200,7 @@ const AuthStore = (set, get) => ({
             }
         });
     },
-    manageSurvey: async (answers, uid) => {
+    manageSurvey: async (answers, uid, successMessage = 'Survey completed!') => {
         try {
             await localDb.update('users', uid, {
                 hasAnswered: true,
@@ -224,7 +224,7 @@ const AuthStore = (set, get) => ({
                 }
             });
 
-            toast.success('Survey completed!');
+            toast.success(successMessage);
             // console.log(answers);
         } catch (err) {
             toast.error('Something Went Wrong', err.message);
