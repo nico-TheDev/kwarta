@@ -15,8 +15,11 @@ import { useLanguageStore } from 'stores/useLanguageStore';
 import { ExpenseTypeChart } from 'components/ExpenseTypeChart';
 
 const Page = () => {
+    const user = useAuthStore((state) => state.authState.user);
     const transactions = useTransactionStore((state) => state.transactions);
     const currentLanguage = useLanguageStore((state) => state.currentLanguage);
+    // WITHOUT THIS LISTENER THE PAGE ONLY HAS DATA WHEN ANOTHER PAGE FILLED THE STORE FIRST
+    useGetUserTransactions(user?.uid);
     const styles = {
         container: {
             width: {
